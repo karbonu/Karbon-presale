@@ -75,12 +75,6 @@
     }
   }
 
-  .bgSettings{
-    background-color: #000000;
-    background-image: url('./assets/dotBG.svg');
-    background-size: cover;
-  }
-
   body{
     background-color: #000000;
     background-image: url('./assets/dotBG.svg');
