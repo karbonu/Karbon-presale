@@ -1,14 +1,10 @@
-import KarbonLogo from "@/components/Icons/KarbonLogo"
-import { ClockLoader } from "react-spinners"
+
 
 const TokenSale = () => {
   return (
-    <div className="flex flex-col space-y-5 items-center justify-center min-h-[100vh]">
-      <KarbonLogo/>
-      <p className="text-white font-bold text-[40px]">Nothing here yet</p>
-      <ClockLoader color="#36d7b7" />
-      <a href="/sign-in" className="text-[20px] text-white underline">Try signing in..</a>
-    </div>
+   <div>
+
+   </div>
   )
 }
 

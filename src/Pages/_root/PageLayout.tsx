@@ -1,15 +1,19 @@
+import Leftbar from '@/components/shared/Leftbar';
 import { Outlet, useNavigate } from 'react-router-dom'
 
 const PageLayout = () => {
   let authenticated = false;
   const navigate = useNavigate();
 
-  if(authenticated ===  false){
+  if(authenticated){
     navigate('/sign-in')
   }
   return (
-    <div>
+    <div className='w-screen h-screen flex flex-row'>
+      <Leftbar/>
+      <div>
         <Outlet/>
+      </div>
     </div>
   )
 }
