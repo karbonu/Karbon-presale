@@ -1,12 +1,19 @@
 import ClaimTokenWhite from "../Icons/ClaimTokenWhite"
 import DiscordLogo from "../Icons/DiscordLogo"
+import { NavLink } from 'react-router-dom';
 import KarbonLogoBig from "../Icons/KarbonLogoBig"
 import SettingsWhite from "../Icons/SettingsWhite"
 import TelegramLogo from "../Icons/TelegramLogo"
 import TokenSaleIcon from "../Icons/TokenSaleIcon"
 import XLogo from "../Icons/XLogo"
+import SettingsIcon from "../Icons/SettingsIcon";
+import ClaimTokensLogo from "../Icons/ClaimTokensLogo";
+import TokenSaleWhite from "../Icons/TokenSaleWhite";
 
 const Leftbar = () => {
+
+    const activeClassName = 'flex bg-black w-[160px] h-[48px] border-l border-[#08E04A] rounded-[4px]';
+    const inactiveClassName = 'flex bg-[#101010] w-[160px] h-[48px] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A] transition ease-in-out rounded-[4px]';
   return (
     <div className='h-screen w-[181px] bg-[#151515]'>
         <div className="py-10 flex flex-col w-full">
@@ -15,26 +22,31 @@ const Leftbar = () => {
             </div>
 
             <div className="flex flex-col pt-10 ml-6 space-y-3">
-                <a href="/" className="flex  bg-black w-[160px] h-[48px] border-l border-[#08E04A] rounded-[4px]">
+                <NavLink to="/" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                    {({ isActive }) => (
                     <div className="flex items-center justify-center px-3 flex-row space-x-2">
-                        <TokenSaleIcon/>
+                        {isActive ? <TokenSaleIcon /> : <TokenSaleWhite />}
                         <p className="font-semibold text-[12px] text-white">Token Sale</p>
                     </div>
-                </a>
-                <a href="/claim-tokens" className="flex  bg-[#101010] w-[160px] h-[48px] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A] transition ease-in-out rounded-[4px]">
-                    <div className="flex items-center  justify-center px-3 flex-row space-x-2">
-                        <ClaimTokenWhite/>
+                    )}
+                </NavLink>
+                <NavLink to="/claimtokens" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                    {({ isActive }) => (
+                    <div className="flex items-center justify-center px-3 flex-row space-x-2">
+                        {isActive ? <ClaimTokensLogo /> : <ClaimTokenWhite />}
                         <p className="font-semibold text-[12px] text-white">Claim Token</p>
                     </div>
-                </a>
-                <a href="/settings" className="flex  bg-[#101010] w-[160px] h-[48px] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A] transition ease-in-out rounded-[4px]">
-                    <div className="flex items-center  justify-center px-3 flex-row space-x-2">
-                        <SettingsWhite/>
+                    )}
+                </NavLink>
+                <NavLink to="/settings" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                    {({ isActive }) => (
+                    <div className="flex items-center justify-center px-3 flex-row space-x-2">
+                        {isActive ? <SettingsIcon /> : <SettingsWhite />}
                         <p className="font-semibold text-[12px] text-white">Settings</p>
                     </div>
-                </a>
+                    )}
+                </NavLink>
             </div>
-
             <div className="border-t absolute flex items-center justify-center w-[181px] bottom-0 border-black botder-t-[2px]">
                 <div className="py-5 flex flex-col space-y-5">
                     <p className="text-white opacity-50 text-[12px]">Connect with us</p>
