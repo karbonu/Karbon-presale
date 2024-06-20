@@ -80,3 +80,11 @@
     background-image: url('./assets/dotBG.svg');
     background-size: cover;
   }
+
+  input {
+    caret-color: #ffffff; /* change the color to your desired value */
+  }
+
+  input::placeholder {
+    color: #a1a1a1; /* change the color to your desired value */
+  }

@@ -5,6 +5,7 @@ import PageLayout from "./Pages/_root/PageLayout"
 import { HelmetProvider } from "react-helmet-async"
 import SignIn from "./Pages/_auth/AuthPages/SignIn"
 import MetaTags from "./components/shared/MetaTags"
+import TokenSale from "./Pages/_root/RootPages/TokenSale"
 function App() {
   
 
@@ -30,6 +31,8 @@ function App() {
 
             <Route element = {<PageLayout/>}>
 
+                
+                <Route index element = { <TokenSale/> }/>
                 {/* <Route index element = { <Home/> }/>
                 
                 <Route path='/ManageLecturers' element = { <ManageLecturers/> }/>
