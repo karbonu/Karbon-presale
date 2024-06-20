@@ -7,6 +7,7 @@ import SignIn from "./Pages/_auth/AuthPages/SignIn"
 import MetaTags from "./components/shared/MetaTags"
 import TokenSale from "./Pages/_root/RootPages/TokenSale"
 import SignUp from "./Pages/_auth/AuthPages/SignUp"
+import PageNotFound from "./components/shared/PageNotFound"
 function App() {
   
 
@@ -26,6 +27,7 @@ function App() {
               {/* {/* <Route path= "/sign-in" element = { <Signinform/> } /> */}
               <Route path= "/sign-in" element = { <SignIn/> } />
               <Route path= "/sign-up" element = { <SignUp/> } />
+              <Route path= "*" element = { <PageNotFound/> } />
               {/* <Route path= "/adminSign-in" element = { <AdminSignIn/> } />
               <Route path='/SignedOut' element = { <SignedOut/> }/> */}
             

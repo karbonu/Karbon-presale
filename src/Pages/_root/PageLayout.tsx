@@ -11,7 +11,7 @@ const PageLayout = () => {
   return (
     <div className='w-screen h-screen flex flex-row'>
       <Leftbar/>
-      <div>
+      <div className='flex flex-1'>
         <Outlet/>
       </div>
     </div>
