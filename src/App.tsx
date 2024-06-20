@@ -6,6 +6,7 @@ import { HelmetProvider } from "react-helmet-async"
 import SignIn from "./Pages/_auth/AuthPages/SignIn"
 import MetaTags from "./components/shared/MetaTags"
 import TokenSale from "./Pages/_root/RootPages/TokenSale"
+import SignUp from "./Pages/_auth/AuthPages/SignUp"
 function App() {
   
 
@@ -24,6 +25,7 @@ function App() {
               
               {/* {/* <Route path= "/sign-in" element = { <Signinform/> } /> */}
               <Route path= "/sign-in" element = { <SignIn/> } />
+              <Route path= "/sign-up" element = { <SignUp/> } />
               {/* <Route path= "/adminSign-in" element = { <AdminSignIn/> } />
               <Route path='/SignedOut' element = { <SignedOut/> }/> */}
             

@@ -86,7 +86,7 @@ const SignIn = () => {
     
                             <div className="flex flex-row space-x-2 items-center justify-center">
                                 <p className="text-white text-[14px]">Don't have an account?</p>
-                                <a className="text-[14px] text-[#08E04A] font-semibold">Sign Up</a>
+                                <a href="/sign-up" className="text-[14px] text-[#08E04A] font-semibold">Sign Up</a>
                             </div>
                         </div>
     
@@ -141,9 +141,10 @@ const SignIn = () => {
             )}
 
         </div>
-        <div className="flex items-center justify-center pt-14">
+        <div className=" absolute bottom-10 left-[43.5%]">
             <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
         </div>
+        
         
     </div>
   )
