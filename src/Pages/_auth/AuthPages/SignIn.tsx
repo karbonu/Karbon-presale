@@ -140,8 +140,9 @@ const SignIn = () => {
              </div>
             )}
 
-            
-
+        </div>
+        <div className="flex items-center justify-center pt-14">
+            <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
         </div>
         
     </div>
