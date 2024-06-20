@@ -4,6 +4,7 @@ import AuthLayout from "./Pages/_auth/AuthLayout"
 import PageLayout from "./Pages/_root/PageLayout"
 import { HelmetProvider } from "react-helmet-async"
 import SignIn from "./Pages/_auth/AuthPages/SignIn"
+import MetaTags from "./components/shared/MetaTags"
 function App() {
   
 
@@ -11,6 +12,12 @@ function App() {
     <>
     <HelmetProvider>
       <main className="bgSettings">
+        <MetaTags
+        title="Karbon Sale"
+        description="Get in early on the karbon token"
+        image="././public/assets/karbonSoloLogo.png"
+        name=""
+        />
         <Routes>
           <Route element = {<AuthLayout/>}>
               
