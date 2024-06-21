@@ -13,7 +13,7 @@ import PasswordIconComp from "@/components/shared/PasswordIconComp";
 
 const SignUp = () => {
     const [chanceInfo, setChannceInfo]  = useState(true);
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
     // const [clicked, setClicked] = useState(false);
 
     const [password, setPassword] = useState('');
@@ -200,12 +200,12 @@ const SignUp = () => {
 
             {step === 3 && (
                   <div className="flex flex-col items-center justify-center pt-[7rem] " >
-                  <div className="w-[450px] h-[521px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                  <div className="w-[450px]  bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
   
                       <div className="py-5 px-8 flex flex-col justify-between h-full">
-                         <div className="flex flex-row space-x-2 items-center">
+                         <div className="flex flex-row space-x-2 items-center pb-5">
                              <PasswordLogo/>
-                             <p className="text-white text-[20px] font-semibold">Create a password</p>
+                             <p className="text-white text-[20px] font-semibold ">Create a password</p>
                          </div>
                          <div className="flex flex-row space-x-1 items-center">
                              <p className="text-white opacity-80 text-[14px]">Welcome</p>

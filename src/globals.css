@@ -79,6 +79,9 @@
 
   body{
     background-color: #000000;
+  }
+
+  .AuthBg{
     background-image: url('./assets/dotBG.svg');
     background-size: cover;
   }

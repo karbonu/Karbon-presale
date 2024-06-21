@@ -9,7 +9,7 @@ const PageLayout = () => {
     navigate('/sign-in')
   }
   return (
-    <div className='w-screen h-screen flex flex-row'>
+    <div className='w-screen h-screen flex flex-row items-center justify-between'>
       <Leftbar/>
       <div className='flex flex-1'>
         <Outlet/>
