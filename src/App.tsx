@@ -36,7 +36,7 @@ function App() {
 
             <Route path="/dashboard" element = {<PageLayout/>}>
 
-                
+                <Route index element = { <TokenSale/> } />
                 <Route path="tokenSale" element = { <TokenSale/> }/>
                 <Route path='claimtokens' element = { <ClaimTokens/> }/>
                 <Route path='settings' element = { <Settings/> }/>

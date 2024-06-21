@@ -1,6 +1,6 @@
 import ClaimTokenWhite from "../Icons/ClaimTokenWhite"
 import DiscordLogo from "../Icons/DiscordLogo"
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import KarbonLogoBig from "../Icons/KarbonLogoBig"
 import SettingsWhite from "../Icons/SettingsWhite"
 import TelegramLogo from "../Icons/TelegramLogo"
@@ -12,6 +12,10 @@ import TokenSaleWhite from "../Icons/TokenSaleWhite";
 
 const Leftbar = () => {
 
+    const location = useLocation();
+
+    const firstLink = location.pathname === '/dashboard' ? '/dashboard' : '/dashboard/tokensale';
+
     const activeClassName = 'flex bg-black w-[160px] h-[48px] border-l border-[#08E04A] rounded-[4px]';
     const inactiveClassName = 'flex bg-[#101010] w-[160px] h-[48px] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A] transition ease-in-out rounded-[4px]';
   return (
@@ -22,7 +26,7 @@ const Leftbar = () => {
             </div>
 
             <div className="flex flex-col pt-10 ml-5 space-y-3">
-                <NavLink to="/dashboard/tokensale" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                <NavLink to={firstLink} className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
                     {({ isActive }) => (
                     <div className="flex items-center justify-center px-3 flex-row space-x-2">
                         {isActive ? <TokenSaleIcon /> : <TokenSaleWhite />}

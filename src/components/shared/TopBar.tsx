@@ -16,8 +16,10 @@ const TopBar = () => {
       title = 'Claim Token';
     } else if (currentPath === '/dashboard/settings') {
       title = 'Settings';
-    } else {
-      title = 'Default Title'; 
+    } else if(currentPath === '/dashboard'){
+      title = 'Token Sale DApp';
+    }else{
+      title = 'Invalid Path';
     }
 
 
