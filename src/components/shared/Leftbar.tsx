@@ -22,7 +22,7 @@ const Leftbar = () => {
             </div>
 
             <div className="flex flex-col pt-10 ml-6 space-y-3">
-                <NavLink to="/" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                <NavLink to="/dashboard/tokensale" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
                     {({ isActive }) => (
                     <div className="flex items-center justify-center px-3 flex-row space-x-2">
                         {isActive ? <TokenSaleIcon /> : <TokenSaleWhite />}
@@ -30,7 +30,7 @@ const Leftbar = () => {
                     </div>
                     )}
                 </NavLink>
-                <NavLink to="/claimtokens" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                <NavLink to="/dashboard/claimtokens" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
                     {({ isActive }) => (
                     <div className="flex items-center justify-center px-3 flex-row space-x-2">
                         {isActive ? <ClaimTokensLogo /> : <ClaimTokenWhite />}
@@ -38,7 +38,7 @@ const Leftbar = () => {
                     </div>
                     )}
                 </NavLink>
-                <NavLink to="/settings" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                <NavLink to="/dashboard/settings" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
                     {({ isActive }) => (
                     <div className="flex items-center justify-center px-3 flex-row space-x-2">
                         {isActive ? <SettingsIcon /> : <SettingsWhite />}

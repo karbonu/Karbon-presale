@@ -118,12 +118,12 @@ const SignIn = () => {
                                 <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password"/>
                             </div>
                              <div>
-                                 <div className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                                 <a href="/dashboard/tokensale" className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                      <p className="font-bold text-[14px] shadow-sm">
                                         Proceed
                                      </p>
  
-                                 </div>
+                                 </a>
                              </div>
                          </div>
  
