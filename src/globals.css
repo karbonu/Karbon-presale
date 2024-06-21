@@ -93,3 +93,21 @@
   input::placeholder {
     color: #a1a1a1; /* change the color to your desired value */
   }
+  .fade-in {
+    opacity: 1;
+    transition: opacity 0.5s; /* fade in immediately */
+  }
+  
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.5s; /* fade out over 0.5s */
+  }
+  
+  .opacity-0 {
+    opacity: 0;
+  }
+  
+  .opacity-1 {
+    opacity: 1;
+    transition: opacity 0.5s; /* fade in over 0.5s */
+  }

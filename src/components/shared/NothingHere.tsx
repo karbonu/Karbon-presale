@@ -3,7 +3,7 @@ import { ClockLoader } from "react-spinners"
 
 const NothingHere = () => {
   return (
-    <div className="flex flex-col space-y-5 items-center justify-center min-h-[100vh]">
+    <div className="flex flex-col space-y-5 items-center justify-center py-40">
         <KarbonLogo/>
         <p className="text-white font-bold text-[40px]">Nothing here yet</p>
         <ClockLoader color="#36d7b7" />
