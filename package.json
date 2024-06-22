@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.0",
     "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-progress": "^1.1.0",
     "@radix-ui/react-separator": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -21,6 +22,7 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-helmet-async": "^2.0.5",
+    "react-pro-sidebar": "^1.1.0",
     "react-router-dom": "^6.23.1",
     "react-spinners": "^0.13.8",
     "react-useanimations": "^2.10.0",

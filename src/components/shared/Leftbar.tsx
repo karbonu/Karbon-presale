@@ -19,7 +19,7 @@ const Leftbar = () => {
     const activeClassName = 'flex bg-black w-[160px] h-[48px] border-l border-[#08E04A] rounded-[4px]';
     const inactiveClassName = 'flex bg-[#101010] w-[160px] h-[48px] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A] transition ease-in-out rounded-[4px]';
   return (
-    <aside className='h-screen fixed w-[181px] bg-[#151515]'>
+    <div className='h-screen fixed bg-[#151515]'>
         <div className="py-10 flex flex-col w-full">
             <div className="flex items-center justify-center">
                 <KarbonLogoBig/>
@@ -69,7 +69,7 @@ const Leftbar = () => {
             </div>
         </div>
         
-    </aside>
+    </div>
   )
 }
 

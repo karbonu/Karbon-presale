@@ -10,14 +10,16 @@ const PageLayout = () => {
     navigate('/sign-in')
   }
   return (
-    <div className='w-screen h-screen flex flex-row items-center justify-between'>
-      <div className='w-[181px] h-screen top-0'>
+    <div className='w-screen flex flex-row'>
+      <div className='w-[181px] h-screen '>
         <Leftbar/>
       </div>
-      <div className='flex flex-1 h-full flex-col'>
+      <main className='flex px-[4rem] pt-[2.5rem] space-y-10 flex-1 items-center justify-center flex-col'>
         <TopBar/>
-        <Outlet/>
-      </div>
+        <div className='flex items-center justify-center w-full'>
+          <Outlet/>
+        </div>
+      </main>
     </div>
   )
 }

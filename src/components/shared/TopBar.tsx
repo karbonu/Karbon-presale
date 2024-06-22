@@ -27,7 +27,7 @@ const TopBar = () => {
     const address = "Ox781883782..."
     const email = "you@gmail.com";
   return (
-    <div className="p-10 w-full">
+    <div className=" w-full">
         <div className="flex items-center justify-between">
             <p className="text-white font-semibold text-[20px]">{title}</p>
             

@@ -111,3 +111,13 @@
     opacity: 1;
     transition: opacity 0.5s; /* fade in over 0.5s */
   }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  html {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  }
