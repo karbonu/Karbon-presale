@@ -125,7 +125,7 @@ const TokenSale = () => {
 
                 </div>
 
-                <div className="flex flex-col py-14 space-y-5">
+                <div className="flex flex-col py-10 space-y-5">
                   <p className="text-white font-bold text-[20px]">Transactions</p>
                   <div className="flex flex-row items-center justify-between">
                    

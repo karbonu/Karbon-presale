@@ -155,9 +155,9 @@ const ClaimTokens = () => {
                 <table className="w-full p">
                   <thead className="bg-black h-[32px] hover:bg-black border-b-[#151515]">
                     <tr className="border-b-[#151515] flex items-center justify-between w-full py-3 px-5">
-                      <th className="text-white opacity-50 text-[12px]">VESTING PERIOD</th>
-                      <th className="text-white opacity-50 text-[12px] ">TOKENS RELEASED</th>
-                      <th className="text-white opacity-50 pr-5 text-[12px]">ESTIMATED RELEASE DATE</th>
+                      <th className="text-white opacity-50 font-normal text-[12px]">VESTING PERIOD</th>
+                      <th className="text-white opacity-50 font-normal text-[12px] ">TOKENS RELEASED</th>
+                      <th className="text-white opacity-50 font-normal pr-5 text-[12px]">ESTIMATED RELEASE DATE</th>
                     </tr>
                   </thead>
                   <ScrollArea className="w-[100%] h-[22.5rem]">
