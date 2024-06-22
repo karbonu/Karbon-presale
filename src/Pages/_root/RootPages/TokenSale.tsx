@@ -41,15 +41,15 @@ const TokenSale = () => {
   
 
   return (
-   <div className="w-full">
+   <div className="w-full h-full">
       <MetaTags
         title="Karbon Sale | Token Sale Dapp"
         description="Buy Karbon token and participate in the referral"
         />
         
-          <div className="flex w-full justify-center">
-            <div className="flex flex-row w-full justify-between space-x-5">
-              <div className="flex flex-col w-[795px]  justify-center">
+          <div className=" flex  pb-10">
+            <div className="flex flex-row  h-full w-full justify-between space-x-5">
+              <div className="flex flex-col w-[795px] justify-center">
                 <div className="flex items-center w-[795px] justify-center flex-col space-y-1">
                   <div className="flex flex-col space-y-10 w-[795px] bg-[#121212] p-5 rounded-t-[16px]">
                     <p className="text-white text-[20px] font-bold">Referrals</p>
@@ -173,7 +173,7 @@ const TokenSale = () => {
               </div>
 
 
-              <div className="flex flex-col space-y-1 w-[341px] ">
+              <div className="flex flex-col space-y-1  mb-10 max-h-[700px] w-[341px] ">
                 <div className="flex flex-col w-[341px] p-5  rounded-t-[8px] bg-[#121212] ">
                   <div className="flex flex-col space-y-8">
                     <div className="flex flex-row items-center justify-between">
@@ -205,7 +205,7 @@ const TokenSale = () => {
 
                 <div className="rounded-b-[8px] bg-[#121212]">
                   <div className="flex flex-col space-y-8">
-                    <p className="text-white  px-5 pt-5 font-bold text-[20px]">Contribute</p>
+                    <p className="text-white  p-5 font-bold text-[20px]">Contribute</p>
 
                     <div className=" px-5">
                       {selectedMethod === 0 && (
