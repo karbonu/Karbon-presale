@@ -14,9 +14,9 @@ const PageLayout = () => {
       <div className='w-[181px] h-screen '>
         <Leftbar/>
       </div>
-      <main className='flex px-[4rem] pt-[2.5rem] space-y-10 flex-1 items-center justify-center flex-col'>
+      <main className='flex px-[4rem] pt-[2.5rem] space-y-10 flex-1  flex-col'>
         <TopBar/>
-        <div className='flex items-center justify-center w-full'>
+        <div className='flex  w-full'>
           <Outlet/>
         </div>
       </main>
