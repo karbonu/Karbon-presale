@@ -29,7 +29,7 @@ const TokenSale = () => {
 
     return (
       <div
-        className={`items-center justify-center flex w-full h-full bg-black bg-opacity-20 ${
+        className={`items-center justify-center flex w-full min-h-[88vh] bg-black bg-opacity-20 ${
           loading ? "fade-in" : "fade-out"
         }`}
       >
@@ -37,6 +37,8 @@ const TokenSale = () => {
       </div>
     );
   }
+
+  
 
   return (
    <div className="w-full">

@@ -121,3 +121,22 @@
     scrollbar-width: none; /* For Firefox */
     -ms-overflow-style: none; /* For Internet Explorer and Edge */
   }
+
+
+  .fade-enter {
+    opacity: 0;
+  }
+  
+  .fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms;
+  }
+  
+  .fade-leave {
+    opacity: 1;
+  }
+  
+  .fade-leave-active {
+    opacity: 0;
+    transition: opacity 500ms;
+  }
