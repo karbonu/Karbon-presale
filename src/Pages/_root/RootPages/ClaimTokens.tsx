@@ -174,7 +174,7 @@ const ClaimTokens = () => {
                       ): (
                         <>
                           {tableData.map((data) => (
-                          <tr className="hover:bg-black border-b-[1px] py-4 pl-5 pr-14 w-full flex flex-row items-start justify-between border-b-[#151515] hover:bg-opacity-40 bg-black bg-opacity-40" key={data.index}>
+                          <tr className="hover:bg-black border-b-[1px] h-[47px] pl-5 pr-14 w-full flex flex-row items-center justify-between border-b-[#151515] hover:bg-opacity-40 bg-black bg-opacity-40" key={data.index}>
                             <td className="font-bold text-white text-start">{data.index}</td>
 
                             <td className=" text-white pl-[6rem]">{data.karbonAmount} <span className=" opacity-50">KARBON</span></td>
