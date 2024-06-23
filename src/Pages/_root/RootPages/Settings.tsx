@@ -137,7 +137,7 @@ const Settings = () => {
 
                             <div>
                               <div className="bg-transparent text-[14px] text-white w-max opacity-70 hover:opacity-100 hover:text-black  hover:bg-white  transition ease-in-out border-[1px] border-white rounded-full cursor-pointer px-8 py-2">
-                                Profile Settings
+                                Update Password
                               </div>
                             </div>
                           </div>
