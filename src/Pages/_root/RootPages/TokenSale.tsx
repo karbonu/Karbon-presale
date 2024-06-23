@@ -16,11 +16,36 @@ import BuyWithUSDT from "./BuyWithUSDT";
 import BuyWithCreditCard from "./BuyWithCreditCard";
 import BuyWithPaypal from "./BuyWithPaypal";
 import { Progress } from "@/components/ui/progress";
+import PayoutModalSuccess from "@/components/shared/PayoutModalSuccess";
+import PayoutModalFaliure from "@/components/shared/PayoutModalFaliure";
+import ConnectWalletIconBlack from "@/components/Icons/ConnectWalletIconBlack";
+import DialogClose from "@/components/Icons/DialogClose";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog"
+import ForwardShortGreen from '@/components/Icons/ForwardShortGreen'
+import TermsAndCond from "@/components/shared/TermsAndCond";
 
 
 const TokenSale = () => {
   const [loading, setIsLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [payoutSuccessOpen, setPayoutSuccessOpen] = useState(false);
+  const [payoutFaliure, setPayoutFaliure] = useState(false);
+  const [isConnectModalOpen, setIsConnectModalOpen] = useState(true);
+  const [isTermsAndCondOpen, setIsTermsAndCondOpen]= useState(false);
+
+  let bonusAmount = 500;
+
+  const handlePayoutModal = () => {
+    if(bonusAmount < 500){
+      setPayoutFaliure(true);
+    }else{
+      setPayoutSuccessOpen(true);
+    }
+  }
 
   if (loading) {
     setTimeout(() => {
@@ -38,6 +63,20 @@ const TokenSale = () => {
     );
   }
 
+  // if(isDialogOpen){
+  //   return(
+  //     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+  //         <DialogContent>
+  //           <DialogTitle>Dialog Title</DialogTitle>
+  //           <DialogDescription>
+  //             This is a description of the dialog content.
+  //           </DialogDescription>
+  //           <button onClick={() => setIsDialogOpen(false)}>Close Dialog</button>
+  //         </DialogContent>
+  //       </Dialog>
+  //   )
+  // }
+
   
 
   return (
@@ -46,6 +85,49 @@ const TokenSale = () => {
         title="Karbon Sale | Token Sale Dapp"
         description="Buy Karbon token and participate in the referral"
         />
+
+        
+        <Dialog open={isConnectModalOpen} onOpenChange={setIsConnectModalOpen}>
+            <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] items-center justify-center outline-none'>
+                <div className='w-full'>
+                    <img
+                    src='/assets/connectWalletImage.svg'
+                    />
+                    <div onClick={() => setIsConnectModalOpen(false)} className='absolute cursor-pointer  top-4 right-4'>
+                        <DialogClose/>
+                    </div>
+                </div>
+
+                <div className='pt-8 pb-5 px-8 flex flex-col space-y-3'>
+                    <p className='text-white font-bold text-[20px]'>Connect a wallet</p>
+                    <p className='text-[14px] text-white'>For maximum payment experience, connect a crypto/web3 wallet to buy with USDT.</p>
+
+                    <p className='text-white text-[12px] opacity-50'>Supported network is Ethereum</p>
+
+                    <div>
+                        <div className="flex flex-row space-x-2 items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                            <ConnectWalletIconBlack/>
+                            <p className="font-bold text-[12px] shadow-sm">
+                                Connect wallet
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className='flex pt-2 flex-row space-x-2 items-center justify-center'>
+                        <p className='text-white text-[14px]  font-light opacity-70'>Don’t have a wallet?</p>
+                        <div onClick={() => setIsConnectModalOpen(false)} className='flex flex-row cursor-pointer items-center space-x-1'>
+                            <p className='text-[#08E04A] text-[14px]'>Skip</p>
+                            <ForwardShortGreen/>
+
+                        </div>
+
+                    </div>
+                </div>
+              
+              
+            </DialogContent>
+          </Dialog>
+
         
           <div className=" flex  pb-10">
             <div className="flex flex-row  h-full w-full justify-between space-x-5">
@@ -62,9 +144,20 @@ const TokenSale = () => {
                           <p className="text-white text-[28px]">$345</p>
                           <p className="text-white text-[18px]">.45</p>
                         </div>
-                        <div className="bg-transparent py-2 px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
+                        <div onClick={handlePayoutModal} className="bg-transparent py-2 px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
                           Request Payout
                         </div>
+                        <PayoutModalSuccess
+                        isDialogOpen = {payoutSuccessOpen}
+                        setIsDialogOpen = {setPayoutSuccessOpen}
+                        />
+
+                        <PayoutModalFaliure
+                        isDialogOpen = {payoutFaliure}
+                        setIsDialogOpen = {setPayoutFaliure}
+                        />
+
+                        
 
                       </div>
 
@@ -134,7 +227,7 @@ const TokenSale = () => {
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">21,325</p>
                         <p className="text-white text-[16px]">.45</p>
-                        <p className="text-white text-[24px]">USDT</p>
+                        <p className="text-white font-extralight text-[24px]">USDT</p>
                       </div>
                     </div>
 
@@ -142,7 +235,7 @@ const TokenSale = () => {
                       <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">0.00345</p>
-                        <p className="text-white text-[24px]">KARBON</p>
+                        <p className="text-white font-extralight text-[24px]">KARBON</p>
                       </div>
                     </div>
 
@@ -151,7 +244,7 @@ const TokenSale = () => {
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">345</p>
                         <p className="text-white text-[16px]">.45</p>
-                        <p className="text-white text-[24px]">USDT</p>
+                        <p className="text-white font-extralight text-[24px]">USDT</p>
                         <div className="flex flex-row items-center mt-3">
                           <UpArrow/>
                           <p className="text-[#08E04A] text-[10px]">100%</p>
@@ -218,7 +311,7 @@ const TokenSale = () => {
                             </div>
                           </div>
 
-                          <div onClick={() => setSelectedMethod(2)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
+                          <div onClick={() => {setIsDialogOpen(true); setSelectedMethod(2)}} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
                             <div className="flex flex-row w-full items-center justify-between ">
                               <USDTLogoBig />
                               <p className="text-white pl-10 text-[14px]">Buy with USDT</p>
@@ -240,6 +333,8 @@ const TokenSale = () => {
                       setSelectedMethod={setSelectedMethod} />}
                       {selectedMethod === 2 && <BuyWithUSDT 
                       setSelectedMethod={setSelectedMethod}
+                      isDialogOpen = {isDialogOpen}
+                      setIsDialogOpen = {setIsDialogOpen}
                        />}
                       {selectedMethod === 3 && <BuyWithPaypal
                       setSelectedMethod={setSelectedMethod} />}
@@ -247,8 +342,13 @@ const TokenSale = () => {
 
       
                     <div>
-                      <p className="text-white px-5 text-[12px]">By contributing to the presale you acknowledge and accept these <span className=" cursor-pointer underline underline-offset-2">terms and conditions</span>.</p>
+                      <p className="text-white px-5 text-[12px]">By contributing to the presale you acknowledge and accept these <span onClick={() => setIsTermsAndCondOpen(true)} className=" cursor-pointer underline underline-offset-2">terms and conditions</span>.</p>
                     </div>
+
+                    <TermsAndCond
+                    isDialogOpen ={isTermsAndCondOpen}
+                    setIsDialogOpen = {setIsTermsAndCondOpen}
+                    />
 
                     <div className="flex w-[341px] border-[#282828] h-[67px] items-center justify-between flex-row border-t-[1px] border-b-[1px]">
                       <div className="w-[70%] bg-black h-full items-center pl-5 flex">

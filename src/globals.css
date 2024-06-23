@@ -1,4 +1,6 @@
-@tailwind base;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+ 
+ @tailwind base;
   @tailwind components;
   @tailwind utilities;
 
@@ -140,3 +142,9 @@
     opacity: 0;
     transition: opacity 500ms;
   }
+
+
+  p{
+    font-family: Inter;
+  }
+  

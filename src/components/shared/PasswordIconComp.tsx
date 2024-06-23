@@ -1,6 +1,6 @@
 import React from "react";
-import { StarIcon } from "lucide-react";
 import CheckMark from "../Icons/CheckMark";
+import StarIcon from "../Icons/StarIcon";
 
 interface PasswordIconCompProps {
   condition: boolean;
