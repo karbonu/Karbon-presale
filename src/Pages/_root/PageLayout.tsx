@@ -11,12 +11,12 @@ const PageLayout = () => {
   }
   return (
     <div className='w-screen h-screen flex flex-row'>
-      <div className='md:w-[181px] h-screen '>
+      <div className='lg:w-[181px] lg:h-screen '>
         <Leftbar/>
       </div>
-      <main className='flex px-[4rem] pt-[2.5rem] space-y-6 h-full flex-1 flex-col'>
+      <main className='flex px-[4rem] max-sm:px-5 pt-[2.5rem] space-y-6 max-sm:space-y-2 h-full flex-1 flex-col'>
         <TopBar/>
-        <div className='flex py-5  w-full'>
+        <div className='flex py-5 w-full'>
           <Outlet/>
         </div>
       </main>

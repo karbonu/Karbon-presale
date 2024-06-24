@@ -98,7 +98,7 @@ const TokenSale = () => {
         />
 
         <Dialog open={isConnectModalOpen} onOpenChange={setIsConnectModalOpen}>
-            <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] items-center justify-center outline-none'>
+            <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] max-sm:w-[290px] items-center justify-center outline-none'>
                 <div className='w-full'>
                     <img
                     src='/assets/connectWalletImage.svg'
@@ -109,8 +109,8 @@ const TokenSale = () => {
                 </div>
 
                 <div className='pt-8 pb-5 px-8 flex flex-col space-y-3'>
-                    <p className='text-white font-bold text-[20px]'>Connect a wallet</p>
-                    <p className='text-[14px] text-white'>For maximum payment experience, connect a crypto/web3 wallet to buy with USDT.</p>
+                    <p className='text-white font-bold text-[20px] max-sm:text-[16px]'>Connect a wallet</p>
+                    <p className='text-[14px] text-white max-sm:text-[10px]'>For maximum payment experience, connect a crypto/web3 wallet to buy with USDT.</p>
 
                     <p className='text-white text-[12px] opacity-50'>Supported network is Ethereum</p>
 
@@ -124,9 +124,9 @@ const TokenSale = () => {
                     </div>
 
                     <div className='flex pt-2 flex-row space-x-2 items-center justify-center'>
-                        <p className='text-white text-[14px]  font-light opacity-70'>Don’t have a wallet?</p>
+                        <p className='text-white text-[14px] max-sm:text-[12px]  font-light opacity-70'>Don’t have a wallet?</p>
                         <div onClick={() => setIsConnectModalOpen(false)} className='flex flex-row cursor-pointer items-center space-x-1'>
-                            <p className='text-[#08E04A] text-[14px]'>Skip</p>
+                            <p className='text-[#08E04A] text-[14px] max-sm:text-[12px]'>Skip</p>
                             <ForwardShortGreen/>
 
                         </div>
@@ -139,7 +139,7 @@ const TokenSale = () => {
           </Dialog>
 
         
-          <div className=" flex  pb-10">
+          <div className=" flex  pb-10 max-md:hidden">
             <div className="flex flex-row  h-full w-full justify-between space-x-5">
               <div className="flex flex-col w-[795px] justify-center">
                 <div className="flex items-center w-[795px] justify-center flex-col space-y-1">
@@ -419,11 +419,180 @@ const TokenSale = () => {
             </div>
 
           </div>
-        
 
+
+          <div className="lg_hidden">
+            <div className="flex flex-col py-5 space-y-5">
+              <p className="text-white text-[20px] font-bold">Token Sale DApp</p>
+              
+              <div className="bg-[#121212] rounded-[8ox]">
+                <div className="p-5 flex flex-col space-y-5">
+                  <div className="flex flex-col space-y-8">
+                      <div className="flex flex-row items-center justify-between">
+                        <p className="text-white text-[12px] font-semibold">Presale Progress</p>
+                        <div className="flex flex-row items-center space-x-4">
+                          <p className="text-white text-[12px]">$5,784,043.78</p>
+                          
+                          <Dot/>
+
+                          <p className="text-[#08E04A] text-[12px]">80%</p>
+
+                        </div>
+                      </div>
+                      <div>
+                      <Progress value={33} />
+                      </div>
+                      <div className="flex flex-col w-full items-center justify-center space-y-3">
+                        <p className="text-white opacity-70 text-[10px]">SALE ENDS IN</p>
+                        <div className="flex flex-row space-x-2 items-center justify-center">
+                          <p className="text-white text-[20px]">1d</p>
+                          <p className="text-white text-[20px]">22h</p>
+                          <p className="text-white text-[20px]">50m</p>
+                          <p className="text-white text-[20px]">45s</p>
+
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+
+              <div className="fkex flex-col space-y-2">
+                <div className="bg-[#121212] rounded-[8ox]">
+
+                  <div className="p-5 flex-col space-y-6">
+                    <p className="text-white text-[20px] font-bold">Referrals</p>
+
+                    <div className="flex flex-row  space-x-10">
+                      <div className="flex flex-col space-y-2">
+                        <p className="text-white text-[12px] opacity-70">BONUS EARNED</p>
+                        <div className="flex flex-row ">
+                          <p className="text-white text-[28px]">$345</p>
+                          <p className="text-white text-[18px]">.45</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col space-y-2">
+                        <p className="text-white text-[12px] opacity-70">BONUS RECIEVED</p>
+                        <p className="text-white text-[28px]">$0</p>
+                        <p className="text-[#FFCC00] text-[14px]">$340 in process...</p>
+                      </div>
+                    </div>
+
+
+                    <div className="flex flex-row justify-between items-center w-full">
+                      <div className="flex flex-col space-y-2">
+                        <p className="text-white text-[12px] opacity-70">TOTAL REFERRALS</p>
+                        <div className="flex flex-row ">
+                          <p className="text-white text-[28px]">345</p>
+                          
+                        </div>
+                      </div>
+                      <div onClick={handlePayoutModal} className="bg-transparent py-2 items-center h-max px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
+                        Request Payout
+                      </div>
+                          <PayoutModalSuccess
+                          isDialogOpen = {payoutSuccessOpen}
+                          setIsDialogOpen = {setPayoutSuccessOpen}
+                          />
+
+                          <PayoutModalFaliure
+                          isDialogOpen = {payoutFaliure}
+                          setIsDialogOpen = {setPayoutFaliure}
+                          />
+                    </div>
+
+                  </div>
+                </div>
+
+                <div className="bg-[#121212] rounded-[8ox]">
+                  <div className="p-5 flex flex-col opacity-70 space-y-5">
+                    <p className="text-[16px] text-white">Start earning extra money!</p>
+                    <p className="text-white text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
+                    
+                    <div className="flex fle-row items-center py-2 bg-black space-x-10">
+                      <div>
+                        <p className="text-white pl-2 text-[12px]">https://karbon.com/78236-tube...</p>
+                      </div>
+                      <div className="flex flex-row items-center space-x-1 cursor-pointer">
+                        <CopyIcon/>
+                        <p className="text-[#08E04A] text-[10px]">Copy</p>
+
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row items-center space-x-3">
+                      <p className="text-[12px] text-white">Share on</p>
+
+                      <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        <DiscordLogo/>
+                      </div>
+                      <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        <TelegramLogo/>
+                      </div>
+                      <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        <WhatsappLogo/>
+                      </div>
+                      <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        <XLogo/>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+              <div className="bg-[#121212] rounded-[8ox]">
+                <div className="p-5">
+                  <p className="text-white font-bold text-[20px]">Transactions</p>
+                  <div className="flex flex-col space-y-5 py-5">
+                    <div className="space-y-2">
+                      <p className="text-[12px] opacity-70 text-white">AMOUNT SPENT</p>
+                      <div className="flex flex-row space-x-1">
+                        <p className="text-white text-[24px]">21,325</p>
+                        <p className="text-white text-[16px]">.45</p>
+                        <p className="text-white font-extralight text-[24px]">USDT</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
+                      <div className="flex flex-row space-x-1">
+                        <p className="text-white text-[24px]">0.00345</p>
+                        <p className="text-white font-extralight text-[24px]">KARBON</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="text-[12px] opacity-70 text-white">TOKEN VALUE</p>
+                      <div className="flex flex-row space-x-1">
+                        <p className="text-white text-[24px]">345</p>
+                        <p className="text-white text-[16px]">.45</p>
+                        <p className="text-white font-extralight text-[24px]">USDT</p>
+                        <div className="flex flex-row items-center mt-3">
+                          <UpArrow/>
+                          <p className="text-[#08E04A] text-[10px]">100%</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="text-[12px] text-white opacity-70">ESTIMATED CLAIM TIME</p>
+                      <p className="text-white text-[24px]">1d 22h 45m 34s</p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+          </div>
         <div>
-
-        </div>
+      </div>
    </div>
   )
 }
