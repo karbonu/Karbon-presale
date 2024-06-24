@@ -125,26 +125,12 @@
   }
 
 
-  .fade-enter {
-    opacity: 0;
-  }
-  
-  .fade-enter-active {
-    opacity: 1;
-    transition: opacity 500ms;
-  }
-  
-  .fade-leave {
-    opacity: 1;
-  }
-  
-  .fade-leave-active {
-    opacity: 0;
-    transition: opacity 500ms;
-  }
-
 
   p{
     font-family: Inter;
   }
   
+
+  .fade-transition {
+    transition: opacity 0.5s ease; /* Adjust the transition duration as needed */
+  }

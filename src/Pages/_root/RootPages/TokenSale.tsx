@@ -306,45 +306,70 @@ const TokenSale = () => {
                 <div className="rounded-b-[8px] bg-[#121212]">
                   <div className="flex flex-col space-y-8">
                     <p className="text-white  p-5 font-bold text-[20px]">Contribute</p>
+                    <div className="px-5">
+                        <div
+                          className="fade-transition"
+                          style={{ opacity: selectedMethod === 0 ? 1 : 0 }}
+                        >
+                          {/* Content for selectedMethod === 0 */}
+                          {selectedMethod === 0 && (
+                            <div className="flex flex-col space-y-2 items-center justify-center">
+                              <div onClick={() => setSelectedMethod(1)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
+                                <div className="flex flex-row w-full items-center justify-between ">
+                                  <CreditCardlogo />
+                                  <p className="text-white text-[14px]">Buy with Credit Card</p>
+                                  <ForwardIcon />
+                                </div>
+                              </div>
 
-                    <div className=" px-5">
-                      {selectedMethod === 0 && (
-                        <div className="flex flex-col space-y-2 items-center justify-center">
-                          <div onClick={() => setSelectedMethod(1)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
-                            <div className="flex flex-row w-full items-center justify-between ">
-                              <CreditCardlogo />
-                              <p className="text-white text-[14px]">Buy with Credit Card</p>
-                              <ForwardIcon />
-                            </div>
-                          </div>
+                              <div onClick={() => {setIsDialogOpen(true); setSelectedMethod(2)}} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
+                                <div className="flex flex-row w-full items-center justify-between ">
+                                  <USDTLogoBig />
+                                  <p className="text-white pl-10 text-[14px]">Buy with USDT</p>
+                                  <p className="text-[#08E04A] text-[10px]">Connect Wallet</p>
+                                </div>
+                              </div>
 
-                          <div onClick={() => {setIsDialogOpen(true); setSelectedMethod(2)}} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
-                            <div className="flex flex-row w-full items-center justify-between ">
-                              <USDTLogoBig />
-                              <p className="text-white pl-10 text-[14px]">Buy with USDT</p>
-                              <p className="text-[#08E04A] text-[10px]">Connect Wallet</p>
+                              <div onClick={() => setSelectedMethod(3)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
+                                <div className="flex flex-row w-full items-center justify-between ">
+                                  <PaypalLogo />
+                                  <p className="text-white text-[14px]">Buy with PayPal</p>
+                                  <ForwardIcon />
+                                </div>
+                              </div>
                             </div>
-                          </div>
-
-                          <div onClick={() => setSelectedMethod(3)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
-                            <div className="flex flex-row w-full items-center justify-between ">
-                              <PaypalLogo />
-                              <p className="text-white text-[14px]">Buy with PayPal</p>
-                              <ForwardIcon />
-                            </div>
-                          </div>
+                          )}
                         </div>
-                      )}
+                        <div
+                          className="fade-transition "
+                          style={{ opacity: selectedMethod === 1 ? 1 : 0 }}
+                        >
+                          {/* Content for selectedMethod === 1 */}
+                          {selectedMethod === 1 && <BuyWithCreditCard setSelectedMethod={setSelectedMethod} />}
+                        </div>
 
-                      {selectedMethod === 1 && <BuyWithCreditCard
-                      setSelectedMethod={setSelectedMethod} />}
-                      {selectedMethod === 2 && <BuyWithUSDT 
-                      setSelectedMethod={setSelectedMethod}
-                      isDialogOpen = {isDialogOpen}
-                      setIsDialogOpen = {setIsDialogOpen}
-                       />}
-                      {selectedMethod === 3 && <BuyWithPaypal
-                      setSelectedMethod={setSelectedMethod} />}
+                        <div
+                          className="fade-transition "
+                          style={{ opacity: selectedMethod === 2 ? 1 : 0 }}
+                        >
+                          {/* Content for selectedMethod === 2 */}
+                          {selectedMethod === 2 && (
+                            <BuyWithUSDT
+                              setSelectedMethod={setSelectedMethod}
+                              isDialogOpen={isDialogOpen}
+                              setIsDialogOpen={setIsDialogOpen}
+                            />
+                          )}
+                        </div>
+
+                        <div
+                          className="fade-transition "
+                          style={{ opacity: selectedMethod === 3 ? 1 : 0 }}
+                        >
+                          {/* Content for selectedMethod === 3 */}
+                          {selectedMethod === 3 && <BuyWithPaypal setSelectedMethod={setSelectedMethod} />}
+                        </div>
+                      
                     </div>
 
       
