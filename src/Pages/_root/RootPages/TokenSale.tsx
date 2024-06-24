@@ -85,6 +85,9 @@ const TokenSale = () => {
   //   )
   // }
 
+
+  
+
   
 
   return (
@@ -323,10 +326,14 @@ const TokenSale = () => {
                               </div>
 
                               <div onClick={() => {setIsDialogOpen(true); setSelectedMethod(2)}} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
-                                <div className="flex flex-row w-full items-center justify-between ">
+                                <div className={`flex flex-row w-full items-center ${!isConnected ? 'justify-between' : ''}`}>
                                   <USDTLogoBig />
-                                  <p className="text-white pl-10 text-[14px]">Buy with USDT</p>
-                                  <p className="text-[#08E04A] text-[10px]">Connect Wallet</p>
+                                  <p 
+                                  className={`text-white text-[14px] ${isConnected ? "text-center w-full" : "pl-10"}`}
+                                  >Buy with USDT</p>
+                                  {!isConnected && (
+                                    <p className="text-[#08E04A] text-[10px]">Connect Wallet</p>
+                                  )}
                                 </div>
                               </div>
 
