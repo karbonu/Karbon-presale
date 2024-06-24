@@ -177,9 +177,6 @@ const SignUp = () => {
                             <div className="flex flex-col space-y-2">
                                 <p className="text-white text-[14px]">Enter Verification Code</p>
                                 <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="text"/>
-                                {revealConfirmError && (
-                                    <p className="text-[10px] text-red-500">Password does not match</p>
-                                )}
                             </div>
                              <div>
                                  <div onClick={() => setStep(3)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
@@ -247,6 +244,9 @@ const SignUp = () => {
                              <div className="flex flex-col space-y-2">
                                  <p className="text-white text-[14px]">Confirm Password</p>
                                  <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
+                                 {revealConfirmError && (
+                                    <p className="text-[10px] text-red-500">Password does not match</p>
+                                )}
                              </div>
                               <div>
                                   <a href="/" className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
