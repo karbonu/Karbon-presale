@@ -236,9 +236,9 @@ const SignUp = () => {
         )}
       </div>
 
-      <div className="absolute bottom-10 max-sm:bottom-5 left-[43.5%] max-sm:left-1/2 max-sm:transform max-sm:-translate-x-1/2">
-        <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
-      </div>
+      <div className="lg:absolute lg:bottom-10 flex items-center justify-center py-10 lg:left-[43.5%]">
+            <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
+        </div>
     </div>
   );
 };
