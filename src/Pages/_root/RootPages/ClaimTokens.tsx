@@ -11,6 +11,10 @@ import DownIcon from "@/components/Icons/DownIcon";
 const ClaimTokens = () => {
 
   const [loading, setIsLoading] = useState(true);
+  const [showMobileSchedule, setShowMobileSchedule] = useState(false);
+  const handleSchedule = () =>{
+    setShowMobileSchedule(!showMobileSchedule)
+  }
 
   const tableData = [
     {
@@ -198,38 +202,55 @@ const ClaimTokens = () => {
             </div>
           </div>
 
-          <div className="bg-[#101010] lg:hidden rounded-[8px] h-[490px] w-full">
+          <div className="bg-[#101010] lg:hidden rounded-[8px]  w-full">
             <div className="p-5 flex flex-col space-y-2">
-              <div className="flex flex-row space-x-3 items-center">
+              <div onClick={handleSchedule} className="flex flex-row space-x-3 items-center">
                 <p className="text-white  font-medium text-[20px]">Vesting Schedule</p>
-                <DownIcon/>
-              </div>
-
-              <div className="bg-black w-full">
-                <div className="p-5">
-                  <table className="w-full">
-                    <tbody>
-                      <ScrollArea className="h-[380px] w-full">
-                        {tableData.map((data) => (
-                            <tr className=" border-b-[1px] w-full flex flex-row  justify-between border-b-[#151515] hover:bg-opacity-40 bg-black bg-opacity-40" key={data.index}>
-                              <td className="font-bold text-white text-start">{data.index}</td>
-                              <td className="flex flex-col pr-3 items-end justify-end space-y-2">
-                                <p className=" text-white text-[16px]">{data.karbonAmount} <span className=" opacity-50">KARBON</span></p>
-                                <div className="flex flex-row items-center space-x-2">
-                                  <p className=" text-white text-[12px] opacity-50">{data.releaseMonth} </p>
-                                  <Dot/>
-                                  <p className=" text-white text-[12px] opacity-50">{data.releaseTime} </p>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                      </ScrollArea>
-                    </tbody>
-                  </table>
-
+                <div className={showMobileSchedule ? "rotate-[180deg] transition ease-in-out" : "rotate-0 transition  ease-in-out"}>
+                  <DownIcon/>
                 </div>
-
               </div>
+              {showMobileSchedule && (
+                <div className="bg-black w-full">
+                  <div className="p-5">
+                    
+                    <table className="w-full">
+                      <tbody>
+                        <ScrollArea className="h-[380px] w-full">
+                          {tableData === null ? (
+                            <div className="bg-black flex min-h-[42vh] items-center justify-center flex-col space-y-5">
+                              <NoTrasactionsLogo/>
+                              <div className="flex flex-col space-y-1 items-center justify-center">
+                                <p  className="text-white opacity-70 text-[12px]">No Transactions Yet</p>
+                                <p  className="text-white opacity-50 text-[12px]">Buy Tokens to get started</p>
+                              </div>
+
+                            </div>
+                          ): (
+                            <>
+                              {tableData.map((data) => (
+                                <tr className=" border-b-[1px] w-full flex flex-row  justify-between border-b-[#151515] hover:bg-opacity-40 bg-black bg-opacity-40" key={data.index}>
+                                  <td className="font-bold text-white text-start">{data.index}</td>
+                                  <td className="flex flex-col pr-3 items-end justify-end space-y-2">
+                                    <p className=" text-white text-[16px]">{data.karbonAmount} <span className=" opacity-50">KARBON</span></p>
+                                    <div className="flex flex-row items-center space-x-2">
+                                      <p className=" text-white text-[12px] opacity-50">{data.releaseMonth} </p>
+                                      <Dot/>
+                                      <p className=" text-white text-[12px] opacity-50">{data.releaseTime} </p>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </>
+                          )}
+                        </ScrollArea>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                                    
+              )}
+
             </div>
 
           </div>
