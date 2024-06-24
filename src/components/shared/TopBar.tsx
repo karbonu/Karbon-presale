@@ -19,7 +19,7 @@ const TopBar = () => {
       title = 'Token Sale DApp';
     } else if (currentPath === '/dashboard/claimtokens') {
       title = 'Claim Token';
-    } else if (currentPath === '/dashboard/settings') {
+    } else if (currentPath === '/dashboard/settings' || currentPath === '/dashboard/settings/profilesettings' || currentPath === '/dashboard/settings/walletsettings') {
       title = 'Settings';
     } else if(currentPath === '/dashboard'){
       title = 'Token Sale DApp';
@@ -45,7 +45,7 @@ const TopBar = () => {
 
   return (
     <div className=" w-full">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between max-md:hidden">
             <p className="text-white font-semibold text-[20px]">{title}</p>
 
             {!address ? (
@@ -64,25 +64,25 @@ const TopBar = () => {
                   </div>
                 </div>
                 {showDropdown && (
-                  <div onMouseLeave={handleDropdown}   className={`bg-[#121212] dropdown w-[291px] fade-transition z-50 absolute my-10 ${
+                  <div onMouseLeave={handleDropdown}   className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${
                     showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
                   }`}>
                     <div className="flex flex-col">
                       <div className="p-5 flex flex-col w-full space-y-3">
                         
-                        <div className="bg-[#0C0C0C] cursor-pointer rounded-[4px]">
+                        <a href="/dashboard/settings/profilesettings" onClick={handleDropdown} className="bg-[#0C0C0C] cursor-pointer rounded-[4px]">
                           <div className="flex flex-row items-center justify-between p-3">
                             <p className="text-[12px] text-white">Profile</p>
                             <ForwardIcon/>
                           </div>
-                        </div>
+                        </a>
 
-                        <div className="bg-[#0C0C0C] cursor-pointer rounded-[4px]">
+                        <a href="/dashboard/settings/walletsettings" onClick={handleDropdown} className="bg-[#0C0C0C] cursor-pointer rounded-[4px]">
                           <div className="flex flex-row items-center justify-between p-3">
                             <p className="text-[12px] text-white">Wallet Settings</p>
                             <ForwardIcon/>
                           </div>
-                        </div>
+                        </a>
                       </div>
                     </div>
                     <div className="w-full cursor-pointer bg-[#0C0C0C]">
@@ -118,25 +118,25 @@ const TopBar = () => {
                   </div>
                 </div>
                 {showDropdown && (
-                  <div onMouseLeave={handleDropdown}   className={`bg-[#121212] dropdown w-[291px] fade-transition z-50 absolute my-10 ${
+                  <div onMouseLeave={handleDropdown}   className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${
                     showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
                   }`}>
                     <div className="flex flex-col">
                       <div className="p-5 flex flex-col w-full space-y-3">
                         
-                        <div className="bg-[#0C0C0C] cursor-pointer rounded-[4px]">
+                        <a href="/dashboard/settings/profilesettings" onClick={handleDropdown} className="bg-[#0C0C0C] cursor-pointer rounded-[4px]">
                           <div className="flex flex-row items-center justify-between p-3">
                             <p className="text-[12px] text-white">Profile</p>
                             <ForwardIcon/>
                           </div>
-                        </div>
+                        </a>
 
-                        <div className="bg-[#0C0C0C] cursor-pointer rounded-[4px]">
+                        <a href="/dashboard/settings/walletsettings" onClick={handleDropdown} className="bg-[#0C0C0C] cursor-pointer rounded-[4px]">
                           <div className="flex flex-row items-center justify-between p-3">
                             <p className="text-[12px] text-white">Wallet Settings</p>
                             <ForwardIcon/>
                           </div>
-                        </div>
+                        </a>
                       </div>
                     </div>
                     <div className="w-full cursor-pointer bg-[#0C0C0C]">
@@ -151,6 +151,8 @@ const TopBar = () => {
               </div>
             )}
         </div>
+
+
     </div>
   )
 }

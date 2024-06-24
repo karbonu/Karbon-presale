@@ -9,7 +9,9 @@ import TokenSale from "./Pages/_root/RootPages/TokenSale"
 import SignUp from "./Pages/_auth/AuthPages/SignUp"
 import PageNotFound from "./components/shared/PageNotFound"
 import ClaimTokens from "./Pages/_root/RootPages/ClaimTokens"
-import Settings from "./Pages/_root/RootPages/Settings"
+import SettingsLayout from "./Pages/_root/RootPages/Settings/SettingsLayout"
+import ProfileSettings from "./Pages/_root/RootPages/Settings/ProfileSettings"
+import WalletSettings from "./Pages/_root/RootPages/Settings/WalletSettings"
 function App() {
   
 
@@ -39,7 +41,16 @@ function App() {
                 <Route index element = { <TokenSale/> } />
                 <Route path="tokenSale" element = { <TokenSale/> }/>
                 <Route path='claimtokens' element = { <ClaimTokens/> }/>
-                <Route path='settings' element = { <Settings/> }/>
+
+                <Route path="settings" element = {<SettingsLayout/>}>
+                  <Route index element = { <WalletSettings/> } />
+                  <Route path="profilesettings" element = { <ProfileSettings/> }/>
+                  <Route path='walletsettings' element = { <WalletSettings/> }/>
+                  
+                
+
+                </Route>
+                
                
 
               </Route>
