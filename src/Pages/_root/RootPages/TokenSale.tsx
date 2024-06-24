@@ -421,7 +421,7 @@ const TokenSale = () => {
           </div>
 
 
-          <div className="lg_hidden">
+          <div className="lg:hidden">
             <div className="flex flex-col py-5 space-y-5">
               <p className="text-white text-[20px] font-bold">Token Sale DApp</p>
               

@@ -50,7 +50,9 @@ const TopBar = () => {
     <div className=" w-full">
         <div className="flex items-center justify-between">
             <p className="text-white font-semibold max-md:hidden text-[20px] max-sm:text-[14px]">{title}</p>
-            <KarbonLogo />
+            <div className="lg:hidden">
+              <KarbonLogo />
+            </div>
 
             <div className="max-md:hidden">
               {!address ? (

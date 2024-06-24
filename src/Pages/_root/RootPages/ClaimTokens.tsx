@@ -4,6 +4,7 @@ import { ClimbingBoxLoader } from "react-spinners";
 import Dot from "@/components/Icons/Dot";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import NoTrasactionsLogo from "@/components/Icons/NoTrasactionsLogo";
+import DownIcon from "@/components/Icons/DownIcon";
 
 
 
@@ -92,16 +93,18 @@ const ClaimTokens = () => {
   }
 
 
+
   return (
 
     <div className="w-full h-full">
         <MetaTags
         title="Karbon Sale | Claim Token"
         />
+        <p className="text-white lg:hidden font-bold text-[20px]">Claim Tokens</p>
         <div className="w-full h-full flex flex-col space-y-5 items-center justify-center">
-          <div className="w-[1152px] bg-[#101010] rounded-[8px] h-[210px]">
+          <div className="lg:w-[1152px] max-sm:w-full bg-[#101010] rounded-[8px] lg:h-[210px]">
             <div className="flex flex-col p-10 space-y-5">
-              <div className="flex flex-row items-center justify-between w-full">
+              <div className="flex flex-row max-md:flex-col max-md:space-y-5 lg:items-center justify-between w-full">
 
                 <div className="flex flex-col space-y-2">
                   <p className="text-white text-[12px] opacity-70">TOKENS BOUGHT</p>
@@ -148,7 +151,7 @@ const ClaimTokens = () => {
 
           </div>
 
-          <div className="w-[1152px] bg-[#101010] rounded-[8px] h-[490px]">
+          <div className="w-[1152px] bg-[#101010] rounded-[8px] h-[490px] max-sm:hidden">
             <div className="flex w-full flex-col px-2 py-5 space-y-5">
               <p className="text-white px-8 text-[20px] font-semibold">Vesting Schedule</p>
               <div className="w-full">
@@ -193,6 +196,42 @@ const ClaimTokens = () => {
 
               </div>
             </div>
+          </div>
+
+          <div className="bg-[#101010] lg:hidden rounded-[8px] h-[490px] w-full">
+            <div className="p-5 flex flex-col space-y-2">
+              <div className="flex flex-row space-x-3 items-center">
+                <p className="text-white  font-medium text-[20px]">Vesting Schedule</p>
+                <DownIcon/>
+              </div>
+
+              <div className="bg-black w-full">
+                <div className="p-5">
+                  <table className="w-full">
+                    <tbody>
+                      <ScrollArea className="h-[380px] w-full">
+                        {tableData.map((data) => (
+                            <tr className=" border-b-[1px] w-full flex flex-row  justify-between border-b-[#151515] hover:bg-opacity-40 bg-black bg-opacity-40" key={data.index}>
+                              <td className="font-bold text-white text-start">{data.index}</td>
+                              <td className="flex flex-col pr-3 items-end justify-end space-y-2">
+                                <p className=" text-white text-[16px]">{data.karbonAmount} <span className=" opacity-50">KARBON</span></p>
+                                <div className="flex flex-row items-center space-x-2">
+                                  <p className=" text-white text-[12px] opacity-50">{data.releaseMonth} </p>
+                                  <Dot/>
+                                  <p className=" text-white text-[12px] opacity-50">{data.releaseTime} </p>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                      </ScrollArea>
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div>
+
           </div>
 
         </div>
