@@ -2,6 +2,9 @@ import DownIcon from "../Icons/DownIcon"
 import EthIcon from "../Icons/EthIcon"
 import { Separator } from "../ui/separator"
 import {  useLocation } from 'react-router-dom';
+import ConnectIconGreen from "../Icons/ConnectIconGreen";
+import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAccount } from 'wagmi'
 
 const TopBar = () => {
     let title;
@@ -24,17 +27,36 @@ const TopBar = () => {
 
 
 
-    const address = "Ox781883782..."
+    
     const email = "you@gmail.com";
+
+    
+    const { open } = useWeb3Modal()
+
+    const { address } = useAccount()
+
   return (
     <div className=" w-full">
         <div className="flex items-center justify-between">
             <p className="text-white font-semibold text-[20px]">{title}</p>
-            
-            <div className="bg-[#101010] border-[1px] border-[#282828] rounded-[4px]">
+
+            {!address ? (
+              <div className="flex flex-row space-x-2">
+                <div onClick={() => open()} className="bg-[#101010] hover:border-[#08E04A] border-[1px] border-transparent transition ease-out py-2 px-3 items-center flex flex-row space-x-2 rounded-[4px] cursor-pointer">
+                  <ConnectIconGreen/>
+                  <p className="text-white text-[12px]">Connect Wallet</p>
+                </div>
+
+                <div className="flex flex-row bg-[#101010] py-2 px-3 rounded-[4px] cursor-pointer items-center space-x-2">
+                    <p className="text-[12px] text-white">{email}</p>
+                    <DownIcon/>
+                </div>
+              </div>
+            ): (
+              <div className="bg-[#101010] border-[1px] border-[#282828] rounded-[4px]">
                 <div className="px-2 py-2">
                     <div className="flex flex-row space-x-4">
-                        <div className="flex flex-row space-x-2">
+                        <div onClick={() => open()} className="flex flex-row cursor-pointer space-x-2">
                             <EthIcon/>
                             <p className="text-white text-[12px]">{address}</p>
                         </div>
@@ -47,9 +69,8 @@ const TopBar = () => {
                         </div>
                     </div>
                 </div>
-
-
-            </div>
+              </div>
+            )}
         </div>
     </div>
   )
