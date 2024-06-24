@@ -118,9 +118,9 @@ const SignUp = () => {
                             </div>
     
                             <div className="flex px-8 flex-row space-x-4 items-center justify-center">
-                                <Separator orientation="horizontal" className="max-w-[28%]"/>
+                                <Separator orientation="horizontal" className="max-w-[27%]"/>
                                 <p className="text-white text-[14px]">or sign up with email</p>
-                                <Separator orientation="horizontal" className="max-w-[28%]"/>
+                                <Separator orientation="horizontal" className="max-w-[27%]"/>
                             </div>
 
                             <div className="flex px-8 flex-row space-x-3 items-center">

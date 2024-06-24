@@ -67,9 +67,9 @@ const SignIn = () => {
                             </div>
     
                             <div className="flex flex-row space-x-4 items-center justify-center">
-                                <Separator orientation="horizontal" className="max-w-[29%]"/>
+                                <Separator orientation="horizontal" className="max-w-[27%]"/>
                                 <p className="text-white text-[14px]">or sign in with email</p>
-                                <Separator orientation="horizontal" className="max-w-[29%]"/>
+                                <Separator orientation="horizontal" className="max-w-[27%]"/>
                             </div>
     
                             <div className="flex flex-col space-y-5">
