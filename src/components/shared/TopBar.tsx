@@ -1,7 +1,7 @@
 import DownIcon from "../Icons/DownIcon"
 import EthIcon from "../Icons/EthIcon"
 import { Separator } from "../ui/separator"
-import {  useLocation } from 'react-router-dom';
+import {  useLocation, NavLink } from 'react-router-dom';
 import ConnectIconGreen from "../Icons/ConnectIconGreen";
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from 'wagmi'
@@ -9,6 +9,23 @@ import { useState } from "react";
 import ForwardIcon from "../Icons/ForwardIcon";
 import MenuIcon from "../Icons/MenuIcon";
 import KarbonLogo from "../Icons/KarbonLogo";
+import ClaimTokensBig from "../Icons/claimTokensBig";
+
+import {
+  Sheet,
+  SheetContent,
+  SheetClose,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import CLoseXIxon from "../Icons/CLoseXIxon";
+import DiscordLogo from "../Icons/DiscordLogo";
+import TelegramLogo from "../Icons/TelegramLogo";
+import XLogo from "../Icons/XLogo";
+import TokenSaleIconBig from "../Icons/TokenSaleIconBig";
+import TokenSaleWhiteBig from "../Icons/TokenSaleWhiteBig";
+import ClaimTokensWhiteBig from "../Icons/ClaimTokensWhiteBig";
+import SettingsIconBig from "../Icons/SettingsIconBig";
+import SettingsIconWhiteBig from "../Icons/SettingsIconWhiteBig";
 
 
 const TopBar = () => {
@@ -31,6 +48,11 @@ const TopBar = () => {
     }
 
     const [showDropdown, setShowDropdown] = useState(false);
+
+    const firstLink = location.pathname === '/dashboard' ? '/dashboard' : '/dashboard/tokensale';
+
+    const activeClassName = 'flex bg-black w-[100%] border-l border-l-[4px] border-[#08E04A]';
+    const inactiveClassName = 'flex bg-[#101010] w-[100%] opacity-70 hover:opacity-100 hover:border-l hover:border-l-[4px] hover:border-[#08E04A] transition ease-in-out ';
 
 
 
@@ -174,9 +196,81 @@ const TopBar = () => {
                     )}
 
                   </div>
-                  <div className=" cursor-pointer">
-                    <MenuIcon/>
-                  </div>
+
+                  <Sheet>
+                    <SheetTrigger>
+                      <div className=" cursor-pointer">
+                        <MenuIcon/>
+                      </div>
+                    </SheetTrigger>
+                    <SheetContent side={"left"} className="bg-[#101010] border-0 outline-none w-[245px]">
+                        <div className="flex flex-col pt-10 h-full justify-between">
+                          <div className="flex flex-col">
+                            <div className="w-full px-5 flex items-end justify-end">
+                              <CLoseXIxon/>
+                            </div>
+
+                            <div className="flex flex-col pt-10 w-full space-y-3">
+                                <NavLink to={firstLink} className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                                    {({ isActive }) => (
+                                      <SheetClose asChild>
+                                        <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
+                                            {isActive ? <TokenSaleIconBig /> : <TokenSaleWhiteBig />}
+                                            <p className="font-semibold text-[20px] text-white">Token Sale</p>
+                                        </div>
+                                      </SheetClose>
+                                    )}
+                                </NavLink>
+                                <NavLink to="/dashboard/claimtokens" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                                    {({ isActive }) => (
+                                      <SheetClose asChild>
+                                        <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
+                                            {isActive ? <ClaimTokensBig/> : <ClaimTokensWhiteBig />}
+                                            <p className="font-semibold text-[20px] text-white">Claim Token</p>
+                                        </div>
+                                      </SheetClose>
+                                    )}
+                                </NavLink>
+                                <NavLink to="/dashboard/settings" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                                    {({ isActive }) => (
+                                      <SheetClose asChild>
+                                        <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
+                                            {isActive ? <SettingsIconBig /> : <SettingsIconWhiteBig />}
+                                            <p className="font-semibold text-[20px] text-white">Settings</p>
+                                        </div>
+                                      </SheetClose>
+                                    )}
+                                </NavLink>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col space-y-2">
+                            <SheetClose asChild>
+                              <div className="w-full flex  items-center justify-center bg-[#0C0C0C]">
+                                <p className="text-[#FF3636] py-4 text-[16px]">Sign Out</p>
+                              </div>
+                            </SheetClose>
+
+                            <div className="pb-10 pt-2 px-5 flex flex-col space-y-5">
+                                <p className="text-white opacity-50 text-[12px]">Connect with us</p>
+                                <div className="flex flex-row space-x-5">
+                                    <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                        <DiscordLogo/>
+                                    </div>
+                                    <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                        <TelegramLogo/>
+                                    </div>
+                                    <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                        <XLogo/>
+                                    </div>
+                                </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+                    </SheetContent>
+                  </Sheet>
                 </div>
               </div>
         </div>
