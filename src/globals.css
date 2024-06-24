@@ -83,10 +83,6 @@
     background-color: #000000;
   }
 
-  .AuthBg{
-    background-image: url('./assets/dotBG.svg');
-    background-size: cover;
-  }
 
   input {
     caret-color: #ffffff; /* change the color to your desired value */
