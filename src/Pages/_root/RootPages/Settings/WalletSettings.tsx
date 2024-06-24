@@ -24,11 +24,21 @@ const {address} = useAccount();
                 <p className="text-white text-[10px] opacity-70">WALLET ADDRESS</p>
                 </div>
                 <div className="flex flex-row items-center space-x-5">
-                <p className="text-white text-[16px] font-semibold">Hjew82749274820dsjhhshfkjsuisdbfhj89234hjkadenfbjkwkkuisdbfhj89</p>
-                <div className="flex flex-row space-x-2 cursor-pointer">
-                    <CopyIcon/>
-                    <p className="text-[#08E04A] text-[10px]">Copy Address</p>
-                </div>
+                <p className="text-white text-[16px] font-semibold">
+                    {!address ? (
+                        "Connect Your Wallet"
+                    ): (
+                        <>
+                            {address}
+                        </>
+                    )}
+                </p>
+                {address && (
+                    <div className="flex flex-row space-x-2 cursor-pointer">
+                        <CopyIcon/>
+                        <p className="text-[#08E04A] text-[10px]">Copy Address</p>
+                    </div>
+                )}
             </div>
         </div>
     </div>

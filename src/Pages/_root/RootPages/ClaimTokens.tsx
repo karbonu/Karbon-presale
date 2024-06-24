@@ -5,6 +5,8 @@ import Dot from "@/components/Icons/Dot";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import NoTrasactionsLogo from "@/components/Icons/NoTrasactionsLogo";
 import DownIcon from "@/components/Icons/DownIcon";
+import { useAccount } from "wagmi";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 
 
@@ -78,6 +80,17 @@ const ClaimTokens = () => {
       releaseTime: "19:23:00",
     },
   ]
+
+  const {isConnected} = useAccount();
+  const {open} = useWeb3Modal();
+
+  const handleClaimAction = () =>{
+    if(!isConnected){
+      open()
+    }else{
+      console.log("claimed")
+    }
+  }
     
 
   if (loading) {
@@ -144,9 +157,14 @@ const ClaimTokens = () => {
               </div>
 
               <div>
-              <div className="flex items-center justify-center bg-[#08E04A] w-[269px] h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+              <div onClick={handleClaimAction} className="flex items-center justify-center bg-[#08E04A] w-[269px] h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                   <p className="font-bold text-[14px] shadow-sm">
-                      Claim Tokens
+                    {isConnected ? (
+                      "Claim Tokens"
+                    ):(
+                      "Connect Wallet"
+                    )}
+                      
                   </p>
               </div>
               </div>

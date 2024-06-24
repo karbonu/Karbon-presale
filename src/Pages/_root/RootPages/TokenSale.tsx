@@ -47,10 +47,14 @@ const TokenSale = () => {
   
 
   const handlePayoutModal = () => {
-    if(bonusAmount < 500){
-      setPayoutFaliure(true);
+    if (isConnected){
+      if(bonusAmount < 500){
+        setPayoutFaliure(true);
+      }else{
+        setPayoutSuccessOpen(true);
+      }
     }else{
-      setPayoutSuccessOpen(true);
+      open();
     }
   }
 
@@ -155,7 +159,11 @@ const TokenSale = () => {
                           <p className="text-white text-[18px]">.45</p>
                         </div>
                         <div onClick={handlePayoutModal} className="bg-transparent py-2 px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
-                          Request Payout
+                          {isConnected ? (
+                            "Request Payout"
+                          ): (
+                            "Connect Wallet"
+                          )}
                         </div>
                         <PayoutModalSuccess
                         isDialogOpen = {payoutSuccessOpen}
@@ -558,7 +566,11 @@ const TokenSale = () => {
                         </div>
                       </div>
                       <div onClick={handlePayoutModal} className="bg-transparent py-2 items-center h-max px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
-                        Request Payout
+                        {isConnected ? (
+                          "Request Payout"
+                        ): (
+                          "Connect Wallet"
+                        )}
                       </div>
                           <PayoutModalSuccess
                           isDialogOpen = {payoutSuccessOpen}
