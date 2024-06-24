@@ -31,9 +31,9 @@ const TopBar = () => {
     const email = "you@gmail.com";
 
     
-    const { open } = useWeb3Modal()
+    const { open } = useWeb3Modal();
 
-    const { address } = useAccount()
+    const { address } = useAccount();
 
   return (
     <div className=" w-full">
@@ -58,7 +58,7 @@ const TopBar = () => {
                     <div className="flex flex-row space-x-4">
                         <div onClick={() => open()} className="flex flex-row cursor-pointer space-x-2">
                             <EthIcon/>
-                            <p className="text-white text-[12px]">{address}</p>
+                            <p className="text-white text-[12px]">  {`${address.slice(0, 11)}...`}</p>
                         </div>
                         <div>
                             <Separator className="bg-[#484848]" orientation="vertical"/>

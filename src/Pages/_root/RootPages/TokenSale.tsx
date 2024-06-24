@@ -26,18 +26,25 @@ import {
 } from "@/components/ui/dialog"
 import ForwardShortGreen from '@/components/Icons/ForwardShortGreen'
 import TermsAndCond from "@/components/shared/TermsAndCond";
+import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAccount } from "wagmi";
 
 
 const TokenSale = () => {
+  const {isConnected} = useAccount();
   const [loading, setIsLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [payoutSuccessOpen, setPayoutSuccessOpen] = useState(false);
   const [payoutFaliure, setPayoutFaliure] = useState(false);
-  const [isConnectModalOpen, setIsConnectModalOpen] = useState(true);
+  const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected);
   const [isTermsAndCondOpen, setIsTermsAndCondOpen]= useState(false);
 
+
+
   let bonusAmount = 500;
+  const { open } = useWeb3Modal();
+  
 
   const handlePayoutModal = () => {
     if(bonusAmount < 500){
@@ -46,6 +53,7 @@ const TokenSale = () => {
       setPayoutSuccessOpen(true);
     }
   }
+
 
   if (loading) {
     setTimeout(() => {
@@ -86,7 +94,6 @@ const TokenSale = () => {
         description="Buy Karbon token and participate in the referral"
         />
 
-        
         <Dialog open={isConnectModalOpen} onOpenChange={setIsConnectModalOpen}>
             <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] items-center justify-center outline-none'>
                 <div className='w-full'>
@@ -105,7 +112,7 @@ const TokenSale = () => {
                     <p className='text-white text-[12px] opacity-50'>Supported network is Ethereum</p>
 
                     <div>
-                        <div className="flex flex-row space-x-2 items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                        <div onClick={() => open()} className="flex flex-row space-x-2 items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                             <ConnectWalletIconBlack/>
                             <p className="font-bold text-[12px] shadow-sm">
                                 Connect wallet

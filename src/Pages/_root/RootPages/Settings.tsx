@@ -5,6 +5,7 @@ import WalletIcon from "@/components/Icons/WalletIcon";
 import MetaTags from "@/components/shared/MetaTags"
 import { useState } from "react";
 import { ClimbingBoxLoader } from "react-spinners";
+import { useDisconnect, useAccount } from 'wagmi'
 
 
 
@@ -12,6 +13,8 @@ const Settings = () => {
   const [loading, setIsLoading] = useState(true);
 
   const [tab, selectedTab] = useState(1);
+  const {address} = useAccount();
+  const { disconnect } = useDisconnect()
 
   if (loading) {
     setTimeout(() => {
@@ -156,12 +159,16 @@ const Settings = () => {
                   </div>
 
                   {tab ===1 && (
-                    <div className="bg-black cursor-pointer hover:scale-95 transition ease-in-out border-[1px] border-[#282828] rounded-[4px]">
-                      <div className="flex flex-row space-x-1 items-center px-4 py-2">
-                        <DisconnectIcon/>
-                        <p className="text-[#FF3636] text-[16px]">Disconnect Wallet</p>
+                    <>
+                    {address && (
+                      <div className="bg-black cursor-pointer hover:scale-95 transition ease-in-out border-[1px] border-[#282828] rounded-[4px]">
+                        <div onClick={() => disconnect()} className="flex flex-row space-x-1 items-center px-4 py-2">
+                          <DisconnectIcon/>
+                          <p className="text-[#FF3636] text-[16px]">Disconnect Wallet</p>
+                        </div>
                       </div>
-                    </div>
+                    )}
+                    </>
                   )}
 
                   {tab === 2 && (
