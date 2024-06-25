@@ -120,7 +120,7 @@ const ClaimTokens = () => {
         <p className="text-white lg:hidden font-bold text-[20px]">Claim Tokens</p>
         <div className="w-full h-full flex flex-col space-y-5 items-center justify-center">
           <div className="lg:w-[1152px] max-sm:w-full bg-[#101010] rounded-[8px] lg:h-[210px]">
-            <div className="flex flex-col p-10 space-y-5">
+            <div className="flex flex-col p-10 max-md:p-5 space-y-5">
               <div className="flex flex-row max-md:flex-col max-md:space-y-5 lg:items-center justify-between w-full">
 
                 <div className="flex flex-col space-y-2">
