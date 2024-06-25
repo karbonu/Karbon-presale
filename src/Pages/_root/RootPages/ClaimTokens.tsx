@@ -120,8 +120,8 @@ const ClaimTokens = () => {
         <p className="text-white lg:hidden font-bold text-[20px]">Claim Tokens</p>
         <div className="w-full h-full flex flex-col space-y-5 items-center justify-center">
           <div className="lg:w-[1152px] max-sm:w-full bg-[#101010] rounded-[8px] lg:h-[210px]">
-            <div className="flex flex-col p-10 max-md:p-5 space-y-5">
-              <div className="flex flex-row max-md:flex-col max-md:space-y-5 lg:items-center justify-between w-full">
+            <div className="flex flex-col max-sm:w-full p-10 max-md:p-5 space-y-5">
+              <div className="flex flex-row max-sm:w-full max-md:flex-col max-md:space-y-5 lg:items-center justify-between w-full">
 
                 <div className="flex flex-col space-y-2">
                   <p className="text-white text-[12px] opacity-70">TOKENS BOUGHT</p>
@@ -157,7 +157,7 @@ const ClaimTokens = () => {
               </div>
 
               <div>
-              <div onClick={handleClaimAction} className="flex items-center justify-center bg-[#08E04A] w-[269px] h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+              <div onClick={handleClaimAction} className="flex items-center justify-center max-sm:w-full bg-[#08E04A] w-[269px] h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                   <p className="font-bold text-[14px] shadow-sm">
                     {isConnected ? (
                       "Claim Tokens"

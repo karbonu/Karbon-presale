@@ -14,8 +14,6 @@ import ClaimTokensBig from "../Icons/claimTokensBig";
 import {
   Sheet,
   SheetContent,
-  SheetClose,
-  SheetTrigger,
 } from "@/components/ui/sheet"
 import CLoseXIxon from "../Icons/CLoseXIxon";
 import DiscordLogo from "../Icons/DiscordLogo";
@@ -67,14 +65,15 @@ const TopBar = () => {
     const handleDropdown = () => {
       setShowDropdown(!showDropdown);
     }
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   return (
     <div className=" w-full">
         <div className="flex items-center justify-between">
             <p className="text-white font-semibold max-md:hidden text-[20px] max-sm:text-[14px]">{title}</p>
-            <div className="lg:hidden">
+            <a href="/dashboard" className="lg:hidden">
               <KarbonLogo />
-            </div>
+            </a>
 
             <div className="max-md:hidden">
               {!address ? (
@@ -196,13 +195,11 @@ const TopBar = () => {
                     )}
 
                   </div>
+                  <div onClick={() => setShowMobileMenu(true)} className=" cursor-pointer">
+                    <MenuIcon/>
+                  </div>
 
-                  <Sheet>
-                    <SheetTrigger>
-                      <div className=" cursor-pointer">
-                        <MenuIcon/>
-                      </div>
-                    </SheetTrigger>
+                  <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu} >
                     <SheetContent side={"left"} className="bg-[#101010] border-0 outline-none w-[245px]">
                         <div className="flex flex-col pt-10 h-full justify-between">
                           <div className="flex flex-col">
@@ -211,56 +208,52 @@ const TopBar = () => {
                             </div>
 
                             <div className="flex flex-col pt-10 w-full space-y-3">
-                                <NavLink to={firstLink} className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                                <NavLink onClick={() => setShowMobileMenu(false)} to={firstLink} className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
                                     {({ isActive }) => (
-                                      <SheetClose asChild>
                                         <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
                                             {isActive ? <TokenSaleIconBig /> : <TokenSaleWhiteBig />}
                                             <p className="font-semibold text-[20px] text-white">Token Sale</p>
                                         </div>
-                                      </SheetClose>
                                     )}
                                 </NavLink>
-                                <NavLink to="/dashboard/claimtokens" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                                <NavLink onClick={() => setShowMobileMenu(false)} to="/dashboard/claimtokens" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
                                     {({ isActive }) => (
-                                      <SheetClose asChild>
                                         <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
                                             {isActive ? <ClaimTokensBig/> : <ClaimTokensWhiteBig />}
                                             <p className="font-semibold text-[20px] text-white">Claim Token</p>
                                         </div>
-                                      </SheetClose>
                                     )}
                                 </NavLink>
-                                <NavLink to="/dashboard/settings" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
+                                <NavLink onClick={() => setShowMobileMenu(false)} to="/dashboard/settings" className={({ isActive }) => (isActive ? activeClassName : inactiveClassName)}>
                                     {({ isActive }) => (
-                                      <SheetClose asChild>
+                                      
                                         <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
                                             {isActive ? <SettingsIconBig /> : <SettingsIconWhiteBig />}
                                             <p className="font-semibold text-[20px] text-white">Settings</p>
                                         </div>
-                                      </SheetClose>
+                                      
                                     )}
                                 </NavLink>
                             </div>
                           </div>
 
-                          <div className="flex flex-col space-y-2">
-                            <SheetClose asChild>
+                          <div onClick={() => setShowMobileMenu(false)} className="flex flex-col space-y-2">
+                            
                               <div className="w-full flex  items-center justify-center bg-[#0C0C0C]">
                                 <p className="text-[#FF3636] py-4 text-[16px]">Sign Out</p>
                               </div>
-                            </SheetClose>
+                            
 
                             <div className="pb-10 pt-2 px-5 flex flex-col space-y-5">
                                 <p className="text-white opacity-50 text-[12px]">Connect with us</p>
                                 <div className="flex flex-row space-x-5">
-                                    <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                    <div onClick={() => setShowMobileMenu(false)} className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
                                         <DiscordLogo/>
                                     </div>
-                                    <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                    <div onClick={() => setShowMobileMenu(false)} className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
                                         <TelegramLogo/>
                                     </div>
-                                    <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                    <div onClick={() => setShowMobileMenu(false)} className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
                                         <XLogo/>
                                     </div>
                                 </div>
