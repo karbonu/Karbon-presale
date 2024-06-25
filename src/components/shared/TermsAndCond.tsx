@@ -8,7 +8,7 @@ const TermsAndCond = (props : any) => {
   return (
     <div>
         <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
-            <DialogContent className='bg-[#101010]  border-[#282828] pb-5 py-10 px-10 flex flex-col w-[412px] items-center justify-center rounded-[16px] outline-none'>
+            <DialogContent className='bg-[#101010]  border-[#282828] pb-5 py-10 px-10 flex flex-col w-[412px] max-sm:w-[300px] items-center justify-center rounded-[16px] outline-none'>
                 <div className='w-full flex flex-row items-center justify-between'>
                     <p className="text-white font-semibold text-[20px]">Terms and Conditions</p>
                     <div onClick={() => props.setIsDialogOpen(false)} className='cursor-pointer '>
@@ -48,7 +48,7 @@ const TermsAndCond = (props : any) => {
                     </div>
 
                     <div onClick={() => props.setIsDialogOpen(false)} className="bg-transparent py-2 px-10 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
-                        CLose
+                        Close
                     </div>
                 </div>
             </DialogContent>

@@ -119,39 +119,39 @@ const ClaimTokens = () => {
         />
         <p className="text-white lg:hidden font-bold text-[20px]">Claim Tokens</p>
         <div className="w-full h-full flex flex-col space-y-5 items-center justify-center">
-          <div className="lg:w-[1152px] max-sm:w-full bg-[#101010] rounded-[8px] lg:h-[210px]">
-            <div className="flex flex-col max-sm:w-full p-10 max-md:p-5 space-y-5">
-              <div className="flex flex-row max-sm:w-full max-md:flex-col max-md:space-y-5 lg:items-center justify-between w-full">
+          <div className="lg:w-[100%] max-lg:w-full bg-[#101010] rounded-[8px] lg:h-[210px]">
+            <div className="flex flex-col max-lg:w-full max:lg:p-[3%] p-10 max-md:p-5 space-y-5">
+              <div className="flex flex-row max-lg:w-full max-lg:flex-col max-md:space-y-5 lg:items-center justify-between w-full">
 
                 <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[12px] opacity-70">TOKENS BOUGHT</p>
+                  <p className="text-white text-[80%] opacity-70">TOKENS BOUGHT</p>
                   <div className="flex flex-row space-x-1">
-                    <p className="text-white text-[24px]">00.00345</p>
-                    <p className="text-white text-[24px] opacity-50">KARBON</p>
+                    <p className="text-white text-[140%]">00.00345</p>
+                    <p className="text-white text-[140%] opacity-50">KARBON</p>
                   </div>
                 </div>
 
                 <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[12px] opacity-70">A064NT SPENT</p>
+                  <p className="text-white text-[80%] opacity-70">AMOUNT SPENT</p>
                   <div className="flex flex-row space-x-1">
-                    <p className="text-white text-[24px]">21,325</p>
+                    <p className="text-white text-[140%]">21,325</p>
                     <p className="text-white text-[14px]">.45</p>
-                    <p className="text-white text-[24px] opacity-50">USDT</p>
+                    <p className="text-white text-[140%] opacity-50">USDT</p>
                   </div>
                 </div>
 
                 <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[12px] opacity-70">TOKEN VALUE</p>
+                  <p className="text-white text-[80%] opacity-70">TOKEN VALUE</p>
                   <div className="flex flex-row space-x-1">
-                    <p className="text-white text-[24px]">21,325</p>
+                    <p className="text-white text-[140%]">21,325</p>
                     <p className="text-white text-[14px]">.45</p>
-                    <p className="text-white text-[24px] opacity-50">USDT</p>
+                    <p className="text-white text-[140%] opacity-50">USDT</p>
                   </div>
                 </div>
 
                 <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[12px] opacity-70">ESTIMATED CLAIM TIME</p>
-                  <p className="text-white text-[24px]">1d 22h 45m 34s</p>
+                  <p className="text-white text-[80%] opacity-70">ESTIMATED CLAIM TIME</p>
+                  <p className="text-white text-[140%]">1d 22h 45m 34s</p>
                 </div>
 
               </div>
@@ -173,7 +173,7 @@ const ClaimTokens = () => {
 
           </div>
 
-          <div className="w-[1152px] bg-[#101010] rounded-[8px] h-[490px] max-sm:hidden">
+          <div className="w-[100%] bg-[#101010] rounded-[8px] h-[490px] max-lg:hidden">
             <div className="flex w-full flex-col px-2 py-5 space-y-5">
               <p className="text-white px-8 text-[20px] font-semibold">Vesting Schedule</p>
               <div className="w-full">

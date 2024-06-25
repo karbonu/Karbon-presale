@@ -143,7 +143,7 @@ const TokenSale = () => {
           </Dialog>
 
         
-          <div className=" flex  pb-10 max-md:hidden">
+          <div className=" flex  pb-10 max-lg:hidden">
             <div className="flex flex-row  h-full w-full justify-between space-x-5">
               <div className="flex flex-col w-[795px] justify-center">
                 <div className="flex items-center w-[795px] justify-center flex-col space-y-1">
@@ -532,6 +532,10 @@ const TokenSale = () => {
                         </div>
                       
                     </div>
+
+                    <div>
+                      <p className="text-white px-1 text-[12px]">By contributing to the presale you acknowledge and accept these <span onClick={() => setIsTermsAndCondOpen(true)} className=" cursor-pointer underline underline-offset-2">terms and conditions</span>.</p>
+                    </div>
                 </div>
               </div>
 
@@ -595,7 +599,7 @@ const TokenSale = () => {
                       <div>
                         <p className="text-white pl-2 text-[12px]">https://karbon.com/78236-tube...</p>
                       </div>
-                      <div className="flex flex-row items-center space-x-1 cursor-pointer">
+                      <div className="flex flex-row items-center space-x-1 pr-2 cursor-pointer">
                         <CopyIcon/>
                         <p className="text-[#08E04A] text-[10px]">Copy</p>
 
