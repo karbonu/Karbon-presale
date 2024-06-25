@@ -203,7 +203,7 @@ const TopBar = () => {
                     <SheetContent side={"left"} className="bg-[#101010] border-0 outline-none w-[245px]">
                         <div className="flex flex-col pt-10 h-full justify-between">
                           <div className="flex flex-col">
-                            <div className="w-full px-5 flex items-end justify-end">
+                            <div onClick={() => setShowMobileMenu(false)} className="w-full px-5 flex items-end justify-end">
                               <CLoseXIxon/>
                             </div>
 
