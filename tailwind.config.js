@@ -12,13 +12,17 @@ module.exports = {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
     },
     extend: {
       backgroundImage:{
         'dotBG' : "url('/assets/dotBG.svg')"
+      },
+      screens: {
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1050px',
+        'xl': '1280px',
+        '2xl': '1536px',
       },
       colors: {
         border: "hsl(var(--border))",
