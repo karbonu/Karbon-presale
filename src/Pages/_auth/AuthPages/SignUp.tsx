@@ -107,10 +107,10 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                <div className="flex px-8 flex-row space-x-4 w-full items-center justify-center">
-                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[27%]" />
+                <div className="flex px-8 flex-row space-x-4 w-full items-center justify-center max-sm:justify-between">
+                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
                   <p className="text-white text-[14px] max-sm:text-[12px]">or sign up with email</p>
-                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[27%]" />
+                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
                 </div>
 
                 <div className="flex px-8 flex-row space-x-3 items-center">

@@ -58,10 +58,10 @@ const SignIn = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-row space-x-4 w-full items-center justify-center">
-                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[29%]" />
-                                    <p className="text-white text-[14px] max-sm:text-[10px]">or sign in with email</p>
-                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[29%]" />
+                                <div className="flex flex-row space-x-4 w-full items-center justify-center max-sm:justify-between">
+                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
+                                    <p className="text-white text-[14px] max-sm:text-[12px]">or sign in with email</p>
+                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
@@ -76,8 +76,8 @@ const SignIn = () => {
                                 </div>
 
                                 <div className="flex flex-row space-x-2 items-center justify-center">
-                                    <p className="text-white text-[14px] max-sm:text-[10px]">Don't have an account?</p>
-                                    <a href="/sign-up" className="text-[14px] max-sm:text-[10px] text-[#08E04A] font-semibold">Sign Up</a>
+                                    <p className="text-white text-[14px] max-sm:text-[12px]">Don't have an account?</p>
+                                    <a href="/sign-up" className="text-[14px] max-sm:text-[12px] text-[#08E04A] font-semibold">Sign Up</a>
                                 </div>
                             </div>
                         </div>
