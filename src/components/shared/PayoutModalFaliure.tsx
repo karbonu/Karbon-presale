@@ -9,9 +9,33 @@ import DiscordLogo from "../Icons/DiscordLogo"
 import TelegramLogo from "../Icons/TelegramLogo"
 import WhatsappLogo from "../Icons/WhatsappLogo"
 import XLogo from "../Icons/XLogo"
+import { useState } from "react"
+import CheckMark from "../Icons/CheckMark"
 
 
 const PayoutModalFaliure = (props : any) => {
+
+  const [copied, setCopied] = useState(false);
+  const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
+
+  const ReferralLink = "https://karbon.com/78236-tube..."
+
+  const handleCopy = () => {
+    const link = ReferralLink ?? "";
+    navigator.clipboard.writeText((link)).then(() => {
+      setCopied(true);
+
+      if (timeoutRef) {
+        clearTimeout(timeoutRef);
+      }
+
+      const newTimeout = setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+
+      setTimeoutRef(newTimeout);
+    });
+  };
   return (
     <div>
         <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
@@ -33,12 +57,13 @@ const PayoutModalFaliure = (props : any) => {
                     <div className="flex flex-col space-y-2 px-8 max-sm:px-5">
                       <div className="flex fle-row w-max items-center py-2 px-4 max-sm:px-2 bg-black space-x-10 max-sm:space-x-2">
                         <div>
-                          <p className="text-white text-[12px]">https://karbon.com/78236-tube...</p>
+                          <p className="text-white text-[12px]">{ReferralLink}</p>
                         </div>
-                        <div className="flex flex-row items-center space-x-1 cursor-pointer">
-                          <CopyIcon/>
-                          <p className="text-[#08E04A] text-[10px]">Copy</p>
-
+                        <div onClick={handleCopy} className="flex flex-row items-center space-x-1 cursor-pointer">
+                          {copied ? <CheckMark/> : <CopyIcon/>}
+                          <p className="text-[#08E04A] text-[10px]">
+                              {copied ? "Copied" : "Copy"}
+                          </p>
                         </div>
                       </div>
 

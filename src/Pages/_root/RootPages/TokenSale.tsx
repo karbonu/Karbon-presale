@@ -28,6 +28,7 @@ import ForwardShortGreen from '@/components/Icons/ForwardShortGreen'
 import TermsAndCond from "@/components/shared/TermsAndCond";
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from "wagmi";
+import CheckMark from "@/components/Icons/CheckMark";
 
 
 const TokenSale = () => {
@@ -39,10 +40,30 @@ const TokenSale = () => {
   const [payoutFaliure, setPayoutFaliure] = useState(false);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected);
   const [isTermsAndCondOpen, setIsTermsAndCondOpen]= useState(false);
+  const [copied, setCopied] = useState(false);
+  const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
+
+  const ReferralLink = "https://karbon.com/78236-tube..."
+
+  const handleCopy = () => {
+    const link = ReferralLink ?? "";
+    navigator.clipboard.writeText((link)).then(() => {
+      setCopied(true);
+
+      if (timeoutRef) {
+        clearTimeout(timeoutRef);
+      }
+
+      const newTimeout = setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+
+      setTimeoutRef(newTimeout);
+    });
+  };
 
 
-
-  let bonusAmount = 500;
+  let bonusAmount = 50;
   const { open } = useWeb3Modal();
   
 
@@ -88,6 +109,7 @@ const TokenSale = () => {
   //       </Dialog>
   //   )
   // }
+
 
 
   
@@ -204,12 +226,13 @@ const TokenSale = () => {
                     <div className="flex flex-row space-x-5 items-center">
                       <div className="flex fle-row items-center py-2 px-4 bg-black space-x-10">
                         <div>
-                          <p className="text-white text-[12px]">https://karbon.com/78236-tube...</p>
+                          <p className="text-white text-[12px]">{ReferralLink}</p>
                         </div>
-                        <div className="flex flex-row items-center space-x-1 cursor-pointer">
-                          <CopyIcon/>
-                          <p className="text-[#08E04A] text-[10px]">Copy</p>
-
+                        <div onClick={handleCopy} className="flex flex-row items-center space-x-1 cursor-pointer">
+                          {copied ? <CheckMark/> : <CopyIcon/>}
+                          <p className="text-[#08E04A] text-[10px]">
+                              {copied ? "Copied" : "Copy"}
+                          </p>
                         </div>
                       </div>
 
@@ -597,12 +620,13 @@ const TokenSale = () => {
                     
                     <div className="flex fle-row items-center py-2 bg-black space-x-10">
                       <div>
-                        <p className="text-white pl-2 text-[12px]">https://karbon.com/78236-tube...</p>
+                        <p className="text-white pl-2 text-[12px]">{ReferralLink}</p>
                       </div>
-                      <div className="flex flex-row items-center space-x-1 pr-2 cursor-pointer">
-                        <CopyIcon/>
-                        <p className="text-[#08E04A] text-[10px]">Copy</p>
-
+                      <div onClick={handleCopy} className="flex flex-row items-center space-x-1 pr-2 cursor-pointer">
+                        {copied ? <CheckMark/> : <CopyIcon/>}
+                          <p className="text-[#08E04A] text-[10px]">
+                              {copied ? "Copied" : "Copy"}
+                          </p>
                       </div>
                     </div>
 

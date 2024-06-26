@@ -1,8 +1,33 @@
+import CheckMark from "@/components/Icons/CheckMark";
 import CopyIcon from "@/components/Icons/CopyIcon";
 import WalletIcon from "@/components/Icons/WalletIcon";
 import MetaTags from "@/components/shared/MetaTags";
+import { useState } from "react";
 
 const ProfileSettings = () => {
+
+  const [copied, setCopied] = useState(false);
+  const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
+
+  const ReferralLink = "https://karbon.com/78236-tube..."
+
+  const handleCopy = () => {
+    const link = ReferralLink ?? "";
+    navigator.clipboard.writeText((link)).then(() => {
+      setCopied(true);
+
+      if (timeoutRef) {
+        clearTimeout(timeoutRef);
+      }
+
+      const newTimeout = setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+
+      setTimeoutRef(newTimeout);
+    });
+  };
+
   return (
     <div className="flex flex-col pt-10 space-y-3">
         <MetaTags
@@ -27,10 +52,12 @@ const ProfileSettings = () => {
             <p className="text-white text-[10px] opacity-70">Referral Link</p>
           </div>
           <div className="flex flex-row items-center space-x-5">
-            <p className="text-white font-light text-[14px] max-lg:text-[12px] ">https://karbon.com/78236-tube...</p>
-            <div className="flex flex-row space-x-2 cursor-pointer">
-              <CopyIcon/>
-              <p className="text-[#08E04A] text-[10px]">Copy</p>
+            <p className="text-white font-light text-[14px] max-lg:text-[12px] ">{ReferralLink}</p>
+            <div onClick={handleCopy} className="flex flex-row space-x-2 cursor-pointer">
+                {copied ? <CheckMark/> : <CopyIcon/>}
+                <p className="text-[#08E04A] text-[10px]">
+                    {copied ? "Copied" : "Copy"}
+                </p>
             </div>
           </div>
         </div>

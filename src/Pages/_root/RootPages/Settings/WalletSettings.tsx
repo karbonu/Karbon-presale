@@ -4,12 +4,35 @@ import WalletIcon from "@/components/Icons/WalletIcon";
 import { useDisconnect, useAccount } from 'wagmi'
 import MetaTags from "@/components/shared/MetaTags"
 import DisconnectIcon from "@/components/Icons/DisconnectIcon";
+import { useState } from "react";
+import CheckMark from "@/components/Icons/CheckMark";
 
 
 const WalletSettings = () => {
 
 const {address} = useAccount();
   const { disconnect } = useDisconnect()
+
+  const [copied, setCopied] = useState(false);
+  const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
+
+  const handleCopy = () => {
+    const stringAddress = address ?? "";
+    navigator.clipboard.writeText((stringAddress)).then(() => {
+      setCopied(true);
+
+      if (timeoutRef) {
+        clearTimeout(timeoutRef);
+      }
+
+      const newTimeout = setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+
+      setTimeoutRef(newTimeout);
+    });
+  };
+
 
   return (
     <div className="flex flex-col max-lg:w-full max-sm:max-w-[100%] pt-10 space-y-4 justify-between">
@@ -34,9 +57,11 @@ const {address} = useAccount();
                     )}
                 </p>
                 {address && (
-                    <div className="flex flex-row space-x-2 cursor-pointer">
-                        <CopyIcon/>
-                        <p className="text-[#08E04A] text-[10px]">Copy Address</p>
+                    <div onClick={handleCopy} className="flex flex-row space-x-2 cursor-pointer">
+                        {copied ? <CheckMark/> : <CopyIcon/>}
+                        <p className="text-[#08E04A] text-[10px]">
+                            {copied ? "Copied" : "Copy Address"}
+                        </p>
                     </div>
                 )}
             </div>
