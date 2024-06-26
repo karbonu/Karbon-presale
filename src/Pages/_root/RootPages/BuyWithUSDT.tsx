@@ -11,11 +11,24 @@ import DialogClose from '@/components/Icons/DialogClose'
 import { useState } from 'react'
 import BoughtTokensSuccess from '@/components/shared/BoughtTokensSuccess'
 import ForwardGreen from '@/components/Icons/ForwardGreen'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAccount } from 'wagmi'
   
 
 
 const BuyWithUSDT = (props : any) => {
     const [isBuySuccessModalOpen, setIsBuySuccessModalOpen] = useState(false);
+
+    const {open} = useWeb3Modal();
+    const { isConnected} = useAccount();
+
+    const handleBuy = () => {
+        if(!isConnected) {
+            open();
+        }else{
+            setIsBuySuccessModalOpen(true);
+        }
+    }
   return (
     <div className='w-full space-y-5 flex flex-col'>
 
@@ -94,9 +107,9 @@ const BuyWithUSDT = (props : any) => {
             </label>
         </div>
 
-        <div onClick={() => setIsBuySuccessModalOpen(true)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+        <div onClick={handleBuy} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
             <p className="font-bold text-[14px] shadow-sm">
-                Buy
+                {isConnected ? "Buy" : "Connect Wallet"}
             </p>
         </div>
 
