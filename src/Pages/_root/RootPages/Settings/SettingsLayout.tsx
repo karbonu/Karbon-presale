@@ -29,13 +29,13 @@ const SettingsLayout = () => {
               <div className="flex flex-row max-sm:w-full max-sm:items-center max-sm:justify-center space-x-2">
                 <a
                   onClick={() => {selectedTab(1); navigate('/dashboard/settings/walletsettings')}} 
-                  className={`cursor-pointer font-bold text-[14px] px-8 py-2 hover:text-black rounded-full ${tab === 1 ? 'bg-white text-black' : 'bg-transparent border-[1px] border-white text-white hover:text-black hover:bg-white transition ease-in-out'}`}
+                  className={`cursor-pointer font-bold text-[14px] max-sm:text-[12px] max-sm:px-3 max-sm:py-1 px-8 py-2 hover:text-black rounded-full ${tab === 1 ? 'bg-white text-black' : 'bg-transparent border-[1px] border-white text-white hover:text-black hover:bg-white transition ease-in-out'}`}
                 >
                   Wallet
                 </a>
                 <a 
                   onClick={() => {selectedTab(2); navigate('/dashboard/settings/profilesettings')}} 
-                  className={`cursor-pointer px-8 font-bold text-[14px] py-2 hover:text-black rounded-full ${tab === 2 ? 'bg-white text-black' : 'bg-transparent border-[1px] border-white text-white hover:text-black hover:bg-white transition ease-in-out'}`}
+                  className={`cursor-pointer px-8 font-bold text-[14px] max-sm:text-[12px] max-sm:px-3 max-sm:py-1 py-2 hover:text-black rounded-full ${tab === 2 ? 'bg-white text-black' : 'bg-transparent border-[1px] border-white text-white hover:text-black hover:bg-white transition ease-in-out'}`}
                 >
                   Profile Settings
                 </a>

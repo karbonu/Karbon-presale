@@ -224,17 +224,22 @@ const TokenSale = () => {
                     <p className="text-white text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
                     
                     <div className="flex flex-row space-x-5 items-center">
-                      <div className="flex fle-row items-center py-2 px-4 bg-black space-x-10">
+                      <div className="flex flex-row items-center py-2 pl-4 bg-black space-x-10">
                         <div>
                           <p className="text-white text-[12px]">{ReferralLink}</p>
                         </div>
-                        <div onClick={handleCopy} className="flex flex-row items-center space-x-1 cursor-pointer">
+                        <div 
+                          onClick={handleCopy} 
+                          className="flex flex-row mr-4 items-center space-x-1 cursor-pointer"
+                          style={{ width: '60px' }} // Adjust the width as needed
+                        >
                           {copied ? <CheckMark/> : <CopyIcon/>}
                           <p className="text-[#08E04A] text-[10px]">
-                              {copied ? "Copied" : "Copy"}
+                            {copied ? "Copied" : "Copy"}
                           </p>
                         </div>
                       </div>
+
 
                       <div className="flex flex-row items-center space-x-3">
                         <p className="text-[12px] text-white">Share on</p>
@@ -618,7 +623,7 @@ const TokenSale = () => {
                     <p className="text-[16px] text-white">Start earning extra money!</p>
                     <p className="text-white text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
                     
-                    <div className="flex fle-row items-center py-2 bg-black space-x-10">
+                    <div className="flex flex-row max-w-[339px] items-center py-2 bg-black space-x-10">
                       <div>
                         <p className="text-white pl-2 text-[12px]">{ReferralLink}</p>
                       </div>

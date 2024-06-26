@@ -33,8 +33,8 @@ const SignIn = () => {
                 )}
 
                 {step === 1 && (
-                    <div className="flex flex-col items-center justify-center pt-[7rem]">
-                        <div className="w-[450px] max-sm:w-[300px] h-[456px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                    <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+                        <div className="w-[450px] max-sm:w-[100%] h-[456px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 px-8 flex flex-col justify-between h-full">
                                 <p className="text-white text-[20px] max-sm:text-[90%] font-semibold">Sign In</p>
 
@@ -58,10 +58,10 @@ const SignIn = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-row space-x-4 items-center justify-center">
-                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
+                                <div className="flex flex-row space-x-4 w-full items-center justify-center">
+                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[29%]" />
                                     <p className="text-white text-[14px] max-sm:text-[10px]">or sign in with email</p>
-                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
+                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[29%]" />
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
@@ -85,8 +85,8 @@ const SignIn = () => {
                 )}
 
                 {step === 2 && (
-                    <div className="flex flex-col items-center justify-center pt-[7rem]">
-                        <div className="w-[450px] max-sm:w-[300px] h-[346px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                    <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+                        <div className="w-[450px] max-sm:w-[100%] h-[346px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 px-8 flex flex-col justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center">
                                     <PasswordLogo />

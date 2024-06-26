@@ -83,7 +83,7 @@ const SignUp = () => {
 
         {step === 1 && (
           <div className="flex flex-col items-center justify-center pt-[6rem]">
-            <div className="w-[437px] max-sm:w-[300px] h-[495px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+            <div className="w-[437px] max-sm:w-[100%] h-[495px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
               <div className="py-5 flex flex-col justify-between h-full">
                 <p className="text-white px-8 text-[20px] max-sm:text-[16px] font-semibold">Create an account</p>
 
@@ -107,10 +107,10 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                <div className="flex px-8 flex-row space-x-4 items-center justify-center">
-                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[15%]" />
+                <div className="flex px-8 flex-row space-x-4 w-full items-center justify-center">
+                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[27%]" />
                   <p className="text-white text-[14px] max-sm:text-[12px]">or sign up with email</p>
-                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[15%]" />
+                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[27%]" />
                 </div>
 
                 <div className="flex px-8 flex-row space-x-3 items-center">
@@ -143,8 +143,8 @@ const SignUp = () => {
         )}
 
         {step === 2 && (
-          <div className="flex flex-col items-center justify-center pt-[7rem]">
-            <div className="w-[450px] max-sm:w-[300px] h-[366px] bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
+          <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+            <div className="w-[450px] max-sm:w-[100%] h-[366px] bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
               <div className="px-8 flex flex-col justify-between h-full">
                 <div className="flex flex-row space-x-2 items-center">
                   <VerifyEmailIcon />
@@ -176,8 +176,8 @@ const SignUp = () => {
         )}
 
         {step === 3 && (
-          <div className="flex flex-col items-center justify-center pt-[7rem]">
-            <div className="w-[450px] max-sm:w-[300px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+          <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+            <div className="w-[450px] max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
               <div className="py-5 px-8 flex flex-col justify-between h-full">
                 <div className="flex flex-row space-x-2 items-center pb-5">
                   <PasswordLogo />
