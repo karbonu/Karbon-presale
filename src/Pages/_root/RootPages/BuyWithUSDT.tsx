@@ -8,27 +8,61 @@ import {
     DialogContent,
   } from "@/components/ui/dialog"
 import DialogClose from '@/components/Icons/DialogClose'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BoughtTokensSuccess from '@/components/shared/BoughtTokensSuccess'
 import ForwardGreen from '@/components/Icons/ForwardGreen'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from 'wagmi'
+import { BUYABI } from '@/components/shared/Constants/BuyABI'
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { BarLoader } from 'react-spinners'
+import { BuyAddress } from '@/components/shared/Constants/Addresses'
   
 
 
 const BuyWithUSDT = (props : any) => {
-    const [isBuySuccessModalOpen, setIsBuySuccessModalOpen] = useState(false);
-
+    const [tokenAmount, setTokenAmount] = useState(0);
     const {open} = useWeb3Modal();
     const { isConnected} = useAccount();
 
-    const handleBuy = () => {
+    const { 
+        data: hash,
+        error,   
+        isPending, 
+        writeContract 
+      } = useWriteContract() 
+
+      const {isLoading: isConfirming, isSuccess: isConfirmed } = 
+      useWaitForTransactionReceipt({ 
+        hash, 
+      }) 
+
+    async function handleBuy (){
         if(!isConnected) {
             open();
         }else{
-            setIsBuySuccessModalOpen(true);
+            writeContract({
+                address: BuyAddress,
+                abi : BUYABI,
+                functionName: 'buyTokens',
+                args: [BigInt(tokenAmount * 10 ** 18)],
+              })
         }
     }
+
+    const [isBuySuccessModalOpen, setIsBuySuccessModalOpen] = useState(false);
+
+    useEffect(() => {
+        if(isConfirmed){
+            setIsBuySuccessModalOpen(true);
+          }else{
+            console.log(error);
+          }
+      }, [isConfirmed]);
+
+
+
+    
   return (
     <div className='w-full space-y-5 flex flex-col'>
 
@@ -85,7 +119,7 @@ const BuyWithUSDT = (props : any) => {
             <p className="text-white text-[12px]">You Buy</p>
             <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
             <div className="flex flex-row items-center justify-center space-x-2 flex-1">
-                <input id="buyInput" type="text" className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none" />
+                <input id="buyInput" type="text" onChange={(e) => setTokenAmount(Number(e.target.value))} className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none" />
                 <p className="text-white text-[12px] opacity-70">USDT</p>
             </div>
             </label>
@@ -107,11 +141,17 @@ const BuyWithUSDT = (props : any) => {
             </label>
         </div>
 
-        <div onClick={handleBuy} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+        <button disabled={isPending || isConfirming} onClick={handleBuy} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
             <p className="font-bold text-[14px] shadow-sm">
-                {isConnected ? "Buy" : "Connect Wallet"}
+                {isConnected ? (
+                    <>
+                    {(isPending || isConfirming) ? (
+                        <BarLoader/>
+                     ) :  "Buy"}
+                    </>
+                ) : "Connect Wallet"}
             </p>
-        </div>
+        </button>
 
 
         <BoughtTokensSuccess
