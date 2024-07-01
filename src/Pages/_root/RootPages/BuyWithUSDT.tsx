@@ -16,7 +16,8 @@ import { useAccount } from 'wagmi'
 import { BUYABI } from '@/components/shared/Constants/BuyABI'
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { BarLoader } from 'react-spinners'
-import { BuyAddress } from '@/components/shared/Constants/Addresses'
+import { BuyAddress, USDTAddress } from '@/components/shared/Constants/Addresses'
+import { USDTABI } from '@/components/shared/Constants/TokenABI'
   
 
 
@@ -24,7 +25,8 @@ const BuyWithUSDT = (props : any) => {
     const [tokenAmount, setTokenAmount] = useState(0);
     const {open} = useWeb3Modal();
     const { isConnected} = useAccount();
-
+    const [fullTransaction, setFulltransaction] = useState(false);
+    const [isApproved, setIsApproved] = useState(false);
     const { 
         data: hash,
         error,   
@@ -41,24 +43,38 @@ const BuyWithUSDT = (props : any) => {
         if(!isConnected) {
             open();
         }else{
-            writeContract({
-                address: BuyAddress,
-                abi : BUYABI,
-                functionName: 'buyTokens',
-                args: [BigInt(tokenAmount * 10 ** 18)],
-              })
+            if(isApproved){
+                writeContract({
+                    address: BuyAddress,
+                    abi : BUYABI,
+                    functionName: 'buyTokens',
+                    args: [BigInt(tokenAmount * 10 ** 18)],
+                  })
+                  setFulltransaction(true);
+            }else{
+                writeContract({
+                    address: USDTAddress,
+                    abi : USDTABI,
+                    functionName: 'approve',
+                    args: [BuyAddress,  BigInt(tokenAmount * 10 ** 18)],
+                  })
+                
+                setIsApproved(true);
+
+            }
         }
     }
 
     const [isBuySuccessModalOpen, setIsBuySuccessModalOpen] = useState(false);
 
     useEffect(() => {
-        if(isConfirmed){
+        if(isConfirmed && fullTransaction){
             setIsBuySuccessModalOpen(true);
+            setIsApproved(false);
           }else{
             console.log(error);
           }
-      }, [isConfirmed]);
+      }, [isConfirmed, fullTransaction]);
 
 
 
@@ -147,7 +163,15 @@ const BuyWithUSDT = (props : any) => {
                     <>
                     {(isPending || isConfirming) ? (
                         <BarLoader/>
-                     ) :  "Buy"}
+                     ) :  (
+                        <>
+                            {!isApproved ? (
+                                "Approve"
+                            ): (
+                                "Buy"
+                            )}
+                        </>
+                     )}
                     </>
                 ) : "Connect Wallet"}
             </p>
