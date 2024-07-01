@@ -14,7 +14,7 @@ import ForwardGreen from '@/components/Icons/ForwardGreen'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from 'wagmi'
 import { BUYABI } from '@/components/shared/Constants/BuyABI'
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi'
 import { BarLoader } from 'react-spinners'
 import { BuyAddress, USDTAddress } from '@/components/shared/Constants/Addresses'
 import { USDTABI } from '@/components/shared/Constants/TokenABI'
@@ -24,7 +24,7 @@ import { USDTABI } from '@/components/shared/Constants/TokenABI'
 const BuyWithUSDT = (props : any) => {
     const [tokenAmount, setTokenAmount] = useState(0);
     const {open} = useWeb3Modal();
-    const { isConnected} = useAccount();
+    const { isConnected, address} = useAccount();
     const [fullTransaction, setFulltransaction] = useState(false);
     const [isApproved, setIsApproved] = useState(false);
     const { 
@@ -38,6 +38,16 @@ const BuyWithUSDT = (props : any) => {
       useWaitForTransactionReceipt({ 
         hash, 
       }) 
+
+        
+      const { data: balance } =   useReadContract({
+          abi : USDTABI,
+          address: USDTAddress,
+          functionName: 'balanceOf',
+          args : [address as `0x${string}`]
+      })
+
+      
 
     async function handleBuy (){
         if(!isConnected) {
@@ -60,7 +70,6 @@ const BuyWithUSDT = (props : any) => {
                   })
                 
                 setIsApproved(true);
-
             }
         }
     }
@@ -71,6 +80,7 @@ const BuyWithUSDT = (props : any) => {
         if(isConfirmed && fullTransaction){
             setIsBuySuccessModalOpen(true);
             setIsApproved(false);
+            
           }else{
             console.log(error);
           }
@@ -126,7 +136,7 @@ const BuyWithUSDT = (props : any) => {
             <p className="text-white text-[12px]">Amount</p>
             <div className="flex flex-row items-center space-x-1">
             <p className="text-white text-[12px] opacity-70">Wallet Balance</p>
-            <p className="text-white text-[12px]">5,784,043.78</p>
+            <p className="text-white text-[12px]">{Number(balance)?.toFixed(2)}</p>
             </div>
         </div>
 
