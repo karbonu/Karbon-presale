@@ -24,6 +24,7 @@ import TokenSaleWhiteBig from "../Icons/TokenSaleWhiteBig";
 import ClaimTokensWhiteBig from "../Icons/ClaimTokensWhiteBig";
 import SettingsIconBig from "../Icons/SettingsIconBig";
 import SettingsIconWhiteBig from "../Icons/SettingsIconWhiteBig";
+import RedirectIcon from "../Icons/RedirectIcon";
 
 
 const TopBar = () => {
@@ -238,6 +239,17 @@ const TopBar = () => {
                           </div>
 
                           <div onClick={() => setShowMobileMenu(false)} className="flex flex-col space-y-2">
+  
+                            <div className="flex flex-col space-y-5 pb-5 pl-5 ">
+                                <div className="flex flex-row cursor-pointer items-center space-x-2">
+                                    <p className="text-white opacity-50 text-[14px]">Terms of Service</p>
+                                    <RedirectIcon/>
+                                </div>
+                                <div className="flex flex-row cursor-pointer items-center space-x-2">
+                                    <p className="text-white opacity-50 text-[14px]">Privacy Policy</p>
+                                    <RedirectIcon/>
+                                </div>
+                              </div>
                             
                               <div className="w-full flex  items-center justify-center bg-[#0C0C0C]">
                                 <p className="text-[#FF3636] py-4 text-[16px]">Sign Out</p>
@@ -245,7 +257,7 @@ const TopBar = () => {
                             
 
                             <div className="pb-10 pt-2 px-5 flex flex-col space-y-5">
-                                <p className="text-white opacity-50 text-[12px]">Connect with us</p>
+                                <p className="text-white opacity-50 font-bold text-[12px]">Connect with us</p>
                                 <div className="flex flex-row space-x-5">
                                     <div onClick={() => setShowMobileMenu(false)} className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
                                         <DiscordLogo/>
