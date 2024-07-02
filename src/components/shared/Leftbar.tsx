@@ -54,11 +54,11 @@ const Leftbar = () => {
             </div>
             <div className="w-full flex flex-col bottom-0 absolute">
                 <div className="flex flex-col space-y-5 pb-5 pl-5">
-                    <a href ='https://karbon-website.vercel.app/terms-of-use' target='blank' className="flex flex-row opacity-50 transition ease-in-out hover:opacity-100 cursor-pointer items-center space-x-2">
+                    <a href ='https://karbon.finance/terms-of-use' target='blank' className="flex flex-row opacity-50 transition ease-in-out hover:opacity-100 cursor-pointer items-center space-x-2">
                         <p className="text-white  text-[10px]">Terms of Service</p>
                         <RedirectIcon/>
                     </a>
-                    <a href ='https://karbon-website.vercel.app/privacy-policy' target='blank' className="flex flex-row opacity-50 transition ease-in-out hover:opacity-100 cursor-pointer items-center space-x-2">
+                    <a href ='https://karbon.finance/privacy-policy' target='blank' className="flex flex-row opacity-50 transition ease-in-out hover:opacity-100 cursor-pointer items-center space-x-2">
                         <p className="text-white  text-[10px]">Privacy Policy</p>
                         <RedirectIcon/>
                     </a>
