@@ -157,6 +157,30 @@ const SignIn = () => {
                 </div>  
                 )}
                 
+                {step ===4 && (
+                      <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+                        <div className="w-[450px] py-5 max-sm:w-[100%] items-center justify-center bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                            <div className="py-5 px-8 flex flex-col space-y-5 justify-between h-full">
+                                <div className="flex flex-row space-x-2 items-center justify-center">
+                                    <PasswordLogo />
+                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
+                                </div>
+                                
+                                <div className="flex flex-row max-sm:flex-col max-sm:space-y-2 md:space-x-1 items-center">
+                                    <p className="text-white opacity-80 text-[14px]">A password reset link has been sent to</p>
+                                    <p className="text-white text-[14px]">you@gmail.com</p>
+                                </div>
+
+                                <div onClick={() => setStep(1)} className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
+                                    <div className="flex items-center justify-center">
+                                        <BackArrow />
+                                    </div>
+                                    <p className="text-white text-[14px]">Back to Login</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                )}
             </div>
             <div className="lg:absolute lg:bottom-10 flex items-center justify-center py-10 lg:left-[43.5%]">
                 <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
