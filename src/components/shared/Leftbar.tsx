@@ -9,6 +9,7 @@ import XLogo from "../Icons/XLogo"
 import SettingsIcon from "../Icons/SettingsIcon";
 import ClaimTokensLogo from "../Icons/ClaimTokensLogo";
 import TokenSaleWhite from "../Icons/TokenSaleWhite";
+import RedirectIcon from "../Icons/RedirectIcon";
 
 const Leftbar = () => {
 
@@ -51,18 +52,31 @@ const Leftbar = () => {
                     )}
                 </NavLink>
             </div>
-            <div className="border-t absolute flex items-center justify-center w-[181px] bottom-0 border-black botder-t-[2px]">
-                <div className="py-5 flex flex-col space-y-5">
-                    <p className="text-white opacity-50 text-[12px]">Connect with us</p>
-                    <div className="flex flex-row space-x-5">
-                        <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
-                            <DiscordLogo/>
-                        </div>
-                        <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
-                            <TelegramLogo/>
-                        </div>
-                        <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
-                            <XLogo/>
+            <div className="w-full flex flex-col bottom-0 absolute">
+                <div className="flex flex-col space-y-5 pb-5 pl-5">
+                    <div className="flex flex-row cursor-pointer items-center space-x-2">
+                        <p className="text-white opacity-50 text-[10px]">Terms of Service</p>
+                        <RedirectIcon/>
+                    </div>
+                    <div className="flex flex-row cursor-pointer items-center space-x-2">
+                        <p className="text-white opacity-50 text-[10px]">Privacy Policy</p>
+                        <RedirectIcon/>
+                    </div>
+
+                </div>
+                <div className="border-t  flex items-center pl-5  w-[181px]  border-black botder-t-[10px]">
+                    <div className="py-5 flex flex-col space-y-5">
+                        <p className="text-white opacity-50 font-bold text-[12px]">Connect with us</p>
+                        <div className="flex flex-row space-x-5">
+                            <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                <DiscordLogo/>
+                            </div>
+                            <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                <TelegramLogo/>
+                            </div>
+                            <div className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
+                                <XLogo/>
+                            </div>
                         </div>
                     </div>
                 </div>
