@@ -251,9 +251,9 @@ const TopBar = () => {
                                 </div>
                               </div>
                             
-                              <div className="w-full flex  items-center justify-center bg-[#0C0C0C]">
+                              <a href="/sign-in" className="w-full flex  items-center justify-center bg-[#0C0C0C]">
                                 <p className="text-[#FF3636] py-4 text-[16px]">Sign Out</p>
-                              </div>
+                              </a>
                             
 
                             <div className="pb-10 pt-2 px-5 flex flex-col space-y-5">
