@@ -12,6 +12,7 @@ import ClaimTokens from "./Pages/_root/RootPages/ClaimTokens"
 import SettingsLayout from "./Pages/_root/RootPages/Settings/SettingsLayout"
 import ProfileSettings from "./Pages/_root/RootPages/Settings/ProfileSettings"
 import WalletSettings from "./Pages/_root/RootPages/Settings/WalletSettings"
+import PasswordReset from "./Pages/_auth/AuthPages/PasswordReset"
 function App() {
   
 
@@ -31,6 +32,7 @@ function App() {
               <Route index element = { <SignIn/> } />
               <Route path= "/sign-in" element = { <SignIn/> } />
               <Route path= "/sign-up" element = { <SignUp/> } />
+              <Route path= "/passwordReset" element = { <PasswordReset/> } />
               <Route path= "*" element = { <PageNotFound/> } />
              
             
