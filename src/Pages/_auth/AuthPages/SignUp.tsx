@@ -10,7 +10,7 @@ import VerifyEmailIcon from "@/components/Icons/VerifyEmailIcon";
 import PasswordLogo from "@/components/Icons/PasswordLogo";
 import BackArrow from "@/components/Icons/BackArrow";
 import PasswordIconComp from "@/components/shared/PasswordIconComp";
-import TermsAndCond from "@/components/shared/TermsAndCond";
+
 
 const SignUp = () => {
   const [chanceInfo, setChanceInfo] = useState(true);
@@ -18,7 +18,6 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [revealConfirmError, setRevealConfirmError] = useState(false);
-  const [isTermsAndCondOpen, setIsTermsAndCondOpen]= useState(false);
   const [validation, setValidation] = useState({
     minLength: false,
     upperCase: false,
@@ -116,13 +115,9 @@ const SignUp = () => {
                 <div className="flex px-8 flex-row space-x-3 items-center">
                   <Checkbox id="terms" />
                   <Label htmlFor="terms" className="text-white opacity-50 text-[14px] max-sm:text-[12px]">
-                    By creating an account, I agree to Karbon's <span onClick={() => setIsTermsAndCondOpen(true)} className="underline underline-offset-2">Terms of Service</span> and <span onClick={() => setIsTermsAndCondOpen(true)} className="underline underline-offset-2">Privacy Policy</span>
+                    By creating an account, I agree to Karbon's <a href ='https://karbon-website.vercel.app/terms-of-use' target='blank' className="underline underline-offset-2">Terms of Service</a> and <a href ='https://karbon-website.vercel.app/privacy-policy' target='blank' className="underline underline-offset-2">Privacy Policy</a>
                   </Label>
                 </div>
-                <TermsAndCond
-                    isDialogOpen ={isTermsAndCondOpen}
-                    setIsDialogOpen = {setIsTermsAndCondOpen}
-                    />
 
                 <div className="flex px-8 flex-col space-y-5">
                   <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" />
