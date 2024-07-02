@@ -54,12 +54,12 @@ const Leftbar = () => {
             </div>
             <div className="w-full flex flex-col bottom-0 absolute">
                 <div className="flex flex-col space-y-5 pb-5 pl-5">
-                    <div className="flex flex-row cursor-pointer items-center space-x-2">
-                        <p className="text-white opacity-50 text-[10px]">Terms of Service</p>
+                    <div className="flex flex-row opacity-50 transition ease-in-out hover:opacity-100 cursor-pointer items-center space-x-2">
+                        <p className="text-white  text-[10px]">Terms of Service</p>
                         <RedirectIcon/>
                     </div>
-                    <div className="flex flex-row cursor-pointer items-center space-x-2">
-                        <p className="text-white opacity-50 text-[10px]">Privacy Policy</p>
+                    <div className="flex flex-row opacity-50 transition ease-in-out hover:opacity-100 cursor-pointer items-center space-x-2">
+                        <p className="text-white  text-[10px]">Privacy Policy</p>
                         <RedirectIcon/>
                     </div>
 

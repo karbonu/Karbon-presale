@@ -102,7 +102,7 @@ const SignIn = () => {
                                         <p className="text-white text-[14px]">Password</p>
                                         <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" />
                                     </div>
-                                    <p onClick={() => setStep(3)} className="text-[14px] max-sm:text-[12px] cursor-pointer text-[#08E04A] font-semibold">Forgot Passwprd?</p>
+                                    <p onClick={() => setStep(3)} className="text-[14px] max-sm:text-[12px] cursor-pointer text-[#08E04A] font-semibold">Forgot Password?</p>
                                     <div>
                                         <a href="/dashboard/tokensale" className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                             <p className="font-bold text-[14px] shadow-sm">
