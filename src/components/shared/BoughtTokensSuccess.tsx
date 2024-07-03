@@ -22,7 +22,7 @@ const BoughtTokensSuccess = (props : any) => {
                     <div className="flex flex-col items-center justify-center space-y-2">
                         <p className="text-[#08E04A] font-medium text-[32px]">Successful</p>
                     </div>
-                    <p className="text-center text-white w-[251px] text-[14px] leading-6 tracking-normal">Your contribution of <span className="font-bold">12,000 Karbon</span> was successful..</p>
+                    <p className="text-center text-white w-[251px] text-[14px] leading-6 tracking-normal">Your contribution of <span className="font-bold">{props.boughtAmount} Karbon</span> was successful..</p>
 
                     <div onClick={() => props.setIsDialogOpen(false)} className="bg-transparent py-2 px-10 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
                         Close

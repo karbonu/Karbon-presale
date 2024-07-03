@@ -13,12 +13,16 @@ import SettingsLayout from "./Pages/_root/RootPages/Settings/SettingsLayout"
 import ProfileSettings from "./Pages/_root/RootPages/Settings/ProfileSettings"
 import WalletSettings from "./Pages/_root/RootPages/Settings/WalletSettings"
 import PasswordReset from "./Pages/_auth/AuthPages/PasswordReset"
+import { AuthProvider } from "./components/shared/Contexts/AuthContext"
+import ProtectedRoute from "./components/shared/Hooks/ProtectedRoute"
 function App() {
   
 
   return (
     <>
     <HelmetProvider>
+      <AuthProvider>
+
       <main className="bgSettings">
         <MetaTags
         title="Karbon Sale"
@@ -38,7 +42,11 @@ function App() {
             
             </Route>
 
-            <Route path="/dashboard" element = {<PageLayout/>}>
+            <Route path="/dashboard" element = {
+              <ProtectedRoute>
+                <PageLayout/>
+              </ProtectedRoute>
+              }>
 
                 <Route index element = { <TokenSale/> } />
                 <Route path="tokenSale" element = { <TokenSale/> }/>
@@ -59,6 +67,7 @@ function App() {
 
           </Routes>
       </main>
+      </AuthProvider>
     </HelmetProvider>
     </>
   )

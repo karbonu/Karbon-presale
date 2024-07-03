@@ -6,10 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
+import {  useNavigate } from "react-router-dom";
 import VerifyEmailIcon from "@/components/Icons/VerifyEmailIcon";
 import PasswordLogo from "@/components/Icons/PasswordLogo";
 import BackArrow from "@/components/Icons/BackArrow";
 import PasswordIconComp from "@/components/shared/PasswordIconComp";
+import { useRegisterMutation } from "@/components/shared/Hooks/UseRegisterMutation";
+import { useAccount } from "wagmi";
+import { BarLoader } from "react-spinners";
 
 
 const SignUp = () => {
@@ -17,7 +21,10 @@ const SignUp = () => {
   const [step, setStep] = useState(1);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
   const [revealConfirmError, setRevealConfirmError] = useState(false);
+  const [registrationError, setRegistrationError] = useState('');
   const [validation, setValidation] = useState({
     minLength: false,
     upperCase: false,
@@ -25,8 +32,10 @@ const SignUp = () => {
     number: false,
     specialChar: false,
   });
+  const navigate = useNavigate();
+  const registerMutation = useRegisterMutation();
 
-  const validatePassword = (password : any) => {
+  const validatePassword = (password: string) => {
     const minLength = password.length >= 10;
     const upperCase = /[A-Z]/.test(password);
     const lowerCase = /[a-z]/.test(password);
@@ -42,14 +51,16 @@ const SignUp = () => {
     });
   };
 
-  const handlePasswordChange = (event : any) => {
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = event.target.value;
+    setRegistrationError('');
     setPassword(newPassword);
     validatePassword(newPassword);
   };
 
-  const handleConfirmPasswordChange = (event : any) => {
+  const handleConfirmPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newConfirmPassword = event.target.value;
+    setRegistrationError('');
     setConfirmPassword(newConfirmPassword);
 
     if (newConfirmPassword !== password) {
@@ -57,6 +68,39 @@ const SignUp = () => {
     } else {
       setRevealConfirmError(false);
     }
+  };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+    setRegistrationError('');
+  };
+
+  const {address} = useAccount();
+
+  const handleRegister = () => {
+    if (password !== confirmPassword) {
+      setRevealConfirmError(true);
+      return;
+    }
+    setIsRegistering(true);
+    registerMutation.mutate(
+      {
+        email,
+        walletAddress: address || "",
+        referrerId: "",
+        password,
+      },
+      {
+        onSuccess: () => {
+          setIsRegistering(false);
+          navigate("/sign-in");
+        },
+        onError: () => {
+          setRegistrationError("Registration failed");
+          setIsRegistering(false);
+        },
+      }
+    );
   };
 
   return (
@@ -115,12 +159,12 @@ const SignUp = () => {
                 <div className="flex px-8 flex-row space-x-3 items-center">
                   <Checkbox id="terms" />
                   <Label htmlFor="terms" className="text-white opacity-50 text-[14px] max-sm:text-[12px]">
-                    By creating an account, I agree to Karbon's <a href ='https://karbon-website.vercel.app/terms-of-use' target='blank' className="underline underline-offset-2">Terms of Service</a> and <a href ='https://karbon-website.vercel.app/privacy-policy' target='blank' className="underline underline-offset-2">Privacy Policy</a>
+                    By creating an account, I agree to Karbon's <a href='https://karbon-website.vercel.app/terms-of-use' target='blank' className="underline underline-offset-2">Terms of Service</a> and <a href='https://karbon-website.vercel.app/privacy-policy' target='blank' className="underline underline-offset-2">Privacy Policy</a>
                   </Label>
                 </div>
 
                 <div className="flex px-8 flex-col space-y-5">
-                  <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" />
+                  <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
                   <div>
                     <div onClick={() => setStep(2)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                       <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
@@ -147,7 +191,7 @@ const SignUp = () => {
                 </div>
                 <div className="flex flex-col space-y-1">
                   <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">A six-digit verification code was sent to</p>
-                  <p className="text-white text-[14px] max-sm:text-[12px]">you@gmail.com</p>
+                  <p className="text-white text-[14px] max-sm:text-[12px]">{email}</p>
                   <div className="flex flex-row space-x-2">
                     <p className="text-white opacity-70 text-[14px] max-sm:text-[12px]">Not your email?</p>
                     <p onClick={() => setStep(1)} className="text-[14px] max-sm:text-[12px] text-[#08E04A] font-semibold cursor-pointer">change email</p>
@@ -180,7 +224,7 @@ const SignUp = () => {
                 </div>
                 <div className="flex flex-row space-x-1 items-center">
                   <p className="text-white opacity-80 text-[14px] max-sm:text-[12px]">Welcome</p>
-                  <p className="text-white text-[14px] max-sm:text-[12px]">you@gmail.com</p>
+                  <p className="text-white text-[14px] max-sm:text-[12px]">{email}</p>
                 </div>
 
                 <div className="flex flex-col space-y-5">
@@ -219,10 +263,18 @@ const SignUp = () => {
                     )}
                   </div>
                   <div>
-                    <a href="/" className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                      <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
-                    </a>
+                    <button disabled={isRegistering} onClick={handleRegister} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                      {isRegistering ? (
+                        <BarLoader/>
+                      ): (
+                        <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
+                      )}
+                    </button>
                   </div>
+
+                  {registrationError && (
+                      <p className="text-[10px] text-red-500 mt-2">{registrationError}</p>
+                    )}
 
                   <div onClick={() => setStep(1)} className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
                     <div className="flex items-center justify-center">
@@ -237,9 +289,9 @@ const SignUp = () => {
         )}
       </div>
 
-      <div className="lg:absolute lg:bottom-10 flex items-center justify-center py-10 lg:left-[43.5%]">
-            <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
-        </div>
+      <div className="lg:absolute lg:bottom-10 flex items-center justify-center pt-10 lg:left-[43.5%]">
+        <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
+      </div>
     </div>
   );
 };

@@ -1,3 +1,7 @@
+// src/components/SignIn.tsx
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useInitialNonceMutation, useLoginMutation } from "@/components/shared/Hooks/UseAuthMutation";
 import AppleLogo from "@/components/Icons/AppleLogo";
 import BackArrow from "@/components/Icons/BackArrow";
 import CloseIcon from "@/components/Icons/CloseIcon";
@@ -5,11 +9,70 @@ import GoogleLogo from "@/components/Icons/GoogleLogo";
 import KarbonLogo from "@/components/Icons/KarbonLogo";
 import PasswordLogo from "@/components/Icons/PasswordLogo";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
+import { useAuth } from '@/components/shared/Contexts/AuthContext';
+import { BarLoader } from 'react-spinners';
 
 const SignIn = () => {
     const [chanceInfo, setChanceInfo] = useState(true);
     const [step, setStep] = useState(1);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [nonce, setNonce] = useState('');
+    const [isLoadingNonce, setIsLoadingNonce] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
+    
+    const initialNonceMutation = useInitialNonceMutation();
+    const loginMutation = useLoginMutation();
+    const { setEmail: setAuthEmail, setPassword : setAuthPassword, setAuthenticated} = useAuth();
+
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
+        setErrorMessage('');
+    };
+
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value);
+        setErrorMessage('');
+    };
+
+    const handleInitialNonceRequest = () => {
+        setIsLoadingNonce(true);
+        initialNonceMutation.mutate(
+            { email },
+            {
+                onSuccess: (response : any) => {
+                    setNonce(response.data.nonce);
+                    setStep(2);
+                    setErrorMessage('');
+                    setIsLoadingNonce(false);
+                },
+                onError: () => {
+                    setErrorMessage('Invalid email');
+                    setIsLoadingNonce(false);
+                }
+            }
+        );
+    };
+
+    const handleLoginRequest = () => {
+        loginMutation.mutate(
+            { email, password, nonce },
+            {
+                onSuccess: () => {
+                    // setUserID(response.data.userId)
+                    // setReferralCOde(response.data.referralcode)
+                    setAuthEmail(email);
+                    setAuthPassword(password);
+                    setAuthenticated(true);
+                    navigate('/dashboard');
+                },
+                onError: () => {
+                    setErrorMessage('Login failed');
+                }
+            }
+        );
+    };
 
     return (
         <div className="p-[60px] max-sm:p-5">
@@ -65,13 +128,20 @@ const SignIn = () => {
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
-                                    <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" />
+                                    <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
                                     <div>
-                                        <div onClick={() => setStep(2)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                                            <p className="font-bold text-[14px] shadow-sm">
-                                                Sign In
-                                            </p>
-                                        </div>
+                                        <button disabled={isLoadingNonce} onClick={handleInitialNonceRequest} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                                            {isLoadingNonce ? (
+                                                <BarLoader/>
+                                            ) : (
+                                                <p className="font-bold text-[14px] shadow-sm">
+                                                    Sign In
+                                                </p>
+                                            )}
+                                        </button>
+                                        {errorMessage && (
+                                            <p className="text-[12px] w-full text-center text-red-500 mt-2">{errorMessage}</p>
+                                        )}
                                     </div>
                                 </div>
 
@@ -94,21 +164,24 @@ const SignIn = () => {
                                 </div>
                                 <div className="flex flex-row space-x-1 items-center">
                                     <p className="text-white opacity-80 text-[14px]">Welcome</p>
-                                    <p className="text-white text-[14px]">you@gmail.com</p>
+                                    <p className="text-white text-[14px]">{email}</p>
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
                                     <div className="flex flex-col space-y-2">
                                         <p className="text-white text-[14px]">Password</p>
-                                        <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" />
+                                        <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
                                     </div>
                                     <p onClick={() => setStep(3)} className="text-[14px] max-sm:text-[12px] cursor-pointer text-[#08E04A] font-semibold">Forgot Password?</p>
                                     <div>
-                                        <a href="/dashboard/tokensale" className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                                        <div onClick={handleLoginRequest} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                             <p className="font-bold text-[14px] shadow-sm">
                                                 Proceed
                                             </p>
-                                        </a>
+                                        </div>
+                                        {errorMessage && (
+                                            <p className=" text-[12px] w-full text-center text-red-500 mt-2">{errorMessage}</p>
+                                        )}
                                     </div>
                                 </div>
 
@@ -157,7 +230,7 @@ const SignIn = () => {
                 </div>  
                 )}
                 
-                {step ===4 && (
+                {step === 4 && (
                       <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
                         <div className="w-[450px] py-5 max-sm:w-[100%] items-center justify-center bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 px-8 flex flex-col space-y-5 justify-between h-full">
@@ -168,7 +241,7 @@ const SignIn = () => {
                                 
                                 <div className="flex flex-row max-sm:flex-col max-sm:space-y-2 md:space-x-1 items-center">
                                     <p className="text-white opacity-80 text-[14px]">A password reset link has been sent to</p>
-                                    <p className="text-white text-[14px]">you@gmail.com</p>
+                                    <p className="text-white text-[14px]">{email}</p>
                                 </div>
 
                                 <div onClick={() => setStep(1)} className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
