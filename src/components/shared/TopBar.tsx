@@ -29,13 +29,15 @@ const TopBar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const location = useLocation();
-  const { email, password, setPassword, setEmail, setAuthenticated } = useAuth();
+  const { email, password, setPassword, setEmail, setAuthenticated, setReferralCOde, setUserID } = useAuth();
   const { open } = useWeb3Modal();
   const { address } = useAccount();
 
   const handleSignOut =() => {
-    setEmail('');
     setPassword('');
+    setEmail('');
+    setUserID('');
+    setReferralCOde('');
     setAuthenticated(false);
   }
 

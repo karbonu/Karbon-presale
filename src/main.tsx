@@ -9,6 +9,7 @@ import { WagmiProvider } from 'wagmi'
 import {  bscTestnet} from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config, projectId } from './components/shared/Constants/config.ts'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()
@@ -32,7 +33,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
+        <GoogleOAuthProvider clientId=''>
           <App />
+        </GoogleOAuthProvider>
       </QueryClientProvider>
     </WagmiProvider>
   </BrowserRouter>,

@@ -8,7 +8,7 @@ import { useState } from "react";
 const ProfileSettings = () => {
 
   const [copied, setCopied] = useState(false);
-  const { email, setPassword, setEmail, setAuthenticated } = useAuth();
+  const { email, setPassword, setReferralCOde, setUserID, setEmail, setAuthenticated } = useAuth();
   const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
 
   const ReferralLink = "https://karbon.com/78236-tube..."
@@ -31,8 +31,10 @@ const ProfileSettings = () => {
   };
 
   const handleSignOut =() => {
-    setEmail('');
     setPassword('');
+    setEmail('');
+    setUserID('');
+    setReferralCOde('');
     setAuthenticated(false);
   }
 

@@ -56,6 +56,12 @@ const SignIn = () => {
         );
     };
 
+    const handleEmailKeyDown = (event: any) => {
+        if (event.key === 'Enter') {
+            handleInitialNonceRequest();
+        }
+      };
+
     const handleLoginRequest = () => {
         setIsLoggingIn(true);
         loginMutation.mutate(
@@ -77,6 +83,13 @@ const SignIn = () => {
             }
         );
     };
+
+    const handleSignInKeyDown = (event: any) => {
+        if (event.key === 'Enter') {
+            handleLoginRequest();
+        }
+      };
+
 
     return (
         <div className="p-[60px] max-sm:p-5">
@@ -132,7 +145,7 @@ const SignIn = () => {
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
-                                    <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
+                                    <input onKeyDown={handleEmailKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
                                     <div>
                                         <button disabled={isLoadingNonce} onClick={handleInitialNonceRequest} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                             {isLoadingNonce ? (
@@ -174,7 +187,7 @@ const SignIn = () => {
                                 <div className="flex flex-col space-y-5">
                                     <div className="flex flex-col space-y-2">
                                         <p className="text-white text-[14px]">Password</p>
-                                        <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
+                                        <input onKeyDown={handleSignInKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
                                     </div>
                                     <p onClick={() => setStep(3)} className="text-[14px] max-sm:text-[12px] cursor-pointer text-[#08E04A] font-semibold">Forgot Password?</p>
                                     <div>

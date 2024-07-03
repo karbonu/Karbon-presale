@@ -20,7 +20,7 @@ const Leftbar = () => {
     const activeClassName = 'flex bg-black w-[160px] h-[48px] border-l border-[#08E04A] rounded-[4px]';
     const inactiveClassName = 'flex bg-[#101010] w-[160px] h-[48px] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A] transition ease-in-out rounded-[4px]';
   return (
-    <div className='h-screen max-lg:hidden z-50 fixed bg-[#151515]'>
+    <div className='h-screen max-lg:hidden flex justify-between flex-col z-50 fixed bg-[#151515]'>
         <div className="py-10 flex flex-col w-full">
             <div className="flex items-center justify-center">
                 <KarbonLogoBig/>
@@ -52,6 +52,7 @@ const Leftbar = () => {
                     )}
                 </NavLink>
             </div>
+            
             <div className="w-full flex flex-col bottom-0 absolute">
                 <div className="flex flex-col space-y-5 pb-5 pl-5">
                     <a href ='https://karbon.finance/terms-of-use' target='blank' className="flex flex-row opacity-50 transition ease-in-out hover:opacity-100 cursor-pointer items-center space-x-2">
@@ -64,7 +65,7 @@ const Leftbar = () => {
                     </a>
 
                 </div>
-                <div className="border-t  flex items-center pl-5  w-[181px]  border-black botder-t-[10px]">
+                <div className="border-t flex items-center pl-5  w-[181px]  border-black botder-t-[10px]">
                     <div className="py-5 flex flex-col space-y-5">
                         <p className="text-white opacity-50 font-bold text-[12px]">Connect with us</p>
                         <div className="flex flex-row space-x-5">

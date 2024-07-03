@@ -10,7 +10,7 @@ import UpArrow from "@/components/Icons/UpArrow";
 import WhatsappLogo from "@/components/Icons/WhatsappLogo";
 import XLogo from "@/components/Icons/XLogo";
 import MetaTags from "@/components/shared/MetaTags"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ClimbingBoxLoader } from "react-spinners";
 import BuyWithUSDT from "./BuyWithUSDT";
 import BuyWithCreditCard from "./BuyWithCreditCard";
@@ -29,10 +29,12 @@ import TermsAndCond from "@/components/shared/TermsAndCond";
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from "wagmi";
 import CheckMark from "@/components/Icons/CheckMark";
+import { getProgress, getTotalUSDSpent, getTotalUSDTSpent, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks";
+import { useAuth } from "@/components/shared/Contexts/AuthContext";
 
 
 const TokenSale = () => {
-  const {isConnected} = useAccount();
+  const {isConnected, address} = useAccount();
   const [loading, setIsLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -42,6 +44,89 @@ const TokenSale = () => {
   const [isTermsAndCondOpen, setIsTermsAndCondOpen]= useState(false);
   const [copied, setCopied] = useState(false);
   const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
+  const[progress, setProgress] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [decimalTotalAmount, setDecimalTotalAmount] = useState("00");
+  const [tokensBought, setTokensBought] = useState(0);
+  const [referralCount, setReferralCount] = useState(0);
+  const [fullTransaction, setFulltransaction] = useState(false);
+  const {UserID} = useAuth();
+  
+
+
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      const response = await getProgress();
+      if (response !== 'Failed') {
+        const newProgress = Number(response.data);
+        setProgress(isNaN(newProgress) ? 0 : newProgress);
+      } else {
+        console.log(response);
+      }
+    };
+  
+    fetchProgress();
+  }, [fullTransaction]);
+
+  
+
+  useEffect(() => {
+    let USDTAmount = 0;
+    let DollarAmount = 0;
+
+    const fetchUSDT = async () => {
+      const response = await getTotalUSDTSpent(address as string );
+      if (response !== 'Failed') {
+        USDTAmount = (isNaN(Number(response.data)) ? 0 : response.data);
+      } else {
+        console.log(response);
+      }
+    };
+
+
+    const fetchDollar = async () => {
+      const response = await getTotalUSDSpent(UserID as string);
+      if (response !== 'Failed') {
+        DollarAmount = (isNaN(Number(response.data)) ? 0 : response.data);
+      } else {
+        console.log(response);
+      }
+    };
+  
+    fetchUSDT();
+    fetchDollar();
+
+    setTotalAmount(USDTAmount + DollarAmount);
+
+    setTokensBought(totalAmount * 10);
+
+    setDecimalTotalAmount('00');
+
+
+  }, [fullTransaction]);
+
+
+  useEffect(() => {
+    const fetchReeferralCOunt = async () => {
+      const response = await getUserReferrals(UserID as string);
+      if (response !== 'Failed') {
+        const newCount = Number(response.data);
+        setReferralCount(isNaN(newCount) ? 0 : newCount);
+      } else {
+        console.log(response);
+      }
+    };
+  
+    fetchReeferralCOunt();
+  }, []);
+
+  
+
+
+
+
+
 
   const ReferralLink = "https://karbon.com/78236-tube..."
 
@@ -78,6 +163,9 @@ const TokenSale = () => {
       open();
     }
   }
+
+
+
 
 
   if (loading) {
@@ -210,7 +298,7 @@ const TokenSale = () => {
                       <div className="flex flex-col space-y-2">
                         <p className="text-white text-[12px] opacity-70">TOTAL REFERRALS</p>
                         <div className="flex flex-row ">
-                          <p className="text-white text-[28px]">345</p>
+                          <p className="text-white text-[28px]">{referralCount}</p>
                           
                         </div>
                       </div>
@@ -271,8 +359,8 @@ const TokenSale = () => {
                     <div className="w-[253px] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">AMOUNT SPENT</p>
                       <div className="flex flex-row space-x-1">
-                        <p className="text-white text-[24px]">21,325</p>
-                        <p className="text-white text-[16px]">.45</p>
+                        <p className="text-white text-[24px]">{totalAmount}</p>
+                        <p className="text-white text-[16px]">.{decimalTotalAmount}</p>
                         <p className="text-white font-extralight text-[24px]">USDT</p>
                       </div>
                     </div>
@@ -280,7 +368,7 @@ const TokenSale = () => {
                     <div className="w-[253px] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
                       <div className="flex flex-row space-x-1">
-                        <p className="text-white text-[24px]">0.00345</p>
+                        <p className="text-white text-[24px]">{tokensBought}</p>
                         <p className="text-white font-extralight text-[24px]">KARBON</p>
                       </div>
                     </div>
@@ -322,12 +410,12 @@ const TokenSale = () => {
                         
                         <Dot/>
 
-                        <p className="text-[#08E04A] text-[12px]">80%</p>
+                        <p className="text-[#08E04A] text-[12px]">{progress}%</p>
 
                       </div>
                     </div>
                     <div>
-                    <Progress value={33} />
+                    <Progress value={progress} />
                     </div>
                     <div className="flex flex-col w-full items-center justify-center space-y-3">
                       <p className="text-white opacity-70 text-[10px]">SALE ENDS IN</p>
@@ -401,6 +489,8 @@ const TokenSale = () => {
                               setSelectedMethod={setSelectedMethod}
                               isDialogOpen={isDialogOpen}
                               setIsDialogOpen={setIsDialogOpen}
+                              fullTransaction = {fullTransaction}
+                              setFulltransaction = {setFulltransaction}
                             />
                           )}
                         </div>
@@ -471,12 +561,12 @@ const TokenSale = () => {
                           
                           <Dot/>
 
-                          <p className="text-[#08E04A] text-[12px]">80%</p>
+                          <p className="text-[#08E04A] text-[12px]">{progress}%</p>
 
                         </div>
                       </div>
                       <div>
-                      <Progress value={33} />
+                      <Progress value={progress} />
                       </div>
                       <div className="flex flex-col w-full items-center justify-center space-y-3">
                         <p className="text-white opacity-70 text-[10px]">SALE ENDS IN</p>

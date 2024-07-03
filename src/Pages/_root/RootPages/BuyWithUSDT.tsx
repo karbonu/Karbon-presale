@@ -41,7 +41,6 @@ const BuyWithUSDT = (props : any) => {
   const [tokenAmount, setTokenAmount] = useState(0);
   const { open } = useWeb3Modal();
   const { isConnected, address } = useAccount();
-  const [fullTransaction, setFulltransaction] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const { data: hash, error, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed, isError : isFailed } = useWaitForTransactionReceipt({ hash });
@@ -66,7 +65,7 @@ const BuyWithUSDT = (props : any) => {
           functionName: 'buyTokens',
           args: [BigInt(tokenAmount * 10 ** 18)],
         });
-        setFulltransaction(true);
+        props.setFulltransaction(true);
       } else {
         writeContract({
           address: USDTAddress,
@@ -80,7 +79,7 @@ const BuyWithUSDT = (props : any) => {
   }
 
   useEffect(() => {
-    if (isConfirmed && fullTransaction) {
+    if (isConfirmed && props.fullTransaction) {
       setIsBuySuccessModalOpen(true);
       setIsApproved(false);
 
@@ -93,15 +92,17 @@ const BuyWithUSDT = (props : any) => {
         presaleId: '1',
         paymentMethod: 'USDT', // Replace with actual payment method if needed
       });
+      
+      props.setFulltransaction(false);
     } else {
-      if(isFailed && fullTransaction){
+      if(isFailed && props.fullTransaction){
         setIsBuyFailedModalOpen(true);
       }else{
         console.log(error);  
       }
       console.log(error);
     }
-  }, [isConfirmed, fullTransaction, isFailed]);
+  }, [isConfirmed, props.fullTransaction, isFailed]);
 
   return (
     <div className='w-full space-y-5 flex flex-col'>
