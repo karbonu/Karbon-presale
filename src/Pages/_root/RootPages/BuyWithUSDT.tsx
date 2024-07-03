@@ -17,6 +17,7 @@ import BackArrow from '@/components/Icons/BackArrow';
 import USDTIcon from '@/components/Icons/USDTIcon';
 import UpArrow from '@/components/Icons/UpArrow';
 import { AxiosResponse } from 'axios';
+import BoughtTokensFailed from '@/components/shared/BoughtTokensFailed';
 
 type ContributeData = {
     amount: number;
@@ -43,7 +44,7 @@ const BuyWithUSDT = (props : any) => {
   const [fullTransaction, setFulltransaction] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const { data: hash, error, isPending, writeContract } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
+  const { isLoading: isConfirming, isSuccess: isConfirmed, isError : isFailed } = useWaitForTransactionReceipt({ hash });
   const { data: balance } = useReadContract({
     abi: USDTABI,
     address: USDTAddress,
@@ -51,6 +52,7 @@ const BuyWithUSDT = (props : any) => {
     args: [address as `0x${string}`],
   });
   const [isBuySuccessModalOpen, setIsBuySuccessModalOpen] = useState(false);
+  const [isBuyFailedModalOpen, setIsBuyFailedModalOpen] = useState(false);
   const contributeMutation = useContributeMutation();
 
   async function handleBuy() {
@@ -92,9 +94,14 @@ const BuyWithUSDT = (props : any) => {
         paymentMethod: 'USDT', // Replace with actual payment method if needed
       });
     } else {
+      if(isFailed && fullTransaction){
+        setIsBuyFailedModalOpen(true);
+      }else{
+        console.log(error);  
+      }
       console.log(error);
     }
-  }, [isConfirmed, fullTransaction]);
+  }, [isConfirmed, fullTransaction, isFailed]);
 
   return (
     <div className='w-full space-y-5 flex flex-col'>
@@ -194,6 +201,11 @@ const BuyWithUSDT = (props : any) => {
         isDialogOpen={isBuySuccessModalOpen}
         setIsDialogOpen={setIsBuySuccessModalOpen}
         boughtAmount = {tokenAmount}
+      />
+
+      <BoughtTokensFailed
+        isDialogOpen={isBuyFailedModalOpen}
+        setIsDialogOpen={setIsBuyFailedModalOpen}
       />
     </div>
   );

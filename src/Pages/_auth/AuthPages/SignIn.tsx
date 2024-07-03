@@ -19,12 +19,13 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const [nonce, setNonce] = useState('');
     const [isLoadingNonce, setIsLoadingNonce] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     
     const initialNonceMutation = useInitialNonceMutation();
     const loginMutation = useLoginMutation();
-    const { setEmail: setAuthEmail, setPassword : setAuthPassword, setAuthenticated} = useAuth();
+    const { setEmail: setAuthEmail, setPassword : setAuthPassword, setAuthenticated, setUserID, setReferralCOde} = useAuth();
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -56,19 +57,22 @@ const SignIn = () => {
     };
 
     const handleLoginRequest = () => {
+        setIsLoggingIn(true);
         loginMutation.mutate(
             { email, password, nonce },
             {
-                onSuccess: () => {
-                    // setUserID(response.data.userId)
-                    // setReferralCOde(response.data.referralcode)
+                onSuccess: (response: any) => {
+                    setUserID(response.data.user.id)
+                    setReferralCOde(response.data.user.referralCode)
                     setAuthEmail(email);
                     setAuthPassword(password);
                     setAuthenticated(true);
                     navigate('/dashboard');
+                    setIsLoggingIn(false);
                 },
                 onError: () => {
-                    setErrorMessage('Login failed');
+                    setErrorMessage('Login failed, Try Again');
+                    setIsLoggingIn(false);
                 }
             }
         );
@@ -175,9 +179,13 @@ const SignIn = () => {
                                     <p onClick={() => setStep(3)} className="text-[14px] max-sm:text-[12px] cursor-pointer text-[#08E04A] font-semibold">Forgot Password?</p>
                                     <div>
                                         <div onClick={handleLoginRequest} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                                            <p className="font-bold text-[14px] shadow-sm">
-                                                Proceed
-                                            </p>
+                                            {isLoggingIn ? (
+                                                <BarLoader/>
+                                            ): (
+                                                <p className="font-bold text-[14px] shadow-sm">
+                                                    Proceed
+                                                </p>
+                                            )}
                                         </div>
                                         {errorMessage && (
                                             <p className=" text-[12px] w-full text-center text-red-500 mt-2">{errorMessage}</p>
