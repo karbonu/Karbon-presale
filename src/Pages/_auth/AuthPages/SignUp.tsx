@@ -17,7 +17,7 @@ import { BarLoader } from "react-spinners";
 
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
+import { useInitialNonceMutation, useLoginMutation, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/shared/Contexts/AuthContext";
 
@@ -43,6 +43,8 @@ const SignUp = () => {
   });
   const registerMutation = useRegisterMutation();
   const verifyMutat = useVerifyEmailMutation();
+  const initialNonceMutation = useInitialNonceMutation();
+  const loginMutation = useLoginMutation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isVerifying, setISVerifying] = useState(false);
   const[verificationError, setverificationError] = useState('');
@@ -142,24 +144,58 @@ const SignUp = () => {
       return;
     }
     setISVerifying(true);
+    let nonce = '';
     verifyMutat.mutate(
       {
         email,
         otp,
       },
       {
-        onSuccess: (response: any) => {
-          console.log(response)
-          console.log(response.data)
+        onSuccess: () => {
           setISVerifying(false);
-          navigate('/sign-in')
+
+          initialNonceMutation.mutate(
+            { email },
+            {
+                onSuccess: (response: any) => {
+                  nonce = response.data.nonce;
+                },
+                onError: (error) => {
+                  console.log(error)
+                }
+            }
+        );
+          
+
+
+          loginMutation.mutate(
+            { email, password, nonce },
+            {
+                onSuccess: (response: any) => {
+                    if(response.data.user.is_verified === false){
+                        setStep(5)
+                        return;
+                    }
+                    console.log(response.data)
+                    setUserID(response.data.user.id);
+                    setReferralCOde(response.data.user.referralCode);
+                    setAuthEmail(email);
+                    setAuthPassword(password);
+                    setAuthenticated(true);
+                    navigate('/dashboard');
+                    setIsLoggingIn(false);
+                },
+                onError: (error) => {
+                  console.log(error)
+                }
+            }
+        );
+
+
         },
-        onError: (response : any) => {
-          //   setverificationError("Expired OTP");
-          if(response.message =='The otp provided has expired'){
-              setISVerifying(false);
-              navigate('/sign-in')
-          }
+        onError: (error) => {
+          console.log(error)
+            setverificationError("Expired OTP");
             setISVerifying(false);
       }
     }
@@ -196,8 +232,6 @@ const login = useGoogleLogin({
                 headers: { Authorization: `Bearer ${token}` },
             });
             const { email, sub: userID } = userInfo.data;
-            console.log(userInfo.data)
-            console.log(email, userID);
             socialSignIn.mutate(
               { 
                   token : token, 
@@ -348,7 +382,7 @@ const login = useGoogleLogin({
                     )}
 
                   <div>
-                    <button disabled={isVerifying} onClick={() => handleVerify} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                    <button disabled={isVerifying} onClick={() => handleVerify()} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                       {isVerifying ? (
                         <BarLoader/>
                       ): (

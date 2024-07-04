@@ -12,9 +12,11 @@ import ClaimTokens from "./Pages/_root/RootPages/ClaimTokens"
 import SettingsLayout from "./Pages/_root/RootPages/Settings/SettingsLayout"
 import ProfileSettings from "./Pages/_root/RootPages/Settings/ProfileSettings"
 import WalletSettings from "./Pages/_root/RootPages/Settings/WalletSettings"
-import PasswordReset from "./Pages/_auth/AuthPages/PasswordReset"
 import { AuthProvider } from "./components/shared/Contexts/AuthContext"
 import ProtectedRoute from "./components/shared/Hooks/ProtectedRoute"
+import AdminLayout from "./Admin/AdminLayout"
+import AdminConnectWallet from "./Admin/AdminPages/AdminConnectWallet"
+import AdminDashboard from "./Admin/AdminPages/AdminDashboard"
 function App() {
   
 
@@ -31,12 +33,16 @@ function App() {
         name=""
         />
         <Routes>
+          <Route path= "/adminSignin" element = { <AdminConnectWallet/> } />
+          <Route path="/admin" element = {<AdminLayout/>}>
+              <Route index element = { <AdminDashboard/> } />
+            </Route>
+
           <Route element = {<AuthLayout/>}>
             
               <Route index element = { <SignIn/> } />
               <Route path= "/sign-in" element = { <SignIn/> } />
               <Route path= "/sign-up" element = { <SignUp/> } />
-              <Route path= "/passwordReset" element = { <PasswordReset/> } />
               <Route path= "*" element = { <PageNotFound/> } />
              
             

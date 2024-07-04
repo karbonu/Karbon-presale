@@ -247,17 +247,16 @@ const TokenSale = () => {
 
                     </div>
                 </div>
-              
-              
             </DialogContent>
           </Dialog>
 
         
-          <div className=" flex  pb-10 max-lg:hidden">
-            <div className="flex flex-row  h-full w-full justify-between space-x-5">
-              <div className="flex flex-col w-[795px] justify-center">
-                <div className="flex items-center w-[795px] justify-center flex-col space-y-1">
-                  <div className="flex flex-col space-y-10 w-[795px] bg-[#121212] p-5 rounded-t-[16px]">
+          <div className=" flex pb-10 max-lg:hidden">
+            <div className="flex flex-row  w-full justify-between space-x-5">
+              <div className="flex flex-col w-[795px] ">
+                <div className="flex items-center w-[795px] h-[367px] justify-between flex-col ">
+                  
+                  <div className="flex flex-col space-y-7 h-[230px] w-[795px] bg-[#121212] p-5 rounded-t-[16px]">
                     <p className="text-white text-[20px] font-bold">Referrals</p>
                     
                     <div className="flex flex-row w-full justify-between pr-10 pb-10">
@@ -307,7 +306,7 @@ const TokenSale = () => {
 
                   </div>
 
-                  <div className="flex flex-col space-y-3 w-[795px] bg-[#121212] p-5 rounded-b-[16px]">
+                  <div className="flex flex-col space-y-3 w-[795px] h-[135px] bg-[#121212] p-5 rounded-b-[16px]">
                     <p className="text-[16px] text-white">Start earning extra money!</p>
                     <p className="text-white text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
                     
@@ -330,7 +329,7 @@ const TokenSale = () => {
 
 
                       <div className="flex flex-row items-center space-x-3">
-                        <p className="text-[12px] text-white">Share on</p>
+                        <p className="text-[12px] text-white ">Share on</p>
 
                         <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <DiscordLogo/>
@@ -352,7 +351,7 @@ const TokenSale = () => {
 
                 </div>
 
-                <div className="flex flex-col py-10 space-y-5">
+                <div className="flex flex-col pt-5 space-y-3">
                   <p className="text-white font-bold text-[20px]">Transactions</p>
                   <div className="flex flex-row items-center justify-between">
                    
@@ -404,9 +403,9 @@ const TokenSale = () => {
                 <div className="flex flex-col w-[341px] p-5  rounded-t-[8px] bg-[#121212] ">
                   <div className="flex flex-col space-y-8">
                     <div className="flex flex-row items-center justify-between">
-                      <p className="text-white text-[12px] font-semibold">Presale Progress</p>
+                      <p className="text-white text-[12px] font-medium">Presale Progress</p>
                       <div className="flex flex-row items-center space-x-4">
-                        <p className="text-white text-[12px]">$5,784,043.78</p>
+                        <p className="text-white opacity-70 text-[12px]">$5,784,043.78</p>
                         
                         <Dot/>
 
@@ -431,8 +430,8 @@ const TokenSale = () => {
                 </div>
 
                 <div className="rounded-b-[8px] bg-[#121212]">
-                  <div className="flex flex-col space-y-8">
-                    <p className="text-white  p-5 font-bold text-[20px]">Contribute</p>
+                  <div className="flex flex-col space-y-5">
+                    <p className="text-white px-5 pt-5  font-bold text-[20px]">Contribute</p>
                     <div className="px-5">
                         <div
                           className="fade-transition"
@@ -441,7 +440,7 @@ const TokenSale = () => {
                           {/* Content for selectedMethod === 0 */}
                           {selectedMethod === 0 && (
                             <div className="flex flex-col space-y-2 items-center justify-center">
-                              <div onClick={() => setSelectedMethod(1)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
+                              <div onClick={() => setSelectedMethod(1)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
                                 <div className="flex flex-row w-full items-center justify-between ">
                                   <CreditCardlogo />
                                   <p className="text-white text-[14px]">Buy with Credit Card</p>
@@ -449,7 +448,7 @@ const TokenSale = () => {
                                 </div>
                               </div>
 
-                              <div onClick={() => {setIsDialogOpen(true); setSelectedMethod(2)}} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
+                              <div onClick={() => {setIsDialogOpen(true); setSelectedMethod(2)}} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
                                 <div className={`flex flex-row w-full items-center ${!isConnected ? 'justify-between' : ''}`}>
                                   <USDTLogoBig />
                                   <p 
@@ -461,7 +460,7 @@ const TokenSale = () => {
                                 </div>
                               </div>
 
-                              <div onClick={() => setSelectedMethod(3)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
+                              <div onClick={() => setSelectedMethod(3)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
                                 <div className="flex flex-row w-full items-center justify-between ">
                                   <PaypalLogo />
                                   <p className="text-white text-[14px]">Buy with PayPal</p>
@@ -557,7 +556,7 @@ const TokenSale = () => {
                       <div className="flex flex-row items-center justify-between">
                         <p className="text-white text-[12px] font-semibold">Presale Progress</p>
                         <div className="flex flex-row items-center space-x-4">
-                          <p className="text-white text-[12px]">$5,784,043.78</p>
+                          <p className="text-white opacity-70 text-[12px]">$5,784,043.78</p>
                           
                           <Dot/>
 

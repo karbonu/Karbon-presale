@@ -1,16 +1,22 @@
 import BackArrow from "@/components/Icons/BackArrow";
-import KarbonLogo from "@/components/Icons/KarbonLogo";
 import PasswordLogo from "@/components/Icons/PasswordLogo";
 import SucccessIconSmall from "@/components/Icons/SucccessIconSmall";
+import { usePasswoedUpdateMutate, usePasswordOTPMutate } from "@/components/shared/Hooks/UseAuthMutation";
 import PasswordIconComp from "@/components/shared/PasswordIconComp";
 import { useState } from "react";
+import { BarLoader } from "react-spinners";
 
 
-const PasswordReset = () => {
+const PasswordReset = (props : any) => {
     const [step, setStep] = useState(1);
+    const [OTP, setOTP] = useState('');
+    const [ verificationError, setverificationError] = useState('')
+    const [isVerifying, setISVerifying] = useState(false);
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [revealConfirmError, setRevealConfirmError] = useState(false);
+  const [oldPassword, setoldPassword] = useState('');
+  const passwordOtpMutate = usePasswordOTPMutate();
+  const passwordUpdate = usePasswoedUpdateMutate();
+  
   const [validation, setValidation] = useState({
     minLength: false,
     upperCase: false,
@@ -43,25 +49,96 @@ const PasswordReset = () => {
 
   const handleConfirmPasswordChange = (event : any) => {
     const newConfirmPassword = event.target.value;
-    setConfirmPassword(newConfirmPassword);
+    setoldPassword(newConfirmPassword);
 
-    if (newConfirmPassword !== password) {
-      setRevealConfirmError(true);
-    } else {
-      setRevealConfirmError(false);
-    }
   };
 
+  const handleVerify = () =>{
+    setISVerifying(true);
+
+    if(oldPassword === password){
+      setverificationError('New passowrd matches current password, Try Again'); 
+    }
+    
+      let email = props.email;
+      passwordOtpMutate.mutate(
+          { email, 
+            otp : OTP, 
+            newPassword: password},
+          {
+              onSuccess: () => {
+                passwordUpdate.mutate(
+                  { email, 
+                    oldPassword : oldPassword, 
+                    newPassword: password },
+                  {
+                      onSuccess: () => {
+                        setISVerifying(false);
+                        setStep(3);
+                      },
+                      onError: (error) => {
+                        console.log(error)
+                        setISVerifying(false);
+
+                        setverificationError('Password Change Failed, Try Again');
+                      }
+                  }
+              );
+                
+              },
+              onError: (error) => {
+                console.log(error)
+                setISVerifying(false);
+                setverificationError('OTP Verification Failed, Try Again');
+              }
+          }
+      );
+  }
+  
+  const handleOTPKeydown = (event: any) => {
+    if (event.key === 'Enter') {
+      setStep(2)
+    }
+};
+
+const handleOTPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setOTP(event.target.value);
+  setverificationError('');
+};
+
   return (
-    <div className="p-[60px] max-sm:p-5 max-sm:pt-10">
-    <div className="max-sm:flex max-sm:items-center max-sm:justify-center">
-      <KarbonLogo />
-    </div>
+    
+    <div className="flex items-center  justify-center w-full flex-col">
+      {step === 1 &&(
+        <div className="flex flex-col w-full items-center justify-center pt-[4rem]">
+          <div className="w-[450px] max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
+            <div className="px-8 flex space-y-5 flex-col justify-between h-full">
+              <div className="flex flex-row space-x-2 items-center">
+              <PasswordLogo />
+                <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
+              </div>
+              <div className="flex flex-col space-y-5">
+                <div className="flex flex-col space-y-2">
+                  <p className="text-white text-[14px] max-sm:text-[12px]">Enter OTP</p>
+                  <input onChange={handleOTPChange} onKeyDown={handleOTPKeydown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="text" />
+                </div>
+                <div>
+                  <button onClick={() => setStep(2)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                    {isVerifying ? (
+                      <BarLoader/>
+                    ): (
+                      <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
-    <div className="flex items-center justify-center w-full flex-col">
-
-      {step === 1 && (
-        <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+      {step === 2 && (
+        <div className="flex flex-col w-full items-center justify-center pt-[4rem]">
           <div className="w-[450px] max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
             <div className="py-5 px-8 flex flex-col justify-between h-full">
               <div className="flex flex-row space-x-2 items-center pb-5">
@@ -71,7 +148,12 @@ const PasswordReset = () => {
 
               <div className="flex flex-col space-y-5">
                 <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[14px] max-sm:text-[12px]">Password</p>
+                  <p className="text-white text-[14px] max-sm:text-[12px]">Old Password</p>
+                  <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={oldPassword} onChange={handleConfirmPasswordChange} />
+                </div>
+
+                <div className="flex flex-col space-y-2">
+                  <p className="text-white text-[14px] max-sm:text-[12px]">New Password</p>
                   <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
                 </div>
                 <div className="flex flex-col">
@@ -96,33 +178,32 @@ const PasswordReset = () => {
                     <p className={!validation.specialChar ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Special Character</p>
                   </div>
                 </div>
-
-                <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[14px] max-sm:text-[12px]">Confirm Password</p>
-                  <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
-                  {revealConfirmError && (
-                    <p className="text-[10px] text-red-500">Password does not match</p>
+                <div>
+                  <div onClick={handleVerify} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                  {isVerifying ? (
+                      <BarLoader/>
+                    ): (
+                      <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Reset Password</p>
+                    )}
+                  </div>
+                  {verificationError && (
+                    <p className="text-[10px] w-full text-center text-red-500 mt-2">{verificationError}</p>
                   )}
                 </div>
-                <div>
-                  <div onClick={() => setStep(2)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                    <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Reset Password</p>
-                  </div>
-                </div>
 
-                <a href="/sign-in" className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
+                <a onClick={() => setStep(1)} className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
                     <div className="flex items-center justify-center">
                         <BackArrow />
                     </div>
-                    <p className="text-white text-[14px]">Back to Login</p>
+                    <p className="text-white text-[14px]">Back</p>
                 </a>
               </div>
             </div>
           </div>
         </div>
       )}
-    {step ===2 && (
-        <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+    {step ===3 && (
+        <div className="flex flex-col w-full items-center justify-center pt-[4rem]">
             <div className="w-[450px] py-5 max-sm:w-[100%] items-center justify-center bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                 <div className="py-5 px-8 flex flex-col space-y-5 justify-between h-full">
                     <div className="flex flex-row space-x-2 items-center justify-center">
@@ -141,10 +222,7 @@ const PasswordReset = () => {
         )}
     </div>
 
-    <div className="lg:absolute lg:bottom h-full-10 flex items-center justify-center pt-10 lg:left-[43.5%]">
-          <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
-      </div>
-  </div>
+
   )
 }
 

@@ -1,7 +1,7 @@
 // src/components/SignIn.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useInitialNonceMutation, useLoginMutation, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
+import { useInitialNonceMutation, useLoginMutation, usePasswordResetMutate, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
 import AppleLogo from "@/components/Icons/AppleLogo";
 import BackArrow from "@/components/Icons/BackArrow";
 import CloseIcon from "@/components/Icons/CloseIcon";
@@ -14,6 +14,7 @@ import { BarLoader } from 'react-spinners';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import VerifyEmailIcon from '@/components/Icons/VerifyEmailIcon';
+import PasswordReset from './PasswordReset';
 
 
 
@@ -28,6 +29,7 @@ const SignIn = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isVerifying, setISVerifying] = useState(false);
     const [otp, setOtp] = useState(0);
+    const [isResetting, setIsResetting] = useState(false);
     const verifyMutat = useVerifyEmailMutation();
     const[verificationError, setverificationError] = useState('');
 
@@ -35,7 +37,32 @@ const SignIn = () => {
     
     const initialNonceMutation = useInitialNonceMutation();
     const loginMutation = useLoginMutation();
+    const reserMutation = usePasswordResetMutate();
     const { setEmail: setAuthEmail, setPassword: setAuthPassword, setAuthenticated, setUserID, setReferralCOde } = useAuth();
+
+    const handlePasswordReset = () => {
+        setIsResetting(true);
+        
+        reserMutation.mutate(
+            { email },
+            {
+                onSuccess: () => {
+                  setStep(4)
+                },
+                onError: () => {
+                    setErrorMessage('Password Reset Failed, Try Again');
+                    setIsResetting(false);
+                }
+            }
+        );
+    };
+
+    
+    const handleResetKeyDown = (event: any) => {
+        if (event.key === 'Enter') {
+            handlePasswordReset();
+        }
+    };
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -59,7 +86,7 @@ const SignIn = () => {
                     setIsLoadingNonce(false);
                 },
                 onError: () => {
-                    setErrorMessage('Invalid email');
+                    setErrorMessage('Account does not exist');
                     setIsLoadingNonce(false);
                 }
             }
@@ -72,16 +99,18 @@ const SignIn = () => {
         }
     };
 
+
     const handleLoginRequest = () => {
         setIsLoggingIn(true);
         loginMutation.mutate(
             { email, password, nonce },
             {
                 onSuccess: (response: any) => {
-                    // if(response.data.user.isVerified === false){
-                    //     setStep(6)
-                    //     return;
-                    // }
+                    if(response.data.user.is_verified === false){
+                        setStep(5)
+                        return;
+                    }
+                    console.log(response.data)
                     setUserID(response.data.user.id);
                     setReferralCOde(response.data.user.referralCode);
                     setAuthEmail(email);
@@ -119,14 +148,13 @@ const SignIn = () => {
               console.log(response)
               console.log(response.data)
               setISVerifying(false);
-              navigate('/sign-in')
+              handleInitialNonceRequest();
+              handleLoginRequest();
+              
             },
-            onError: (response) => {
-            //   setverificationError("Expired OTP");
-            if(response.message =='The otp provided has expired'){
-                setISVerifying(false);
-                navigate('/dashboard');
-            }
+            onError: (error) => {
+                console.log(error)
+              setverificationError("Expired OTP");
               setISVerifying(false);
             },
           }
@@ -154,17 +182,12 @@ const SignIn = () => {
         onSuccess: async (res) => {
             const token = res.access_token;
             setErrorMessage('');
-            console.log(token)
-            console.log(res)
             setIsLoggingIn(true);
             try {
                 const userInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const { email, sub: userID } = userInfo.data;
-                console.log(userInfo.data)
-                console.log(email, userID);
-
                 socialSignIn.mutate(
                     { 
                         token : token, 
@@ -342,14 +365,21 @@ const SignIn = () => {
                             <div className="flex flex-col space-y-5">
                                 <div className="flex flex-col space-y-2">
                                     <p className="text-white text-[14px]">Enter Email</p>
-                                    <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" />
+                                    <input onKeyDown={handleResetKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" onChange={handleEmailChange} />
                                 </div>
                                 <div>
-                                    <div onClick={() => setStep(4)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                                        <p className="font-bold text-[14px] shadow-sm">
-                                            Reset Password
-                                        </p>
-                                    </div>
+                                    <button disabled={isResetting} onClick={handlePasswordReset} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                                        {isResetting ? (
+                                            <BarLoader/>
+                                        ): (
+                                            <p className="font-bold text-[14px] shadow-sm">
+                                                Reset Password
+                                            </p>
+                                        )}
+                                    </button>
+                                    {errorMessage && (
+                                        <p className="text-[10px] w-full text-center text-red-500 mt-2">{verificationError}</p>
+                                    )}
                                 </div>
                             </div>
 
@@ -373,10 +403,14 @@ const SignIn = () => {
                                     <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
                                 </div>
                                 
-                                <div className="flex flex-row max-sm:flex-col max-sm:space-y-2 md:space-x-1 items-center">
-                                    <p className="text-white opacity-80 text-[14px]">A password reset link has been sent to</p>
+                                <div className="flex flex-col max-sm:flex-col max-sm:space-y-2 md:space-x-1 items-center">
+                                    <p className="text-white opacity-80 text-[14px]">An OTP has been sent to </p>
                                     <p className="text-white text-[14px]">{email}</p>
                                 </div>
+
+                                <a onClick={() => setStep(6)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                                    <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
+                                </a>
 
                                 <div onClick={() => setStep(1)} className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
                                     <div className="flex items-center justify-center">
@@ -397,13 +431,10 @@ const SignIn = () => {
                           <VerifyEmailIcon />
                           <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Verify Email</p>
                         </div>
+                        <p className="text-white text-[14px] max-sm:text-[12px]">Your email is not verified</p>
                         <div className="flex flex-col space-y-1">
-                          <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">A six-digit verification code was sent to</p>
+                          <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">Enter the four digit verification code sent to</p>
                           <p className="text-white text-[14px] max-sm:text-[12px]">{email}</p>
-                          <div className="flex flex-row space-x-2">
-                            <p className="text-white opacity-70 text-[14px] max-sm:text-[12px]">Not your email?</p>
-                            <p onClick={() => setStep(1)} className="text-[14px] max-sm:text-[12px] text-[#08E04A] font-semibold cursor-pointer">change email</p>
-                          </div>
                         </div>
         
                         <div className="flex flex-col space-y-5">
@@ -416,7 +447,7 @@ const SignIn = () => {
                             )}
         
                           <div>
-                            <button disabled={isVerifying} onClick={() => handleVerify} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                            <button disabled={isVerifying} onClick={() => handleVerify()} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                               {isVerifying ? (
                                 <BarLoader/>
                               ): (
@@ -428,7 +459,12 @@ const SignIn = () => {
                       </div>
                     </div>
                   </div>
-        
+                )}
+
+                {step === 6 && (
+                    <PasswordReset
+                    email = {email}
+                    />
                 )}
             </div>
             <div className="lg:absolute lg:bottom-10 flex items-center justify-center py-10 lg:left-[43.5%]">

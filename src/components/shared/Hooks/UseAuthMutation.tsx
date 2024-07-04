@@ -58,8 +58,50 @@ type SocialAuthData = {
 export const useSocialAuthMutation = (): UseMutationResult<AxiosResponse<any>, Error, SocialAuthData> => {
   return useMutation<AxiosResponse<any>, Error, SocialAuthData>({
     mutationFn: (data: SocialAuthData) => {
-      console.log(data)
       return axios.post('https://karbon.plana.ng/auth/social-register', data);
+    },
+  });
+};
+
+type passwordUpdate = {
+  email: string;
+  oldPassword: string;
+  newPassword: string;
+};
+
+export const usePasswoedUpdateMutate = (): UseMutationResult<AxiosResponse<any>, Error, passwordUpdate> => {
+  return useMutation<AxiosResponse<any>, Error, passwordUpdate>({
+    mutationFn: (data: passwordUpdate) => {
+      return axios.post('https://karbon.plana.ng//users/password/update', data);
+    },
+  });
+};
+
+
+type passwordOTP = {
+  email: string;
+  otp: string;
+  newPassword: string;
+};
+
+export const usePasswordOTPMutate = (): UseMutationResult<AxiosResponse<any>, Error, passwordOTP> => {
+  return useMutation<AxiosResponse<any>, Error, passwordOTP>({
+    mutationFn: (data: passwordOTP) => {
+      return axios.post('https://karbon.plana.ng//users/password/change', data);
+    },
+  });
+};
+
+
+
+type passwordReset = {
+  email: string;
+};
+
+export const usePasswordResetMutate = (): UseMutationResult<AxiosResponse<any>, Error, passwordReset> => {
+  return useMutation<AxiosResponse<any>, Error, passwordReset>({
+    mutationFn: (data: passwordReset) => {
+      return axios.post('https://karbon.plana.ng//users/password/reset', data);
     },
   });
 };
