@@ -23,7 +23,7 @@ const SettingsLayout = () => {
     <div className="w-full">
 
         <div className="w-full flex items-center ">
-          <div className="w-[784px] max-lg:w-full bg-[#121212] rounded-[16px]">
+          <div className="w-[784px] max-lg:w-full border-[1px] border-[#282828] bg-[#121212] rounded-[16px]">
             <div className="py-5 max-sm:px-2 px-5 h-full">
               <div className="flex flex-col h-full justify-between">
               <div className="flex flex-row max-sm:w-full max-sm:mt-5 max-sm:items-center max-sm:justify-center space-x-2">

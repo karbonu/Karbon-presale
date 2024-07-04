@@ -40,7 +40,6 @@ const TokenSale = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [payoutSuccessOpen, setPayoutSuccessOpen] = useState(false);
   const [payoutFaliure, setPayoutFaliure] = useState(false);
-  const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected);
   const [isTermsAndCondOpen, setIsTermsAndCondOpen]= useState(false);
   const [copied, setCopied] = useState(false);
   const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
@@ -50,8 +49,8 @@ const TokenSale = () => {
   const [tokensBought, setTokensBought] = useState(0);
   const [referralCount, setReferralCount] = useState(0);
   const [fullTransaction, setFulltransaction] = useState(false);
-  const {UserID} = useAuth();
-  
+  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal} = useAuth();
+  const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected && !hasDisplayedConnectModal);
 
 
 
@@ -200,7 +199,12 @@ const TokenSale = () => {
 
 
 
-  
+
+  const handleCloseConnectModal = () => {
+    setHasDisplayedConnectModal(true);
+    localStorage.setItem('displayedModalConnect', 'true');
+    setIsConnectModalOpen(false);
+  };
 
   
 
@@ -211,13 +215,13 @@ const TokenSale = () => {
         description="Buy Karbon token and participate in the referral"
         />
 
-        <Dialog open={isConnectModalOpen} onOpenChange={setIsConnectModalOpen}>
+        <Dialog open={isConnectModalOpen}  onOpenChange={handleCloseConnectModal}>
             <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] max-sm:w-[290px] items-center justify-center outline-none'>
                 <div className='w-full'>
                     <img
                     src='/assets/connectWalletImage.svg'
                     />
-                    <div onClick={() => setIsConnectModalOpen(false)} className='absolute cursor-pointer  top-4 right-4'>
+                    <div onClick={handleCloseConnectModal} className='absolute cursor-pointer  top-4 right-4'>
                         <DialogClose/>
                     </div>
                 </div>
@@ -239,7 +243,7 @@ const TokenSale = () => {
 
                     <div className='flex pt-2 flex-row space-x-2 items-center justify-center'>
                         <p className='text-white text-[14px] max-sm:text-[12px]  font-light opacity-70'>Don’t have a wallet?</p>
-                        <div onClick={() => setIsConnectModalOpen(false)} className='flex flex-row cursor-pointer items-center space-x-1'>
+                        <div onClick={handleCloseConnectModal} className='flex flex-row cursor-pointer items-center space-x-1'>
                             <p className='text-[#08E04A] text-[14px] max-sm:text-[12px]'>Skip</p>
                             <ForwardShortGreen/>
 
@@ -256,7 +260,7 @@ const TokenSale = () => {
               <div className="flex flex-col w-[795px] ">
                 <div className="flex items-center w-[795px] h-[367px] justify-between flex-col ">
                   
-                  <div className="flex flex-col space-y-7 h-[230px] w-[795px] bg-[#121212] p-5 rounded-t-[16px]">
+                  <div className="flex flex-col space-y-7 h-[230px] w-[795px] border-[1px] border-[#282828] bg-[#121212] p-5 rounded-t-[16px]">
                     <p className="text-white text-[20px] font-bold">Referrals</p>
                     
                     <div className="flex flex-row w-full justify-between pr-10 pb-10">
@@ -306,9 +310,9 @@ const TokenSale = () => {
 
                   </div>
 
-                  <div className="flex flex-col space-y-3 w-[795px] h-[135px] bg-[#121212] p-5 rounded-b-[16px]">
-                    <p className="text-[16px] text-white">Start earning extra money!</p>
-                    <p className="text-white text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
+                  <div className="flex flex-col space-y-3 w-[795px] h-[135px] border-[1px] border-[#282828] bg-[#121212] p-5 rounded-b-[16px]">
+                    <p className="text-[16px] text-white font-semibold">Start earning extra money!</p>
+                    <p className="text-white opacity-70 text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
                     
                     <div className="flex flex-row space-x-5 items-center">
                       <div className="flex flex-row items-center py-2 pl-4 bg-black space-x-10">
@@ -329,7 +333,7 @@ const TokenSale = () => {
 
 
                       <div className="flex flex-row items-center space-x-3">
-                        <p className="text-[12px] text-white ">Share on</p>
+                        <p className="text-[12px] text-white opacity-70 ">Share on</p>
 
                         <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <DiscordLogo/>
@@ -355,7 +359,7 @@ const TokenSale = () => {
                   <p className="text-white font-bold text-[20px]">Transactions</p>
                   <div className="flex flex-row items-center justify-between">
                    
-                    <div className="w-[253px] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
+                    <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">AMOUNT SPENT</p>
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">{totalAmount}</p>
@@ -364,7 +368,7 @@ const TokenSale = () => {
                       </div>
                     </div>
 
-                    <div className="w-[253px] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
+                    <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">{tokensBought}</p>
@@ -372,7 +376,7 @@ const TokenSale = () => {
                       </div>
                     </div>
 
-                    <div className="w-[253px] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
+                    <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">TOKEN VALUE</p>
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">345</p>
@@ -387,7 +391,7 @@ const TokenSale = () => {
 
                   </div>
 
-                  <div className=" bg-[#121212] rounded-b-[8px]">
+                  <div className=" bg-[#121212] border-[1px] border-[#282828] rounded-b-[8px]">
                     <div className="flex items-center justify-center flex-col space-y-5 py-5">
                       <p className="text-[12px] text-white opacity-70">ESTIMATED CLAIM TIME</p>
                       <p className="text-white text-[24px]">1d 22h 45m 34s</p>
@@ -399,8 +403,8 @@ const TokenSale = () => {
               </div>
 
 
-              <div className="flex flex-col space-y-1  mb-10 max-h-[700px] w-[341px] ">
-                <div className="flex flex-col w-[341px] p-5  rounded-t-[8px] bg-[#121212] ">
+              <div className="flex flex-col space-y-1  mb-10 max-h-[700px] w-[341px] border-[1px] rounded-[8px] border-[#282828] ">
+                <div className="flex flex-col w-[341px] border-[#282828] p-5  rounded-t-[8px] bg-[#121212] ">
                   <div className="flex flex-col space-y-8">
                     <div className="flex flex-row items-center justify-between">
                       <p className="text-white text-[12px] font-medium">Presale Progress</p>
@@ -516,7 +520,7 @@ const TokenSale = () => {
 
                     <div className="flex w-[341px] border-[#282828] h-[67px] items-center justify-between flex-row border-t-[1px] border-b-[1px]">
                       <div className="w-[70%] bg-black h-full items-center pl-5 flex">
-                        <p className="text-white w-[173px] text-[12px]">A chance to buy Karbon tokens at half of the launch price.</p>
+                        <p className="text-white opacity-50 w-[183px] text-[12px]">A chance to buy Karbon tokens at half of the launch price.</p>
                       </div>
                       <div className="w-[30%] bg-green-500 h-full"></div>
                       <div className="absolute right-[4.00rem]">
@@ -725,7 +729,7 @@ const TokenSale = () => {
                     </div>
 
                     <div className="flex flex-row items-center space-x-3">
-                      <p className="text-[12px] text-white">Share on</p>
+                      <p className="text-[12px] text-whit opacity-70e">Share on</p>
 
                       <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                         <DiscordLogo/>

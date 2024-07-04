@@ -119,7 +119,7 @@ const ClaimTokens = () => {
         />
         <p className="text-white lg:hidden font-bold text-[20px]">Claim Tokens</p>
         <div className="w-full h-full flex flex-col space-y-5 items-center justify-center">
-          <div className="lg:w-[100%] max-lg:w-full bg-[#101010] rounded-[8px] lg:h-[210px]">
+          <div className="lg:w-[100%] max-lg:w-full border-[1px] border-[#282828] bg-[#101010] rounded-[8px] lg:h-[210px]">
             <div className="flex flex-col max-lg:w-full max:lg:p-[3%] p-10 max-md:p-5 space-y-5">
               <div className="flex flex-row max-lg:w-full max-lg:flex-col max-md:space-y-5 lg:items-center justify-between w-full">
 
@@ -173,7 +173,7 @@ const ClaimTokens = () => {
 
           </div>
 
-          <div className="w-[100%] bg-[#101010] rounded-[8px] h-[490px] max-lg:hidden">
+          <div className="w-[100%] border-[1px] border-[#282828] bg-[#101010] rounded-[8px] h-[490px] max-lg:hidden">
             <div className="flex w-full flex-col px-2 py-5 space-y-5">
               <p className="text-white px-8 text-[20px] font-semibold">Vesting Schedule</p>
               <div className="w-full">

@@ -13,6 +13,8 @@ interface AuthContextType {
   setReferralCOde: (referralCode: string) => void;
   isAuthenticated: boolean;
   setAuthenticated: (isAuthenticated: boolean) => void;
+  hasDisplayedConnectModal: boolean;
+  setHasDisplayedConnectModal: (hasDisplayedConnectModal: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,6 +26,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [password, setPassword] = useState(localStorage.getItem('password') || '');
   const [referralCode, setReferralCOde] = useState(localStorage.getItem('referralCode') || '');
   const [isAuthenticated, setAuthenticated] = useState<boolean>(JSON.parse(localStorage.getItem('isAuthenticated') || 'false'));
+
+  const [hasDisplayedConnectModal, setHasDisplayedConnectModal] = useState<boolean>(JSON.parse(localStorage.getItem('displayedModalConnect') || 'false'));
 
   useEffect(() => {
     localStorage.setItem('email', email);
@@ -45,8 +49,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    const displayedModalConnect = JSON.parse(localStorage.getItem('displayedModalConnect') || 'false');
+    setHasDisplayedConnectModal(displayedModalConnect);
+  }, [setHasDisplayedConnectModal]);
+
+  
   return (
-    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, }}>
+    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, setHasDisplayedConnectModal, hasDisplayedConnectModal}}>
       {children}
     </AuthContext.Provider>
   );

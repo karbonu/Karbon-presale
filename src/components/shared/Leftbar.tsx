@@ -31,7 +31,7 @@ const Leftbar = () => {
                     {({ isActive }) => (
                     <div className="flex items-center justify-center px-3 flex-row space-x-2">
                         {isActive ? <TokenSaleIcon /> : <TokenSaleWhite />}
-                        <p className="font-semibold text-[12px] text-white">Token Sale</p>
+                        <p className={isActive ? 'font-semibold text-[12px] text-white' : 'text-[12px] text-white opacity-90'}>Token Sale</p>
                     </div>
                     )}
                 </NavLink>
@@ -39,7 +39,7 @@ const Leftbar = () => {
                     {({ isActive }) => (
                     <div className="flex items-center justify-center px-3 flex-row space-x-2">
                         {isActive ? <ClaimTokensLogo /> : <ClaimTokenWhite />}
-                        <p className="font-semibold text-[12px] text-white">Claim Token</p>
+                        <p className={isActive ? 'font-semibold text-[12px] text-white' : 'text-[12px] text-white opacity-90'}>Claim Token</p>
                     </div>
                     )}
                 </NavLink>
@@ -47,7 +47,7 @@ const Leftbar = () => {
                     {({ isActive }) => (
                     <div className="flex items-center justify-center px-3 flex-row space-x-2">
                         {isActive ? <SettingsIcon /> : <SettingsWhite />}
-                        <p className="font-semibold text-[12px] text-white">Settings</p>
+                        <p className={isActive ? 'font-semibold text-[12px] text-white' : 'text-[12px] text-white opacity-90'}>Settings</p>
                     </div>
                     )}
                 </NavLink>

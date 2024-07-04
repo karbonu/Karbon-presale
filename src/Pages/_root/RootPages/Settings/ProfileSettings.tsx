@@ -9,7 +9,7 @@ import { usePasswoedUpdateMutate } from "@/components/shared/Hooks/UseAuthMutati
 
 const ProfileSettings = () => {
   const [copied, setCopied] = useState(false);
-  const { email, setPassword, setReferralCOde, setUserID, setEmail, setAuthenticated, password: currentPassword } = useAuth();
+  const { email, setPassword, setReferralCOde, setUserID, setEmail, setAuthenticated, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -54,6 +54,7 @@ const ProfileSettings = () => {
     setEmail('');
     setUserID('');
     setReferralCOde('');
+    setHasDisplayedConnectModal(false);
     setAuthenticated(false);
   };
 
