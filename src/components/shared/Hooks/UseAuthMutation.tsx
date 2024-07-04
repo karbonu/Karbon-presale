@@ -30,3 +30,37 @@ export const useLoginMutation = (): UseMutationResult<AxiosResponse<any>, Error,
     },
   });
 };
+
+type verifyEmailData = {
+  email: string;
+  otp : number;
+};
+
+
+export const useVerifyEmailMutation = (): UseMutationResult<AxiosResponse<any>, Error, verifyEmailData> => {
+  return useMutation<AxiosResponse<any>, Error, verifyEmailData>({
+    mutationFn: (data: verifyEmailData) => {
+      return axios.post('https://karbon.plana.ng/auth/verifyOtp', data);
+    },
+  });
+};
+
+type SocialAuthData = {
+  token: string;
+  unique_id: string;
+  email: string;
+  phone: string;
+  medium: string;
+  id_token: string;
+  ref_code: string;
+};
+
+export const useSocialAuthMutation = (): UseMutationResult<AxiosResponse<any>, Error, SocialAuthData> => {
+  return useMutation<AxiosResponse<any>, Error, SocialAuthData>({
+    mutationFn: (data: SocialAuthData) => {
+      console.log(data)
+      return axios.post('https://karbon.plana.ng/auth/social-register', data);
+    },
+  });
+};
+

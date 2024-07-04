@@ -29,11 +29,13 @@ createWeb3Modal({
     '--w3m-accent': '#08E04A',
   }
 })
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <GoogleOAuthProvider clientId=''>
+        <GoogleOAuthProvider clientId='1098677333735-n6ks69hevlet2eafue7m7lmneptjmg1q.apps.googleusercontent.com'>
           <App />
         </GoogleOAuthProvider>
       </QueryClientProvider>

@@ -1,4 +1,6 @@
+// src/components/shared/Contexts/AuthContext.tsx
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+
 
 interface AuthContextType {
   email: string;
@@ -8,12 +10,13 @@ interface AuthContextType {
   password: string;
   setPassword: (password: string) => void;
   referralCode: string;
-  setReferralCOde: (password: string) => void;
+  setReferralCOde: (referralCode: string) => void;
   isAuthenticated: boolean;
   setAuthenticated: (isAuthenticated: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [email, setEmail] = useState(localStorage.getItem('email') || '');
@@ -43,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [isAuthenticated]);
 
   return (
-    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde }}>
+    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, }}>
       {children}
     </AuthContext.Provider>
   );
