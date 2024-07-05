@@ -34,13 +34,12 @@ function App() {
         name=""
         />
         <Routes>
-          <Route path= "/adminSignin" element = { <AdminConnectWallet/> } />
+        <Route path= "/adminSignin" element = { <AdminConnectWallet/> } />
           <Route path="/admin" element = {<AdminLayout/>}>
               <Route index element = { <AdminDashboard/> } />
-              <Route path= "/Investment" element = { <AdminDashboard/> } />
-              <Route path= "/presale" element = { <AdminPresale/> } />
+              <Route path= "Investment" element = { <AdminDashboard/> } />
+              <Route path= "presale" element = { <AdminPresale/> } />
             </Route>
-
           <Route element = {<AuthLayout/>}>
             
               <Route index element = { <SignIn/> } />
