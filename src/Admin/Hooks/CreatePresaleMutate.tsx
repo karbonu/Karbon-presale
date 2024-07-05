@@ -1,21 +1,34 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 
-
-type SocialAuthData = {
-    token: string;
-    unique_id: string;
-    email: string;
-    phone: string;
-    medium: string;
-    id_token: string;
-    ref_code: string;
+type createMutate = {
+  name: string;
+  token: {
+    address: string;
   };
-  
-  export const useSocialAuthMutation = (): UseMutationResult<AxiosResponse<any>, Error, SocialAuthData> => {
-    return useMutation<AxiosResponse<any>, Error, SocialAuthData>({
-      mutationFn: (data: SocialAuthData) => {
-        return axios.post(import.meta.env.VITE_BACKEND_API_URL +'auth/social-register', data);
+  coin: string;
+  rate: number;
+  hardCap: number;
+  minBuy: number;
+  maxBuy: number;
+  startDate: string; 
+  endDate: string; 
+  presaleAddress: string;
+  paymentChannel: string;
+  networks: string;
+  usdtAddress: string;
+  totalContribution: number;
+  vesting: {
+    [index : number] : [
+      percentage: number,
+      releaseDate: string 
+    ]
+  };
+};
+  export const useCreatePresaleMutate = (): UseMutationResult<AxiosResponse<any>, Error, createMutate> => {
+    return useMutation<AxiosResponse<any>, Error, createMutate>({
+      mutationFn: (data: createMutate) => {
+        return axios.post(import.meta.env.VITE_BACKEND_API_URL +'admin/create', data);
       },
     });
   };

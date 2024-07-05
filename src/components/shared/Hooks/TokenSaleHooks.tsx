@@ -49,7 +49,7 @@ export const getUserReferrals = async (UserID : string) : Promise<AxiosResponse<
 
 export const getTotalContribution = async (): Promise<AxiosResponse<any> | 'Failed'> => {
     try {
-      const response = await axios.get(import.meta.env.VITE_BACKEND_API_URL +'presale/1/total-contribution');
+      const response = await axios.get(import.meta.env.VITE_BACKEND_API_URL +'presale/"cly9atqwm0001tbafzumww6dz"/total-contribution');
       return response;
     } catch (error) {
       return 'Failed';
