@@ -6,13 +6,21 @@ import TotalBonusPaidOutIcon from "@/components/Icons/TotalBonusPaidOutIcon"
 import TotalUsersIcon from "@/components/Icons/TotalUsersIcon"
 import USDTIconRounded from "@/components/Icons/USDTIconRounded"
 import AdminDashboardTable from "./AdminDashboardTable"
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import CheckMark from "@/components/Icons/CheckMark";
+import { getDashboardData } from "../Hooks/AdminDashboardData"
 
 const AdminDashboard = () => {
 
     const [isPasted, setIsPasted] = useState(false);
     const [inputValue, setInputValue] = useState('');
+    const [totalUsers, setTotalUsers] = useState(0);
+    const[totalReferrals, setTotalReferrals] = useState(0);
+    const [totalBonusPaid, setTotalBonusPaid] = useState(0);
+    const [totalPendingRequests, setTotalPendingRequests] = useState(0);
+    const [pendingRequestAmount, setTOtalPendingRequestAmount] = useState(0);
+    const [totalClaimed, setTotoalCLaimed] = useState(0);
+    const [totalUnclaimed, setTotalUnclaimed] = useState(0);
     const inputRef = useRef<HTMLInputElement>(null);
   
     const handlePasteClick = async () => {
@@ -30,6 +38,33 @@ const AdminDashboard = () => {
       setInputValue(event.target.value);
     };
 
+    useEffect(() => {
+        const fetchReeferralCOunt = async () => {
+          const response = await getDashboardData();
+          if (response !== 'Failed') {
+            const totalusers = Number(response.data.totalUsers);
+            const totalreferrals = Number(response.data.totalReferrals);
+            const paidbonus = Number(response.data.totalBonusPaid);
+            const pendingrequest = Number(response.data.pendingBonusRequests);
+            setTotalUsers(isNaN(totalusers) ? 0 : totalusers);
+            setTotalReferrals(isNaN(totalreferrals) ? 0 : totalreferrals);
+            setTotalBonusPaid(isNaN(paidbonus) ? 0 : paidbonus);
+            setTotalPendingRequests(isNaN(pendingrequest) ? 0 : pendingrequest);
+            setTotalUnclaimed(0);
+            setTotoalCLaimed(0)
+            if(totalPendingRequests === 0){
+                setTOtalPendingRequestAmount(0);
+            }
+          } else {
+            console.log(response);
+          }
+        };
+      
+        fetchReeferralCOunt();
+      }, []);
+    
+      
+
   return (
     <div className="w-full flex flex-col space-y-5">
         <div className="flex flex-row h-[528px] justify-between w-full space-x-2">
@@ -43,7 +78,7 @@ const AdminDashboard = () => {
                                 <p className="text-white text-[12px] opacity-70">TOTAL USERS</p>
                                 <div className="flex flex-row items-center space-x-2">
                                     <TotalUsersIcon/>
-                                    <p className="text-white text-[24px]">21,325</p>
+                                    <p className="text-white text-[24px]">{totalUsers}</p>
                                 </div>
                             </div>
 
@@ -51,7 +86,7 @@ const AdminDashboard = () => {
                                 <p className="text-white text-[12px] opacity-70">TOTAL USERS REFERRED</p>
                                 <div className="flex flex-row items-center space-x-2">
                                     <ReferredUsersIcon/>
-                                    <p className="text-white text-[24px]">21,325</p>
+                                    <p className="text-white text-[24px]">{totalReferrals}</p>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +97,7 @@ const AdminDashboard = () => {
                                 <div className="flex flex-row items-center space-x-2">
                                     <TotalBonusPaidOutIcon/>
                                     <div className="flex flex-row space-x-1">
-                                        <p className="text-white text-[24px]">100</p>
+                                        <p className="text-white text-[24px]">{totalBonusPaid}</p>
                                         <p className="text-white font-extralight text-[24px]">USDT</p>
                                     </div>
                                 </div>
@@ -73,8 +108,8 @@ const AdminDashboard = () => {
                                 <div className="flex flex-row items-center space-x-2">
                                     <PendingRequestIcon/>
                                     <div className="flex flex-row space-x-1">
-                                        <p className="text-white text-[24px]">21,325</p>
-                                        <p className="text-white opacity-70 text-[16px]">.$45, 000</p>
+                                        <p className="text-white text-[24px]">{totalPendingRequests}</p>
+                                        <p className="text-white opacity-70 text-[16px]">${pendingRequestAmount}</p>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +125,7 @@ const AdminDashboard = () => {
                             <div className="flex flex-col space-y-3">
                                 <p className="text-white text-[12px] opacity-70">AMOUNT TO CLAIM</p>
                                 <div className="flex flex-row space-x-1">
-                                    <p className="text-white text-[24px]">100</p>
+                                    <p className="text-white text-[24px]">{totalUnclaimed}</p>
                                     <p className="text-white font-extralight text-[24px]">USDT</p>
                                 </div>
                             </div>
@@ -98,7 +133,7 @@ const AdminDashboard = () => {
                             <div className="flex flex-col space-y-3">
                                 <p className="text-white text-[12px] opacity-70">AMOUNT CLAIMED</p>
                                 <div className="flex flex-row space-x-1">
-                                    <p className="text-white text-[24px]">100</p>
+                                    <p className="text-white text-[24px]">{totalClaimed}</p>
                                     <p className="text-white font-extralight text-[24px]">USDT</p>
                                 </div>
                             </div>

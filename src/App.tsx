@@ -17,6 +17,7 @@ import ProtectedRoute from "./components/shared/Hooks/ProtectedRoute"
 import AdminLayout from "./Admin/AdminLayout"
 import AdminConnectWallet from "./Admin/AdminPages/AdminConnectWallet"
 import AdminDashboard from "./Admin/AdminPages/AdminDashboard"
+import AdminPresale from "./Admin/AdminPages/AdminPresale"
 function App() {
   
 
@@ -36,6 +37,8 @@ function App() {
           <Route path= "/adminSignin" element = { <AdminConnectWallet/> } />
           <Route path="/admin" element = {<AdminLayout/>}>
               <Route index element = { <AdminDashboard/> } />
+              <Route path= "/Investment" element = { <AdminDashboard/> } />
+              <Route path= "/presale" element = { <AdminPresale/> } />
             </Route>
 
           <Route element = {<AuthLayout/>}>
