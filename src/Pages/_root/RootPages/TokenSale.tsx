@@ -31,7 +31,6 @@ import { useAccount } from "wagmi";
 import CheckMark from "@/components/Icons/CheckMark";
 import { getProgress, getTotalContribution, getTotalUSDSpent, getTotalUSDTSpent, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks";
 import { useAuth } from "@/components/shared/Contexts/AuthContext";
-import { Skeleton } from "@/components/ui/skeleton";
 
 
 const TokenSale = () => {
@@ -225,7 +224,7 @@ const TokenSale = () => {
     setIsConnectModalOpen(false);
   };
 
-  const [isImageLoading, setIsImageLoading] = useState(true);
+  
 
   
 
@@ -236,39 +235,44 @@ const TokenSale = () => {
         description="Buy Karbon token and participate in the referral"
         />
 
-      <Dialog open={isConnectModalOpen} onOpenChange={handleCloseConnectModal}>
-            <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] max-sm:w-[290px] items-center justify-center outline-none relative'>
-                {isImageLoading && <Skeleton className='absolute top-0 left-0 w-full h-full' />}
-                <div className='w-full' style={{ visibility: isImageLoading ? 'hidden' : 'visible' }}>
+        <Dialog open={isConnectModalOpen}  onOpenChange={handleCloseConnectModal}>
+            <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] max-sm:w-[290px] items-center justify-center outline-none'>
+                <div className='w-full'>
                     <img
-                        src='/assets/connectWalletImage.svg'
-                        onLoad={() => setIsImageLoading(false)}
+                    src='/assets/connectWalletImage.svg'
                     />
-                    <div onClick={handleCloseConnectModal} className='absolute cursor-pointer top-4 right-4'>
-                        <DialogClose />
+                    <div onClick={handleCloseConnectModal} className='absolute cursor-pointer  top-4 right-4'>
+                        <DialogClose/>
                     </div>
                 </div>
 
                 <div className='pt-8 pb-5 px-8 flex flex-col space-y-3'>
                     <p className='text-white font-bold text-[20px] max-sm:text-[16px]'>Connect a wallet</p>
                     <p className='text-[14px] text-white max-sm:text-[10px]'>For maximum payment experience, connect a crypto/web3 wallet to buy with USDT.</p>
+
                     <p className='text-white text-[12px] opacity-50'>Supported network is Ethereum</p>
+
                     <div>
                         <div onClick={() => open()} className="flex flex-row space-x-2 items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                            <ConnectWalletIconBlack />
-                            <p className="font-bold text-[12px] shadow-sm">Connect wallet</p>
+                            <ConnectWalletIconBlack/>
+                            <p className="font-bold text-[12px] shadow-sm">
+                                Connect wallet
+                            </p>
                         </div>
                     </div>
+
                     <div className='flex pt-2 flex-row space-x-2 items-center justify-center'>
-                        <p className='text-white text-[14px] max-sm:text-[12px] font-light opacity-70'>Don’t have a wallet?</p>
+                        <p className='text-white text-[14px] max-sm:text-[12px]  font-light opacity-70'>Don’t have a wallet?</p>
                         <div onClick={handleCloseConnectModal} className='flex flex-row cursor-pointer items-center space-x-1'>
                             <p className='text-[#08E04A] text-[14px] max-sm:text-[12px]'>Skip</p>
-                            <ForwardShortGreen />
+                            <ForwardShortGreen/>
+
                         </div>
+
                     </div>
                 </div>
             </DialogContent>
-        </Dialog>
+          </Dialog>
 
         
           <div className=" flex pb-10 max-lg:hidden">
