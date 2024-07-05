@@ -1,11 +1,11 @@
 // src/Contexts/AdminAuthContext.tsx
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
   connectWallet: () => void;
+  disconnectWaller: () => void;
 }
 
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
@@ -15,7 +15,6 @@ const ADMIN_WALLET_ADDRESS = "0x7A9907da563fc9C80265a846F08b2ca413177F03";
 export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
   const { address, isConnected } = useAccount();
   const {disconnect } = useDisconnect();
-  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return localStorage.getItem('isAdminAuthenticated') === 'true';
   });
@@ -24,7 +23,6 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     if (isConnected && address === ADMIN_WALLET_ADDRESS) {
       setIsAuthenticated(true);
       localStorage.setItem('isAdminAuthenticated', 'true');
-      navigate('/admin')
     } else {
       setIsAuthenticated(false);
       disconnect();
@@ -39,8 +37,13 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const disconnectWaller = () =>{
+    setIsAuthenticated(false);
+    localStorage.removeItem('isAdminAuthenticated');
+  }
+
   return (
-    <AdminAuthContext.Provider value={{ isAuthenticated, connectWallet }}>
+    <AdminAuthContext.Provider value={{ isAuthenticated, connectWallet, disconnectWaller }}>
       {children}
     </AdminAuthContext.Provider>
   );
