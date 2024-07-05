@@ -11,18 +11,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config, projectId } from './components/shared/Constants/config.ts'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-// 0. Setup queryClient
+
 const queryClient = new QueryClient()
 
 
 
 
-// 3. Create modal
 createWeb3Modal({
   wagmiConfig: config,
   defaultChain: bscTestnet,
   projectId,
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  enableAnalytics: true, 
   allowUnsupportedChain: false,
   enableOnramp: true,
   themeVariables: {
@@ -31,14 +30,17 @@ createWeb3Modal({
 })
 
 
+let client = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'default_client_id'; 
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <GoogleOAuthProvider clientId='1098677333735-n6ks69hevlet2eafue7m7lmneptjmg1q.apps.googleusercontent.com'>
+        <GoogleOAuthProvider clientId={client}>
           <App />
         </GoogleOAuthProvider>
       </QueryClientProvider>
     </WagmiProvider>
-  </BrowserRouter>,
-)
+  </BrowserRouter>
+);
+
