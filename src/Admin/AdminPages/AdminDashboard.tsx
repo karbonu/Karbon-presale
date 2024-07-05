@@ -9,6 +9,7 @@ import AdminDashboardTable from "./AdminDashboardTable"
 import { useState, useRef, useEffect } from 'react';
 import CheckMark from "@/components/Icons/CheckMark";
 import { getDashboardData } from "../Hooks/AdminDashboardData"
+import { getTotalContribution } from "@/components/shared/Hooks/TokenSaleHooks"
 
 const AdminDashboard = () => {
 
@@ -21,6 +22,8 @@ const AdminDashboard = () => {
     const [pendingRequestAmount, setTOtalPendingRequestAmount] = useState(0);
     const [totalClaimed, setTotoalCLaimed] = useState(0);
     const [totalUnclaimed, setTotalUnclaimed] = useState(0);
+    const[totalContribution, setTotalContribution] = useState(0);
+    const [decimalContribution, setDecimalCOntribution] = useState('')
     const inputRef = useRef<HTMLInputElement>(null);
   
     const handlePasteClick = async () => {
@@ -39,6 +42,23 @@ const AdminDashboard = () => {
     };
 
     useEffect(() => {
+        
+    const fetchTotalContribution = async() =>{
+        const response = await getTotalContribution();
+        
+        if (response !== 'Failed') {
+          const Contribute = Number(response.data._sum.amount);
+          setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
+          if(totalContribution === 0){
+            setDecimalCOntribution('00')
+          }
+        } else {
+          console.log(response);
+        }
+      }
+  
+      fetchTotalContribution();
+
         const fetchReeferralCOunt = async () => {
           const response = await getDashboardData();
           if (response !== 'Failed') {
@@ -149,8 +169,8 @@ const AdminDashboard = () => {
                         <div className="flex flex-col space-y-3">
                             <p className="text-white text-[12px] opacity-70">TOTAL RAISED</p>
                             <div className="flex flex-row">
-                                <p className="text-white text-[24px]">700</p>
-                                <p className="text-white text-[16px]">.45</p>
+                                <p className="text-white text-[24px]">{totalContribution}</p>
+                                <p className="text-white text-[16px]">.{decimalContribution}</p>
                             </div>
                         </div>
                     </div>
@@ -182,7 +202,7 @@ const AdminDashboard = () => {
                                 </div>
 
                                 <div className="flex flex-row w-full h-[56px] border-[#282828] border-[1px] rounded-[1px]">
-                                    <input className="w-[80%] h-full bg-transparent outline-none pl-5 text-[12px] text-white" placeholder="Wallet Address"/>
+                                    <input className="w-[80%] h-full bg-transparent outline-none pl-5 text-[12px] text-white" placeholder="Amount"/>
                                     <div className="flex flex-1 flex-row items-center justify-end space-x-1 pr-5 cursor-pointer">
                                         <USDTIconRounded/>
                                         <p className="text-white text-[10px]">

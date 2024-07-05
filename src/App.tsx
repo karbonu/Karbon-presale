@@ -18,6 +18,8 @@ import AdminLayout from "./Admin/AdminLayout"
 import AdminConnectWallet from "./Admin/AdminPages/AdminConnectWallet"
 import AdminDashboard from "./Admin/AdminPages/AdminDashboard"
 import AdminPresale from "./Admin/AdminPages/AdminPresale"
+import AdminProtectedRoute from "./Admin/Hooks/AdminProtectedRoutes"
+import { AdminAuthProvider } from "./Admin/Hooks/AdminAuthContext"
 function App() {
   
 
@@ -25,56 +27,61 @@ function App() {
     <>
     <HelmetProvider>
       <AuthProvider>
-
-      <main className="bgSettings">
-        <MetaTags
-        title="Karbon Sale"
-        description="Get in early on the karbon token"
-        image="././public/assets/karbonSoloLogo.png"
-        name=""
-        />
-        <Routes>
-        <Route path= "/adminSignin" element = { <AdminConnectWallet/> } />
-          <Route path="/admin" element = {<AdminLayout/>}>
-              <Route index element = { <AdminDashboard/> } />
-              <Route path= "Investment" element = { <AdminDashboard/> } />
-              <Route path= "presale" element = { <AdminPresale/> } />
-            </Route>
-          <Route element = {<AuthLayout/>}>
-            
-              <Route index element = { <SignIn/> } />
-              <Route path= "/sign-in" element = { <SignIn/> } />
-              <Route path= "/sign-up" element = { <SignUp/> } />
-              <Route path= "*" element = { <PageNotFound/> } />
-             
-            
-            </Route>
-
-            <Route path="/dashboard" element = {
-              <ProtectedRoute>
-                <PageLayout/>
-              </ProtectedRoute>
-              }>
-
-                <Route index element = { <TokenSale/> } />
-                <Route path="tokenSale" element = { <TokenSale/> }/>
-                <Route path='claimtokens' element = { <ClaimTokens/> }/>
-
-                <Route path="settings" element = {<SettingsLayout/>}>
-                  <Route index element = { <WalletSettings/> } />
-                  <Route path="profilesettings" element = { <ProfileSettings/> }/>
-                  <Route path='walletsettings' element = { <WalletSettings/> }/>
-                  
-                
-
+        <AdminAuthProvider>
+          <main className="bgSettings">
+            <MetaTags
+            title="Karbon Sale"
+            description="Get in early on the karbon token"
+            image="././public/assets/karbonSoloLogo.png"
+            name=""
+            />
+            <Routes>
+            <Route path= "/adminSignin" element = { <AdminConnectWallet/> } />
+              <Route path="/admin" element = {
+                <AdminProtectedRoute>
+                    <AdminLayout/>
+                </AdminProtectedRoute>
+                }>
+                  <Route index element = { <AdminDashboard/> } />
+                  <Route path= "Investment" element = { <AdminDashboard/> } />
+                  <Route path= "presale" element = { <AdminPresale/> } />
                 </Route>
+              <Route element = {<AuthLayout/>}>
                 
-               
+                  <Route index element = { <SignIn/> } />
+                  <Route path= "/sign-in" element = { <SignIn/> } />
+                  <Route path= "/sign-up" element = { <SignUp/> } />
+                  <Route path= "*" element = { <PageNotFound/> } />
+                
+                
+                </Route>
 
-              </Route>
+                <Route path="/dashboard" element = {
+                  <ProtectedRoute>
+                    <PageLayout/>
+                  </ProtectedRoute>
+                  }>
 
-          </Routes>
-      </main>
+                    <Route index element = { <TokenSale/> } />
+                    <Route path="tokenSale" element = { <TokenSale/> }/>
+                    <Route path='claimtokens' element = { <ClaimTokens/> }/>
+
+                    <Route path="settings" element = {<SettingsLayout/>}>
+                      <Route index element = { <WalletSettings/> } />
+                      <Route path="profilesettings" element = { <ProfileSettings/> }/>
+                      <Route path='walletsettings' element = { <WalletSettings/> }/>
+                      
+                    
+
+                    </Route>
+                    
+                  
+
+                  </Route>
+
+              </Routes>
+          </main>
+      </AdminAuthProvider>
       </AuthProvider>
     </HelmetProvider>
     </>

@@ -21,7 +21,6 @@ import { useInitialNonceMutation, useLoginMutation, useSocialAuthMutation, useVe
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/shared/Contexts/AuthContext";
 
-
 const SignUp = () => {
   const [chanceInfo, setChanceInfo] = useState(true);
   const [step, setStep] = useState(1);
@@ -364,7 +363,7 @@ const login = useGoogleLogin({
                   <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Verify Email</p>
                 </div>
                 <div className="flex flex-col space-y-1">
-                  <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">A six-digit verification code was sent to</p>
+                  <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">A four-digit verification code was sent to</p>
                   <p className="text-white text-[14px] max-sm:text-[12px]">{email}</p>
                   <div className="flex flex-row space-x-2">
                     <p className="text-white opacity-70 text-[14px] max-sm:text-[12px]">Not your email?</p>
