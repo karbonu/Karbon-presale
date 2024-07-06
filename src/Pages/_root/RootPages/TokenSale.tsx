@@ -11,7 +11,7 @@ import WhatsappLogo from "@/components/Icons/WhatsappLogo.tsx";
 import XLogo from "@/components/Icons/XLogo.tsx";
 import MetaTags from "@/components/shared/MetaTags.tsx"
 import { useEffect, useState } from "react"
-import { ClimbingBoxLoader } from "react-spinners";
+import { BarLoader, ClimbingBoxLoader } from "react-spinners";
 import BuyWithUSDT from "./BuyWithUSDT.tsx";
 import BuyWithCreditCard from "./BuyWithCreditCard.tsx";
 import BuyWithPaypal from "./BuyWithPaypal.tsx";
@@ -31,6 +31,7 @@ import { useAccount } from "wagmi";
 import CheckMark from "@/components/Icons/CheckMark.tsx";
 import { getProgress, getTotalContribution, getTotalUSDSpent, getTotalUSDTSpent, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks.tsx";
 import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
+import { useRequestPayoutMitate } from "@/components/shared/Hooks/UseRequestPayoutMutation.tsx";
 
 
 const TokenSale = () => {
@@ -49,9 +50,14 @@ const TokenSale = () => {
   const [tokensBought, setTokensBought] = useState(0);
   const [referralCount, setReferralCount] = useState(0);
   const [fullTransaction, setFulltransaction] = useState(false);
-  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal} = useAuth();
+  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode} = useAuth();
   const [totalContribution, setTotalContribution] = useState(0);
+  const [bonusAmount, setBonusAmount] = useState(0);
+  const payoutMitate = useRequestPayoutMitate();
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected && !hasDisplayedConnectModal);
+  const { open } = useWeb3Modal();
+  const [isRequesting, setIsRequesting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
 
 
@@ -130,6 +136,9 @@ const TokenSale = () => {
       if (response !== 'Failed') {
         const newCount = Number(response.data);
         setReferralCount(isNaN(newCount) ? 0 : newCount);
+        if(referralCount === 0){
+          setBonusAmount(5000);
+        }
       } else {
         console.log(response);
       }
@@ -165,20 +174,35 @@ const TokenSale = () => {
   };
 
 
-  let bonusAmount = 50;
-  const { open } = useWeb3Modal();
-  
+
 
   const handlePayoutModal = () => {
     if (isConnected){
-      if(bonusAmount < 500){
-        setPayoutFaliure(true);
+      setIsRequesting(true);
+      if(bonusAmount > 500){
+        payoutMitate.mutate(
+          { referralId : referralCode },
+          {
+              onSuccess: () => {
+                setPayoutSuccessOpen(true);
+                setIsRequesting(false);
+              },
+              onError: (error) => {
+                console.log(error)
+                  setErrorMessage('Payout Request Failed');
+                  setIsRequesting(false);
+              }
+          }
+      );
       }else{
-        setPayoutSuccessOpen(true);
+        setIsRequesting(false);
+        setPayoutFaliure(true);
       }
     }else{
+      setIsRequesting(false);
       open();
     }
+    setIsRequesting(false);
   }
 
 
@@ -288,16 +312,25 @@ const TokenSale = () => {
                       <div className="flex flex-col space-y-2">
                         <p className="text-white text-[12px] opacity-70">BONUS EARNED</p>
                         <div className="flex flex-row ">
-                          <p className="text-white text-[28px]">$345</p>
-                          <p className="text-white text-[18px]">.45</p>
+                          <p className="text-white text-[28px]">${bonusAmount}</p>
+                          <p className="text-white text-[18px]">.00</p>
                         </div>
                         <div onClick={handlePayoutModal} className="bg-transparent py-2 px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
                           {isConnected ? (
-                            "Request Payout"
+                            <>
+                            {isRequesting ? (
+                              <BarLoader color="#FFFFFF"/>
+                            ) : (
+                              "Request Payout"
+                            )}
+                            </>
                           ): (
                             "Connect Wallet"
                           )}
                         </div>
+                        {errorMessage && (
+                              <p className="text-[12px] w-full text-center text-red-500 mt-2">{errorMessage}</p>
+                          )}
                         <PayoutModalSuccess
                         isDialogOpen = {payoutSuccessOpen}
                         setIsDialogOpen = {setPayoutSuccessOpen}
@@ -690,8 +723,8 @@ const TokenSale = () => {
                       <div className="flex flex-col space-y-2">
                         <p className="text-white text-[12px] opacity-70">BONUS EARNED</p>
                         <div className="flex flex-row ">
-                          <p className="text-white text-[28px]">$345</p>
-                          <p className="text-white text-[18px]">.45</p>
+                          <p className="text-white text-[28px]">${bonusAmount}</p>
+                          <p className="text-white text-[18px]">.00</p>
                         </div>
                       </div>
                       <div className="flex flex-col space-y-2">
@@ -706,17 +739,26 @@ const TokenSale = () => {
                       <div className="flex flex-col space-y-2">
                         <p className="text-white text-[12px] opacity-70">TOTAL REFERRALS</p>
                         <div className="flex flex-row ">
-                          <p className="text-white text-[28px]">345</p>
+                          <p className="text-white text-[28px]">{referralCount}</p>
                           
                         </div>
                       </div>
                       <div onClick={handlePayoutModal} className="bg-transparent py-2 items-center h-max px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
                         {isConnected ? (
-                          "Request Payout"
-                        ): (
-                          "Connect Wallet"
-                        )}
+                            <>
+                            {isRequesting ? (
+                              <BarLoader color="#FFFFFF"/>
+                            ) : (
+                              "Request Payout"
+                            )}
+                            </>
+                          ): (
+                            "Connect Wallet"
+                          )}
                       </div>
+                          {errorMessage && (
+                                  <p className="text-[12px] w-full text-center text-red-500 mt-2">{errorMessage}</p>
+                              )}
                           <PayoutModalSuccess
                           isDialogOpen = {payoutSuccessOpen}
                           setIsDialogOpen = {setPayoutSuccessOpen}
@@ -778,8 +820,8 @@ const TokenSale = () => {
                     <div className="space-y-2">
                       <p className="text-[12px] opacity-70 text-white">AMOUNT SPENT</p>
                       <div className="flex flex-row space-x-1">
-                        <p className="text-white text-[24px]">21,325</p>
-                        <p className="text-white text-[16px]">.45</p>
+                        <p className="text-white text-[24px]">{totalAmount}</p>
+                        <p className="text-white text-[16px]">.{decimalTotalAmount}</p>
                         <p className="text-white font-extralight text-[24px]">USDT</p>
                       </div>
                     </div>
@@ -787,7 +829,7 @@ const TokenSale = () => {
                     <div className="space-y-2">
                       <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
                       <div className="flex flex-row space-x-1">
-                        <p className="text-white text-[24px]">0.00345</p>
+                        <p className="text-white text-[24px]">{tokensBought}</p>
                         <p className="text-white font-extralight text-[24px]">KARBON</p>
                       </div>
                     </div>
