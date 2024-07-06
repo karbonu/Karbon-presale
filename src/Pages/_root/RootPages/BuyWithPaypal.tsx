@@ -1,5 +1,4 @@
-// src/components/BuyWithPaypal.tsx
-import  { useState } from 'react';
+import { useState } from 'react';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useCreatePaypalOrderMutation } from '@/components/shared/Hooks/useCreatePaypalOrder';
 import { useVerifyPaymentMutation } from '@/components/shared/Hooks/useVerifyPayment';
@@ -15,33 +14,44 @@ const BuyWithPaypal = (props: any) => {
   const verifyPaymentMutation = useVerifyPaymentMutation();
 
   const handleCreateOrder = async () => {
-    const result = await createOrderMutation.mutateAsync({ amount });
-    return result.data.id;
+    try {
+      const result = await createOrderMutation.mutateAsync({ amount });
+      console.log('Order created:', result.data.id);
+      return result.data.id;
+    } catch (error) {
+      console.error('Error creating order:', error);
+      throw new Error('Order creation failed');
+    }
   };
 
   const handleApprove = async (data: any, actions: any) => {
-    await actions.order.capture();
-    verifyPaymentMutation.mutate({
-      orderID: data.orderID,
-      userID: UserID,
-      amount: amount,
-    });
+    try {
+      await actions.order.capture();
+      console.log('Order approved:', data.orderID);
+      verifyPaymentMutation.mutate({
+        orderID: data.orderID,
+        userID: UserID,
+        amount: amount,
+      });
+    } catch (error) {
+      console.error('Error approving order:', error);
+    }
   };
 
   return (
     <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
       <div className="w-full flex items-center px-3 rounded-[4px] bg-[#1C1C1C] h-[40px]">
-          <div className="flex flex-row items-center justify-between w-[213px]">
-            <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer flex-row items-center justify-center space-x-1">
-              <BackArrow />
-              <p className="text-white text-[12px]">Back</p>
-            </div>
-            <div className="flex flex-row items-center space-x-2">
-              <USDTIcon />
-              <p className="text-white text-[14px]">Buy with Paypal</p>
-            </div>
+        <div className="flex flex-row items-center justify-between w-[213px]">
+          <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer flex-row items-center justify-center space-x-1">
+            <BackArrow />
+            <p className="text-white text-[12px]">Back</p>
+          </div>
+          <div className="flex flex-row items-center space-x-2">
+            <USDTIcon />
+            <p className="text-white text-[14px]">Buy with Paypal</p>
           </div>
         </div>
+      </div>
       <div className="flex flex-col py-5 items-center justify-center space-y-5">
         <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
           <label htmlFor="buyInput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
@@ -63,11 +73,10 @@ const BuyWithPaypal = (props: any) => {
           createOrder={handleCreateOrder}
           onApprove={handleApprove}
         />
-        {verifyPaymentMutation.isPending  && <BarLoader />}
+        {verifyPaymentMutation.isPending && <BarLoader />}
       </div>
     </PayPalScriptProvider>
   );
 };
 
 export default BuyWithPaypal;
-
