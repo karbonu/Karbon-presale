@@ -3,32 +3,32 @@
 import ConnectIconGreen from "@/components/Icons/ConnectIconGreen";
 import KarbonLogo from "@/components/Icons/KarbonLogo";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useAdminAuth } from "../Hooks/AdminAuthContext";
-import { useNavigate } from "react-router-dom";
-import { useAccount } from "wagmi";
-import { useEffect } from "react";
+// import { useAdminAuth } from "../Hooks/AdminAuthContext";
+// import { useNavigate } from "react-router-dom";
+// import { useAccount } from "wagmi";
+// import { useEffect } from "react";
 
 const AdminConnectWallet = () => {
-  const { connectWallet, disconnectWaller } = useAdminAuth();
+  // const { connectWallet, disconnectWaller } = useAdminAuth();
   const { open } = useWeb3Modal();
-  const navigate = useNavigate();
-  const {isConnected} = useAccount();
+  // const navigate = useNavigate();
+  // const {isConnected} = useAccount();
 
   const handleConnectWallet = () => {
     open();
   };
 
 
-  useEffect(() => {
-    if(!isConnected){
-      disconnectWaller();
-      navigate('/adminSignin');
-    }else{
-      connectWallet();
-      navigate('/admin');
-    }
+  // useEffect(() => {
+  //   if(!isConnected){
+  //     disconnectWaller();
+  //     navigate('/adminSignin');
+  //   }else{
+  //     connectWallet();
+  //     navigate('/admin');
+  //   }
     
-  }, [isConnected]);
+  // }, [isConnected]);
 
   return (
     <div className="flex flex-col min-h-[100vh] items-center justify-center space-y-5">
