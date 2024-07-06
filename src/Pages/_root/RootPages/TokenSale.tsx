@@ -523,7 +523,9 @@ const TokenSale = () => {
                           style={{ opacity: selectedMethod === 3 ? 1 : 0 }}
                         >
                           {/* Content for selectedMethod === 3 */}
-                          {selectedMethod === 3 && <BuyWithPaypal setSelectedMethod={setSelectedMethod} />}
+                          {selectedMethod === 3 && <BuyWithPaypal 
+                          // setSelectedMethod={setSelectedMethod} 
+                          />}
                         </div>
                       
                     </div>
@@ -669,7 +671,9 @@ const TokenSale = () => {
                           style={{ opacity: selectedMethod === 3 ? 1 : 0 }}
                         >
                           {/* Content for selectedMethod === 3 */}
-                          {selectedMethod === 3 && <BuyWithPaypal setSelectedMethod={setSelectedMethod} />}
+                          {selectedMethod === 3 && <BuyWithPaypal 
+                          // setSelectedMethod={setSelectedMethod} 
+                          />}
                         </div>
                       
                     </div>
