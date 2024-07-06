@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ForwardGreen from '@/components/Icons/ForwardGreen'; 
-import { useCreatePresaleMutate } from '../Hooks/CreatePresaleMutate';
+//import { useCreatePresaleMutate } from '../Hooks/CreatePresaleMutate';
 
 const AdminPresale = () => {
   const [formValues, setFormValues] = useState({
@@ -20,7 +20,7 @@ const AdminPresale = () => {
     totalContribution: 0,
   });
 
-  const createMutate = useCreatePresaleMutate();
+  // const createMutate = useCreatePresaleMutate();
 
   const [vesting, setVesting] = useState([{ percentage: '', releaseDate: '' }]);
 
@@ -53,39 +53,39 @@ const AdminPresale = () => {
       return;
     }
 
-    const vestingData: { [index: number]: [number, string] } = vesting.reduce((acc, v, index) => {
-      acc[index] = [Number(v.percentage), v.releaseDate];
-      return acc;
-    }, {} as { [index: number]: [number, string] });
+    // const vestingData: { [index: number]: [number, string] } = vesting.reduce((acc, v, index) => {
+    //   acc[index] = [Number(v.percentage), v.releaseDate];
+    //   return acc;
+    // }, {} as { [index: number]: [number, string] });
 
-    const data = {
-      name: formValues.name,
-      token: { address: formValues.tokenAddress },
-      coin: 'USDT',
-      rate: Number(formValues.rate),
-      hardCap: Number(formValues.hardcap),
-      minBuy: Number(formValues.minbuy),
-      maxBuy: Number(formValues.maxbuy),
-      startDate: formValues.startdate,
-      endDate: formValues.enddate,
-      presaleAddress: formValues.projectAddress,
-      paymentChannel: formValues.paymentChannel,
-      networks: formValues.networks,
-      usdtAddress: formValues.usdtAddress,
-      totalContribution: Number(formValues.totalContribution),
-      vesting: vestingData
-    };
+    // const data = {
+    //   name: formValues.name,
+    //   token: { address: formValues.tokenAddress },
+    //   coin: 'USDT',
+    //   rate: Number(formValues.rate),
+    //   hardCap: Number(formValues.hardcap),
+    //   minBuy: Number(formValues.minbuy),
+    //   maxBuy: Number(formValues.maxbuy),
+    //   startDate: formValues.startdate,
+    //   endDate: formValues.enddate,
+    //   presaleAddress: formValues.projectAddress,
+    //   paymentChannel: formValues.paymentChannel,
+    //   networks: formValues.networks,
+    //   usdtAddress: formValues.usdtAddress,
+    //   totalContribution: Number(formValues.totalContribution),
+    //   vesting: vestingData
+    // };
 
-    console.log(data);
-    createMutate.mutate(data, {
-      onSuccess: (response) => {
-        console.log(response)
-        console.log('Presale created successfully');
-      },
-      onError: (error) => {
-        console.error('Error creating presale:', error);
-      }
-    });
+    // console.log(data);
+    // createMutate.mutate(data, {
+    //   onSuccess: (response) => {
+    //     console.log(response)
+    //     console.log('Presale created successfully');
+    //   },
+    //   onError: (error) => {
+    //     console.error('Error creating presale:', error);
+    //   }
+    // });
   };
 
   return (
