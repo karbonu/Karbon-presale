@@ -1,4 +1,3 @@
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 
 export const getProgress = async (): Promise<AxiosResponse<any> | 'Failed'> => {
@@ -49,7 +48,7 @@ export const getUserReferrals = async (UserID : string) : Promise<AxiosResponse<
 
 export const getTotalContribution = async (): Promise<AxiosResponse<any> | 'Failed'> => {
     try {
-      const response = await axios.get(import.meta.env.VITE_BACKEND_API_URL +'presale/"cly9atqwm0001tbafzumww6dz"/total-contribution');
+      const response = await axios.get(import.meta.env.VITE_BACKEND_API_URL +'presale/"1"/total-contribution');
       return response;
     } catch (error) {
       return 'Failed';
@@ -57,16 +56,5 @@ export const getTotalContribution = async (): Promise<AxiosResponse<any> | 'Fail
   };
   
 
-type passwordReset = {
-    email: string;
-  };
-  
-  export const usePasswordResetMutate = (): UseMutationResult<AxiosResponse<any>, Error, passwordReset> => {
-    return useMutation<AxiosResponse<any>, Error, passwordReset>({
-      mutationFn: (data: passwordReset) => {
-        return axios.post( import.meta.env.VITE_BACKEND_API_URL + '/users/password/reset', data);
-      },
-    });
-  };
   
   

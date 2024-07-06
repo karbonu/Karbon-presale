@@ -72,7 +72,7 @@ type passwordUpdate = {
 export const usePasswoedUpdateMutate = (): UseMutationResult<AxiosResponse<any>, Error, passwordUpdate> => {
   return useMutation<AxiosResponse<any>, Error, passwordUpdate>({
     mutationFn: (data: passwordUpdate) => {
-      return axios.post(import.meta.env.VITE_BACKEND_API_URL +'/users/password/update', data);
+      return axios.post(import.meta.env.VITE_BACKEND_API_URL +'users/password/update', data);
     },
   });
 };
@@ -87,7 +87,7 @@ type passwordOTP = {
 export const usePasswordOTPMutate = (): UseMutationResult<AxiosResponse<any>, Error, passwordOTP> => {
   return useMutation<AxiosResponse<any>, Error, passwordOTP>({
     mutationFn: (data: passwordOTP) => {
-      return axios.post(import.meta.env.VITE_BACKEND_API_URL +'/users/password/change', data);
+      return axios.post(import.meta.env.VITE_BACKEND_API_URL +'users/password/change', data);
     },
   });
 };
@@ -101,7 +101,7 @@ type passwordReset = {
 export const usePasswordResetMutate = (): UseMutationResult<AxiosResponse<any>, Error, passwordReset> => {
   return useMutation<AxiosResponse<any>, Error, passwordReset>({
     mutationFn: (data: passwordReset) => {
-      return axios.post(import.meta.env.VITE_BACKEND_API_URL +'/users/password/reset', data);
+      return axios.post(import.meta.env.VITE_BACKEND_API_URL +'users/password/reset', data);
     },
   });
 };
