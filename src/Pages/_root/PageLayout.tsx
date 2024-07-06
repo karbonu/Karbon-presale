@@ -1,5 +1,5 @@
-import Leftbar from '@/components/shared/Leftbar';
-import TopBar from '@/components/shared/TopBar';
+import Leftbar from '@/components/shared/Leftbar.tsx';
+import TopBar from '@/components/shared/TopBar.tsx';
 import { Outlet, useNavigate } from 'react-router-dom'
 
 const PageLayout = () => {

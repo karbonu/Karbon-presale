@@ -1,15 +1,15 @@
-import ForwardGreen from "@/components/Icons/ForwardGreen"
-import PasteIcon from "@/components/Icons/PasteIcon"
-import PendingRequestIcon from "@/components/Icons/PendingRequestIcon"
-import ReferredUsersIcon from "@/components/Icons/ReferredUsersIcon"
-import TotalBonusPaidOutIcon from "@/components/Icons/TotalBonusPaidOutIcon"
-import TotalUsersIcon from "@/components/Icons/TotalUsersIcon"
-import USDTIconRounded from "@/components/Icons/USDTIconRounded"
-import AdminDashboardTable from "./AdminDashboardTable"
+import ForwardGreen from "@/components/Icons/ForwardGreen.tsx"
+import PasteIcon from "@/components/Icons/PasteIcon.tsx"
+import PendingRequestIcon from "@/components/Icons/PendingRequestIcon.tsx"
+import ReferredUsersIcon from "@/components/Icons/ReferredUsersIcon.tsx"
+import TotalBonusPaidOutIcon from "@/components/Icons/TotalBonusPaidOutIcon.tsx"
+import TotalUsersIcon from "@/components/Icons/TotalUsersIcon.tsx"
+import USDTIconRounded from "@/components/Icons/USDTIconRounded.tsx"
+import AdminDashboardTable from "./AdminDashboardTable.tsx"
 import { useState, useRef, useEffect } from 'react';
-import CheckMark from "@/components/Icons/CheckMark";
-import { getDashboardData } from "../Hooks/AdminDashboardData"
-import { getTotalContribution } from "@/components/shared/Hooks/TokenSaleHooks"
+import CheckMark from "@/components/Icons/CheckMark.tsx";
+import { getDashboardData } from "../Hooks/AdminDashboardData.tsx"
+import { getTotalContribution } from "@/components/shared/Hooks/TokenSaleHooks.tsx"
 
 const AdminDashboard = () => {
 

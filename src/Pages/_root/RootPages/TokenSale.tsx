@@ -1,36 +1,36 @@
-import CopyIcon from "@/components/Icons/CopyIcon";
-import CreditCardlogo from "@/components/Icons/CreditCardlogo";
-import DiscordLogo from "@/components/Icons/DiscordLogo";
-import Dot from "@/components/Icons/Dot";
-import ForwardIcon from "@/components/Icons/ForwardIcon";
-import PaypalLogo from "@/components/Icons/PaypalLogo";
-import TelegramLogo from "@/components/Icons/TelegramLogo";
-import USDTLogoBig from "@/components/Icons/USDTLogoBig";
-import UpArrow from "@/components/Icons/UpArrow";
-import WhatsappLogo from "@/components/Icons/WhatsappLogo";
-import XLogo from "@/components/Icons/XLogo";
-import MetaTags from "@/components/shared/MetaTags"
+import CopyIcon from "@/components/Icons/CopyIcon.tsx";
+import CreditCardlogo from "@/components/Icons/CreditCardlogo.tsx";
+import DiscordLogo from "@/components/Icons/DiscordLogo.tsx";
+import Dot from "@/components/Icons/Dot.tsx";
+import ForwardIcon from "@/components/Icons/ForwardIcon.tsx";
+import PaypalLogo from "@/components/Icons/PaypalLogo.tsx";
+import TelegramLogo from "@/components/Icons/TelegramLogo.tsx";
+import USDTLogoBig from "@/components/Icons/USDTLogoBig.tsx";
+import UpArrow from "@/components/Icons/UpArrow.tsx";
+import WhatsappLogo from "@/components/Icons/WhatsappLogo.tsx";
+import XLogo from "@/components/Icons/XLogo.tsx";
+import MetaTags from "@/components/shared/MetaTags.tsx"
 import { useEffect, useState } from "react"
 import { ClimbingBoxLoader } from "react-spinners";
-import BuyWithUSDT from "./BuyWithUSDT";
-import BuyWithCreditCard from "./BuyWithCreditCard";
-import BuyWithPaypal from "./BuyWithPaypal";
-import { Progress } from "@/components/ui/progress";
-import PayoutModalSuccess from "@/components/shared/PayoutModalSuccess";
-import PayoutModalFaliure from "@/components/shared/PayoutModalFaliure";
-import ConnectWalletIconBlack from "@/components/Icons/ConnectWalletIconBlack";
-import DialogClose from "@/components/Icons/DialogClose";
+import BuyWithUSDT from "./BuyWithUSDT.tsx";
+import BuyWithCreditCard from "./BuyWithCreditCard.tsx";
+import BuyWithPaypal from "./BuyWithPaypal.tsx";
+import { Progress } from "@/components/ui/progress.tsx";
+import PayoutModalSuccess from "@/components/shared/PayoutModalSuccess.tsx";
+import PayoutModalFaliure from "@/components/shared/PayoutModalFaliure.tsx";
+import ConnectWalletIconBlack from "@/components/Icons/ConnectWalletIconBlack.tsx";
+import DialogClose from "@/components/Icons/DialogClose.tsx";
 import {
   Dialog,
   DialogContent,
-} from "@/components/ui/dialog"
-import ForwardShortGreen from '@/components/Icons/ForwardShortGreen'
-import TermsAndCond from "@/components/shared/TermsAndCond";
+} from "@/components/ui/dialog.tsx"
+import ForwardShortGreen from '@/components/Icons/ForwardShortGreen.tsx'
+import TermsAndCond from "@/components/shared/TermsAndCond.tsx";
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from "wagmi";
-import CheckMark from "@/components/Icons/CheckMark";
-import { getProgress, getTotalContribution, getTotalUSDSpent, getTotalUSDTSpent, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks";
-import { useAuth } from "@/components/shared/Contexts/AuthContext";
+import CheckMark from "@/components/Icons/CheckMark.tsx";
+import { getProgress, getTotalContribution, getTotalUSDSpent, getTotalUSDTSpent, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks.tsx";
+import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
 
 
 const TokenSale = () => {

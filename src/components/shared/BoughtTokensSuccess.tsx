@@ -1,9 +1,9 @@
 import {
     Dialog,
     DialogContent,
-  } from "@/components/ui/dialog"
-import DialogClose from "../Icons/DialogClose"
-import SuccessIconBig from "../Icons/SuccessIconBig"
+  } from "@/components/ui/dialog.tsx"
+import DialogClose from "../Icons/DialogClose.tsx"
+import SuccessIconBig from "../Icons/SuccessIconBig.tsx"
 
 
 const BoughtTokensSuccess = (props : any) => {

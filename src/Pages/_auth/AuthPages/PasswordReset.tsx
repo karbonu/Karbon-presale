@@ -1,13 +1,13 @@
 // src/components/BuyWithPaypal.tsx
 import { useState } from 'react';
-import BackArrow from '@/components/Icons/BackArrow';
-import PasswordLogo from '@/components/Icons/PasswordLogo';
-import SucccessIconSmall from '@/components/Icons/SucccessIconSmall';
-import { usePasswordOTPMutate, useVerifyEmailMutation } from '@/components/shared/Hooks/UseAuthMutation';
-import PasswordIconComp from '@/components/shared/PasswordIconComp';
+import BackArrow from '@/components/Icons/BackArrow.tsx';
+import PasswordLogo from '@/components/Icons/PasswordLogo.tsx';
+import SucccessIconSmall from '@/components/Icons/SucccessIconSmall.tsx';
+import { usePasswordOTPMutate, useVerifyEmailMutation } from '@/components/shared/Hooks/UseAuthMutation.tsx';
+import PasswordIconComp from '@/components/shared/PasswordIconComp.tsx';
 import { BarLoader } from 'react-spinners';
-import EyeIcon from '@/components/Icons/EyeIcon';
-import EyeIcongreen from '@/components/Icons/EyeIcongreen';
+import EyeIcon from '@/components/Icons/EyeIcon.tsx';
+import EyeIcongreen from '@/components/Icons/EyeIcongreen.tsx';
 
 const PasswordReset = (props: any) => {
   const [step, setStep] = useState(1);

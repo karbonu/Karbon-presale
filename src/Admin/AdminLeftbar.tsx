@@ -1,8 +1,8 @@
-import DiscordLogo from "@/components/Icons/DiscordLogo"
-import KarbonLogoBig from "@/components/Icons/KarbonLogoBig"
-import TelegramLogo from "@/components/Icons/TelegramLogo"
-import XLogo from "@/components/Icons/XLogo"
-import RedirectIcon from "@/components/Icons/RedirectIcon";
+import DiscordLogo from "@/components/Icons/DiscordLogo.tsx"
+import KarbonLogoBig from "@/components/Icons/KarbonLogoBig.tsx"
+import TelegramLogo from "@/components/Icons/TelegramLogo.tsx"
+import XLogo from "@/components/Icons/XLogo.tsx"
+import RedirectIcon from "@/components/Icons/RedirectIcon.tsx";
 import { NavLink, useLocation } from "react-router-dom";
 
 const AdminLeftbar = () => {

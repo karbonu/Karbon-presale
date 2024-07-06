@@ -1,10 +1,10 @@
 // src/components/BuyWithPaypal.tsx
 import { useState } from 'react';
-import { useAuth } from '@/components/shared/Contexts/AuthContext';
-import BackArrow from '@/components/Icons/BackArrow';
+import { useAuth } from '@/components/shared/Contexts/AuthContext.tsx';
+import BackArrow from '@/components/Icons/BackArrow.tsx';
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
 import { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
-import PaypalLogo from '@/components/Icons/PaypalLogo';
+import PaypalLogo from '@/components/Icons/PaypalLogo.tsx';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 

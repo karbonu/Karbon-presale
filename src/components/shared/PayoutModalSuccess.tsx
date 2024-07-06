@@ -1,9 +1,9 @@
 import {
     Dialog,
     DialogContent,
-  } from "@/components/ui/dialog"
-import DialogClose from "../Icons/DialogClose"
-import SucccessIconSmall from "../Icons/SucccessIconSmall"
+  } from "@/components/ui/dialog.tsx"
+import DialogClose from "../Icons/DialogClose.tsx"
+import SucccessIconSmall from "../Icons/SucccessIconSmall.tsx"
 
 
 const PayoutModalSuccess = (props : any) => {

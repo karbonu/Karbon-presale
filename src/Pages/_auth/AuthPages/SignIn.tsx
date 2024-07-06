@@ -1,20 +1,20 @@
 // src/components/SignIn.tsx
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useInitialNonceMutation, useLoginMutation, usePasswordResetMutate, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
-import AppleLogo from "@/components/Icons/AppleLogo";
-import BackArrow from "@/components/Icons/BackArrow";
-import CloseIcon from "@/components/Icons/CloseIcon";
-import GoogleLogo from "@/components/Icons/GoogleLogo";
-import KarbonLogo from "@/components/Icons/KarbonLogo";
-import PasswordLogo from "@/components/Icons/PasswordLogo";
-import { Separator } from "@/components/ui/separator";
-import { useAuth } from '@/components/shared/Contexts/AuthContext';
+import { useInitialNonceMutation, useLoginMutation, usePasswordResetMutate, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation.tsx";
+import AppleLogo from "@/components/Icons/AppleLogo.tsx";
+import BackArrow from "@/components/Icons/BackArrow.tsx";
+import CloseIcon from "@/components/Icons/CloseIcon.tsx";
+import GoogleLogo from "@/components/Icons/GoogleLogo.tsx";
+import KarbonLogo from "@/components/Icons/KarbonLogo.tsx";
+import PasswordLogo from "@/components/Icons/PasswordLogo.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { useAuth } from '@/components/shared/Contexts/AuthContext.tsx';
 import { BarLoader } from 'react-spinners';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import VerifyEmailIcon from '@/components/Icons/VerifyEmailIcon';
-import PasswordReset from './PasswordReset';
+import VerifyEmailIcon from '@/components/Icons/VerifyEmailIcon.tsx';
+import PasswordReset from './PasswordReset.tsx';
 
 
 
@@ -28,7 +28,7 @@ const SignIn = () => {
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [isVerifying, setISVerifying] = useState(false);
-    const [otp, setOtp] = useState(0);
+    const [otp, setOtp] = useState("");
     const [isResetting, setIsResetting] = useState(false);
     const verifyMutat = useVerifyEmailMutation();
     const[verificationError, setverificationError] = useState('');
@@ -133,12 +133,12 @@ const SignIn = () => {
     };
 
     const handleOTPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setOtp(Number(event.target.value));
+        setOtp((event.target.value));
         setverificationError('');
       };
       const handleVerify = () => {
 
-        if (otp === 0) {
+        if (otp === "") {
           setverificationError("OTP Required");
           return;
         }

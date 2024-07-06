@@ -1,9 +1,9 @@
 // src/components/AdminConnectWallet.tsx
 
-import ConnectIconGreen from "@/components/Icons/ConnectIconGreen";
-import KarbonLogo from "@/components/Icons/KarbonLogo";
+import ConnectIconGreen from "@/components/Icons/ConnectIconGreen.tsx";
+import KarbonLogo from "@/components/Icons/KarbonLogo.tsx";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useAdminAuth } from "../Hooks/AdminAuthContext";
+import { useAdminAuth } from "../Hooks/AdminAuthContext.tsx";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";

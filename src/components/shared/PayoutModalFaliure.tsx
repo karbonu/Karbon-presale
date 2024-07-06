@@ -1,16 +1,16 @@
 import {
     Dialog,
     DialogContent,
-  } from "@/components/ui/dialog"
-import DialogClose from "../Icons/DialogClose"
-import { Separator } from "../ui/separator"
-import CopyIcon from "../Icons/CopyIcon"
-import DiscordLogo from "../Icons/DiscordLogo"
-import TelegramLogo from "../Icons/TelegramLogo"
-import WhatsappLogo from "../Icons/WhatsappLogo"
-import XLogo from "../Icons/XLogo"
+  } from "@/components/ui/dialog.tsx"
+import DialogClose from "../Icons/DialogClose.tsx"
+import { Separator } from "../ui/separator.tsx"
+import CopyIcon from "../Icons/CopyIcon.tsx"
+import DiscordLogo from "../Icons/DiscordLogo.tsx"
+import TelegramLogo from "../Icons/TelegramLogo.tsx"
+import WhatsappLogo from "../Icons/WhatsappLogo.tsx"
+import XLogo from "../Icons/XLogo.tsx"
 import { useState } from "react"
-import CheckMark from "../Icons/CheckMark"
+import CheckMark from "../Icons/CheckMark.tsx"
 
 
 const PayoutModalFaliure = (props : any) => {

@@ -1,6 +1,6 @@
 import UseAnimations from 'react-useanimations';
 import alertTriangle from 'react-useanimations/lib/alertTriangle'
-import KarbonLogo from '../Icons/KarbonLogo';
+import KarbonLogo from '../Icons/KarbonLogo.tsx';
 
 const PageNotFound = () => {
   return (

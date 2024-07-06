@@ -1,9 +1,9 @@
 // src/components/AdminDashboardTable.tsx
 import { useState } from 'react';
-import PaidBonusIcon from "@/components/Icons/PaidBonusIcon";
-import PaidTXIcon from "@/components/Icons/PaidTXIcon";
-import PendingPayoutIcon from "@/components/Icons/PendingPayoutIcon";
-import UnpaidTXIcon from '@/components/Icons/UnpaidTXIcon';
+import PaidBonusIcon from "@/components/Icons/PaidBonusIcon.tsx";
+import PaidTXIcon from "@/components/Icons/PaidTXIcon.tsx";
+import PendingPayoutIcon from "@/components/Icons/PendingPayoutIcon.tsx";
+import UnpaidTXIcon from '@/components/Icons/UnpaidTXIcon.tsx';
 
 interface TableRow {
   walletAddress: string;

@@ -1,27 +1,27 @@
-import AppleLogo from "@/components/Icons/AppleLogo";
-import CloseIcon from "@/components/Icons/CloseIcon";
-import GoogleLogo from "@/components/Icons/GoogleLogo";
-import KarbonLogo from "@/components/Icons/KarbonLogo";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Checkbox } from "@/components/ui/checkbox";
+import AppleLogo from "@/components/Icons/AppleLogo.tsx";
+import CloseIcon from "@/components/Icons/CloseIcon.tsx";
+import GoogleLogo from "@/components/Icons/GoogleLogo.tsx";
+import KarbonLogo from "@/components/Icons/KarbonLogo.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { useState } from "react";
 
-import VerifyEmailIcon from "@/components/Icons/VerifyEmailIcon";
-import PasswordLogo from "@/components/Icons/PasswordLogo";
-import BackArrow from "@/components/Icons/BackArrow";
-import PasswordIconComp from "@/components/shared/PasswordIconComp";
-import { useRegisterMutation } from "@/components/shared/Hooks/UseRegisterMutation";
+import VerifyEmailIcon from "@/components/Icons/VerifyEmailIcon.tsx";
+import PasswordLogo from "@/components/Icons/PasswordLogo.tsx";
+import BackArrow from "@/components/Icons/BackArrow.tsx";
+import PasswordIconComp from "@/components/shared/PasswordIconComp.tsx";
+import { useRegisterMutation } from "@/components/shared/Hooks/UseRegisterMutation.tsx";
 import { useAccount } from "wagmi";
 import { BarLoader } from "react-spinners";
 
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useInitialNonceMutation, useLoginMutation, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
+import { useInitialNonceMutation, useLoginMutation, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation.tsx";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useAuth } from "@/components/shared/Contexts/AuthContext";
-import EyeIcongreen from "@/components/Icons/EyeIcongreen";
-import EyeIcon from "@/components/Icons/EyeIcon";
+import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
+import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
+import EyeIcon from "@/components/Icons/EyeIcon.tsx";
 
 const SignUp = () => {
   const [chanceInfo, setChanceInfo] = useState(true);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ForwardGreen from '@/components/Icons/ForwardGreen'; 
-import { useCreatePresaleMutate } from '../Hooks/CreatePresaleMutate';
+import ForwardGreen from '@/components/Icons/ForwardGreen.tsx'; 
+import { useCreatePresaleMutate } from '../Hooks/CreatePresaleMutate.tsx';
 
 const AdminPresale = () => {
   const [formValues, setFormValues] = useState({

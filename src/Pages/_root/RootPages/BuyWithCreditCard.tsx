@@ -1,13 +1,13 @@
 // src/components/BuyWithCreditCard.tsx
 import { useState } from 'react';
-import { useAuth } from '@/components/shared/Contexts/AuthContext';
-import BackArrow from '@/components/Icons/BackArrow';
+import { useAuth } from '@/components/shared/Contexts/AuthContext.tsx';
+import BackArrow from '@/components/Icons/BackArrow.tsx';
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
 import { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
-import CreditCardlogo from '@/components/Icons/CreditCardlogo';
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog.tsx';
+import CreditCardlogo from '@/components/Icons/CreditCardlogo.tsx';
 
 
 interface VerifyPaymentData {

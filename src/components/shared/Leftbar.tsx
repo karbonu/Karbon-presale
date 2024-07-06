@@ -1,15 +1,15 @@
-import ClaimTokenWhite from "../Icons/ClaimTokenWhite"
-import DiscordLogo from "../Icons/DiscordLogo"
+import ClaimTokenWhite from "../Icons/ClaimTokenWhite.tsx"
+import DiscordLogo from "../Icons/DiscordLogo.tsx"
 import { NavLink, useLocation } from 'react-router-dom';
-import KarbonLogoBig from "../Icons/KarbonLogoBig"
-import SettingsWhite from "../Icons/SettingsWhite"
-import TelegramLogo from "../Icons/TelegramLogo"
-import TokenSaleIcon from "../Icons/TokenSaleIcon"
-import XLogo from "../Icons/XLogo"
-import SettingsIcon from "../Icons/SettingsIcon";
-import ClaimTokensLogo from "../Icons/ClaimTokensLogo";
-import TokenSaleWhite from "../Icons/TokenSaleWhite";
-import RedirectIcon from "../Icons/RedirectIcon";
+import KarbonLogoBig from "../Icons/KarbonLogoBig.tsx"
+import SettingsWhite from "../Icons/SettingsWhite.tsx"
+import TelegramLogo from "../Icons/TelegramLogo.tsx"
+import TokenSaleIcon from "../Icons/TokenSaleIcon.tsx"
+import XLogo from "../Icons/XLogo.tsx"
+import SettingsIcon from "../Icons/SettingsIcon.tsx";
+import ClaimTokensLogo from "../Icons/ClaimTokensLogo.tsx";
+import TokenSaleWhite from "../Icons/TokenSaleWhite.tsx";
+import RedirectIcon from "../Icons/RedirectIcon.tsx";
 
 const Leftbar = () => {
 

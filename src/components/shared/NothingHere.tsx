@@ -1,4 +1,4 @@
-import KarbonLogo from "@/components/Icons/KarbonLogo"
+import KarbonLogo from "@/components/Icons/KarbonLogo.tsx"
 import { ClockLoader } from "react-spinners"
 
 const NothingHere = () => {

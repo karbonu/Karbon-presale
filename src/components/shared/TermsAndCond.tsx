@@ -1,8 +1,8 @@
 import {
     Dialog,
     DialogContent,
-  } from "@/components/ui/dialog"
-import DialogClose from "../Icons/DialogClose"
+  } from "@/components/ui/dialog.tsx"
+import DialogClose from "../Icons/DialogClose.tsx"
 
 const TermsAndCond = (props : any) => {
   return (

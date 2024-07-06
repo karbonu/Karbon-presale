@@ -1,13 +1,13 @@
-import CheckMark from "@/components/Icons/CheckMark";
-import CopyIcon from "@/components/Icons/CopyIcon";
-import WalletIcon from "@/components/Icons/WalletIcon";
-import { useAuth } from "@/components/shared/Contexts/AuthContext";
-import MetaTags from "@/components/shared/MetaTags";
+import CheckMark from "@/components/Icons/CheckMark.tsx";
+import CopyIcon from "@/components/Icons/CopyIcon.tsx";
+import WalletIcon from "@/components/Icons/WalletIcon.tsx";
+import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
+import MetaTags from "@/components/shared/MetaTags.tsx";
 import { useState } from "react";
 import { BarLoader } from "react-spinners";
-import { usePasswoedUpdateMutate } from "@/components/shared/Hooks/UseAuthMutation";
-import EyeIcon from "@/components/Icons/EyeIcon";
-import EyeIcongreen from "@/components/Icons/EyeIcongreen";
+import { usePasswoedUpdateMutate } from "@/components/shared/Hooks/UseAuthMutation.tsx";
+import EyeIcon from "@/components/Icons/EyeIcon.tsx";
+import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 
 const ProfileSettings = () => {
   const [copied, setCopied] = useState(false);

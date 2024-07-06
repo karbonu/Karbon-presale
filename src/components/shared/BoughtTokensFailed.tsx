@@ -1,9 +1,9 @@
 import {
     Dialog,
     DialogContent,
-  } from "@/components/ui/dialog"
-import DialogClose from "../Icons/DialogClose"
-import FailedModalIcon from "../Icons/FailedModalIcon"
+  } from "@/components/ui/dialog.tsx"
+import DialogClose from "../Icons/DialogClose.tsx"
+import FailedModalIcon from "../Icons/FailedModalIcon.tsx"
 
 
 const BoughtTokensFailed = (props : any) => {

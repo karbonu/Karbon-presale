@@ -1,11 +1,11 @@
-import CopyIcon from "@/components/Icons/CopyIcon";
-import KeyIcon from "@/components/Icons/KeyIcon";
-import WalletIcon from "@/components/Icons/WalletIcon";
+import CopyIcon from "@/components/Icons/CopyIcon.tsx";
+import KeyIcon from "@/components/Icons/KeyIcon.tsx";
+import WalletIcon from "@/components/Icons/WalletIcon.tsx";
 import { useDisconnect, useAccount } from 'wagmi'
-import MetaTags from "@/components/shared/MetaTags"
-import DisconnectIcon from "@/components/Icons/DisconnectIcon";
+import MetaTags from "@/components/shared/MetaTags.tsx"
+import DisconnectIcon from "@/components/Icons/DisconnectIcon.tsx";
 import { useState } from "react";
-import CheckMark from "@/components/Icons/CheckMark";
+import CheckMark from "@/components/Icons/CheckMark.tsx";
 
 
 const WalletSettings = () => {

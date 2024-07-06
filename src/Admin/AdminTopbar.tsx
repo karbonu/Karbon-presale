@@ -1,7 +1,7 @@
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useAccount } from "wagmi";
-import DownIcon from "@/components/Icons/DownIcon";
-import EthIcon from "@/components/Icons/EthIcon";
+import DownIcon from "@/components/Icons/DownIcon.tsx";
+import EthIcon from "@/components/Icons/EthIcon.tsx";
 
 
 const AdminTopbar = () => {

@@ -1,10 +1,10 @@
-import MetaTags from "@/components/shared/MetaTags"
+import MetaTags from "@/components/shared/MetaTags.tsx"
 import { useState } from "react";
 import { ClimbingBoxLoader } from "react-spinners";
-import Dot from "@/components/Icons/Dot";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import NoTrasactionsLogo from "@/components/Icons/NoTrasactionsLogo";
-import DownIcon from "@/components/Icons/DownIcon";
+import Dot from "@/components/Icons/Dot.tsx";
+import { ScrollArea } from "@/components/ui/scroll-area.tsx";
+import NoTrasactionsLogo from "@/components/Icons/NoTrasactionsLogo.tsx";
+import DownIcon from "@/components/Icons/DownIcon.tsx";
 import { useAccount } from "wagmi";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 
