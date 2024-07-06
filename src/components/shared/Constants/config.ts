@@ -2,7 +2,7 @@ import { http, createConfig } from 'wagmi'
 import { bscTestnet } from 'wagmi/chains'
 import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors'
 
-export const projectId = '1e05e85ce4aaa22f7c5a8a10b76118c1';
+export const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID;
 
 export const config = createConfig({
   chains: [bscTestnet],

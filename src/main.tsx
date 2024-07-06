@@ -30,7 +30,7 @@ createWeb3Modal({
 })
 
 
-let client = '1098677333735-n6ks69hevlet2eafue7m7lmneptjmg1q.apps.googleusercontent.com'; 
+let client = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'default_client_id'; 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
