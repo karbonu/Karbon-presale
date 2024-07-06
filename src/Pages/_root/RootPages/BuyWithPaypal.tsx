@@ -69,7 +69,7 @@ const BuyWithPaypal = (props: any) => {
     return (
       <>
         {isPending ? <h2>Load Smart Payment Button...</h2> : null}
-        <PayPalButtons {...paypalbuttonTransactionProps} />
+        <PayPalButtons fundingSource={"paypal"} {...paypalbuttonTransactionProps} />
       </>
     );
   }
