@@ -38,7 +38,7 @@ const SignIn = () => {
     const initialNonceMutation = useInitialNonceMutation();
     const loginMutation = useLoginMutation();
     const reserMutation = usePasswordResetMutate();
-    const { setEmail: setAuthEmail, setPassword: setAuthPassword, setAuthenticated, setUserID, setReferralCOde } = useAuth();
+    const { setEmail: setAuthEmail, setPassword: setAuthPassword, setAuthenticated, setUserID, setReferralCOde, setWalletAddress } = useAuth();
 
     const handlePasswordReset = () => {
         setIsResetting(true);
@@ -110,6 +110,7 @@ const SignIn = () => {
                         setStep(5)
                         return;
                     }
+                    setWalletAddress(response.data.user.walletAddress)
                     console.log(response.data)
                     setUserID(response.data.user.id);
                     setReferralCOde(response.data.user.referralCode);

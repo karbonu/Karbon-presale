@@ -128,7 +128,8 @@ const SignUp = () => {
           setIsRegistering(false);
           setStep(3);
         },
-        onError: () => {
+        onError: (error) => {
+          console.log(error);
           setRegistrationError("Registration failed");
           setIsRegistering(false);
         },

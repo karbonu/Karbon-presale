@@ -330,7 +330,7 @@ const TokenSale = () => {
 
                   </div>
 
-                  <div className="flex flex-col space-y-3 w-[795px] h-[135px] border-[1px] border-[#282828] bg-[#121212] p-5 rounded-b-[16px]">
+                  <div className="flex flex-col space-y-3 w-[795px] h-[135px] border-[1px] border-t-0 border-[#282828] bg-[#121212] p-5 rounded-b-[16px]">
                     <p className="text-[16px] text-white font-semibold">Start earning extra money!</p>
                     <p className="text-white opacity-70 text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
                     

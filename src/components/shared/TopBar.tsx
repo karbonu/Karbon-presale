@@ -29,7 +29,7 @@ const TopBar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const location = useLocation();
-  const { email, password, setPassword, setEmail, setAuthenticated, setReferralCOde, setUserID, setHasDisplayedConnectModal } = useAuth();
+  const { email, password, setPassword, setEmail, walletAddress, setWalletAddress, setAuthenticated, setReferralCOde, setUserID, setHasDisplayedConnectModal } = useAuth();
   const { open } = useWeb3Modal();
   const { address } = useAccount();
 
@@ -38,6 +38,7 @@ const TopBar = () => {
     setEmail('');
     setUserID('');
     setReferralCOde('');
+    setWalletAddress('')
     setHasDisplayedConnectModal(false)
     setAuthenticated(false);
   }
@@ -73,14 +74,20 @@ const TopBar = () => {
 
   // Function to store wallet information
   const storeWallet = async () => {
-    try {
-      await axios.post("https://karbon.plana.ng/users/connect-wallet", {
-        email,
-        walletAddress: address,
-        password: password, 
-      });
-    } catch (error) {
-      console.log("Failed storing wallet to backend");
+    if(walletAddress === "" || walletAddress == null){
+    
+      try {
+        await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}users/connect-wallet`, {
+          email,
+          walletAddress: address,
+          password: password, 
+        });
+      } catch (error) {
+        console.log("Failed storing wallet to backend");
+      }
+
+    }else{
+      console.log("Wrong connected address")
     }
   };
 
@@ -185,7 +192,7 @@ const TopBar = () => {
               {showDropdown && (
                 <div
                   onMouseLeave={handleDropdown}
-                  className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${
+                  className={`bg-[#121212] border-[1px] border-[#282828] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${
                     showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
                   }`}
                 >

@@ -1,6 +1,6 @@
 // src/Contexts/AdminAuthContext.tsx
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
@@ -14,7 +14,6 @@ const ADMIN_WALLET_ADDRESS = "0x7A9907da563fc9C80265a846F08b2ca413177F03";
 
 export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
   const { address, isConnected } = useAccount();
-  const {disconnect } = useDisconnect();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return localStorage.getItem('isAdminAuthenticated') === 'true';
   });
@@ -25,7 +24,6 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('isAdminAuthenticated', 'true');
     } else {
       setIsAuthenticated(false);
-      disconnect();
       localStorage.removeItem('isAdminAuthenticated');
     }
   }, [isConnected, address]);

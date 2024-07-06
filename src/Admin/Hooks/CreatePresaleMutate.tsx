@@ -28,7 +28,7 @@ type createMutate = {
   export const useCreatePresaleMutate = (): UseMutationResult<AxiosResponse<any>, Error, createMutate> => {
     return useMutation<AxiosResponse<any>, Error, createMutate>({
       mutationFn: (data: createMutate) => {
-        return axios.post(import.meta.env.VITE_BACKEND_API_URL +'admin/create', data);
+        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}admin/create`, data);
       },
     });
   };

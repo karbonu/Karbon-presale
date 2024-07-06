@@ -1,7 +1,7 @@
 import BackArrow from "@/components/Icons/BackArrow";
 import PasswordLogo from "@/components/Icons/PasswordLogo";
 import SucccessIconSmall from "@/components/Icons/SucccessIconSmall";
-import { usePasswoedUpdateMutate, usePasswordOTPMutate } from "@/components/shared/Hooks/UseAuthMutation";
+import {  usePasswordOTPMutate, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
 import PasswordIconComp from "@/components/shared/PasswordIconComp";
 import { useState } from "react";
 import { BarLoader } from "react-spinners";
@@ -13,9 +13,11 @@ const PasswordReset = (props : any) => {
     const [ verificationError, setverificationError] = useState('')
     const [isVerifying, setISVerifying] = useState(false);
   const [password, setPassword] = useState('');
-  const [oldPassword, setoldPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [revealConfirmError, setRevealConfirmError] = useState(false);
   const passwordOtpMutate = usePasswordOTPMutate();
-  const passwordUpdate = usePasswoedUpdateMutate();
+  const verifyMutat = useVerifyEmailMutation();
+  
   
   const [validation, setValidation] = useState({
     minLength: false,
@@ -47,43 +49,59 @@ const PasswordReset = (props : any) => {
     validatePassword(newPassword);
   };
 
-  const handleConfirmPasswordChange = (event : any) => {
+  const handleConfirmPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newConfirmPassword = event.target.value;
-    setoldPassword(newConfirmPassword);
+    setverificationError('');
+    setConfirmPassword(newConfirmPassword);
 
+    if (newConfirmPassword !== password) {
+      setRevealConfirmError(true);
+    } else {
+      setRevealConfirmError(false);
+    }
   };
 
-  const handleVerify = () =>{
-    setISVerifying(true);
+  const handleVerify = () => {
 
-    if(oldPassword === password){
-      setverificationError('New passowrd matches current password, Try Again'); 
+    if (Number(OTP) === 0) {
+      setverificationError("OTP Required");
+      return;
     }
+    setISVerifying(true);
+    let email = props.email;
+
+    verifyMutat.mutate(
+      {
+        email,
+        otp : Number(OTP),
+      },
+      {
+        onSuccess: (response: any) => {
+          console.log(response)
+          console.log(response.data)
+          setStep(2)
+          setISVerifying(false);
+
+          
+        },
+        onError: (error) => {
+            console.log(error)
+          setverificationError("Expired OTP");
+          setISVerifying(false);
+        },
+      }
+    );
+  };
+
+  const handleReset = () =>{
+    setISVerifying(true);
     
       let email = props.email;
       passwordOtpMutate.mutate(
           { email, 
-            otp : OTP, 
             newPassword: password},
           {
               onSuccess: () => {
-                passwordUpdate.mutate(
-                  { email, 
-                    oldPassword : oldPassword, 
-                    newPassword: password },
-                  {
-                      onSuccess: () => {
-                        setISVerifying(false);
-                        setStep(3);
-                      },
-                      onError: (error) => {
-                        console.log(error)
-                        setISVerifying(false);
-
-                        setverificationError('Password Change Failed, Try Again');
-                      }
-                  }
-              );
                 
               },
               onError: (error) => {
@@ -94,10 +112,13 @@ const PasswordReset = (props : any) => {
           }
       );
   }
+
+
+  
   
   const handleOTPKeydown = (event: any) => {
     if (event.key === 'Enter') {
-      setStep(2)
+      handleVerify();
     }
 };
 
@@ -123,7 +144,7 @@ const handleOTPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                   <input onChange={handleOTPChange} onKeyDown={handleOTPKeydown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="text" />
                 </div>
                 <div>
-                  <button onClick={() => setStep(2)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                  <button onClick={handleVerify} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                     {isVerifying ? (
                       <BarLoader/>
                     ): (
@@ -147,39 +168,42 @@ const handleOTPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               </div>
 
               <div className="flex flex-col space-y-5">
-                <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[14px] max-sm:text-[12px]">Old Password</p>
-                  <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={oldPassword} onChange={handleConfirmPasswordChange} />
-                </div>
+              <div className="flex flex-col space-y-2">
+                    <p className="text-white text-[14px] max-sm:text-[12px]">Password</p>
+                    <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="flex flex-row items-center space-x-2">
+                      <PasswordIconComp condition={validation.minLength} />
+                      <p className={!validation.minLength ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Must contain at least 10 characters</p>
+                    </div>
+                    <div className="flex flex-row items-center space-x-2">
+                      <PasswordIconComp condition={validation.upperCase} />
+                      <p className={!validation.upperCase ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Upper case character</p>
+                    </div>
+                    <div className="flex flex-row items-center space-x-2">
+                      <PasswordIconComp condition={validation.lowerCase} />
+                      <p className={!validation.lowerCase ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Lower case character</p>
+                    </div>
+                    <div className="flex flex-row items-center space-x-2">
+                      <PasswordIconComp condition={validation.number} />
+                      <p className={!validation.number ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Number</p>
+                    </div>
+                    <div className="flex flex-row items-center space-x-2">
+                      <PasswordIconComp condition={validation.specialChar} />
+                      <p className={!validation.specialChar ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Special Character</p>
+                    </div>
+                  </div>
 
-                <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[14px] max-sm:text-[12px]">New Password</p>
-                  <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[12px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex flex-row items-center space-x-2">
-                    <PasswordIconComp condition={validation.minLength} />
-                    <p className={!validation.minLength ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Must contain at least 10 characters</p>
+                  <div className="flex flex-col space-y-2">
+                    <p className="text-white text-[14px] max-sm:text-[12px]">Confirm Password</p>
+                    <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
+                    {revealConfirmError && (
+                      <p className="text-[10px] text-red-500">Password does not match</p>
+                    )}
                   </div>
-                  <div className="flex flex-row items-center space-x-2">
-                    <PasswordIconComp condition={validation.upperCase} />
-                    <p className={!validation.upperCase ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Upper case character</p>
-                  </div>
-                  <div className="flex flex-row items-center space-x-2">
-                    <PasswordIconComp condition={validation.lowerCase} />
-                    <p className={!validation.lowerCase ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Lower case character</p>
-                  </div>
-                  <div className="flex flex-row items-center space-x-2">
-                    <PasswordIconComp condition={validation.number} />
-                    <p className={!validation.number ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Number</p>
-                  </div>
-                  <div className="flex flex-row items-center space-x-2">
-                    <PasswordIconComp condition={validation.specialChar} />
-                    <p className={!validation.specialChar ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Special Character</p>
-                  </div>
-                </div>
                 <div>
-                  <div onClick={handleVerify} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                  <div onClick={handleReset} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                   {isVerifying ? (
                       <BarLoader/>
                     ): (

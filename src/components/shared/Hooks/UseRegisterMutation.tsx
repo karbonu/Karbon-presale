@@ -11,7 +11,7 @@ type RegisterData = {
 export const useRegisterMutation = (): UseMutationResult<AxiosResponse<any>, Error, RegisterData> => {
   return useMutation<AxiosResponse<any>, Error, RegisterData>({
     mutationFn: (data: RegisterData) => {
-      return axios.post(import.meta.env.VITE_BACKEND_API_URL +'auth/register', data);
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}auth/register`, data);
     },
   });
 };
