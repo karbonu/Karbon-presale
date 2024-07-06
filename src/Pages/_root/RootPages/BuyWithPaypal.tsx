@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/components/shared/Contexts/AuthContext';
 import BackArrow from '@/components/Icons/BackArrow';
-import { PayPalScriptProvider, PayPalButtons, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
 import { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
 import PaypalLogo from '@/components/Icons/PaypalLogo';
 import { useMutation } from '@tanstack/react-query';
@@ -40,27 +40,39 @@ const BuyWithPaypal = (props: any) => {
   
   const mutation = useMutation(mutationOptions);
 
-  const paypalbuttonTransactionProps: PayPalButtonsComponentProps = {
-    style: { layout: "vertical" },
-    createOrder( actions: any) {
-      return actions.order.create({
-        purchase_units: [
-          {
-            amount: {
-              value: amount
+  function Button() {
+    const [{ isPending }] = usePayPalScriptReducer();
+    const paypalbuttonTransactionProps: PayPalButtonsComponentProps = {
+      style: { layout: "vertical" },
+      createOrder(data: any, actions: any) {
+        console.log(data);
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: amount
+              }
             }
-          }
-        ]
-      });
-    },
-    onApprove(data: any, actions: any) {
-      return actions.order.capture({}).then(() => {
-        const orderID = data.orderID;
-        const userID = UserID;
-        mutation.mutate({ orderID, userID, amount });
-      });
-    }
-  };
+          ]
+        });
+      },
+      onApprove(data: any, actions: any) {
+        return actions.order.capture({}).then((details: any) => {
+          console.log(details);
+          const orderID = data.orderID;
+          const userID = UserID;
+          mutation.mutate({ orderID, userID, amount });
+        });
+      }
+    };
+
+    return (
+      <>
+        {isPending ? <h2>Load Smart Payment Button...</h2> : null}
+        <PayPalButtons {...paypalbuttonTransactionProps} />
+      </>
+    );
+  }
 
   return (
     <PayPalScriptProvider options={paypalScriptOptions}>
@@ -93,7 +105,8 @@ const BuyWithPaypal = (props: any) => {
             </div>
           </label>
         </div>
-        <PayPalButtons {...paypalbuttonTransactionProps} />
+        <Button />
+        
       </div>
     </PayPalScriptProvider>
   );
