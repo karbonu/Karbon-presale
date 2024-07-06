@@ -29,7 +29,7 @@ import TermsAndCond from "@/components/shared/TermsAndCond";
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from "wagmi";
 import CheckMark from "@/components/Icons/CheckMark";
-import { getProgress, getTotalUSDSpent, getTotalUSDTSpent, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks";
+import { getProgress, getTotalContribution, getTotalUSDSpent, getTotalUSDTSpent, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks";
 import { useAuth } from "@/components/shared/Contexts/AuthContext";
 
 
@@ -61,7 +61,6 @@ const TokenSale = () => {
       if (response !== 'Failed') {
         const newProgress = Number(response.data);
         setProgress(isNaN(newProgress) ? 0 : newProgress);
-        setTotalContribution(0)
       } else {
         console.log(response);
       }
@@ -74,18 +73,18 @@ const TokenSale = () => {
 
   useEffect(() => {
 
-    // const fetchTotalContribution = async() =>{
-    //   const response = await getTotalContribution();
+    const fetchTotalContribution = async() =>{
+      const response = await getTotalContribution();
       
-    //   if (response !== 'Failed') {
-    //     const Contribute = Number(response.data._sum.amount);
-    //     setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
-    //   } else {
-    //     console.log(response);
-    //   }
-    // }
+      if (response !== 'Failed') {
+        const Contribute = Number(response.data._sum.amount);
+        setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
+      } else {
+        console.log(response);
+      }
+    }
 
-    // fetchTotalContribution();
+    fetchTotalContribution();
 
 
     let USDTAmount = 0;
@@ -524,9 +523,7 @@ const TokenSale = () => {
                           style={{ opacity: selectedMethod === 3 ? 1 : 0 }}
                         >
                           {/* Content for selectedMethod === 3 */}
-                          {selectedMethod === 3 && <BuyWithPaypal 
-                          // setSelectedMethod={setSelectedMethod} 
-                          />}
+                          {selectedMethod === 3 && <BuyWithPaypal setSelectedMethod={setSelectedMethod} />}
                         </div>
                       
                     </div>
@@ -672,9 +669,7 @@ const TokenSale = () => {
                           style={{ opacity: selectedMethod === 3 ? 1 : 0 }}
                         >
                           {/* Content for selectedMethod === 3 */}
-                          {selectedMethod === 3 && <BuyWithPaypal 
-                          // setSelectedMethod={setSelectedMethod} 
-                          />}
+                          {selectedMethod === 3 && <BuyWithPaypal setSelectedMethod={setSelectedMethod} />}
                         </div>
                       
                     </div>
