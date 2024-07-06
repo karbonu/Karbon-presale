@@ -4,11 +4,9 @@ import { useAuth } from '@/components/shared/Contexts/AuthContext';
 import BackArrow from '@/components/Icons/BackArrow';
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
 import { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
-import PaypalLogo from '@/components/Icons/PaypalLogo';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import CreditCardlogo from '@/components/Icons/CreditCardlogo';
 
 
