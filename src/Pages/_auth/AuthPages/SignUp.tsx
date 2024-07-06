@@ -18,7 +18,7 @@ import { BarLoader } from "react-spinners";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useInitialNonceMutation, useLoginMutation, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/shared/Contexts/AuthContext";
 
 const SignUp = () => {
@@ -31,7 +31,12 @@ const SignUp = () => {
   const [revealConfirmError, setRevealConfirmError] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
   const [otp, setOtp] = useState(0);
-  const {setUserID, setReferralCOde, setEmail : setAuthEmail, setPassword : setAuthPassword, setAuthenticated} = useAuth()
+  const {setUserID, setReferralCOde, setEmail : setAuthEmail, isAuthenticated, setPassword : setAuthPassword, setAuthenticated} = useAuth()
+
+  if(isAuthenticated){
+    return <Navigate to="/dashboard" />;
+}
+
   const navigate = useNavigate();
   const [validation, setValidation] = useState({
     minLength: false,

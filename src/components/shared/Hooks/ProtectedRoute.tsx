@@ -9,6 +9,8 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/sign-in" />;
+  }else{
+    return <Navigate to="/dashboard" />;
   }
 
   return <>{children}</>;

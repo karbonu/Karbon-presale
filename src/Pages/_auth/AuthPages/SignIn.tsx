@@ -1,6 +1,6 @@
 // src/components/SignIn.tsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useInitialNonceMutation, useLoginMutation, usePasswordResetMutate, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
 import AppleLogo from "@/components/Icons/AppleLogo";
 import BackArrow from "@/components/Icons/BackArrow";
@@ -38,7 +38,11 @@ const SignIn = () => {
     const initialNonceMutation = useInitialNonceMutation();
     const loginMutation = useLoginMutation();
     const reserMutation = usePasswordResetMutate();
-    const { setEmail: setAuthEmail, setPassword: setAuthPassword, setAuthenticated, setUserID, setReferralCOde, setWalletAddress } = useAuth();
+    const { setEmail: setAuthEmail, setPassword: setAuthPassword, isAuthenticated, setAuthenticated, setUserID, setReferralCOde, setWalletAddress } = useAuth();
+
+    if(isAuthenticated){
+        return <Navigate to="/dashboard" />;
+    }
 
     const handlePasswordReset = () => {
         setIsResetting(true);
