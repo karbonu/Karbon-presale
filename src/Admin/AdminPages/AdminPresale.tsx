@@ -1,57 +1,57 @@
-import React, { useState } from 'react';
-import ForwardGreen from '@/components/Icons/ForwardGreen'; 
+// import React, { useState } from 'react';
+// import ForwardGreen from '@/components/Icons/ForwardGreen'; 
 //import { useCreatePresaleMutate } from '../Hooks/CreatePresaleMutate';
 
 const AdminPresale = () => {
-  const [formValues, setFormValues] = useState({
-    name: '',
-    rate: '',
-    softcap: '',
-    hardcap: '',
-    maxbuy: '',
-    minbuy: '',
-    startdate: '',
-    enddate: '',
-    tokenAddress: '',
-    projectAddress: '',
-    paymentChannel: 'Paypal',
-    networks: 'ETH',
-    usdtAddress: '0x427Df1d2c7a6b89B75D06457295DaEEbdf192cC0',
-    totalContribution: 0,
-  });
+    // const [formValues, setFormValues] = useState({
+    //   name: '',
+    //   rate: '',
+    //   softcap: '',
+    //   hardcap: '',
+    //   maxbuy: '',
+    //   minbuy: '',
+    //   startdate: '',
+    //   enddate: '',
+    //   tokenAddress: '',
+    //   projectAddress: '',
+    //   paymentChannel: 'Paypal',
+    //   networks: 'ETH',
+    //   usdtAddress: '0x427Df1d2c7a6b89B75D06457295DaEEbdf192cC0',
+    //   totalContribution: 0,
+    // });
 
   // const createMutate = useCreatePresaleMutate();
 
-  const [vesting, setVesting] = useState([{ percentage: '', releaseDate: '' }]);
+  // const [vesting, setVesting] = useState([{ percentage: '', releaseDate: '' }]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues(prevValues => ({ ...prevValues, [name]: value }));
-  };
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormValues(prevValues => ({ ...prevValues, [name]: value }));
+  // };
 
-  const handleVestingChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const updatedVesting = vesting.map((v, i) =>
-      i === index ? { ...v, [name]: value } : v
-    );
-    setVesting(updatedVesting);
-  };
+  // const handleVestingChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   const updatedVesting = vesting.map((v, i) =>
+  //     i === index ? { ...v, [name]: value } : v
+  //   );
+  //   setVesting(updatedVesting);
+  // };
 
-  const addVestingField = () => {
-    setVesting([...vesting, { percentage: '', releaseDate: '' }]);
-  };
+  // const addVestingField = () => {
+  //   setVesting([...vesting, { percentage: '', releaseDate: '' }]);
+  // };
 
-  const deleteVestingField = (index: number) => {
-    const updatedVesting = vesting.filter((_, i) => i !== index);
-    setVesting(updatedVesting);
-  };
+  // const deleteVestingField = (index: number) => {
+  //   const updatedVesting = vesting.filter((_, i) => i !== index);
+  //   setVesting(updatedVesting);
+  // };
 
-  const handleSubmit = () => {
-    const totalPercentage = vesting.reduce((acc, curr) => acc + Number(curr.percentage), 0);
-    if (totalPercentage !== 100) {
-      alert("The total percentage of vesting fields must add up to 100%");
-      return;
-    }
+  // const handleSubmit = () => {
+  //   const totalPercentage = vesting.reduce((acc, curr) => acc + Number(curr.percentage), 0);
+  //   if (totalPercentage !== 100) {
+  //     alert("The total percentage of vesting fields must add up to 100%");
+  //     return;
+  //   }
 
     // const vestingData: { [index: number]: [number, string] } = vesting.reduce((acc, v, index) => {
     //   acc[index] = [Number(v.percentage), v.releaseDate];
@@ -86,11 +86,11 @@ const AdminPresale = () => {
     //     console.error('Error creating presale:', error);
     //   }
     // });
-  };
+  // };
 
   return (
     <div className="bg-[#101010] w-full h-auto rounded-[8px] p-8">
-      <div className="p-5 flex flex-col space-y-5">
+      {/* <div className="p-5 flex flex-col space-y-5">
         <p className="text-white text-[24px] font-bold">Create Presale</p>
         
         <div className="flex flex-col space-y-5">
@@ -298,7 +298,7 @@ const AdminPresale = () => {
             Create Investment
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
