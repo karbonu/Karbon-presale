@@ -9,7 +9,7 @@ import AdminDashboardTable from "./AdminDashboardTable"
 import { useState, useRef, useEffect } from 'react';
 import CheckMark from "@/components/Icons/CheckMark";
 import { getDashboardData } from "../Hooks/AdminDashboardData"
-import { getTotalContribution } from "@/components/shared/Hooks/TokenSaleHooks"
+// import { getTotalContribution } from "@/components/shared/Hooks/TokenSaleHooks"
 
 const AdminDashboard = () => {
 
@@ -43,21 +43,24 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         
-    const fetchTotalContribution = async() =>{
-        const response = await getTotalContribution();
+    // const fetchTotalContribution = async() =>{
+    //     const response = await getTotalContribution();
         
-        if (response !== 'Failed') {
-          const Contribute = Number(response.data._sum.amount);
-          setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
-          if(totalContribution === 0){
-            setDecimalCOntribution('00')
-          }
-        } else {
-          console.log(response);
-        }
-      }
+    //     if (response !== 'Failed') {
+    //       const Contribute = Number(response.data._sum.amount);
+    //       setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
+    //       if(totalContribution === 0){
+    //         setDecimalCOntribution('00')
+    //       }
+    //     } else {
+    //       console.log(response);
+    //     }
+    //   }
   
-      fetchTotalContribution();
+    //   fetchTotalContribution();
+
+    setTotalContribution(0);
+    setDecimalCOntribution('')
 
         const fetchReeferralCOunt = async () => {
           const response = await getDashboardData();
