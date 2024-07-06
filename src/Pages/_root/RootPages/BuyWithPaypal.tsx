@@ -1,5 +1,5 @@
 // src/components/BuyWithPaypal.tsx
-import  { useState } from 'react';
+// import  { useState } from 'react';
 // import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 // import { useCreatePaypalOrderMutation } from '@/components/shared/Hooks/useCreatePaypalOrder';
 // import { useVerifyPaymentMutation } from '@/components/shared/Hooks/useVerifyPayment';
@@ -8,7 +8,7 @@ import  { useState } from 'react';
 // import USDTIcon from '@/components/Icons/USDTIcon';
 // import BackArrow from '@/components/Icons/BackArrow';
 
-const BuyWithPaypal = (props: any) => {
+const BuyWithPaypal = () => {
   // const [amount, setAmount] = useState<string>('');
   // const { UserID } = useAuth();
   // const createOrderMutation = useCreatePaypalOrderMutation();
