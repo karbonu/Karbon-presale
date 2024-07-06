@@ -6,6 +6,8 @@ import MetaTags from "@/components/shared/MetaTags";
 import { useState } from "react";
 import { BarLoader } from "react-spinners";
 import { usePasswoedUpdateMutate } from "@/components/shared/Hooks/UseAuthMutation";
+import EyeIcon from "@/components/Icons/EyeIcon";
+import EyeIcongreen from "@/components/Icons/EyeIcongreen";
 
 const ProfileSettings = () => {
   const [copied, setCopied] = useState(false);
@@ -17,6 +19,8 @@ const ProfileSettings = () => {
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
   const passwordUpdateMutate = usePasswoedUpdateMutate();
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const ReferralLink = "https://karbon.com/78236-tube..."
 
@@ -99,7 +103,7 @@ const ProfileSettings = () => {
             setPasswordSuccess('');
           }, 2000);
         },
-        onError: (error) => {
+        onError: (error : any) => {
           console.log(error);
           setIsUpdatingPassword(false);
           setPasswordError('Password Change Failed, Try Again');
@@ -153,24 +157,44 @@ const ProfileSettings = () => {
           <div className="flex flex-col p-5 space-y-4 max-lg:w-full">
             <p className="text-white font-medium text-[20px]">Change Password</p>
             <div className="flex flex-row max-lg:flex-col max-lg:space-y-2 w-full items-center justify-between md:space-x-2">
-              <div className="flex flex-col max-lg:w-full space-y-2">
+              <div className="flex flex-col max-lg:w-full space-y-2 relative">
                 <p className="text-white text-[12px]">New Password</p>
                 <input
-                  type="password"
-                  className="outline-none focus:outline-[1px] focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
+                  type={showNewPassword ? "text" : "password"}
+                  className="outline-none focus:outline-[1px]  pl-5 focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
                   value={newPassword}
                   onChange={handleNewPasswordChange}
                 />
+                <div
+                  className="absolute right-4 top-[1.8rem] cursor-pointer"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  {showNewPassword ? (
+                    <EyeIcongreen />
+                  ) : (
+                    <EyeIcon />
+                  )}
+                </div>
               </div>
-              <div className="flex flex-col max-lg:w-full space-y-2">
+              <div className="flex flex-col max-lg:w-full space-y-2 relative">
                 <p className="text-white text-[12px]">Confirm New Password</p>
                 <input
-                  type="password"
-                  className="outline-none focus:outline-[1px] focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="outline-none focus:outline-[1px] pl-5 focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
                   value={confirmPassword}
                   onChange={handleConfirmPasswordChange}
                   onKeyDown={(e) => e.key === 'Enter' && handleChangePassword()}
                 />
+                <div
+                  className="absolute right-4 top-[1.8rem] cursor-pointer"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <EyeIcongreen />
+                  ) : (
+                    <EyeIcon />
+                  )}
+                </div>
               </div>
             </div>
             {passwordError && (

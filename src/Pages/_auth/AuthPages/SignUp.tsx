@@ -20,6 +20,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useInitialNonceMutation, useLoginMutation, useSocialAuthMutation, useVerifyEmailMutation } from "@/components/shared/Hooks/UseAuthMutation";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/shared/Contexts/AuthContext";
+import EyeIcongreen from "@/components/Icons/EyeIcongreen";
+import EyeIcon from "@/components/Icons/EyeIcon";
 
 const SignUp = () => {
   const [chanceInfo, setChanceInfo] = useState(true);
@@ -30,7 +32,7 @@ const SignUp = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [revealConfirmError, setRevealConfirmError] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
-  const [otp, setOtp] = useState(0);
+  const [otp, setOtp] = useState("");
   const {setUserID, setReferralCOde, setEmail : setAuthEmail, isAuthenticated, setPassword : setAuthPassword, setAuthenticated} = useAuth()
 
   if(isAuthenticated){
@@ -52,6 +54,8 @@ const SignUp = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isVerifying, setISVerifying] = useState(false);
   const[verificationError, setverificationError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
   const validatePassword = (password: string) => {
     const minLength = password.length >= 10;
     const upperCase = /[A-Z]/.test(password);
@@ -93,7 +97,7 @@ const SignUp = () => {
   };
 
   const handleOTPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOtp(Number(event.target.value));
+    setOtp((event.target.value));
     setverificationError('');
   };
 
@@ -144,7 +148,7 @@ const SignUp = () => {
 
   const handleVerify = () => {
 
-    if (otp === 0) {
+    if (otp == "") {
       setverificationError("OTP Required");
       return;
     }
@@ -417,7 +421,25 @@ const login = useGoogleLogin({
                 <div className="flex flex-col space-y-5">
                   <div className="flex flex-col space-y-2">
                     <p className="text-white text-[14px] max-sm:text-[12px]">Password</p>
-                    <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
+                    <div className="flex flex-col space-y-2 relative">
+                      <p className="text-white text-[14px] max-sm:text-[12px]">Password</p>
+                      <input
+                        className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={handlePasswordChange}
+                      />
+                      <div
+                        className="absolute right-4 top-10 cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeIcongreen/>
+                        ) : (
+                          <EyeIcon />
+                        )}
+                      </div>
+                    </div>
                   </div>
                   <div className="flex flex-col">
                     <div className="flex flex-row items-center space-x-2">
@@ -442,9 +464,25 @@ const login = useGoogleLogin({
                     </div>
                   </div>
 
-                  <div className="flex flex-col space-y-2">
+                
+                  <div className="flex flex-col space-y-2 relative">
                     <p className="text-white text-[14px] max-sm:text-[12px]">Confirm Password</p>
-                    <input className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
+                    <input
+                      className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                    />
+                  <div
+                      className="absolute right-4 top-10 cursor-pointer"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeIcongreen/>
+                      ) : (
+                        <EyeIcon />
+                      )}
+                    </div>
                     {revealConfirmError && (
                       <p className="text-[10px] text-red-500">Password does not match</p>
                     )}

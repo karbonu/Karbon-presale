@@ -33,7 +33,7 @@ export const useLoginMutation = (): UseMutationResult<AxiosResponse<any>, Error,
 
 type verifyEmailData = {
   email: string;
-  otp : number;
+  otp : string;
 };
 
 
