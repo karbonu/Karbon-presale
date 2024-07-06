@@ -73,7 +73,7 @@ const BuyWithUSDT = (props : any) => {
           functionName: 'approve',
           args: [BuyAddress, BigInt(tokenAmount * 10 ** 18)],
         });
-        setIsApproved(true);
+        setIsApproved(isConfirmed);
       }
     }
   }
