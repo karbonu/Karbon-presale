@@ -14,7 +14,7 @@ type VerifyPaymentResponse = {
 
 const verifyPayment = (data: VerifyPaymentData): Promise<AxiosResponse<VerifyPaymentResponse>> => {
   return axios.post(
-    `https://karbon.plana.ng//payment/verify-payment`,
+    `${import.meta.env.VITE_BACKEND_API_URL}payment/verify-payment`,
     data,
     {
       headers: {

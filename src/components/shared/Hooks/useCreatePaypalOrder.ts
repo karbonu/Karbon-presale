@@ -12,7 +12,7 @@ type CreateOrderData = {
 
 const createPaypalOrder = (data: CreateOrderData): Promise<AxiosResponse<CreateOrderResponse>> => {
   return axios.post(
-    `https://api.sandbox.paypal.com/v2/checkout/orders`,
+    `${import.meta.env.VITE_PAYPAL_BASE_URL}/v2/checkout/orders`,
     {
       intent: 'CAPTURE',
       purchase_units: [
@@ -27,7 +27,7 @@ const createPaypalOrder = (data: CreateOrderData): Promise<AxiosResponse<CreateO
     {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Basic ${btoa(`AWx-Zj8mauxUq9N3wPUq-eE0VsqeoKVF9aBWK33fjk4wYpHDd02X50HBwwdLgP3Y8QE6DheVGNFonzsS:EClqHPcMrUf7wpktqVMRl1AddFw9A8gBXmd_IRw_nzQWy1YFFPVzI96Uey3WiBHTT5Vx95bnifaLL2t7`)}`,
+        'Authorization': `Basic ${btoa(`${import.meta.env.VITE_PAYPAL_CLIENT_ID}:${import.meta.env.VITE_PAYPAL_CLIENT_SECRET}`)}`,
       },
     }
   );

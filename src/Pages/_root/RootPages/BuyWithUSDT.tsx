@@ -32,7 +32,7 @@ type ContributeData = {
   const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
     return useMutation<AxiosResponse<any>, Error, ContributeData>({
       mutationFn: (data: ContributeData) => {
-        return axios.post('https://karbon.plana.ng/presale/contribute', data);
+        return axios.post(import.meta.env.VITE_BACKEND_API_URL + 'presale/contribute', data);
       },
     });
   };
