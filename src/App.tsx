@@ -12,7 +12,7 @@ import ClaimTokens from "./Pages/_root/RootPages/ClaimTokens.tsx"
 import SettingsLayout from "./Pages/_root/RootPages/Settings/SettingsLayout.tsx"
 import ProfileSettings from "./Pages/_root/RootPages/Settings/ProfileSettings.tsx"
 import WalletSettings from "./Pages/_root/RootPages/Settings/WalletSettings.tsx"
-import { AuthProvider } from "./components/shared/Contexts/AuthContext.tsx"
+import { AuthProvider, useAuth } from "./components/shared/Contexts/AuthContext.tsx"
 import ProtectedRoute from "./components/shared/Hooks/ProtectedRoute.tsx"
 import AdminLayout from "./Admin/AdminLayout.tsx"
 import AdminConnectWallet from "./Admin/AdminPages/AdminConnectWallet.tsx"
@@ -25,18 +25,18 @@ import { useEffect } from "react"
 
 const ReferralRedirect: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
-
+  const {setReferralCOde, referralCode} = useAuth();
   useEffect(() => {
     const currentUrl = window.location.href;
     if (currentUrl.includes('referralCode')) {
       const url = new URL(currentUrl);
-      const referralCode = url.searchParams.get('referralCode');
-      if (referralCode) {
-        localStorage.setItem('referralCode', referralCode);
+      const referralCodeURL = url.searchParams.get('referralCode');
+      if (referralCodeURL) {
+        setReferralCOde(referralCodeURL);
         navigate('/sign-up');
       }
     }
-  }, []);
+  }, [referralCode]);
 
   return children;
 };

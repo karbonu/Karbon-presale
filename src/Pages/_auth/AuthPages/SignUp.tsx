@@ -24,7 +24,6 @@ import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 import EyeIcon from "@/components/Icons/EyeIcon.tsx";
 
 const SignUp = () => {
-  const referralCOde = localStorage.getItem('referralCode');
   const [chanceInfo, setChanceInfo] = useState(true);
   const [step, setStep] = useState(1);
   const [password, setPassword] = useState('');
@@ -34,7 +33,7 @@ const SignUp = () => {
   const [revealConfirmError, setRevealConfirmError] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
   const [otp, setOtp] = useState("");
-  const {setUserID, setReferralCOde, setEmail : setAuthEmail, isAuthenticated, setPassword : setAuthPassword, setAuthenticated} = useAuth()
+  const {setUserID, setReferralCOde, setEmail : setAuthEmail, isAuthenticated, setPassword : setAuthPassword, setAuthenticated, referralCode } = useAuth()
 
   if(isAuthenticated){
     return <Navigate to="/dashboard" />;
@@ -59,7 +58,7 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
 
-  
+
   const validatePassword = (password: string) => {
     const minLength = password.length >= 10;
     const upperCase = /[A-Z]/.test(password);
@@ -133,11 +132,12 @@ const SignUp = () => {
       {
         email,
         walletAddress: address || "",
-        referrerId: referralCOde || "",
+        referrerId: referralCode || "",
         password,
       },
       {
         onSuccess: () => {
+          console.log(referralCode)
           localStorage.removeItem('referralCode')
           setIsRegistering(false);
           setStep(3);
@@ -254,7 +254,7 @@ const login = useGoogleLogin({
                   phone : "",
                   medium : 'google', 
                   id_token : userID,
-                  ref_code : referralCOde || ""
+                  ref_code : referralCode || ""
               },
 
               {
