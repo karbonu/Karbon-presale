@@ -146,7 +146,7 @@ const SignIn = () => {
         verifyMutat.mutate(
           {
             email,
-            otp,
+            otp : Number(otp),
           },
           {
             onSuccess: (response: any) => {
@@ -205,7 +205,8 @@ const SignIn = () => {
                     },
 
                     {
-                        onSuccess: () => {
+                        onSuccess: (response) => {
+                            console.log(response)
                             setUserID(userID);
                             setReferralCOde('');
                             setAuthEmail(email);

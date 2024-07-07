@@ -75,7 +75,7 @@ const PasswordReset = (props: any) => {
     verifyMutate.mutate(
       {
         email,
-        otp: OTP,
+        otp : Number(OTP),
       },
       {
         onSuccess: (response: any) => {

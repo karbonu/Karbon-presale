@@ -82,7 +82,6 @@ const TokenSale = () => {
   }, [fullTransaction]);
 
   
-
   useEffect(() => {
 
     const fetchTotalContribution = async() =>{
@@ -204,11 +203,12 @@ const TokenSale = () => {
 
 
 
-  const ReferralLink = "https://karbon.com/78236-tube..."
+  const ReferralLink = `${window.location.origin}/signup?referralCode=${referralCode}`
 
   const handleCopy = () => {
     const link = ReferralLink ?? "";
     navigator.clipboard.writeText((link)).then(() => {
+      console.log(ReferralLink)
       setCopied(true);
 
       if (timeoutRef) {
@@ -420,7 +420,7 @@ const TokenSale = () => {
                     <div className="flex flex-row space-x-5 items-center">
                       <div className="flex flex-row items-center py-2 pl-4 bg-black space-x-10">
                         <div>
-                          <p className="text-white text-[12px]">{ReferralLink}</p>
+                          <p className="text-white text-[12px]">{ReferralLink.slice(0, 30)}...</p>
                         </div>
                         <div 
                           onClick={handleCopy} 
@@ -831,7 +831,7 @@ const TokenSale = () => {
                     
                     <div className="flex flex-row max-w-[339px] items-center py-2 bg-black space-x-10">
                       <div>
-                        <p className="text-white pl-2 text-[12px]">{ReferralLink}</p>
+                        <p className="text-white pl-2 text-[12px]">{ReferralLink.slice(0, 30)}...</p>
                       </div>
                       <div onClick={handleCopy} className="flex flex-row items-center space-x-1 pr-2 cursor-pointer">
                         {copied ? <CheckMark/> : <CopyIcon/>}
@@ -842,7 +842,7 @@ const TokenSale = () => {
                     </div>
 
                     <div className="flex flex-row items-center space-x-3">
-                      <p className="text-[12px] text-whit opacity-70e">Share on</p>
+                      <p className="text-[12px] text-white opacity-70e">Share on</p>
 
                       <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                         <DiscordLogo/>
@@ -900,7 +900,7 @@ const TokenSale = () => {
 
                     <div className="space-y-2">
                       <p className="text-[12px] text-white opacity-70">ESTIMATED CLAIM TIME</p>
-                      <div className="flex flex-row space-x-2 items-center justify-center">
+                      <div className="flex flex-row space-x-2">
                         <p className="text-white text-[20px]">{countdown.days}d</p>
                         <p className="text-white text-[20px]">{countdown.hours}h</p>
                         <p className="text-white text-[20px]">{countdown.minutes}m</p>

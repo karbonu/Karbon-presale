@@ -11,7 +11,7 @@ import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 
 const ProfileSettings = () => {
   const [copied, setCopied] = useState(false);
-  const { email, setPassword, setReferralCOde, setUserID, setEmail, setAuthenticated, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
+  const { email, setPassword, setReferralCOde, setUserID, setEmail, setAuthenticated, referralCode, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -22,7 +22,7 @@ const ProfileSettings = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const ReferralLink = "https://karbon.com/78236-tube..."
+  const ReferralLink = `${window.location.origin}/signup?referralCode=${referralCode}`
 
   const handleCopy = () => {
     const link = ReferralLink ?? "";
@@ -141,7 +141,7 @@ const ProfileSettings = () => {
               <p className="text-white text-[10px] opacity-70">Referral Link</p>
             </div>
             <div className="flex flex-row items-center space-x-5">
-              <p className="text-white font-light text-[14px] max-lg:text-[12px] ">{ReferralLink}</p>
+              <p className="text-white font-light text-[14px] max-lg:text-[12px] ">{ReferralLink.slice(0, 30)}...</p>
               <div onClick={handleCopy} className="flex flex-row space-x-2 cursor-pointer">
                 {copied ? <CheckMark /> : <CopyIcon />}
                 <p className="text-[#08E04A] text-[10px]">

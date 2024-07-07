@@ -11,14 +11,16 @@ import WhatsappLogo from "../Icons/WhatsappLogo.tsx"
 import XLogo from "../Icons/XLogo.tsx"
 import { useState } from "react"
 import CheckMark from "../Icons/CheckMark.tsx"
+import { useAuth } from "./Contexts/AuthContext.tsx"
 
 
 const PayoutModalFaliure = (props : any) => {
 
   const [copied, setCopied] = useState(false);
+  const {referralCode} = useAuth();
   const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
 
-  const ReferralLink = "https://karbon.com/78236-tube..."
+  const ReferralLink = `${window.location.origin}/signup?referralCode=${referralCode}`
 
   const handleCopy = () => {
     const link = ReferralLink ?? "";
@@ -57,7 +59,7 @@ const PayoutModalFaliure = (props : any) => {
                     <div className="flex flex-col space-y-2 px-8 max-sm:px-5">
                       <div className="flex fle-row w-max items-center py-2 px-4 max-sm:px-2 bg-black space-x-10 max-sm:space-x-2">
                         <div>
-                          <p className="text-white text-[12px]">{ReferralLink}</p>
+                          <p className="text-white text-[12px]">{ReferralLink.slice(0, 30)}...</p>
                         </div>
                         <div onClick={handleCopy} className="flex flex-row items-center space-x-1 cursor-pointer">
                           {copied ? <CheckMark/> : <CopyIcon/>}

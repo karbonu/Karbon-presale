@@ -24,6 +24,7 @@ import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 import EyeIcon from "@/components/Icons/EyeIcon.tsx";
 
 const SignUp = () => {
+  const referralCOde = localStorage.getItem('referralCode');
   const [chanceInfo, setChanceInfo] = useState(true);
   const [step, setStep] = useState(1);
   const [password, setPassword] = useState('');
@@ -56,6 +57,9 @@ const SignUp = () => {
   const[verificationError, setverificationError] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+
+
+  
   const validatePassword = (password: string) => {
     const minLength = password.length >= 10;
     const upperCase = /[A-Z]/.test(password);
@@ -129,11 +133,12 @@ const SignUp = () => {
       {
         email,
         walletAddress: address || "",
-        referrerId: "",
+        referrerId: referralCOde || "",
         password,
       },
       {
         onSuccess: () => {
+          localStorage.removeItem('referralCode')
           setIsRegistering(false);
           setStep(3);
         },
@@ -157,7 +162,7 @@ const SignUp = () => {
     verifyMutat.mutate(
       {
         email,
-        otp,
+        otp : Number(otp),
       },
       {
         onSuccess: () => {
@@ -249,11 +254,12 @@ const login = useGoogleLogin({
                   phone : "",
                   medium : 'google', 
                   id_token : userID,
-                  ref_code : ""
+                  ref_code : referralCOde || ""
               },
 
               {
                   onSuccess: () => {
+                    localStorage.removeItem('referralCode');
                       setUserID(userID);
                       setReferralCOde('');
                       setAuthEmail(email);
