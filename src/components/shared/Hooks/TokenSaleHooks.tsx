@@ -12,10 +12,10 @@ export const getProgress = async (): Promise<AxiosResponse<any> | 'Failed'> => {
   };
 
 
-export const getTotalUSDTSpent = async (address : string) : Promise<AxiosResponse<any> | 'Failed' > => {
+export const getPresaleID = async () : Promise<AxiosResponse<any> | 'Failed' > => {
 
     try {
-        const response = await axios.get( `${import.meta.env.VITE_BACKEND_API_URL}presale/usdtTransfer?address=${address}`)
+        const response = await axios.get( `${import.meta.env.VITE_BACKEND_API_URL}presale/`)
         return response;
     } catch (error) {
       console.log(error);
@@ -53,7 +53,7 @@ export const getUserReferrals = async (UserID : string) : Promise<AxiosResponse<
 
 export const getTotalContribution = async (): Promise<AxiosResponse<any> | 'Failed'> => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}resale/cly9atqwm0001tbafzumww6dz/total-contribution`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/cly9atqwm0001tbafzumww6dz/total-contribution`);
       return response;
     } catch (error) {
       console.log(error);

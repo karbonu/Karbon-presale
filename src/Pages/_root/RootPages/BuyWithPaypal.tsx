@@ -5,14 +5,34 @@ import BackArrow from '@/components/Icons/BackArrow.tsx';
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
 import { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
 import PaypalLogo from '@/components/Icons/PaypalLogo.tsx';
-import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { useAccount } from 'wagmi';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import  { AxiosResponse } from 'axios';
 
 interface VerifyPaymentData {
   orderID: string;
   userID: string;
   amount: string;
 }
+
+type ContributeData = {
+  amount: number;
+  walletAddress: `0x${string}`;
+  userId: string;
+  txHash: string;
+  presaleId: string;
+  paymentMethod: string;
+};
+
+
+const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
+  return useMutation<AxiosResponse<any>, Error, ContributeData>({
+    mutationFn: (data: ContributeData) => {
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data);
+    },
+  });
+};
 
 const BuyWithPaypal = (props: any) => {
   const [amount, setAmount] = useState<string>('');
@@ -28,12 +48,36 @@ const BuyWithPaypal = (props: any) => {
     return response.data;
   };
 
+  const contributeMutation = useContributeMutation();
+  const {address} = useAccount();
+
   const mutationOptions = {
     mutationFn: verifyPayment,
     onSuccess: (data : any) => {
+      console.log(data)
+      
+      contributeMutation.mutate(
+        { 
+          amount: Number(amount),
+          walletAddress: address as `0x${string}`,
+          userId: UserID,
+          txHash: "",
+          presaleId: props.saleID,
+          paymentMethod: 'PayPal', 
+         },
+        {
+            onSuccess: (response: any) => {
+              console.log(response)
+            },
+            onError: (error) => {
+                console.log(error);
+            }
+        }
+      );
       alert("Payment verified successfully: " + JSON.stringify(data));
     },
     onError: (error : any) => {
+      console.log(error)
       alert("Payment verification failed: " + error.message);
     }
   };

@@ -29,13 +29,13 @@ import TermsAndCond from "@/components/shared/TermsAndCond.tsx";
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from "wagmi";
 import CheckMark from "@/components/Icons/CheckMark.tsx";
-import { getProgress, getTotalContribution, getTotalUSDSpent, getTotalUSDTSpent, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks.tsx";
+import { getProgress, getTotalContribution, getTotalUSDSpent, getPresaleID, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks.tsx";
 import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
 import { useRequestPayoutMitate } from "@/components/shared/Hooks/UseRequestPayoutMutation.tsx";
 
 
 const TokenSale = () => {
-  const {isConnected, address} = useAccount();
+  const {isConnected} = useAccount();
   const [loading, setIsLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -51,13 +51,19 @@ const TokenSale = () => {
   const [referralCount, setReferralCount] = useState(0);
   const [fullTransaction, setFulltransaction] = useState(false);
   const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode} = useAuth();
-  const [totalContribution, setTotalContribution] = useState(0);
   const [bonusAmount, setBonusAmount] = useState(0);
   const payoutMitate = useRequestPayoutMitate();
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected && !hasDisplayedConnectModal);
   const { open } = useWeb3Modal();
   const [isRequesting, setIsRequesting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [saleID, setSaleID] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [target, setTarger] = useState(0);
+  const [totalContribution, setTotalContribution] = useState(0);
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [saleStatus, setSaleStatus] = useState('SALE STARTS IN');
 
 
 
@@ -83,6 +89,7 @@ const TokenSale = () => {
       const response = await getTotalContribution();
       
       if (response !== 'Failed') {
+        console.log(response);
         const Contribute = Number(response.data._sum.amount);
         setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
       } else {
@@ -96,26 +103,18 @@ const TokenSale = () => {
     let USDTAmount = 0;
     let DollarAmount = 0;
 
-    const fetchUSDT = async () => {
-      const response = await getTotalUSDTSpent(address as string );
-      if (response !== 'Failed') {
-        USDTAmount = (isNaN(Number(response.data)) ? 0 : response.data);
-      } else {
-        console.log(response);
-      }
-    };
-
 
     const fetchDollar = async () => {
       const response = await getTotalUSDSpent(UserID as string);
       if (response !== 'Failed') {
+        console.log(response);
         DollarAmount = (isNaN(Number(response.data)) ? 0 : response.data);
       } else {
         console.log(response);
       }
     };
   
-    fetchUSDT();
+    
     fetchDollar();
 
     setTotalAmount(USDTAmount + DollarAmount);
@@ -130,22 +129,73 @@ const TokenSale = () => {
   }, [fullTransaction]);
 
 
-  useEffect(() => {
-    const fetchReeferralCOunt = async () => {
-      const response = await getUserReferrals(UserID as string);
-      if (response !== 'Failed') {
-        const newCount = Number(response.data);
-        setReferralCount(isNaN(newCount) ? 0 : newCount);
-        if(referralCount === 0){
-          setBonusAmount(5000);
-        }
-      } else {
-        console.log(response);
-      }
-    };
   
-    fetchReeferralCOunt();
-  }, []);
+    useEffect(() => {
+      const fetchReferralCount = async () => {
+        const response = await getUserReferrals(UserID as string);
+        if (response !== 'Failed') {
+          const newCount = Number(response.data);
+          setReferralCount(isNaN(newCount) ? 0 : newCount);
+          if (newCount === 0) {
+            setBonusAmount(5000);
+          }
+        } else {
+          console.log(response);
+        }
+      };
+  
+      const fetchPresaleData = async () => {
+        const response = await getPresaleID();
+        if (response !== 'Failed') {
+          const presale = response.data.id;
+          const enddate = response.data.endDate;
+          const startdate = response.data.startDate;
+          const target = response.data.hardCap;
+          console.log(startDate)
+          console.log(endDate)
+          setTarger(target);
+          setEndDate(enddate);
+          setSaleID(presale);
+          setStartDate(startdate);
+          initializeCountdown(new Date(startdate), new Date(enddate));
+        } else {
+          console.log(response);
+        }
+      };
+  
+      const initializeCountdown = (start: Date, end: Date) => {
+        const updateCountdown = () => {
+          const now = new Date();
+          let distance = start.getTime() - now.getTime();
+  
+          if (distance > 0) {
+            setSaleStatus('SALE STARTS IN');
+          } else {
+            distance = end.getTime() - now.getTime();
+            setSaleStatus('SALE ENDS IN');
+          }
+  
+          if (distance < 0) {
+            clearInterval(intervalId);
+            setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+            return;
+          }
+  
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          setCountdown({ days, hours, minutes, seconds });
+        };
+  
+        updateCountdown();
+        const intervalId = setInterval(updateCountdown, 1000);
+        return () => clearInterval(intervalId);
+      };
+  
+      fetchPresaleData();
+      fetchReferralCount();
+    }, []);
 
   
 
@@ -447,7 +497,12 @@ const TokenSale = () => {
                   <div className=" bg-[#121212] border-[1px] border-[#282828] rounded-b-[8px]">
                     <div className="flex items-center justify-center flex-col space-y-5 py-5">
                       <p className="text-[12px] text-white opacity-70">ESTIMATED CLAIM TIME</p>
-                      <p className="text-white text-[24px]">1d 22h 45m 34s</p>
+                      <div className="flex flex-row space-x-2 items-center justify-center">
+                        <p className="text-white text-[20px]">{countdown.days}d</p>
+                        <p className="text-white text-[20px]">{countdown.hours}h</p>
+                        <p className="text-white text-[20px]">{countdown.minutes}m</p>
+                        <p className="text-white text-[20px]">{countdown.seconds}s</p>
+                      </div>
                     </div>
                   </div>
 
@@ -463,24 +518,20 @@ const TokenSale = () => {
                       <p className="text-white text-[12px] font-medium">Presale Progress</p>
                       <div className="flex flex-row items-center space-x-4">
                         <p className="text-white opacity-70 text-[12px]">${totalContribution}</p>
-                        
                         <Dot/>
-
                         <p className="text-[#08E04A] text-[12px]">{progress}%</p>
-
                       </div>
                     </div>
                     <div>
-                    <Progress value={progress} />
+                    <Progress value={totalContribution} max={target} />
                     </div>
                     <div className="flex flex-col w-full items-center justify-center space-y-3">
-                      <p className="text-white opacity-70 text-[10px]">SALE ENDS IN</p>
+                      <p className="text-white opacity-70 text-[10px]">{saleStatus}</p>
                       <div className="flex flex-row space-x-2 items-center justify-center">
-                        <p className="text-white text-[20px]">1d</p>
-                        <p className="text-white text-[20px]">22h</p>
-                        <p className="text-white text-[20px]">50m</p>
-                        <p className="text-white text-[20px]">45s</p>
-
+                        <p className="text-white text-[20px]">{countdown.days}d</p>
+                        <p className="text-white text-[20px]">{countdown.hours}h</p>
+                        <p className="text-white text-[20px]">{countdown.minutes}m</p>
+                        <p className="text-white text-[20px]">{countdown.seconds}s</p>
                       </div>
                     </div>
                   </div>
@@ -532,7 +583,7 @@ const TokenSale = () => {
                           style={{ opacity: selectedMethod === 1 ? 1 : 0 }}
                         >
                           {/* Content for selectedMethod === 1 */}
-                          {selectedMethod === 1 && <BuyWithCreditCard setSelectedMethod={setSelectedMethod} />}
+                          {selectedMethod === 1 && <BuyWithCreditCard saleID = {saleID} setSelectedMethod={setSelectedMethod} />}
                         </div>
 
                         <div
@@ -547,6 +598,7 @@ const TokenSale = () => {
                               setIsDialogOpen={setIsDialogOpen}
                               fullTransaction = {fullTransaction}
                               setFulltransaction = {setFulltransaction}
+                              saleID = {saleID}
                             />
                           )}
                         </div>
@@ -556,7 +608,7 @@ const TokenSale = () => {
                           style={{ opacity: selectedMethod === 3 ? 1 : 0 }}
                         >
                           {/* Content for selectedMethod === 3 */}
-                          {selectedMethod === 3 && <BuyWithPaypal setSelectedMethod={setSelectedMethod} />}
+                          {selectedMethod === 3 && <BuyWithPaypal saleID = {saleID} setSelectedMethod={setSelectedMethod} />}
                         </div>
                       
                     </div>
@@ -622,18 +674,17 @@ const TokenSale = () => {
                         </div>
                       </div>
                       <div>
-                      <Progress value={progress} />
+                      <Progress value={totalContribution} max={target} />
                       </div>
                       <div className="flex flex-col w-full items-center justify-center space-y-3">
-                        <p className="text-white opacity-70 text-[10px]">SALE ENDS IN</p>
-                        <div className="flex flex-row space-x-2 items-center justify-center">
-                          <p className="text-white text-[20px]">1d</p>
-                          <p className="text-white text-[20px]">22h</p>
-                          <p className="text-white text-[20px]">50m</p>
-                          <p className="text-white text-[20px]">45s</p>
-
-                        </div>
+                      <p className="text-white opacity-70 text-[10px]">{saleStatus}</p>
+                      <div className="flex flex-row space-x-2 items-center justify-center">
+                        <p className="text-white text-[20px]">{countdown.days}d</p>
+                        <p className="text-white text-[20px]">{countdown.hours}h</p>
+                        <p className="text-white text-[20px]">{countdown.minutes}m</p>
+                        <p className="text-white text-[20px]">{countdown.seconds}s</p>
                       </div>
+                    </div>
                     </div>
 
                     <p className="text-white  font-bold text-[20px]">Contribute</p>
@@ -849,7 +900,12 @@ const TokenSale = () => {
 
                     <div className="space-y-2">
                       <p className="text-[12px] text-white opacity-70">ESTIMATED CLAIM TIME</p>
-                      <p className="text-white text-[24px]">1d 22h 45m 34s</p>
+                      <div className="flex flex-row space-x-2 items-center justify-center">
+                        <p className="text-white text-[20px]">{countdown.days}d</p>
+                        <p className="text-white text-[20px]">{countdown.hours}h</p>
+                        <p className="text-white text-[20px]">{countdown.minutes}m</p>
+                        <p className="text-white text-[20px]">{countdown.seconds}s</p>
+                      </div>
                     </div>
 
                   </div>
