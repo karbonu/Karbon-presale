@@ -216,6 +216,12 @@ const handleFullTransaction = (status: any) => {
 
   const ReferralLink = `${window.location.origin}/signup?referralCode=${referralCode}`
 
+
+const discordShareUrl = `https://discord.com/channels/@me?message=${encodeURIComponent(`Join the Karbon Sale using my referral link: ${ReferralLink}`)}`;
+const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(ReferralLink)}&text=${encodeURIComponent('Join the Karbon Sale using my referral link!')}`;
+const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`Join the Karbon Sale using my referral link: ${ReferralLink}`)}`;
+const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(ReferralLink)}&text=${encodeURIComponent('Join the Karbon Sale using my referral link!')}`;
+
   const handleCopy = () => {
     const link = ReferralLink ?? "";
     navigator.clipboard.writeText((link)).then(() => {
@@ -286,21 +292,6 @@ const handleFullTransaction = (status: any) => {
     );
   }
 
-  // if(isDialogOpen){
-  //   return(
-  //     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-  //         <DialogContent>
-  //           <DialogTitle>Dialog Title</DialogTitle>
-  //           <DialogDescription>
-  //             This is a description of the dialog content.
-  //           </DialogDescription>
-  //           <button onClick={() => setIsDialogOpen(false)}>Close Dialog</button>
-  //         </DialogContent>
-  //       </Dialog>
-  //   )
-  // }
-
-
 
 
   const handleCloseConnectModal = () => {
@@ -309,6 +300,8 @@ const handleFullTransaction = (status: any) => {
     setIsConnectModalOpen(false);
   };
 
+
+  
   
 
   
@@ -449,18 +442,18 @@ const handleFullTransaction = (status: any) => {
                       <div className="flex flex-row items-center space-x-3">
                         <p className="text-[12px] text-white opacity-70 ">Share on</p>
 
-                        <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        <a href={discordShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <DiscordLogo/>
-                        </div>
-                        <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        </a>
+                        <a href={telegramShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <TelegramLogo/>
-                        </div>
-                        <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        </a>
+                        <a href={whatsappShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <WhatsappLogo/>
-                        </div>
-                        <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        </a>
+                        <a href={xShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <XLogo/>
-                        </div>
+                        </a>
                       </div>
 
                     </div>
@@ -855,18 +848,18 @@ const handleFullTransaction = (status: any) => {
                     <div className="flex flex-row items-center space-x-3">
                       <p className="text-[12px] text-white opacity-70e">Share on</p>
 
-                      <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                      <a href={discordShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                         <DiscordLogo/>
-                      </div>
-                      <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                      </a>
+                      <a href={telegramShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                         <TelegramLogo/>
-                      </div>
-                      <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                      </a>
+                      <a href={whatsappShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                         <WhatsappLogo/>
-                      </div>
-                      <div className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                      </a>
+                      <a href={xShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                         <XLogo/>
-                      </div>
+                      </a>
                     </div>
 
                   </div>

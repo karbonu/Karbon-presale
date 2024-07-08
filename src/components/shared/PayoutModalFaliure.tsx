@@ -22,6 +22,12 @@ const PayoutModalFaliure = (props : any) => {
 
   const ReferralLink = `${window.location.origin}/signup?referralCode=${referralCode}`
 
+  const discordShareUrl = `https://discord.com/channels/@me?message=${encodeURIComponent(`Join the Karbon Sale using my referral link: ${ReferralLink}`)}`;
+const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(ReferralLink)}&text=${encodeURIComponent('Join the Karbon Sale using my referral link!')}`;
+const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`Join the Karbon Sale using my referral link: ${ReferralLink}`)}`;
+const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(ReferralLink)}&text=${encodeURIComponent('Join the Karbon Sale using my referral link!')}`;
+
+
   const handleCopy = () => {
     const link = ReferralLink ?? "";
     navigator.clipboard.writeText((link)).then(() => {
@@ -72,18 +78,18 @@ const PayoutModalFaliure = (props : any) => {
                       <div className="flex flex-row items-center space-x-5">
                         <p className="text-[12px] opacity-50 text-white">Share on</p>
 
-                        <div className=" opacity-50 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        <a onClick={() => props.setIsDialogOpen(false)} href={discordShareUrl} target="blank" className=" opacity-50 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <DiscordLogo/>
-                        </div>
-                        <div className=" opacity-50 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        </a>
+                        <a onClick={() => props.setIsDialogOpen(false)} href={telegramShareUrl} target="blank" className=" opacity-50 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <TelegramLogo/>
-                        </div>
-                        <div className=" opacity-50 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        </a>
+                        <a onClick={() => props.setIsDialogOpen(false)} href={whatsappShareUrl} target="blank" className=" opacity-50 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <WhatsappLogo/>
-                        </div>
-                        <div className=" opacity-50 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
+                        </a>
+                        <a onClick={() => props.setIsDialogOpen(false)} href={xShareUrl} target="blank" className=" opacity-50 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                           <XLogo/>
-                        </div>
+                        </a>
                       </div>
 
                     </div>
