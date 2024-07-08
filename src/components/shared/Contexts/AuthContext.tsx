@@ -9,6 +9,8 @@ interface AuthContextType {
   setUserID: (UserID: string) => void;
   password: string;
   setPassword: (password: string) => void;
+  presaleID: string;
+  setPresaleID: (presaleID: string) => void;
   referralCode: string;
   setWalletAddress: (password: string) => void;
   walletAddress: string;
@@ -23,11 +25,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [email, setEmail] = useState(localStorage.getItem('email') || '');
-  const [UserID, setUserID] = useState(localStorage.getItem('UserID') || '');
-  const [password, setPassword] = useState(localStorage.getItem('password') || '');
-  const [walletAddress, setWalletAddress] = useState(localStorage.getItem('walletAddress') || '');
-  const [referralCode, setReferralCOde] = useState(localStorage.getItem('referralCode') || '');
+  const [email, setEmail] = useState(localStorage.getItem('email') || "");
+  const [UserID, setUserID] = useState(localStorage.getItem('UserID') || "");
+  const [password, setPassword] = useState(localStorage.getItem('password') || "");
+  const [presaleID, setPresaleID] = useState(localStorage.getItem('presaleid') || "");
+  const [walletAddress, setWalletAddress] = useState(localStorage.getItem('walletAddress') || "");
+  const [referralCode, setReferralCOde] = useState(localStorage.getItem('referralCode') || "");
   const [isAuthenticated, setAuthenticated] = useState<boolean>(JSON.parse(localStorage.getItem('isAuthenticated') || 'false'));
 
   const [hasDisplayedConnectModal, setHasDisplayedConnectModal] = useState<boolean>(JSON.parse(localStorage.getItem('displayedModalConnect') || 'false'));
@@ -43,6 +46,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     localStorage.setItem('password', password);
   }, [password]);
+
+  useEffect(() => {
+    localStorage.setItem('presaleid', presaleID);
+  }, [presaleID]);
+
 
   useEffect(() => {
     localStorage.setItem('  walletAddress', walletAddress);
@@ -63,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   
   return (
-    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, setHasDisplayedConnectModal, hasDisplayedConnectModal, setWalletAddress, walletAddress}}>
+    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, setHasDisplayedConnectModal, hasDisplayedConnectModal, setWalletAddress, walletAddress, presaleID, setPresaleID}}>
       {children}
     </AuthContext.Provider>
   );

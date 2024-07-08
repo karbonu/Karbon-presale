@@ -50,14 +50,13 @@ const TokenSale = () => {
   const [tokensBought, setTokensBought] = useState(0);
   const [referralCount, setReferralCount] = useState(0);
   const [fullTransaction, setFulltransaction] = useState(false);
-  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode} = useAuth();
+  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode, setPresaleID} = useAuth();
   const [bonusAmount, setBonusAmount] = useState(0);
   const payoutMitate = useRequestPayoutMitate();
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected && !hasDisplayedConnectModal);
   const { open } = useWeb3Modal();
   const [isRequesting, setIsRequesting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [saleID, setSaleID] = useState('');
   const [endDate, setEndDate] = useState('');
   const [startDate, setStartDate] = useState('');
   const [target, setTarger] = useState(0);
@@ -143,7 +142,7 @@ const TokenSale = () => {
           console.log(endDate)
           setTarger(target);
           setEndDate(enddate);
-          setSaleID(presale);
+          setPresaleID(presale);
           setStartDate(startdate);
 
           let progressAmount = totalContribution / target * 100;
@@ -190,7 +189,7 @@ const TokenSale = () => {
   
       fetchPresaleData();
       fetchReferralCount();
-    });
+    }, []);
 
   
 
@@ -581,7 +580,7 @@ const handleFullTransaction = (status: any) => {
                           style={{ opacity: selectedMethod === 1 ? 1 : 0 }}
                         >
                           {/* Content for selectedMethod === 1 */}
-                          {selectedMethod === 1 && <BuyWithCreditCard saleID = {saleID} setSelectedMethod={setSelectedMethod} />}
+                          {selectedMethod === 1 && <BuyWithCreditCard  setSelectedMethod={setSelectedMethod} />}
                         </div>
 
                         <div
@@ -596,7 +595,7 @@ const handleFullTransaction = (status: any) => {
                               setIsDialogOpen={setIsDialogOpen}
                               fullTransaction = {fullTransaction}
                               handleFullTransaction = {handleFullTransaction}
-                              saleID = {saleID}
+                              
                             />
                           )}
                         </div>
@@ -606,7 +605,7 @@ const handleFullTransaction = (status: any) => {
                           style={{ opacity: selectedMethod === 3 ? 1 : 0 }}
                         >
                           {/* Content for selectedMethod === 3 */}
-                          {selectedMethod === 3 && <BuyWithPaypal saleID = {saleID} setSelectedMethod={setSelectedMethod} />}
+                          {selectedMethod === 3 && <BuyWithPaypal  setSelectedMethod={setSelectedMethod} />}
                         </div>
                       
                     </div>

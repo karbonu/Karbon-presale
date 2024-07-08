@@ -59,7 +59,7 @@ const BuyWithUSDT = (props: any) => {
     const { open } = useWeb3Modal();
     const { isConnected, address } = useAccount();
     const [isApproved, setIsApproved] = useState(false);
-    const { UserID } = useAuth();
+    const { UserID, presaleID } = useAuth();
     const { data: hash, error, isPending, writeContract } = useWriteContract();
     const { isLoading: isConfirming, isSuccess: isConfirmed, isError: isFailed } = useWaitForTransactionReceipt({ hash });
     const { data: balance } = useReadContract({
@@ -107,10 +107,10 @@ const BuyWithUSDT = (props: any) => {
             contributeMutation.mutate(
                 {
                     amount: tokenAmount,
-                    walletAddress: address as string,
-                    userId: UserID,
-                    txHash: hash as string,
-                    presaleId: "cly9asr6e0000tbafsf3w764u",
+                    walletAddress: address as string || "",
+                    userId: UserID as string || "",
+                    txHash: hash as string ||"",
+                    presaleId: presaleID as string || "",
                     paymentMethod: 'USDT',
                 },
                 {
@@ -119,8 +119,8 @@ const BuyWithUSDT = (props: any) => {
                         investmentMutate.mutate(
                             { 
                               amount: tokenAmount,
-                              userId: UserID,
-                              txHash: hash as string,
+                              userId: UserID as string || "",
+                              txHash: hash as string || "",
                               paymentMethod: 'USDT', 
                              },
                             {

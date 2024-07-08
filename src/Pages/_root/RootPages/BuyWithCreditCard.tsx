@@ -74,7 +74,7 @@ const Button = React.memo(({  onOrderCreate, onOrderApprove }: {
 
 const BuyWithCreditCard = (props: any) => {
   const [amount, setAmount] = useState<string>('');
-  const { UserID } = useAuth();
+  const { UserID, presaleID } = useAuth();
   const { address } = useAccount();
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
@@ -98,10 +98,10 @@ const BuyWithCreditCard = (props: any) => {
       contributeMutation.mutate(
         { 
           amount: Number(amount),
-          walletAddress: address as string,
-          userId: UserID,
+          walletAddress: address as string || "",
+          userId: UserID as string || '',
           txHash: "",
-          presaleId: 'cly9asr6e0000tbafsf3w764u',
+          presaleId: presaleID as string || "",
           paymentMethod: 'Card', 
         },
         {
@@ -111,7 +111,7 @@ const BuyWithCreditCard = (props: any) => {
             investmentMutate.mutate(
               { 
                 amount: Number(amount),
-                userId: UserID,
+                userId: UserID as string || '',
                 txHash: "",
                 paymentMethod: 'Card', 
               },

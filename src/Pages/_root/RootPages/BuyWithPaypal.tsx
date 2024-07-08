@@ -36,6 +36,7 @@ type InvestmentData = {
 const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
   return useMutation<AxiosResponse<any>, Error, ContributeData>({
     mutationFn: (data: ContributeData) => {
+      console.log("Here is the data")
       console.log(data);
       return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data);
     },
@@ -74,8 +75,9 @@ const Button = React.memo(({  onOrderCreate, onOrderApprove }: {
 
 const BuyWithPaypal = (props: any) => {
   const [amount, setAmount] = useState<string>('');
-  const { UserID } = useAuth();
+  const { UserID, presaleID } = useAuth();
   const { address } = useAccount();
+  
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
@@ -94,15 +96,14 @@ const BuyWithPaypal = (props: any) => {
     mutationFn: verifyPayment,
     onSuccess: (data: any) => {
       console.log(data);
-      
       contributeMutation.mutate(
         { 
           amount: Number(amount),
-          walletAddress: address as string,
-          userId: UserID,
+          walletAddress: address as string || "",
+          userId: UserID as string || "",
           txHash: "",
-          presaleId: 'cly9asr6e0000tbafsf3w764u',
-          paymentMethod: 'PayPal', 
+          presaleId: presaleID as string || "",
+          paymentMethod: 'paypal', 
         },
         {
           onSuccess: (response: any) => {
@@ -111,9 +112,9 @@ const BuyWithPaypal = (props: any) => {
             investmentMutate.mutate(
               { 
                 amount: Number(amount),
-                userId: UserID,
+                userId: UserID as string || "",
                 txHash: "",
-                paymentMethod: 'PayPal', 
+                paymentMethod: 'paypal', 
               },
               {
                 onSuccess: (response: any) => {
