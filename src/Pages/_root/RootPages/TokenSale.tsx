@@ -89,16 +89,19 @@ const TokenSale = () => {
         }
   
         const dollarResponse = await getTotalUSDSpent(UserID as string);
-        
         console.log("Dollar response:", dollarResponse);
-
         if (dollarResponse !== 'Failed' && isMounted) {
-          const dollarAmount = isNaN(Number(dollarResponse.data)) ? 0 : Number(dollarResponse.data);
+          console.log(dollarResponse)
+          const totalAmount = dollarResponse.data.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
+          const dollarAmount = isNaN(totalAmount) ? 0 : totalAmount;
+
           console.log("Setting total amount:", dollarAmount);
+
           setTotalAmount(dollarAmount);
-          setTokensBought(dollarAmount);
+          setTokensBought(dollarAmount * saleRate);
+          console.log(UserID)
         }
-  
+
         if (isMounted) {
           const progressAmount = Math.round((totalContribution / target) * 100);
           console.log("Setting progress:", progressAmount);
@@ -479,7 +482,7 @@ const handleFullTransaction = (status: any) => {
                       </div>
                     </div>
 
-                    <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
+                    <div className="min-w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">{tokensBought}</p>
