@@ -1,5 +1,5 @@
 // src/components/BuyWithPaypal.tsx
-import { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useAuth } from '@/components/shared/Contexts/AuthContext.tsx';
 import BackArrow from '@/components/Icons/BackArrow.tsx';
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
@@ -8,7 +8,8 @@ import PaypalLogo from '@/components/Icons/PaypalLogo.tsx';
 import axios from 'axios';
 import { useAccount } from 'wagmi';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
-import  { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 interface VerifyPaymentData {
   orderID: string;
@@ -18,25 +19,63 @@ interface VerifyPaymentData {
 
 type ContributeData = {
   amount: number;
-  walletAddress: `0x${string}`;
+  walletAddress: string;
   userId: string;
   txHash: string;
   presaleId: string;
   paymentMethod: string;
 };
 
+type InvestmentData = {
+  userId: string;
+  amount: number;
+  txHash: string;
+  paymentMethod: string;
+};
 
 const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
   return useMutation<AxiosResponse<any>, Error, ContributeData>({
     mutationFn: (data: ContributeData) => {
+      console.log(data);
       return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data);
     },
   });
 };
 
+const useCreateInvestment = (): UseMutationResult<AxiosResponse<any>, Error, InvestmentData> => {
+  return useMutation<AxiosResponse<any>, Error, InvestmentData>({
+    mutationFn: (data: InvestmentData) => {
+      console.log(data);
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data);
+    },
+  });
+};
+
+const Button = React.memo(({  onOrderCreate, onOrderApprove }: { 
+  amount: any, 
+  onOrderCreate: (data: any, actions: any) => Promise<string>,
+  onOrderApprove: (data: any, actions: any) => Promise<void>
+}) => {
+  const [{ isPending }] = usePayPalScriptReducer();
+
+  const paypalbuttonTransactionProps: PayPalButtonsComponentProps = useMemo(() => ({
+    style: { layout: "vertical" },
+    createOrder: onOrderCreate,
+    onApprove: onOrderApprove
+  }), [onOrderCreate, onOrderApprove]);
+
+  return (
+    <>
+      {isPending ? <h2>Load Smart Payment Button...</h2> : null}
+      <PayPalButtons fundingSource={"paypal"} {...paypalbuttonTransactionProps} />
+    </>
+  );
+});
+
 const BuyWithPaypal = (props: any) => {
   const [amount, setAmount] = useState<string>('');
   const { UserID } = useAuth();
+  const { address } = useAccount();
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
@@ -49,74 +88,87 @@ const BuyWithPaypal = (props: any) => {
   };
 
   const contributeMutation = useContributeMutation();
-  const {address} = useAccount();
+  const investmentMutate = useCreateInvestment();
 
   const mutationOptions = {
     mutationFn: verifyPayment,
-    onSuccess: (data : any) => {
-      console.log(data)
+    onSuccess: (data: any) => {
+      console.log(data);
       
       contributeMutation.mutate(
         { 
           amount: Number(amount),
-          walletAddress: address as `0x${string}`,
+          walletAddress: address as string,
           userId: UserID,
           txHash: "",
-          presaleId: props.saleID,
+          presaleId: 'cly9asr6e0000tbafsf3w764u',
           paymentMethod: 'PayPal', 
-         },
+        },
         {
-            onSuccess: (response: any) => {
-              console.log(response)
-            },
-            onError: (error) => {
-                console.log(error);
-            }
+          onSuccess: (response: any) => {
+            console.log(response);
+            
+            investmentMutate.mutate(
+              { 
+                amount: Number(amount),
+                userId: UserID,
+                txHash: "",
+                paymentMethod: 'PayPal', 
+              },
+              {
+                onSuccess: (response: any) => {
+                  console.log(response);
+                  console.log("SUCCESS");
+                },
+                onError: (error) => {
+                  console.log(error);
+                  console.log("ERROR");
+                }
+              }
+            );
+          },
+          onError: (error) => {
+            console.log(error);
+            console.log("ERROR");
+          }
         }
       );
       alert("Payment verified successfully: " + JSON.stringify(data));
     },
-    onError: (error : any) => {
-      console.log(error)
+    onError: (error: any) => {
+      console.log(error);
       alert("Payment verification failed: " + error.message);
     }
   };
   
   const mutation = useMutation(mutationOptions);
 
-  function Button() {
-    const [{ isPending }] = usePayPalScriptReducer();
-    const paypalbuttonTransactionProps: PayPalButtonsComponentProps = {
-      style: { layout: "vertical" },
-      createOrder(data: any, actions: any) {
-        console.log(data);
-        return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                value: amount
-              }
-            }
-          ]
-        });
-      },
-      onApprove(data: any, actions: any) {
-        return actions.order.capture({}).then((details: any) => {
-          console.log(details);
-          const orderID = data.orderID;
-          const userID = UserID;
-          mutation.mutate({ orderID, userID, amount });
-        });
-      }
-    };
+  const createOrder = useCallback((data: any, actions: any) => {
+    console.log("Creating order with amount:", amount);
+    console.log(data)
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            value: amount
+          }
+        }
+      ]
+    });
+  }, [amount]);
 
-    return (
-      <>
-        {isPending ? <h2>Load Smart Payment Button...</h2> : null}
-        <PayPalButtons fundingSource={"paypal"} {...paypalbuttonTransactionProps} />
-      </>
-    );
-  }
+  const onApprove = useCallback((data: any, actions: any) => {
+    return actions.order.capture().then((details: any) => {
+      console.log("Order captured:", details);
+      const orderID = data.orderID;
+      mutation.mutate({ orderID, userID: UserID, amount });
+    });
+  }, [UserID, amount, mutation]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAmount(value);
+  };
 
   return (
     <PayPalScriptProvider options={paypalScriptOptions}>
@@ -142,15 +194,25 @@ const BuyWithPaypal = (props: any) => {
                 id="buyInput"
                 type="text"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={handleInputChange}
                 className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none"
               />
               <p className="text-white text-[12px] opacity-70">USD</p>
             </div>
           </label>
         </div>
-        <Button />
-        
+        <Dialog>
+          <DialogTrigger>
+            <button className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>Pay with Paypal</button>
+          </DialogTrigger>
+          <DialogContent className='flex items-center justify-center bg-white w-[70%] py-20'>
+            <Button 
+              amount={amount} 
+              onOrderCreate={createOrder} 
+              onOrderApprove={onApprove} 
+            />
+          </DialogContent>
+        </Dialog>
       </div>
     </PayPalScriptProvider>
   );

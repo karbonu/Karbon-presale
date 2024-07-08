@@ -7,8 +7,8 @@ import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 
 import { BarLoader } from 'react-spinners';
 import BoughtTokensSuccess from '@/components/shared/BoughtTokensSuccess';
 import { USDTABI } from '@/components/shared/Constants/TokenABI';
-import { BuyAddress, USDTAddress } from '@/components/shared/Constants/Addresses';
-import { BUYABI } from '@/components/shared/Constants/BuyABI';
+import { BuyAddress, USDTAddress } from '@/components/shared/Constants/Addresses.ts';
+import { BUYABI } from '@/components/shared/Constants/BuyABI.ts';
 import ForwardGreen from '@/components/Icons/ForwardGreen';
 import DialogClose from '@/components/Icons/DialogClose';
 import { Separator } from '@/components/ui/separator';
@@ -21,7 +21,7 @@ import { useAuth } from '@/components/shared/Contexts/AuthContext';
 
 type ContributeData = {
     amount: number;
-    walletAddress: `0x${string}`;
+    walletAddress: string;
     userId: string;
     txHash: string;
     presaleId: string;
@@ -35,6 +35,24 @@ const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, C
         },
     });
 };
+
+type investmentData = {
+    userId: string;
+    amount: number;
+    txHash: string;
+    paymentMethod: string;
+  };
+  
+
+const useCreateInvestment = (): UseMutationResult<AxiosResponse<any>, Error, investmentData> => {
+    return useMutation<AxiosResponse<any>, Error, investmentData>({
+      mutationFn: (data: investmentData) => {
+        console.log(data)
+        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data);
+      },
+    });
+  };
+  
 
 const BuyWithUSDT = (props: any) => {
     const [tokenAmount, setTokenAmount] = useState(0);
@@ -53,47 +71,69 @@ const BuyWithUSDT = (props: any) => {
     const [isBuySuccessModalOpen, setIsBuySuccessModalOpen] = useState(false);
     const [isBuyFailedModalOpen, setIsBuyFailedModalOpen] = useState(false);
     const contributeMutation = useContributeMutation();
+    const investmentMutate = useCreateInvestment();
+    const [fullTransaction, setFulltransaction] = useState(false)
 
     async function handleBuy() {
         if (!isConnected) {
             open();
         } else {
-            if (isApproved) {
-                writeContract({
-                    address: BuyAddress,
-                    abi: BUYABI,
-                    functionName: 'buyTokens',
-                    args: [BigInt(tokenAmount * 10 ** 18)],
-                });
-                props.setFulltransaction(true);
-            } else {
-                writeContract({
-                    address: USDTAddress,
-                    abi: USDTABI,
-                    functionName: 'approve',
-                    args: [BuyAddress, BigInt(tokenAmount * 10 ** 18)],
-                });
-            }
+            writeContract({
+                address: BuyAddress,
+                abi: BUYABI,
+                functionName: 'buyTokens',
+                args: [BigInt(tokenAmount * 10 ** 18)],
+            });
+            setFulltransaction(true);
+            // if (isApproved) {
+            
+            // } else {
+            //     writeContract({
+            //         address: USDTAddress,
+            //         abi: USDTABI,
+            //         functionName: 'approve',
+            //         args: [BuyAddress, BigInt(tokenAmount * 10 ** 18)],
+            //     });
+                
+            // }
         }
     }
 
     useEffect(() => {
-        if (isConfirmed && props.fullTransaction) {
+        if (isConfirmed && fullTransaction) {
             setIsBuySuccessModalOpen(true);
             setIsApproved(false);
 
             contributeMutation.mutate(
                 {
                     amount: tokenAmount,
-                    walletAddress: address as `0x${string}`,
+                    walletAddress: address as string,
                     userId: UserID,
                     txHash: hash as string,
-                    presaleId: props.saleID,
+                    presaleId: "cly9asr6e0000tbafsf3w764u",
                     paymentMethod: 'USDT',
                 },
                 {
                     onSuccess: (response: any) => {
                         console.log(response);
+                        investmentMutate.mutate(
+                            { 
+                              amount: tokenAmount,
+                              userId: UserID,
+                              txHash: hash as string,
+                              paymentMethod: 'USDT', 
+                             },
+                            {
+                                onSuccess: (response: any) => {
+                                  console.log(response)
+                                  console.log("SUCCESS")
+                                },
+                                onError: (error) => {
+                                    console.log(error);
+                                    console.log("ERROR")
+                                }
+                            }
+                          );
                     },
                     onError: (error) => {
                         console.log(error);
@@ -101,17 +141,17 @@ const BuyWithUSDT = (props: any) => {
                 }
             );
 
-            props.setFulltransaction(false);
-        } else if (isFailed && props.fullTransaction) {
+            setFulltransaction(false);
+        } else if (isFailed && fullTransaction) {
             setIsBuyFailedModalOpen(true);
             console.log(error);
         }
 
-        if(isConfirmed && !props.fullTransaction){
+        if(isConfirmed && !fullTransaction){
             setIsApproved(true);
         }
 
-    }, [isConfirmed, props.fullTransaction, isFailed]);
+    }, [isConfirmed, fullTransaction, isFailed]);
 
     return (
         <div className='w-full space-y-5 flex flex-col'>

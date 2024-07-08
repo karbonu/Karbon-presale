@@ -29,7 +29,7 @@ import TermsAndCond from "@/components/shared/TermsAndCond.tsx";
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount } from "wagmi";
 import CheckMark from "@/components/Icons/CheckMark.tsx";
-import { getProgress, getTotalContribution, getTotalUSDSpent, getPresaleID, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks.tsx";
+import {  getTotalContribution, getTotalUSDSpent, getPresaleID, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks.tsx";
 import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
 import { useRequestPayoutMitate } from "@/components/shared/Hooks/UseRequestPayoutMutation.tsx";
 
@@ -64,22 +64,9 @@ const TokenSale = () => {
   const [totalContribution, setTotalContribution] = useState(0);
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [saleStatus, setSaleStatus] = useState('SALE STARTS IN');
+  const [saleRate, setSaleRate] = useState(0);
 
 
-
-  useEffect(() => {
-    const fetchProgress = async () => {
-      const response = await getProgress();
-      if (response !== 'Failed') {
-        const newProgress = Number(response.data);
-        setProgress(isNaN(newProgress) ? 0 : newProgress);
-      } else {
-        console.log(response);
-      }
-    };
-  
-    fetchProgress();
-  }, [fullTransaction]);
 
   
   useEffect(() => {
@@ -99,7 +86,7 @@ const TokenSale = () => {
     fetchTotalContribution();
 
 
-    let USDTAmount = 0;
+    
     let DollarAmount = 0;
 
 
@@ -116,9 +103,9 @@ const TokenSale = () => {
     
     fetchDollar();
 
-    setTotalAmount(USDTAmount + DollarAmount);
+    setTotalAmount(DollarAmount);
 
-    setTokensBought(totalAmount * 10);
+    setTokensBought(totalAmount);
 
     setDecimalTotalAmount('00');
 
@@ -150,12 +137,21 @@ const TokenSale = () => {
           const enddate = response.data.endDate;
           const startdate = response.data.startDate;
           const target = response.data.hardCap;
+          const rate = Number(response.data.rate);
+          setSaleRate(isNaN(rate) ? 0 : rate);
           console.log(startDate)
           console.log(endDate)
           setTarger(target);
           setEndDate(enddate);
           setSaleID(presale);
           setStartDate(startdate);
+
+          let progressAmount = totalContribution / target * 100;
+
+          setProgress(progressAmount);
+          console.log(progress)
+          console.log("Target is ", target)
+          
           initializeCountdown(new Date(startdate), new Date(enddate));
         } else {
           console.log(response);
@@ -194,11 +190,13 @@ const TokenSale = () => {
   
       fetchPresaleData();
       fetchReferralCount();
-    }, []);
+    });
 
   
 
-
+const handleFullTransaction = (status: any) => {
+  setFulltransaction(status)
+}
 
 
 
@@ -482,7 +480,7 @@ const TokenSale = () => {
                     <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">TOKEN VALUE</p>
                       <div className="flex flex-row space-x-1">
-                        <p className="text-white text-[24px]">345</p>
+                        <p className="text-white text-[24px]">{saleRate}</p>
                         <p className="text-white text-[16px]">.45</p>
                         <p className="text-white font-extralight text-[24px]">USDT</p>
                         <div className="flex flex-row items-center mt-3">
@@ -597,7 +595,7 @@ const TokenSale = () => {
                               isDialogOpen={isDialogOpen}
                               setIsDialogOpen={setIsDialogOpen}
                               fullTransaction = {fullTransaction}
-                              setFulltransaction = {setFulltransaction}
+                              handleFullTransaction = {handleFullTransaction}
                               saleID = {saleID}
                             />
                           )}
@@ -888,7 +886,7 @@ const TokenSale = () => {
                     <div className="space-y-2">
                       <p className="text-[12px] opacity-70 text-white">TOKEN VALUE</p>
                       <div className="flex flex-row space-x-1">
-                        <p className="text-white text-[24px]">345</p>
+                        <p className="text-white text-[24px]">{saleRate}</p>
                         <p className="text-white text-[16px]">.45</p>
                         <p className="text-white font-extralight text-[24px]">USDT</p>
                         <div className="flex flex-row items-center mt-3">

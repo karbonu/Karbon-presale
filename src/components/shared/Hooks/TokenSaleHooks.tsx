@@ -1,15 +1,6 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 
-export const getProgress = async (): Promise<AxiosResponse<any> | 'Failed'> => {
-    try {
-      const response = await axios.get( `${import.meta.env.VITE_BACKEND_API_URL}presale/progress`);
-      return response;
-    } catch (error) {
-      console.log(error);
-      return 'Failed';
-    }
-  };
 
 
 export const getPresaleID = async () : Promise<AxiosResponse<any> | 'Failed' > => {
@@ -39,10 +30,10 @@ export const getTotalUSDSpent = async (UserID : string) : Promise<AxiosResponse<
 
 
 export const getUserReferrals = async (UserID : string) : Promise<AxiosResponse<any> | 'Failed' > => {
-    
-    
     try {
         const response = await axios.get( `${import.meta.env.VITE_BACKEND_API_URL}referrals/${UserID}`)
+        console.log("user id")
+        console.log(UserID);
         return response;
     } catch (error) {
       console.log(error);
@@ -53,7 +44,7 @@ export const getUserReferrals = async (UserID : string) : Promise<AxiosResponse<
 
 export const getTotalContribution = async (): Promise<AxiosResponse<any> | 'Failed'> => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/cly9atqwm0001tbafzumww6dz/total-contribution`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/cly9asr6e0000tbafsf3w764u/total-contribution`);
       return response;
     } catch (error) {
       console.log(error);

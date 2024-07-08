@@ -121,23 +121,23 @@
   }
 
 
-/* input[type="number"]::-webkit-outer-spin-button,
+ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
 /* Firefox */
-/* input[type="number"] {
+ input[type="number"] {
     -moz-appearance: textfield;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  /* color: white;
-  background-color: #333; /* Add a background color */
-  /* border-radius: 50%; /* Add a border radius to make it circular */
-  /* box-shadow: 0px 0px 2px #333; Add a box shadow  */
-/* }  */ 
+      color: white;
+      background-color: #333; /* Add a background color */
+       border-radius: 50%; /* Add a border radius to make it circular */
+       box-shadow: 0px 0px 2px #333; 
+}  
 
   p{
     font-family: Inter;

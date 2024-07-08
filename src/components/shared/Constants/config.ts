@@ -13,6 +13,6 @@ export const config = createConfig({
     safe(),
   ],
   transports: {
-    [bscTestnet.id]: http('https://bsc-testnet-rpc.publicnode.com	'),
+    [bscTestnet.id]: http('https://go.getblock.io/b1046b906d9a47b09bc71b69847cb6dc'),
   },
 })

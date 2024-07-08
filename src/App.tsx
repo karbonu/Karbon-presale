@@ -33,6 +33,7 @@ const ReferralRedirect: React.FC<{ children: React.ReactNode }> = ({ children })
       const referralCodeURL = url.searchParams.get('referralCode');
       if (referralCodeURL) {
         setReferralCOde(referralCodeURL);
+        localStorage.setItem('referralCode', referralCode);
         navigate('/sign-up');
       }
     }

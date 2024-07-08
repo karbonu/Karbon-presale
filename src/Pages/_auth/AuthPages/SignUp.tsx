@@ -12,7 +12,6 @@ import PasswordLogo from "@/components/Icons/PasswordLogo.tsx";
 import BackArrow from "@/components/Icons/BackArrow.tsx";
 import PasswordIconComp from "@/components/shared/PasswordIconComp.tsx";
 import { useRegisterMutation } from "@/components/shared/Hooks/UseRegisterMutation.tsx";
-import { useAccount } from "wagmi";
 import { BarLoader } from "react-spinners";
 
 import axios from "axios";
@@ -104,7 +103,7 @@ const SignUp = () => {
     setverificationError('');
   };
 
-  const {address} = useAccount();
+
 
   const handleRegister = () => {
     if(email === "" ){
@@ -128,17 +127,19 @@ const SignUp = () => {
       return;
     }
     setIsRegistering(true);
+    // let  code = `${localStorage.getItem('referralCode')}`;
+    // console.log(localStorage.getItem('referralCode'));
+ 
+    
     registerMutation.mutate(
       {
         email,
-        walletAddress: address || "",
-        referrerId: referralCode || "",
+        walletAddress: "",
+        referrerId: '',
         password,
       },
       {
         onSuccess: () => {
-          console.log(referralCode)
-          localStorage.removeItem('referralCode')
           setIsRegistering(false);
           setStep(3);
         },
@@ -412,7 +413,7 @@ const login = useGoogleLogin({
         )}
 
         {step === 2 && (
-          <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+          <div className="flex flex-col w-full items-center justify-center pt-[5rem]">
             <div className="w-[450px] max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
               <div className="py-5 px-8 flex flex-col justify-between h-full">
                 <div className="flex flex-row space-x-2 items-center pb-5">
