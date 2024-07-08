@@ -21,6 +21,7 @@ import AdminPresale from "./Admin/AdminPages/AdminPresale.tsx"
 import AdminProtectedRoute from "./Admin/Hooks/AdminProtectedRoutes.tsx"
 import { AdminAuthProvider } from "./Admin/Hooks/AdminAuthContext.tsx"
 import { useEffect } from "react"
+import { Toaster } from "@/components/ui/toaster"
 
 
 const ReferralRedirect: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -47,6 +48,7 @@ function App() {
     <HelmetProvider>
       <AuthProvider>
         <AdminAuthProvider>
+          <Toaster/>
           <main className="bgSettings">
             <MetaTags
               title="Karbon Sale"

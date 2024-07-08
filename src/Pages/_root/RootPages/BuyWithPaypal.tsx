@@ -9,7 +9,9 @@ import axios from 'axios';
 import { useAccount } from 'wagmi';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
+import { BarLoader } from 'react-spinners';
 
 interface VerifyPaymentData {
   orderID: string;
@@ -69,6 +71,7 @@ const Button = React.memo(({ onOrderCreate, onOrderApprove }: {
 }) => {
   const [{ isPending }] = usePayPalScriptReducer();
 
+
   const paypalbuttonTransactionProps: PayPalButtonsComponentProps = useMemo(() => ({
     style: { layout: "vertical" },
     createOrder: onOrderCreate,
@@ -84,9 +87,11 @@ const Button = React.memo(({ onOrderCreate, onOrderApprove }: {
 });
 
 const BuyWithPaypal = (props: any) => {
+  const { toast } = useToast()
   const [amount, setAmount] = useState<string>('');
   const { UserID, presaleID } = useAuth();
   const { address } = useAccount();
+  const [contributionLoading, setContributionLoading] = useState(false);
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
@@ -105,11 +110,9 @@ const BuyWithPaypal = (props: any) => {
     mutationFn: verifyPayment,
     onSuccess: (data: any) => {
       console.log(data);
-      alert("Payment verified successfully: " + JSON.stringify(data));
     },
     onError: (error: any) => {
       console.log(error);
-      alert("Payment verification failed: " + error.message);
     }
   };
   
@@ -130,6 +133,7 @@ const BuyWithPaypal = (props: any) => {
   }, [amount]);
 
   const onApprove = useCallback((data: any, actions: any) => {
+    setContributionLoading(true)
     return actions.order.capture().then((details: any) => {
       console.log("Order captured:", details);
       const orderID = data.orderID;
@@ -165,18 +169,32 @@ const BuyWithPaypal = (props: any) => {
               {
                 onSuccess: (response: any) => {
                   console.log(response);
-                  console.log("SUCCESS");
+                  setContributionLoading(false);
+                  toast({
+                    title: "Success!",
+                    description: "Your contribution was successfull",
+                  })
                 },
                 onError: (error) => {
                   console.log(error);
                   console.log("ERROR");
+                  setContributionLoading(false);
+                  toast({
+                    title: "Error!",
+                    description: "Your contribution Failed",
+                  })
                 }
               }
             );
           },
           onError: (error) => {
             console.log(error);
+            setContributionLoading(false);
             console.log("ERROR");
+            toast({
+              title: "Error!",
+              description: "Your contribution Failed",
+            })
           }
         }
       );
@@ -187,6 +205,17 @@ const BuyWithPaypal = (props: any) => {
     const value = e.target.value;
     setAmount(value);
   };
+
+  const handlePay = () => {
+    if(Number(amount) === 0){
+      toast({
+        title: "Error!",
+        description: "Your need to enter an amount",
+      })
+    }else{
+      setContributionLoading(true);
+    }
+  }
 
   return (
     <PayPalScriptProvider options={paypalScriptOptions}>
@@ -219,10 +248,15 @@ const BuyWithPaypal = (props: any) => {
             </div>
           </label>
         </div>
-        <Dialog>
-          <DialogTrigger>
-            <button className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>Pay with Paypal</button>
-          </DialogTrigger>
+        <button onClick={() => handlePay()} className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>
+          {contributionLoading ? (
+            <BarLoader color='white'/>
+          ): (
+            "Pay with Paypal"
+          )}
+          </button>
+        <Dialog open={contributionLoading} onOpenChange={setContributionLoading}>
+          
           <DialogContent className='flex items-center justify-center bg-white w-[70%] py-20'>
             <Button 
               amount={amount} 

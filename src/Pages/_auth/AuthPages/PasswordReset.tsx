@@ -8,8 +8,10 @@ import PasswordIconComp from '@/components/shared/PasswordIconComp.tsx';
 import { BarLoader } from 'react-spinners';
 import EyeIcon from '@/components/Icons/EyeIcon.tsx';
 import EyeIcongreen from '@/components/Icons/EyeIcongreen.tsx';
+import { useToast } from '@/components/ui/use-toast';
 
 const PasswordReset = (props: any) => {
+  const {toast} = useToast();
   const [step, setStep] = useState(1);
   const [OTP, setOTP] = useState('');
   const [verificationError, setVerificationError] = useState('');
@@ -66,7 +68,10 @@ const PasswordReset = (props: any) => {
 
   const handleVerify = () => {
     if (Number(OTP) === 0) {
-      setVerificationError("OTP Required");
+      toast({
+        title: "Enter a valid OTP!",
+        description: "The One Time Password you entered is not valid",
+      })
       return;
     }
     setIsVerifying(true);
@@ -80,12 +85,19 @@ const PasswordReset = (props: any) => {
       {
         onSuccess: (response: any) => {
           console.log(response.data);
+          toast({
+            title: "Success!",
+            description: "OTP Verification Successfull",
+          })
           setStep(2);
           setIsVerifying(false);
         },
         onError: (error) => {
           console.log(error);
-          setVerificationError("Expired OTP");
+          toast({
+            title: "Error!",
+            description: "OTP Verification Failed",
+          })
           setIsVerifying(false);
         },
       }
@@ -102,11 +114,19 @@ const PasswordReset = (props: any) => {
         newPassword: password
       },
       {
-        onSuccess: () => { },
+        onSuccess: () => { 
+          toast({
+            title: "Success!",
+            description: "Password Reset Successfull",
+          })
+        },
         onError: (error) => {
           console.log(error);
           setIsVerifying(false);
-          setVerificationError('OTP Verification Failed, Try Again');
+          toast({
+            title: "Error!",
+            description: "Password Reset Failed, Try Again",
+          })
         }
       }
     );

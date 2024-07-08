@@ -15,10 +15,12 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import VerifyEmailIcon from '@/components/Icons/VerifyEmailIcon.tsx';
 import PasswordReset from './PasswordReset.tsx';
+import { useToast } from '@/components/ui/use-toast.ts';
 
 
 
 const SignIn = () => {
+    const {toast} = useToast();
     const [chanceInfo, setChanceInfo] = useState(true);
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState('');
@@ -54,7 +56,10 @@ const SignIn = () => {
                   setStep(4)
                 },
                 onError: () => {
-                    setErrorMessage('Password Reset Failed, Try Again');
+                    toast({
+                        title: "Error!",
+                        description: "Password Reset Failed ",
+                      })
                     setIsResetting(false);
                 }
             }
@@ -88,9 +93,13 @@ const SignIn = () => {
                     setStep(2);
                     setErrorMessage('');
                     setIsLoadingNonce(false);
+                    
                 },
                 onError: () => {
-                    setErrorMessage('Account does not exist');
+                    toast({
+                        title: "Error!",
+                        description: "Account with entered email does not exist",
+                      })
                     setIsLoadingNonce(false);
                 }
             }
@@ -121,11 +130,18 @@ const SignIn = () => {
                     setAuthEmail(email);
                     setAuthPassword(password);
                     setAuthenticated(true);
+                    toast({
+                        title: "Success!",
+                        description: "Login Successfull",
+                      })
                     navigate('/dashboard');
                     setIsLoggingIn(false);
                 },
                 onError: () => {
-                    setErrorMessage('Login failed, Try Again');
+                    toast({
+                        title: "Error!",
+                        description: "Invalid Login Credentials",
+                      })
                     setIsLoggingIn(false);
                 }
             }
@@ -139,7 +155,10 @@ const SignIn = () => {
       const handleVerify = () => {
 
         if (otp === "") {
-          setverificationError("OTP Required");
+            toast({
+                title: "Enter a valid OTP!",
+                description: "The One Time Password you entered is not valid",
+              })
           return;
         }
         setISVerifying(true);
@@ -159,8 +178,11 @@ const SignIn = () => {
             },
             onError: (error) => {
                 console.log(error)
-              setverificationError("Expired OTP");
               setISVerifying(false);
+              toast({
+                title: "Error!",
+                description: "Invalid or Expired OTP",
+              })
             },
           }
         );
@@ -206,17 +228,24 @@ const SignIn = () => {
 
                     {
                         onSuccess: (response) => {
-                            console.log(response)
+                            console.log(response.data)
                             setUserID(userID);
                             setReferralCOde('');
                             setAuthEmail(email);
                             setAuthPassword('');
                             setAuthenticated(true);
+                            toast({
+                                title: "Success!",
+                                description: "Login Successfull",
+                              })
                             navigate('/dashboard');
                             setIsLoggingIn(false);
                         },
                         onError: () => {
-                            setErrorMessage('Login failed, Try Again');
+                            toast({
+                                title: "Error!",
+                                description: "Login Failed, Try Again",
+                              })
                             setIsLoggingIn(false);
                         }
                     }
@@ -224,11 +253,17 @@ const SignIn = () => {
 
 
             } catch (error) {
-                console.error('Error fetching user info:', error);
+                toast({
+                    title: "Error!",
+                    description: "Login Failed, Try Again",
+                  })
             }
         },
-        onError: (error) => {
-            console.error('Login Failed:', error);
+        onError: () => {
+            toast({
+                title: "Error!",
+                description: "Login Failed, Try Again",
+              })
         },
     });
 

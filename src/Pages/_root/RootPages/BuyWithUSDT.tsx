@@ -18,6 +18,7 @@ import USDTIcon from '@/components/Icons/USDTIcon';
 import UpArrow from '@/components/Icons/UpArrow';
 import BoughtTokensFailed from '@/components/shared/BoughtTokensFailed';
 import { useAuth } from '@/components/shared/Contexts/AuthContext';
+import { useToast } from '@/components/ui/use-toast';
 
 type ContributeData = {
     amount: number;
@@ -55,6 +56,7 @@ const useCreateInvestment = (): UseMutationResult<AxiosResponse<any>, Error, inv
   
 
 const BuyWithUSDT = (props: any) => {
+    const { toast } = useToast();
     const [tokenAmount, setTokenAmount] = useState(0);
     const { open } = useWeb3Modal();
     const { isConnected, address } = useAccount();
@@ -126,6 +128,10 @@ const BuyWithUSDT = (props: any) => {
                             {
                                 onSuccess: (response: any) => {
                                   console.log(response)
+                                  toast({
+                                    title: "Success!",
+                                    description: "Your contribution was successfull",
+                                  })
                                   console.log("SUCCESS")
                                 },
                                 onError: (error) => {
@@ -206,7 +212,7 @@ const BuyWithUSDT = (props: any) => {
                     <p className="text-white text-[12px]">You Buy</p>
                     <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
-                        <input id="buyInput" type="text" onChange={(e) => setTokenAmount(Number(e.target.value))} className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none" />
+                        <input id="buyInput" type="number" onChange={(e) => setTokenAmount(Number(e.target.value))} className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none" />
                         <p className="text-white text-[12px] opacity-70">USDT</p>
                     </div>
                 </label>

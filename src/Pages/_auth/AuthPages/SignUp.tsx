@@ -21,8 +21,10 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
 import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 import EyeIcon from "@/components/Icons/EyeIcon.tsx";
+import { useToast } from "@/components/ui/use-toast";
 
 const SignUp = () => {
+  const {toast} = useToast();
   const [chanceInfo, setChanceInfo] = useState(true);
   const [step, setStep] = useState(1);
   const [password, setPassword] = useState('');
@@ -107,15 +109,24 @@ const SignUp = () => {
 
   const handleRegister = () => {
     if(email === "" ){
-      setRegistrationError("Emalil is required");
+      toast({
+        title: "Invalid Email!",
+        description: "Please, Enter a valis email",
+      })
       return;
     }else{
       if( password === ""){
-        setRegistrationError("Password is required");
+        toast({
+          title: "Invalid Password!",
+          description: "Please, Enter a valis password",
+        })
         return;
       }else{
         if(confirmPassword === ""){
-          setRegistrationError("Confirm Password is required");
+          toast({
+            title: "Invalid Confirm Password!",
+            description: "Please, Enter a valis confirm password",
+          })
           return;
         }
       }
@@ -141,11 +152,18 @@ const SignUp = () => {
       {
         onSuccess: () => {
           setIsRegistering(false);
+          toast({
+            title: "Success!",
+            description: "Registration Successfull",
+          })
           setStep(3);
         },
         onError: (error) => {
           console.log(error);
-          setRegistrationError("Registration failed");
+          toast({
+            title: "Error!",
+            description: "Registration Failed, Try Again",
+          })
           setIsRegistering(false);
         },
       }
@@ -155,7 +173,10 @@ const SignUp = () => {
   const handleVerify = () => {
 
     if (otp == "") {
-      setverificationError("OTP Required");
+      toast({
+        title: "Enter a valid OTP!",
+        description: "The One Time Password you entered is not valid",
+      })
       return;
     }
     setISVerifying(true);
@@ -175,8 +196,11 @@ const SignUp = () => {
                 onSuccess: (response: any) => {
                   nonce = response.data.nonce;
                 },
-                onError: (error) => {
-                  console.log(error)
+                onError: () => {
+                  toast({
+                    title: "Error!",
+                    description: "Account with entered email does not exist",
+                  })
                 }
             }
         );
@@ -197,20 +221,29 @@ const SignUp = () => {
                     setAuthEmail(email);
                     setAuthPassword(password);
                     setAuthenticated(true);
+                    toast({
+                      title: "Success!",
+                      description: "Login Successfull",
+                    })
                     navigate('/dashboard');
                     setIsLoggingIn(false);
                 },
-                onError: (error) => {
-                  console.log(error)
+                onError: () => {
+                  toast({
+                    title: "Error!",
+                    description: "Invalid Login Credentials",
+                  })
                 }
             }
         );
 
 
         },
-        onError: (error) => {
-          console.log(error)
-            setverificationError("Expired OTP");
+        onError: () => {
+          toast({
+            title: "Error!",
+            description: "Invalid or Expired OTP",
+          })
             setISVerifying(false);
       }
     }
@@ -268,9 +301,16 @@ const login = useGoogleLogin({
                       setAuthenticated(true);
                       navigate('/dashboard');
                       setIsLoggingIn(false);
+                      toast({
+                        title: "Success!",
+                        description: "Login Successfull",
+                      })
                   },
                   onError: () => {
-                    setRegistrationError('Login failed, Try Again');
+                    toast({
+                      title: "Error!",
+                      description: "Invalid Login Credentials",
+                    })
                       setIsLoggingIn(false);
                   }
               }
@@ -279,11 +319,17 @@ const login = useGoogleLogin({
 
 
         } catch (error) {
-            console.error('Error fetching user info:', error);
+          toast({
+            title: "Error!",
+            description: "Login Failed, Try Again",
+          })
         }
     },
-    onError: (error) => {
-        console.error('Login Failed:', error);
+    onError: () => {
+      toast({
+        title: "Error!",
+        description: "Login Failed, Try Again",
+      })
     },
 });
 

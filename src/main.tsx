@@ -30,6 +30,7 @@ createWeb3Modal({
 })
 
 
+
 let client = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'default_client_id'; 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
