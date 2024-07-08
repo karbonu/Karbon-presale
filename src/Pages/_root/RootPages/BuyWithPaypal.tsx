@@ -52,7 +52,17 @@ const useCreateInvestment = (): UseMutationResult<AxiosResponse<any>, Error, Inv
   });
 };
 
-const Button = React.memo(({  onOrderCreate, onOrderApprove }: { 
+const generateSimpleHash = (input: string): string => {
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    const char = input.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  return Math.abs(hash).toString(16); // Convert to hexadecimal
+};
+
+const Button = React.memo(({ onOrderCreate, onOrderApprove }: { 
   amount: any, 
   onOrderCreate: (data: any, actions: any) => Promise<string>,
   onOrderApprove: (data: any, actions: any) => Promise<void>
@@ -77,7 +87,6 @@ const BuyWithPaypal = (props: any) => {
   const [amount, setAmount] = useState<string>('');
   const { UserID, presaleID } = useAuth();
   const { address } = useAccount();
-  
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
@@ -96,44 +105,6 @@ const BuyWithPaypal = (props: any) => {
     mutationFn: verifyPayment,
     onSuccess: (data: any) => {
       console.log(data);
-      contributeMutation.mutate(
-        { 
-          amount: Number(amount),
-          walletAddress: address as string || "",
-          userId: UserID as string || "",
-          txHash: "",
-          presaleId: presaleID as string || "",
-          paymentMethod: 'paypal', 
-        },
-        {
-          onSuccess: (response: any) => {
-            console.log(response);
-            
-            investmentMutate.mutate(
-              { 
-                amount: Number(amount),
-                userId: UserID as string || "",
-                txHash: "",
-                paymentMethod: 'paypal', 
-              },
-              {
-                onSuccess: (response: any) => {
-                  console.log(response);
-                  console.log("SUCCESS");
-                },
-                onError: (error) => {
-                  console.log(error);
-                  console.log("ERROR");
-                }
-              }
-            );
-          },
-          onError: (error) => {
-            console.log(error);
-            console.log("ERROR");
-          }
-        }
-      );
       alert("Payment verified successfully: " + JSON.stringify(data));
     },
     onError: (error: any) => {
@@ -162,9 +133,55 @@ const BuyWithPaypal = (props: any) => {
     return actions.order.capture().then((details: any) => {
       console.log("Order captured:", details);
       const orderID = data.orderID;
+
+      // Generate a simple hash based on order details
+      const hashInput = `${orderID}${details.payer.email_address}${details.purchase_units[0].amount.value}${Date.now()}`;
+      const txHash = generateSimpleHash(hashInput);
+
+      console.log("Generated txHash:", txHash);
+
       mutation.mutate({ orderID, userID: UserID, amount });
+
+      contributeMutation.mutate(
+        { 
+          amount: Number(amount),
+          walletAddress: address as string || "",
+          userId: UserID as string || "",
+          txHash: txHash,
+          presaleId: presaleID as string || "",
+          paymentMethod: 'PayPal', 
+        },
+        {
+          onSuccess: (response: any) => {
+            console.log(response);
+            
+            investmentMutate.mutate(
+              { 
+                amount: Number(amount),
+                userId: UserID as string || "",
+                txHash: txHash,
+                paymentMethod: 'PayPal', 
+              },
+              {
+                onSuccess: (response: any) => {
+                  console.log(response);
+                  console.log("SUCCESS");
+                },
+                onError: (error) => {
+                  console.log(error);
+                  console.log("ERROR");
+                }
+              }
+            );
+          },
+          onError: (error) => {
+            console.log(error);
+            console.log("ERROR");
+          }
+        }
+      );
     });
-  }, [UserID, amount, mutation]);
+  }, [UserID, amount, mutation, contributeMutation, investmentMutate, address, presaleID]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -193,7 +210,7 @@ const BuyWithPaypal = (props: any) => {
             <div className="flex flex-row items-center justify-center space-x-2 flex-1">
               <input
                 id="buyInput"
-                type="text"
+                type="number"
                 value={amount}
                 onChange={handleInputChange}
                 className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none"

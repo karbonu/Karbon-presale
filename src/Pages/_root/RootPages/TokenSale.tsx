@@ -67,52 +67,65 @@ const TokenSale = () => {
 
 
 
-  
   useEffect(() => {
+    let isMounted = true;
+  
+    const fetchData = async () => {
+      try {
+        console.log("Fetching data...");
+  
+        // Fetch total contribution
+        const contributionResponse = await getTotalContribution();
 
-    const fetchTotalContribution = async() =>{
-      const response = await getTotalContribution();
-      
-      if (response !== 'Failed') {
-        console.log(response);
-        const Contribute = Number(response.data._sum.amount);
-        setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
-      } else {
-        console.log(response);
-      }
-    }
+        console.log("Contribution response:", contributionResponse);
+        if (contributionResponse !== 'Failed' && isMounted) {
+          
+          const contribute = Number(contributionResponse.data._sum.amount);
+          console.log(contributionResponse)
 
-    fetchTotalContribution();
+          const contributionValue = isNaN(contribute) ? 0 : contribute;
+          console.log("Setting total contribution:", contributionValue);
+          setTotalContribution(contributionValue);
+        }
+  
+        const dollarResponse = await getTotalUSDSpent(UserID as string);
+        
+        console.log("Dollar response:", dollarResponse);
 
-
-    
-    let DollarAmount = 0;
-
-
-    const fetchDollar = async () => {
-      const response = await getTotalUSDSpent(UserID as string);
-      if (response !== 'Failed') {
-        console.log(response);
-        DollarAmount = (isNaN(Number(response.data)) ? 0 : response.data);
-      } else {
-        console.log(response);
+        if (dollarResponse !== 'Failed' && isMounted) {
+          const dollarAmount = isNaN(Number(dollarResponse.data)) ? 0 : Number(dollarResponse.data);
+          console.log("Setting total amount:", dollarAmount);
+          setTotalAmount(dollarAmount);
+          setTokensBought(dollarAmount);
+        }
+  
+        if (isMounted) {
+          const progressAmount = Math.round((totalContribution / target) * 100);
+          console.log("Setting progress:", progressAmount);
+          setProgress(progressAmount);
+        }
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     };
   
-    
-    fetchDollar();
-
-    setTotalAmount(DollarAmount);
-
-    setTokensBought(totalAmount);
-
+    fetchData();
+  
+    const intervalId = setInterval(fetchData, 5000);
+  
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+    };
+  }, [UserID, totalContribution, target]);
+  
+  // Set decimal total amount
+  useEffect(() => {
     setDecimalTotalAmount('00');
+  }, []);
 
-
-
-
-  }, [fullTransaction]);
-
+  
 
   
     useEffect(() => {
@@ -145,10 +158,8 @@ const TokenSale = () => {
           setPresaleID(presale);
           setStartDate(startdate);
 
-          let progressAmount = totalContribution / target * 100;
+          setTarger(1000000)
 
-          setProgress(progressAmount);
-          console.log(progress)
           console.log("Target is ", target)
           
           initializeCountdown(new Date(startdate), new Date(enddate));
@@ -520,7 +531,7 @@ const handleFullTransaction = (status: any) => {
                       </div>
                     </div>
                     <div>
-                    <Progress value={totalContribution} max={target} />
+                    <Progress value={progress} />
                     </div>
                     <div className="flex flex-col w-full items-center justify-center space-y-3">
                       <p className="text-white opacity-70 text-[10px]">{saleStatus}</p>
@@ -671,7 +682,7 @@ const handleFullTransaction = (status: any) => {
                         </div>
                       </div>
                       <div>
-                      <Progress value={totalContribution} max={target} />
+                      <Progress value={progress} />
                       </div>
                       <div className="flex flex-col w-full items-center justify-center space-y-3">
                       <p className="text-white opacity-70 text-[10px]">{saleStatus}</p>

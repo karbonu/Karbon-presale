@@ -16,10 +16,14 @@ export const getPresaleID = async () : Promise<AxiosResponse<any> | 'Failed' > =
   
 
 export const getTotalUSDSpent = async (UserID : string) : Promise<AxiosResponse<any> | 'Failed' > => {
-    
-
     try {
-        const response = await axios.get( `${import.meta.env.VITE_BACKEND_API_URL}presale/investment/${UserID}` )
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment/${UserID}`, {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
+      });
         return response;
     } catch (error) {
       console.log(error);
@@ -44,7 +48,13 @@ export const getUserReferrals = async (UserID : string) : Promise<AxiosResponse<
 
 export const getTotalContribution = async (): Promise<AxiosResponse<any> | 'Failed'> => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/cly9asr6e0000tbafsf3w764u/total-contribution`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/cly9asr6e0000tbafsf3w764u/total-contribution`, {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
+      });
       return response;
     } catch (error) {
       console.log(error);
