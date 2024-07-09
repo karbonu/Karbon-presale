@@ -217,21 +217,21 @@ const SignIn = () => {
                 const { email, sub: userID } = userInfo.data;
                 socialSignIn.mutate(
                     { 
-                        token : token, 
-                        unique_id : userID,
-                        email : email, 
+                        token : token as string, 
+                        unique_id : userID as string,
+                        email : email as string, 
                         phone : "",
                         medium : 'google', 
-                        id_token : userID,
+                        id_token : userID as string,
                         ref_code : ""
                     },
 
                     {
                         onSuccess: (response) => {
                             console.log(response.data)
-                            setUserID(userID);
-                            setReferralCOde('');
-                            setAuthEmail(email);
+                            setUserID(response.data.user.id);
+                            setReferralCOde(response.data.user.referralCode as string || "");
+                            setAuthEmail(response.data.user.email);
                             setAuthPassword('');
                             setAuthenticated(true);
                             toast({

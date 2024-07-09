@@ -164,6 +164,7 @@ const BuyWithPaypal = (props: any) => {
           onSuccess: (response: any) => {
             console.log(response.data);
             setAmount('');
+            setIsModalOpen(false);
             setRecievingValue(0);
             investmentMutate.mutate(
               { 
@@ -178,6 +179,7 @@ const BuyWithPaypal = (props: any) => {
                   setContributionLoading(false);
                   setAmount('');
                   setRecievingValue(0);
+                  setIsModalOpen(false);
                   toast({
                     title: "Success!",
                     description: "Your contribution was successfull",
@@ -189,6 +191,7 @@ const BuyWithPaypal = (props: any) => {
                   setContributionLoading(false);
                   setAmount('');
                   setRecievingValue(0);
+                  setIsModalOpen(false);
                   toast({
                     title: "Error!",
                     description: "Your contribution Failed",
@@ -203,6 +206,7 @@ const BuyWithPaypal = (props: any) => {
             console.log("ERROR");
             setAmount('');
             setRecievingValue(0);
+            setIsModalOpen(false);
             toast({
               title: "Error!",
               description: "Your contribution Failed",
