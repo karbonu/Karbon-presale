@@ -276,14 +276,14 @@ const BuyWithCreditCard = (props: any) => {
                     <p className="text-white text-[12px]">You Get</p>
                     <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
-                        <p className='h-full text-white w-[75%]'>{recievingValue}</p>
+                        <p className='h-full text-white w-[75%]'>{recievingValue === 0 ? '' : recievingValue}</p>
                         <p className="text-white text-[12px] opacity-70">KARBON</p>
                     </div>
                 </label>
             </div>
 
 
-        <button onClick={() => handlePay()} className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>
+        <button disabled={contributionLoading} onClick={() => handlePay()} className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>
           {contributionLoading ? (
             <BarLoader color='white'/>
           ): (

@@ -33,6 +33,7 @@ import {  getTotalContribution, getTotalUSDSpent, getPresaleID, getUserReferrals
 import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
 import { useRequestPayoutMitate } from "@/components/shared/Hooks/UseRequestPayoutMutation.tsx";
 import { isNaN } from "lodash";
+import useCountUp from "@/components/shared/Hooks/UseCountUp.tsx";
 
 
 const TokenSale = () => {
@@ -47,7 +48,7 @@ const TokenSale = () => {
   const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
   const[progress, setProgress] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [decimalTotalAmount, setDecimalTotalAmount] = useState("00");
+  const [decimalTotalAmount, setDecimalTotalAmount] = useState(0);
   const [tokensBought, setTokensBought] = useState(0);
   const [referralCount, setReferralCount] = useState(0);
   const [fullTransaction, setFulltransaction] = useState(false);
@@ -69,6 +70,14 @@ const TokenSale = () => {
   const [totalBonusPending, setTotalBonusPending] = useState(0);
   const [recievedAmount, setRecievedAmount] = useState(0);
   const [recievedAmountRounded, setRecievedAmountRounded] = useState(0);
+  const [previousContribution, setPreviousContribution] = useState(0);
+  const animatedContribution = useCountUp(totalContribution, 1000, previousContribution);
+  const [previousTotalAmount, setPreviousTotalAmount] = useState(0);
+  const [previousTotalAmountDecimal, setPreviousTotalAmountDecimal] = useState(0);
+  const[previousTokensBought, setPreviousTokensBought] = useState(0)
+  const animatedTokensBought = useCountUp(tokensBought, 1000, previousTokensBought);
+  const animatedTotalAmount = useCountUp(totalAmount, 1000, previousTotalAmount);
+  const animatedTotalAmountDecimal = useCountUp(decimalTotalAmount, 1000, previousTotalAmountDecimal);
   
 
 
@@ -85,32 +94,30 @@ const TokenSale = () => {
 
         //console.log("Contribution response:", contributionResponse);
         if (contributionResponse !== 'Failed' && isMounted) {
-          
           const contribute = Number(contributionResponse.data._sum.amount);
-          //console.log(contributionResponse)
-
           const contributionValue = isNaN(contribute) ? 0 : contribute;
-          //console.log("Setting total contribution:", contributionValue);
+          
+          setPreviousContribution(totalContribution);
           setTotalContribution(contributionValue);
         }
   
         const dollarResponse = await getTotalUSDSpent(UserID as string);
-        //console.log("Dollar response:", dollarResponse);
         if (dollarResponse !== 'Failed' && isMounted) {
-          //console.log(dollarResponse)
           const totalAmount_ = dollarResponse.data.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
-          const amount = Math.trunc(totalAmount_)
+          const amount = Math.trunc(totalAmount_);
           const dollarAmount = isNaN(amount) ? 0 : amount;
 
           const decimal = Math.abs(totalAmount_ % 1).toFixed(2).slice(2);
 
-          setDecimalTotalAmount(decimal);
+          setPreviousTotalAmountDecimal(decimalTotalAmount);
+          setDecimalTotalAmount(Number(decimal));
 
-          //console.log("Setting total amount:", dollarAmount);
-
+          setPreviousTotalAmount(totalAmount);
           setTotalAmount(dollarAmount);
-          setTokensBought(dollarAmount * saleRate);
-          //console.log(UserID)
+
+          const newTokensBought = dollarAmount * saleRate;
+          setPreviousTokensBought(tokensBought);
+          setTokensBought(newTokensBought);
         }
 
         if (isMounted) {
@@ -310,7 +317,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
   if (loading) {
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000); // 2000ms = 2s
+    }, 2000); 
 
     return (
       <div
@@ -332,10 +339,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
   };
 
 
-  
-  
-
-  
+    
 
   return (
    <div className="w-full h-full">
@@ -503,8 +507,8 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                     <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">AMOUNT SPENT</p>
                       <div className="flex flex-row space-x-1">
-                        <p className="text-white text-[24px]">{totalAmount}</p>
-                        <p className="text-white text-[16px]">.{decimalTotalAmount}</p>
+                        <p className="text-white text-[24px]">{animatedTotalAmount}</p>
+                        <p className="text-white text-[16px]">.{animatedTotalAmountDecimal}</p>
                         <p className="text-white font-extralight text-[24px]">USDT</p>
                       </div>
                     </div>
@@ -512,7 +516,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                     <div className="min-w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
                       <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
                       <div className="flex flex-row space-x-1">
-                        <p className="text-white text-[24px]">{tokensBought}</p>
+                        <p className="text-white text-[24px]">{animatedTokensBought}</p>
                         <p className="text-white font-extralight text-[24px]">KARBON</p>
                       </div>
                     </div>
@@ -555,7 +559,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                     <div className="flex flex-row items-center justify-between">
                       <p className="text-white text-[12px] font-medium">Presale Progress</p>
                       <div className="flex flex-row items-center space-x-4">
-                        <p className="text-white opacity-70 text-[12px]">${totalContribution}</p>
+                        <p className="text-white opacity-70 text-[12px]">${animatedContribution}</p>
                         <Dot/>
                         <p className="text-[#08E04A] text-[12px]">{progress}%</p>
                       </div>
@@ -703,7 +707,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                       <div className="flex flex-row items-center justify-between">
                         <p className="text-white text-[12px] font-semibold">Presale Progress</p>
                         <div className="flex flex-row items-center space-x-4">
-                          <p className="text-white opacity-70 text-[12px]">${totalContribution}</p>
+                          <p className="text-white opacity-70 text-[12px]">${animatedContribution}</p>
                           
                           <Dot/>
 
