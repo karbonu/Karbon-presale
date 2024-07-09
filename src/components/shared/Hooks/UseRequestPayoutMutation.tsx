@@ -6,10 +6,14 @@ type requestPayout = {
     referralId: string;
   };
   
-  export const useRequestPayoutMitate = (): UseMutationResult<AxiosResponse<any>, Error, requestPayout> => {
+  export const useRequestPayoutMitate = (auth : string): UseMutationResult<AxiosResponse<any>, Error, requestPayout> => {
     return useMutation<AxiosResponse<any>, Error, requestPayout>({
       mutationFn: (data: requestPayout) => {
-        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}referrals/claim-bonus`, data);
+        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}referrals/claim-bonus`, data,  {
+          headers: {
+            'Authorization': `Bearer ${auth}`,
+          },
+        });
       },
     });
   };

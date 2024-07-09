@@ -11,18 +11,18 @@ import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 
 const ProfileSettings = () => {
   const [copied, setCopied] = useState(false);
-  const { email, setPassword, setReferralCOde, setUserID, setEmail, setAuthenticated, referralCode, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
+  const { email, setPassword, setReferralCOde, setUserID, setEmail, setAuthenticated, accessToken, UserID, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [passwordSuccess, setPasswordSuccess] = useState('');
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
-  const passwordUpdateMutate = usePasswoedUpdateMutate();
+  const passwordUpdateMutate = usePasswoedUpdateMutate(accessToken);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const ReferralLink = `${window.location.origin}/signup?referralCode=${referralCode}`
+  const ReferralLink = `${window.location.origin}/signup?referralCode=${UserID}`
 
   const handleCopy = () => {
     const link = ReferralLink ?? "";

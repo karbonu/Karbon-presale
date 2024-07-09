@@ -40,7 +40,7 @@ const SignIn = () => {
     const initialNonceMutation = useInitialNonceMutation();
     const loginMutation = useLoginMutation();
     const reserMutation = usePasswordResetMutate();
-    const { setEmail: setAuthEmail, setPassword: setAuthPassword, isAuthenticated, setAuthenticated, setUserID, setReferralCOde, setWalletAddress } = useAuth();
+    const { setEmail: setAuthEmail, setPassword: setAuthPassword, isAuthenticated, setAuthenticated, setUserID, setReferralCOde, setWalletAddress, setAccessTToken } = useAuth();
 
     if(isAuthenticated){
         return <Navigate to="/dashboard" />;
@@ -123,6 +123,7 @@ const SignIn = () => {
                         setStep(5)
                         return;
                     }
+                    setAccessTToken(response.data.access_token);
                     setWalletAddress(response.data.user.walletAddress)
                     console.log(response.data)
                     setUserID(response.data.user.id);
@@ -229,6 +230,8 @@ const SignIn = () => {
                     {
                         onSuccess: (response) => {
                             console.log(response.data)
+                            localStorage.removeItem('referralCode');
+                            setAccessTToken(response.data.access_token);
                             setUserID(response.data.user.id);
                             setReferralCOde(response.data.user.referralCode );
                             setAuthEmail(response.data.user.email);

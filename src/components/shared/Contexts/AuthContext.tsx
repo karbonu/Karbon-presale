@@ -11,6 +11,8 @@ interface AuthContextType {
   setPassword: (password: string) => void;
   presaleID: string;
   setPresaleID: (presaleID: string) => void;
+  accessToken: string;
+  setAccessTToken: (accessToken: string) => void;
   referralCode: string;
   setWalletAddress: (password: string) => void;
   walletAddress: string;
@@ -28,6 +30,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [email, setEmail] = useState(localStorage.getItem('email') || "");
   const [UserID, setUserID] = useState(localStorage.getItem('UserID') || "");
   const [password, setPassword] = useState(localStorage.getItem('password') || "");
+  const [accessToken, setAccessTToken] = useState(localStorage.getItem('accesstoken') || "");
   const [presaleID, setPresaleID] = useState(localStorage.getItem('presaleid') || "");
   const [walletAddress, setWalletAddress] = useState(localStorage.getItem('walletAddress') || "");
   const [referralCode, setReferralCOde] = useState(localStorage.getItem('referralCode') || "");
@@ -51,6 +54,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('presaleid', presaleID);
   }, [presaleID]);
 
+  useEffect(() => {
+    localStorage.setItem('accesstoken', accessToken);
+  }, [accessToken]);
+
 
   useEffect(() => {
     localStorage.setItem('  walletAddress', walletAddress);
@@ -71,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   
   return (
-    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, setHasDisplayedConnectModal, hasDisplayedConnectModal, setWalletAddress, walletAddress, presaleID, setPresaleID}}>
+    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, setHasDisplayedConnectModal, hasDisplayedConnectModal, setWalletAddress, walletAddress, presaleID, setPresaleID, accessToken, setAccessTToken}}>
       {children}
     </AuthContext.Provider>
   );

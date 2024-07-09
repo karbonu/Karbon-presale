@@ -29,13 +29,7 @@ type ContributeData = {
     paymentMethod: string;
 };
 
-const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
-    return useMutation<AxiosResponse<any>, Error, ContributeData>({
-        mutationFn: (data: ContributeData) => {
-            return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data);
-        },
-    });
-};
+
 
 type investmentData = {
     userId: string;
@@ -45,15 +39,32 @@ type investmentData = {
   };
   
 
-const useCreateInvestment = (): UseMutationResult<AxiosResponse<any>, Error, investmentData> => {
-    return useMutation<AxiosResponse<any>, Error, investmentData>({
-      mutationFn: (data: investmentData) => {
-        console.log(data)
-        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data);
+  export const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
+    return useMutation<AxiosResponse<any>, Error, ContributeData>({
+      mutationFn: (data: ContributeData) => {
+        console.log("Here is the data");
+        console.log(data);
+        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data, {
+          headers: {
+            'Authorization': `Bearer ${auth}`,
+          }
+        });
       },
     });
   };
   
+  export const useCreateInvestment = (auth: string): UseMutationResult<AxiosResponse<any>, Error, investmentData> => {
+    return useMutation<AxiosResponse<any>, Error, investmentData>({
+      mutationFn: (data: investmentData) => {
+        console.log("Investment Data ", data);
+        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data, {
+          headers: {
+            'Authorization': `Bearer ${auth}`,
+          }
+        });
+      },
+    });
+  };
 
 const BuyWithUSDT = (props: any) => {
     const { toast } = useToast();
@@ -61,7 +72,7 @@ const BuyWithUSDT = (props: any) => {
     const { open } = useWeb3Modal();
     const { isConnected, address } = useAccount();
     const [isApproved, setIsApproved] = useState(false);
-    const { UserID, presaleID } = useAuth();
+    const { UserID, presaleID, accessToken } = useAuth();
     const { data: hash, error, isPending, writeContract } = useWriteContract();
     const { isLoading: isConfirming, isSuccess: isConfirmed, isError: isFailed } = useWaitForTransactionReceipt({ hash });
     const { data: balance } = useReadContract({
@@ -72,8 +83,8 @@ const BuyWithUSDT = (props: any) => {
     });
     const [isBuySuccessModalOpen, setIsBuySuccessModalOpen] = useState(false);
     const [isBuyFailedModalOpen, setIsBuyFailedModalOpen] = useState(false);
-    const contributeMutation = useContributeMutation();
-    const investmentMutate = useCreateInvestment();
+    const contributeMutation = useContributeMutation(accessToken);
+    const investmentMutate = useCreateInvestment(accessToken);
     const [fullTransaction, setFulltransaction] = useState(false)
     const [rate, setRate] = useState(0);
 

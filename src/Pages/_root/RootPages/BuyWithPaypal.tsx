@@ -37,25 +37,32 @@ type InvestmentData = {
   paymentMethod: string;
 };
 
-const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
+export const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
   return useMutation<AxiosResponse<any>, Error, ContributeData>({
     mutationFn: (data: ContributeData) => {
-      console.log("Here is the data")
+      console.log("Here is the data");
       console.log(data);
-      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data);
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data, {
+        headers: {
+          'Authorization': `Bearer ${auth}`,
+        }
+      });
     },
   });
 };
 
-const useCreateInvestment = (): UseMutationResult<AxiosResponse<any>, Error, InvestmentData> => {
+export const useCreateInvestment = (auth: string): UseMutationResult<AxiosResponse<any>, Error, InvestmentData> => {
   return useMutation<AxiosResponse<any>, Error, InvestmentData>({
     mutationFn: (data: InvestmentData) => {
-      console.log("Investment DAta ", data);
-      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data);
+      console.log("Investment Data ", data);
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data, {
+        headers: {
+          'Authorization': `Bearer ${auth}`,
+        }
+      });
     },
   });
 };
-
 const generateSimpleHash = (input: string): string => {
   let hash = 0;
   for (let i = 0; i < input.length; i++) {
@@ -91,7 +98,7 @@ const Button = React.memo(({ onOrderCreate, onOrderApprove }: {
 const BuyWithPaypal = (props: any) => {
   const { toast } = useToast()
   const [amount, setAmount] = useState<string>('');
-  const { UserID, presaleID } = useAuth();
+  const { UserID, presaleID, accessToken } = useAuth();
   const { address } = useAccount();
   const [contributionLoading, setContributionLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,8 +115,8 @@ const BuyWithPaypal = (props: any) => {
     return response.data;
   };
 
-  const contributeMutation = useContributeMutation();
-  const investmentMutate = useCreateInvestment();
+  const contributeMutation = useContributeMutation(accessToken);
+  const investmentMutate = useCreateInvestment(accessToken);
 
   const mutationOptions = {
     mutationFn: verifyPayment,

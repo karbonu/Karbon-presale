@@ -78,7 +78,7 @@ const AdminDashboardTable = () => {
           </thead>
           <tbody>
             {filteredData.map((row, index) => (
-              <tr key={index} className={`${!row.isPaid ? 'bg-[#77610917]  h-[48px] border-black border-b-[2px] ' : 'h-[48px] border-black border-b-[2px] '}`}>
+              <tr key={index} className={`${!row.isPaid ? 'bg-[#77610917]  h-[48px] border-black border-[2px] border-t-[0px] ' : 'h-[48px] border-black border-b-[2px] '}`}>
                 <td className={`${!row.isPaid ? 'text-[#FFCC00]' : 'text-white'} text-[14px] px-4 py-2`}>{row.walletAddress}</td>
                 <td className="text-white text-[14px] px-4 py-2">{row.totalReferrals}</td>
                 <td className="text-white text-[14px] px-4 py-2">{row.referralContribution}</td>

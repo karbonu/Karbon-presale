@@ -52,10 +52,10 @@ const TokenSale = () => {
   const [tokensBought, setTokensBought] = useState(0);
   const [referralCount, setReferralCount] = useState(0);
   const [fullTransaction, setFulltransaction] = useState(false);
-  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode, setPresaleID} = useAuth();
+  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode, setPresaleID, accessToken} = useAuth();
   const [bonusAmount, setBonusAmount] = useState(0);
   const [bonusAmountRounded, setBonusAmountRounded] = useState(0);
-  const payoutMitate = useRequestPayoutMitate();
+  const payoutMitate = useRequestPayoutMitate(accessToken);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected && !hasDisplayedConnectModal);
   const { open } = useWeb3Modal();
   const [isRequesting, setIsRequesting] = useState(false);
@@ -90,7 +90,7 @@ const TokenSale = () => {
         //console.log("Fetching data...");
   
         // Fetch total contribution
-        const contributionResponse = await getTotalContribution();
+        const contributionResponse = await getTotalContribution(accessToken as string);
 
         //console.log("Contribution response:", contributionResponse);
         if (contributionResponse !== 'Failed' && isMounted) {
@@ -101,7 +101,7 @@ const TokenSale = () => {
           setTotalContribution(contributionValue);
         }
   
-        const dollarResponse = await getTotalUSDSpent(UserID as string);
+        const dollarResponse = await getTotalUSDSpent(UserID as string, accessToken);
         if (dollarResponse !== 'Failed' && isMounted) {
           const totalAmount_ = dollarResponse.data.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
           const amount = Math.trunc(totalAmount_);
@@ -146,7 +146,7 @@ const TokenSale = () => {
   
     useEffect(() => {
       const fetchReferralCount = async () => {
-        const response = await getUserReferrals(UserID);
+        const response = await getUserReferrals(UserID, accessToken);
         if (response !== 'Failed') {
           const newCount = Number(response.data.totalReferrals);
           const newBalanceRaw = Number(response.data.totalBonusRecieved);
@@ -183,7 +183,7 @@ const TokenSale = () => {
       };
   
       const fetchPresaleData = async () => {
-        const response = await getPresaleID();
+        const response = await getPresaleID(accessToken);
         if (response !== 'Failed') {
           const presale = response.data.id;
           const enddate = response.data.endDate;
@@ -252,7 +252,7 @@ const handleFullTransaction = (status: any) => {
 
 
 
-  const ReferralLink = `${window.location.origin}/signup?referralCode=${referralCode}`
+  const ReferralLink = `${window.location.origin}/signup?referralCode=${UserID}`
 
 
 const discordShareUrl = `https://discord.com/channels/@me?message=${encodeURIComponent(`Join the Karbon Sale using my referral link: ${ReferralLink}`)}`;

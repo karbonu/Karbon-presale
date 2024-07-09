@@ -69,10 +69,14 @@ type passwordUpdate = {
   newPassword: string;
 };
 
-export const usePasswoedUpdateMutate = (): UseMutationResult<AxiosResponse<any>, Error, passwordUpdate> => {
+export const usePasswoedUpdateMutate = (auth: string): UseMutationResult<AxiosResponse<any>, Error, passwordUpdate> => {
   return useMutation<AxiosResponse<any>, Error, passwordUpdate>({
     mutationFn: (data: passwordUpdate) => {
-      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}users/password/update`, data);
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}users/password/update`, data,  {
+        headers: {
+          'Authorization': `Bearer ${auth}`,
+        },
+      });
     },
   });
 };

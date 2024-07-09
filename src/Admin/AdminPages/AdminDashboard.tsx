@@ -10,9 +10,9 @@ import { useState, useRef, useEffect } from 'react';
 import CheckMark from "@/components/Icons/CheckMark.tsx";
 import { getDashboardData } from "../Hooks/AdminDashboardData.tsx"
 import { getTotalContribution } from "@/components/shared/Hooks/TokenSaleHooks.tsx"
+import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx"
 
 const AdminDashboard = () => {
-
     const [isPasted, setIsPasted] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [totalUsers, setTotalUsers] = useState(0);
@@ -25,6 +25,7 @@ const AdminDashboard = () => {
     const[totalContribution, setTotalContribution] = useState(0);
     const [decimalContribution, setDecimalCOntribution] = useState(0)
     const inputRef = useRef<HTMLInputElement>(null);
+    const {accessToken} = useAuth();
 
   
     const handlePasteClick = async () => {
@@ -45,7 +46,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         
     const fetchTotalContribution = async() =>{
-        const response = await getTotalContribution();
+        const response = await getTotalContribution(accessToken);
         
         if (response !== 'Failed') {
           const Contribute = Number(response.data._sum.amount);
@@ -62,7 +63,7 @@ const AdminDashboard = () => {
       fetchTotalContribution();
 
         const fetchReeferralCOunt = async () => {
-          const response = await getDashboardData();
+          const response = await getDashboardData(accessToken);
           if (response !== 'Failed') {
             const totalusers = Number(response.data.totalUsers);
             const totalreferrals = Number(response.data.totalReferrals);

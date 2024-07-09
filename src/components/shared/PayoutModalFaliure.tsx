@@ -17,10 +17,10 @@ import { useAuth } from "./Contexts/AuthContext.tsx"
 const PayoutModalFaliure = (props : any) => {
 
   const [copied, setCopied] = useState(false);
-  const {referralCode} = useAuth();
+  const {UserID} = useAuth();
   const [timeoutRef, setTimeoutRef] = useState<NodeJS.Timeout | null>(null);
 
-  const ReferralLink = `${window.location.origin}/signup?referralCode=${referralCode}`
+  const ReferralLink = `${window.location.origin}/signup?referralCode=${UserID}`
 
   const discordShareUrl = `https://discord.com/channels/@me?message=${encodeURIComponent(`Join the Karbon Sale using my referral link: ${ReferralLink}`)}`;
 const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(ReferralLink)}&text=${encodeURIComponent('Join the Karbon Sale using my referral link!')}`;

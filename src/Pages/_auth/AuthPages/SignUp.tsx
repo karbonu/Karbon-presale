@@ -34,7 +34,7 @@ const SignUp = () => {
   const [revealConfirmError, setRevealConfirmError] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
   const [otp, setOtp] = useState("");
-  const {setUserID, setReferralCOde, setEmail : setAuthEmail, isAuthenticated, setPassword : setAuthPassword, setAuthenticated, referralCode } = useAuth()
+  const {setUserID, setReferralCOde, setEmail : setAuthEmail, isAuthenticated, setPassword : setAuthPassword, setAuthenticated, referralCode, setAccessTToken } = useAuth()
 
   if(isAuthenticated){
     return <Navigate to="/dashboard" />;
@@ -108,13 +108,6 @@ const SignUp = () => {
 
 
   const handleRegister = () => {
-    if(email === "" ){
-      toast({
-        title: "Invalid Email!",
-        description: "Please, Enter a valis email",
-      })
-      return;
-    }else{
       if( password === ""){
         toast({
           title: "Invalid Password!",
@@ -130,7 +123,6 @@ const SignUp = () => {
           return;
         }
       }
-    }
     
 
     if (password !== confirmPassword) {
@@ -138,9 +130,6 @@ const SignUp = () => {
       return;
     }
     setIsRegistering(true);
-    // let  code = `${localStorage.getItem('referralCode')}`;
-    // console.log(localStorage.getItem('referralCode'));
- 
     
     registerMutation.mutate(
       {
@@ -206,6 +195,7 @@ const SignUp = () => {
                                     return;
                                 }
                                 console.log(response.data)
+                                setAccessTToken(response.data.access_token);
                                 setUserID(response.data.user.id);
                                 setReferralCOde(response.data.user.referralCode);
                                 setAuthEmail(email);
@@ -255,7 +245,14 @@ const SignUp = () => {
 
   const handleemailKeyDown = (event: any) => {
     if (event.key === 'Enter') {
-      setStep(2);
+      if(email === "" ){
+        toast({
+          title: "Invalid Email!",
+          description: "Please, Enter a valis email",
+        })
+      }else{
+        setStep(2)
+      }
     }
 };
 
@@ -289,16 +286,17 @@ const login = useGoogleLogin({
                   phone : "",
                   medium : 'google', 
                   id_token : userID,
-                  ref_code : referralCode || ""
+                  ref_code : referralCode
               },
 
               {
-                  onSuccess: () => {
-                    localStorage.removeItem('referralCode');
-                      setUserID(userID);
-                      setReferralCOde('');
-                      setAuthEmail(email);
-                      setAuthPassword('');
+                  onSuccess: (response ) => {
+                      localStorage.removeItem('referralCode');
+                      setAccessTToken(response.data.access_token);
+                      setUserID(response.data.user.id);
+                      setReferralCOde(response.data.user.referralCode );
+                      setAuthEmail(response.data.user.email);
+                      setAuthPassword('' );
                       setAuthenticated(true);
                       navigate('/dashboard');
                       setIsLoggingIn(false);
@@ -334,7 +332,16 @@ const login = useGoogleLogin({
     },
 });
 
-
+const handleStepOne = () => {
+  if(email === "" ){
+    toast({
+      title: "Invalid Email!",
+      description: "Please, Enter a valis email",
+    })
+  }else{
+    setStep(2)
+  }
+}
 
   return (
     <div className="p-[60px] max-sm:p-5 max-sm:pt-10">
@@ -399,7 +406,7 @@ const login = useGoogleLogin({
                 <div className="flex px-8 flex-col space-y-5">
                   <input onKeyDown={handleemailKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
                   <div>
-                    <button disabled={isLoggingIn} onClick={() => setStep(2)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                    <button disabled={isLoggingIn} onClick={handleStepOne} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                       {isLoggingIn ? (
                         <BarLoader/>
                       ): (
