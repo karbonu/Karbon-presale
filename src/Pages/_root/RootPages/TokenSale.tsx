@@ -440,7 +440,9 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                           <p className="text-white text-[28px]">${recievedAmount}</p>
                           <p className="text-white text-[18px]">.{recievedAmountRounded}</p>
                         </div>
-                        <p className="text-[#FFCC00] text-[14px]">${totalBonusPending} in process...</p>
+                        {totalBonusPending > 0 && (
+                          <p className="text-[#FFCC00] text-[14px]">${totalBonusPending} in process...</p>
+                        )}
                       </div>
 
                       <div className="flex flex-col space-y-2">
@@ -826,7 +828,9 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                           <p className="text-white text-[28px]">${recievedAmount}</p>
                           <p className="text-white text-[18px]">.{recievedAmountRounded}</p>
                         </div>
-                        <p className="text-[#FFCC00] text-[14px]">${totalBonusPending} in process...</p>
+                        {totalBonusPending > 0 && (
+                          <p className="text-[#FFCC00] text-[14px]">${totalBonusPending} in process...</p>
+                        )}
                       </div>
                     </div>
 
