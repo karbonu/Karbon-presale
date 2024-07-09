@@ -35,7 +35,13 @@ export const getTotalUSDSpent = async (UserID : string) : Promise<AxiosResponse<
 
 export const getUserReferrals = async (UserID : string) : Promise<AxiosResponse<any> | 'Failed' > => {
     try {
-        const response = await axios.get( `${import.meta.env.VITE_BACKEND_API_URL}referrals/${UserID}`)
+        const response = await axios.get( `${import.meta.env.VITE_BACKEND_API_URL}referrals/${UserID}`, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+          }
+        });
         console.log("user id")
         console.log(UserID);
         return response;

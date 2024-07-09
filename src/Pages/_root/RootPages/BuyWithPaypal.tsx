@@ -48,7 +48,7 @@ const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, C
 const useCreateInvestment = (): UseMutationResult<AxiosResponse<any>, Error, InvestmentData> => {
   return useMutation<AxiosResponse<any>, Error, InvestmentData>({
     mutationFn: (data: InvestmentData) => {
-      console.log(data);
+      console.log("Investment DAta ", data);
       return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data);
     },
   });
@@ -92,6 +92,7 @@ const BuyWithPaypal = (props: any) => {
   const { UserID, presaleID } = useAuth();
   const { address } = useAccount();
   const [contributionLoading, setContributionLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
@@ -214,6 +215,7 @@ const BuyWithPaypal = (props: any) => {
       })
     }else{
       setContributionLoading(true);
+      setIsModalOpen(true);
     }
   }
 
@@ -255,7 +257,7 @@ const BuyWithPaypal = (props: any) => {
             "Pay with Paypal"
           )}
           </button>
-        <Dialog open={contributionLoading} onOpenChange={setContributionLoading}>
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           
           <DialogContent className='flex items-center justify-center bg-white w-[70%] py-20'>
             <Button 

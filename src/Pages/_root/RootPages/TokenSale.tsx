@@ -64,6 +64,8 @@ const TokenSale = () => {
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [saleStatus, setSaleStatus] = useState('SALE STARTS IN');
   const [saleRate, setSaleRate] = useState(0);
+  const [totalBonusPending, setTotalBonusPending] = useState(0);
+  const [recievedAmount, setRecievedAmount] = useState(0);
 
 
 
@@ -72,44 +74,44 @@ const TokenSale = () => {
   
     const fetchData = async () => {
       try {
-        console.log("Fetching data...");
+        //console.log("Fetching data...");
   
         // Fetch total contribution
         const contributionResponse = await getTotalContribution();
 
-        console.log("Contribution response:", contributionResponse);
+        //console.log("Contribution response:", contributionResponse);
         if (contributionResponse !== 'Failed' && isMounted) {
           
           const contribute = Number(contributionResponse.data._sum.amount);
-          console.log(contributionResponse)
+          //console.log(contributionResponse)
 
           const contributionValue = isNaN(contribute) ? 0 : contribute;
-          console.log("Setting total contribution:", contributionValue);
+          //console.log("Setting total contribution:", contributionValue);
           setTotalContribution(contributionValue);
         }
   
         const dollarResponse = await getTotalUSDSpent(UserID as string);
-        console.log("Dollar response:", dollarResponse);
+        //console.log("Dollar response:", dollarResponse);
         if (dollarResponse !== 'Failed' && isMounted) {
-          console.log(dollarResponse)
+          //console.log(dollarResponse)
           const totalAmount = dollarResponse.data.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
           const dollarAmount = isNaN(totalAmount) ? 0 : totalAmount;
 
-          console.log("Setting total amount:", dollarAmount);
+          //console.log("Setting total amount:", dollarAmount);
 
           setTotalAmount(dollarAmount);
           setTokensBought(dollarAmount * saleRate);
-          console.log(UserID)
+          //console.log(UserID)
         }
 
         if (isMounted) {
           const progressAmount = Math.round((totalContribution / target) * 100);
-          console.log("Setting progress:", progressAmount);
+          //console.log("Setting progress:", progressAmount);
           setProgress(progressAmount);
         }
         
       } catch (error) {
-        console.error('Error fetching data:', error);
+        //console.error('Error fetching data:', error);
       }
     };
   
@@ -133,13 +135,19 @@ const TokenSale = () => {
   
     useEffect(() => {
       const fetchReferralCount = async () => {
-        const response = await getUserReferrals(UserID as string);
+        const response = await getUserReferrals(UserID);
         if (response !== 'Failed') {
-          const newCount = Number(response.data);
+          const newCount = Number(response.data.totalReferrals);
+          const newBalance = Number(response.data.totalBonusRecieved);
+          const processing = Number(response.data.pendingBonusProcessing);
+          const totalAmount = Number(response.data.totalBonusEarned);
+          
+          setRecievedAmount(isNaN(newBalance) ? 0 : newBalance)
+          setTotalBonusPending(isNaN(processing) ? 0 : processing)
+          console.log("Referral", response.data.totalReferrals)
           setReferralCount(isNaN(newCount) ? 0 : newCount);
-          if (newCount === 0) {
-            setBonusAmount(5000);
-          }
+          setBonusAmount(isNaN(totalAmount) ? 0 : totalAmount);
+          
         } else {
           console.log(response);
         }
@@ -401,8 +409,8 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
 
                       <div className="flex flex-col space-y-2">
                         <p className="text-white text-[12px] opacity-70">BONUS RECIEVED</p>
-                        <p className="text-white text-[28px]">$0</p>
-                        <p className="text-[#FFCC00] text-[14px]">$340 in process...</p>
+                        <p className="text-white text-[28px]">${recievedAmount}</p>
+                        <p className="text-[#FFCC00] text-[14px]">${totalBonusPending} in process...</p>
                       </div>
 
                       <div className="flex flex-col space-y-2">
@@ -784,8 +792,8 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                       </div>
                       <div className="flex flex-col space-y-2">
                         <p className="text-white text-[12px] opacity-70">BONUS RECIEVED</p>
-                        <p className="text-white text-[28px]">$0</p>
-                        <p className="text-[#FFCC00] text-[14px]">$340 in process...</p>
+                        <p className="text-white text-[28px]">{recievedAmount}</p>
+                        <p className="text-[#FFCC00] text-[14px]">${totalBonusPending} in process...</p>
                       </div>
                     </div>
 
