@@ -555,15 +555,15 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
               </div>
 
 
-              <div className="flex flex-col space-y-1  mb-10 max-h-[700px] w-[341px] border-[1px] rounded-[8px] border-[#282828] ">
+              <div className="flex flex-col space-y-1  mb-10 min-h-[660px] w-[341px] border-[1px] rounded-[8px] border-[#282828] ">
                 <div className="flex flex-col w-[341px] border-[#282828] p-5  rounded-t-[8px] bg-[#121212] ">
-                  <div className="flex flex-col space-y-8">
+                  <div className="flex flex-col space-y-7">
                     <div className="flex flex-row items-center justify-between">
-                      <p className="text-white text-[12px] font-medium">Presale Progress</p>
+                      <p className="text-white text-[14px] font-medium">Presale Progress</p>
                       <div className="flex flex-row items-center space-x-4">
-                        <p className="text-white opacity-70 text-[12px]">${animatedContribution}</p>
+                        <p className="text-white opacity-70 text-[14px]">${animatedContribution}</p>
                         <Dot/>
-                        <p className="text-[#08E04A] text-[12px]">{progress}%</p>
+                        <p className="text-[#08E04A] text-[14px]">{progress}%</p>
                       </div>
                     </div>
                     <div>
@@ -705,15 +705,15 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
               
               <div className="bg-[#121212] rounded-[8ox]">
                 <div className="p-5 flex flex-col space-y-5">
-                  <div className="flex flex-col space-y-8">
+                  <div className="flex flex-col space-y-7">
                       <div className="flex flex-row items-center justify-between">
-                        <p className="text-white text-[12px] font-semibold">Presale Progress</p>
+                        <p className="text-white text-[14px] font-semibold">Presale Progress</p>
                         <div className="flex flex-row items-center space-x-4">
-                          <p className="text-white opacity-70 text-[12px]">${animatedContribution}</p>
+                          <p className="text-white opacity-70 text-[14px]">${animatedContribution}</p>
                           
                           <Dot/>
 
-                          <p className="text-[#08E04A] text-[12px]">{progress}%</p>
+                          <p className="text-[#08E04A] text-[14px]">{progress}%</p>
 
                         </div>
                       </div>
