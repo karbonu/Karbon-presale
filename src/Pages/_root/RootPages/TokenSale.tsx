@@ -184,6 +184,7 @@ const TokenSale = () => {
           const target = response.data.hardCap;
           const rate = Number(response.data.rate);
           setSaleRate(isNaN(rate) ? 0 : rate);
+          localStorage.setItem('salerate', JSON.stringify(response.data.rate));
           console.log(startDate)
           console.log(endDate)
           setTarger(target);

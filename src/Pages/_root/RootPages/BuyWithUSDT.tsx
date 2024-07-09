@@ -75,6 +75,7 @@ const BuyWithUSDT = (props: any) => {
     const contributeMutation = useContributeMutation();
     const investmentMutate = useCreateInvestment();
     const [fullTransaction, setFulltransaction] = useState(false)
+    const [rate, setRate] = useState(0);
 
     async function handleBuy() {
         if (!isConnected) {
@@ -159,6 +160,16 @@ const BuyWithUSDT = (props: any) => {
 
     }, [isConfirmed, fullTransaction, isFailed]);
 
+    useEffect(() => {
+        const storedValue = localStorage.getItem('salerate');
+        if (storedValue != null) {
+          const rate_ = parseInt(storedValue, 10);
+          setRate(rate_);
+          console.log(rate_)
+        }
+      }, []);
+
+
     return (
         <div className='w-full space-y-5 flex flex-col'>
             <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
@@ -227,7 +238,7 @@ const BuyWithUSDT = (props: any) => {
                     <p className="text-white text-[12px]">You Get</p>
                     <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
-                        <p className='h-full w-[75%]'></p>
+                        <p className='h-full text-white w-[75%]'>{tokenAmount * rate}</p>
                         <p className="text-white text-[12px] opacity-70">KARBON</p>
                     </div>
                 </label>

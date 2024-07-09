@@ -1,5 +1,5 @@
 // src/components/BuyWithPaypal.tsx
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useAuth } from '@/components/shared/Contexts/AuthContext.tsx';
 import BackArrow from '@/components/Icons/BackArrow.tsx';
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
@@ -12,6 +12,8 @@ import { AxiosResponse } from 'axios';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/use-toast';
 import { BarLoader } from 'react-spinners';
+import { Separator } from '@/components/ui/separator';
+import UpArrow from '@/components/Icons/UpArrow';
 
 interface VerifyPaymentData {
   orderID: string;
@@ -93,6 +95,8 @@ const BuyWithPaypal = (props: any) => {
   const { address } = useAccount();
   const [contributionLoading, setContributionLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [rate, setRate] = useState(0);
+  const [recievingValue, setRecievingValue] = useState(0);
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
@@ -205,6 +209,8 @@ const BuyWithPaypal = (props: any) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setAmount(value);
+    setRecievingValue(Number(e.target.value) * rate)
+    console.log(recievingValue)
   };
 
   const handlePay = () => {
@@ -218,6 +224,16 @@ const BuyWithPaypal = (props: any) => {
       setIsModalOpen(true);
     }
   }
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem('salerate');
+    if (storedValue != null) {
+      const rate_ = parseInt(storedValue, 10);
+      setRate(rate_);
+      console.log(rate_)
+    }
+  }, []);
+
 
   return (
     <PayPalScriptProvider options={paypalScriptOptions}>
@@ -237,7 +253,7 @@ const BuyWithPaypal = (props: any) => {
         <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
           <label htmlFor="buyInput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
             <p className="text-white text-[12px]">You Buy</p>
-            <div className="bg-[#484848] w-[0.5px]" />
+            <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
             <div className="flex flex-row items-center justify-center space-x-2 flex-1">
               <input
                 id="buyInput"
@@ -250,6 +266,23 @@ const BuyWithPaypal = (props: any) => {
             </div>
           </label>
         </div>
+
+        <div className="flex rotate-[180deg] w-full items-center justify-center">
+                <UpArrow />
+            </div>
+
+            <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
+                <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
+                    <p className="text-white text-[12px]">You Get</p>
+                    <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
+                    <div className="flex flex-row items-center justify-center space-x-2 flex-1">
+                        <p className='h-full text-white w-[75%]'>{recievingValue}</p>
+                        <p className="text-white text-[12px] opacity-70">KARBON</p>
+                    </div>
+                </label>
+            </div>
+
+
         <button onClick={() => handlePay()} className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>
           {contributionLoading ? (
             <BarLoader color='white'/>
