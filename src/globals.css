@@ -171,3 +171,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     animation: ping 2s ease-in-out infinite;
     mask: url(#progress-mask);
   }
+
+  @keyframes progress-pulse {
+    0% {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    50% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+  
+  .animate-progress-pulse {
+    animation: progress-pulse 2s ease-in-out infinite;
+  }

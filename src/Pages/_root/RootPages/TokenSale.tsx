@@ -32,6 +32,7 @@ import CheckMark from "@/components/Icons/CheckMark.tsx";
 import {  getTotalContribution, getTotalUSDSpent, getPresaleID, getUserReferrals } from "@/components/shared/Hooks/TokenSaleHooks.tsx";
 import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
 import { useRequestPayoutMitate } from "@/components/shared/Hooks/UseRequestPayoutMutation.tsx";
+import { isNaN } from "lodash";
 
 
 const TokenSale = () => {
@@ -52,6 +53,7 @@ const TokenSale = () => {
   const [fullTransaction, setFulltransaction] = useState(false);
   const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode, setPresaleID} = useAuth();
   const [bonusAmount, setBonusAmount] = useState(0);
+  const [bonusAmountRounded, setBonusAmountRounded] = useState(0);
   const payoutMitate = useRequestPayoutMitate();
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(!isConnected && !hasDisplayedConnectModal);
   const { open } = useWeb3Modal();
@@ -66,6 +68,8 @@ const TokenSale = () => {
   const [saleRate, setSaleRate] = useState(0);
   const [totalBonusPending, setTotalBonusPending] = useState(0);
   const [recievedAmount, setRecievedAmount] = useState(0);
+  const [recievedAmountRounded, setRecievedAmountRounded] = useState(0);
+  
 
 
 
@@ -94,8 +98,13 @@ const TokenSale = () => {
         //console.log("Dollar response:", dollarResponse);
         if (dollarResponse !== 'Failed' && isMounted) {
           //console.log(dollarResponse)
-          const totalAmount = dollarResponse.data.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
-          const dollarAmount = isNaN(totalAmount) ? 0 : totalAmount;
+          const totalAmount_ = dollarResponse.data.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
+          const amount = Math.trunc(totalAmount_)
+          const dollarAmount = isNaN(amount) ? 0 : amount;
+
+          const decimal = Math.abs(totalAmount_ % 1).toFixed(2).slice(2);
+
+          setDecimalTotalAmount(decimal);
 
           //console.log("Setting total amount:", dollarAmount);
 
@@ -125,11 +134,6 @@ const TokenSale = () => {
     };
   }, [UserID, totalContribution, target]);
   
-  // Set decimal total amount
-  useEffect(() => {
-    setDecimalTotalAmount('00');
-  }, []);
-
   
 
   
@@ -138,15 +142,33 @@ const TokenSale = () => {
         const response = await getUserReferrals(UserID);
         if (response !== 'Failed') {
           const newCount = Number(response.data.totalReferrals);
-          const newBalance = Number(response.data.totalBonusRecieved);
-          const processing = Number(response.data.pendingBonusProcessing);
-          const totalAmount = Number(response.data.totalBonusEarned);
+          const newBalanceRaw = Number(response.data.totalBonusRecieved);
+          const processingRaw = Number(response.data.pendingBonusProcessing);
+          const totalAmountRaw = Number(response.data.totalBonusEarned);
+
+          // Integer part (without decimals)
+          const newBalance = Math.trunc(newBalanceRaw);
+          const totalAmount = Math.trunc(totalAmountRaw);
+
+          // Rounded to two decimal places
+          const newBalanceRounded = parseFloat(newBalanceRaw.toFixed(2));
+          const totalAmountRounded = parseFloat(totalAmountRaw.toFixed(2));
+
+
+          const newBalanceDecimal = Math.abs(newBalanceRounded % 1).toFixed(2).slice(2);
+          const totalAmountDecimal = Math.abs(totalAmountRounded % 1).toFixed(2).slice(2);
+          
+          const processingRounded = parseFloat(processingRaw.toFixed(2));
           
           setRecievedAmount(isNaN(newBalance) ? 0 : newBalance)
-          setTotalBonusPending(isNaN(processing) ? 0 : processing)
-          console.log("Referral", response.data.totalReferrals)
+          setRecievedAmountRounded(isNaN(Number(newBalanceDecimal)) ? 0 : Number(newBalanceDecimal))
+
+          setTotalBonusPending(isNaN(processingRounded) ? 0 : processingRounded)
+          
           setReferralCount(isNaN(newCount) ? 0 : newCount);
+
           setBonusAmount(isNaN(totalAmount) ? 0 : totalAmount);
+          setBonusAmountRounded(isNaN(Number(totalAmountDecimal)) ? 0 : Number(totalAmountDecimal));
           
         } else {
           console.log(response);
@@ -375,8 +397,8 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                         <p className="text-white text-[12px] opacity-70">BONUS EARNED</p>
                         <div className="flex flex-row ">
                           <p className="text-white text-[28px]">${bonusAmount}</p>
-                          <p className="text-white text-[18px]">.00</p>
-                        </div>
+                          <p className="text-white text-[18px]">.{bonusAmountRounded}</p>
+                        </div>  
                         <div onClick={handlePayoutModal} className="bg-transparent py-2 px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
                           {isConnected ? (
                             <>
@@ -409,7 +431,10 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
 
                       <div className="flex flex-col space-y-2">
                         <p className="text-white text-[12px] opacity-70">BONUS RECIEVED</p>
-                        <p className="text-white text-[28px]">${recievedAmount}</p>
+                        <div className="flex flex-row ">
+                          <p className="text-white text-[28px]">${recievedAmount}</p>
+                          <p className="text-white text-[18px]">.{recievedAmountRounded}</p>
+                        </div>
                         <p className="text-[#FFCC00] text-[14px]">${totalBonusPending} in process...</p>
                       </div>
 
@@ -495,7 +520,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                       <p className="text-[12px] opacity-70 text-white">TOKEN VALUE</p>
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">{saleRate}</p>
-                        <p className="text-white text-[16px]">.45</p>
+                        <p className="text-white text-[16px]">.00</p>
                         <p className="text-white font-extralight text-[24px]">USDT</p>
                         <div className="flex flex-row items-center mt-3">
                           <UpArrow/>
@@ -787,12 +812,15 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                         <p className="text-white text-[12px] opacity-70">BONUS EARNED</p>
                         <div className="flex flex-row ">
                           <p className="text-white text-[28px]">${bonusAmount}</p>
-                          <p className="text-white text-[18px]">.00</p>
+                          <p className="text-white text-[18px]">.{bonusAmountRounded}</p>
                         </div>
                       </div>
                       <div className="flex flex-col space-y-2">
                         <p className="text-white text-[12px] opacity-70">BONUS RECIEVED</p>
-                        <p className="text-white text-[28px]">{recievedAmount}</p>
+                        <div className="flex flex-row ">
+                          <p className="text-white text-[28px]">${recievedAmount}</p>
+                          <p className="text-white text-[18px]">.{recievedAmountRounded}</p>
+                        </div>
                         <p className="text-[#FFCC00] text-[14px]">${totalBonusPending} in process...</p>
                       </div>
                     </div>
@@ -901,7 +929,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(Ref
                       <p className="text-[12px] opacity-70 text-white">TOKEN VALUE</p>
                       <div className="flex flex-row space-x-1">
                         <p className="text-white text-[24px]">{saleRate}</p>
-                        <p className="text-white text-[16px]">.45</p>
+                        <p className="text-white text-[16px]">.00</p>
                         <p className="text-white font-extralight text-[24px]">USDT</p>
                         <div className="flex flex-row items-center mt-3">
                           <UpArrow/>
