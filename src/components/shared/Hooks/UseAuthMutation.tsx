@@ -58,6 +58,7 @@ type SocialAuthData = {
 export const useSocialAuthMutation = (): UseMutationResult<AxiosResponse<any>, Error, SocialAuthData> => {
   return useMutation<AxiosResponse<any>, Error, SocialAuthData>({
     mutationFn: (data: SocialAuthData) => {
+      console.log(data);
       return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}auth/social-register`, data);
     },
   });

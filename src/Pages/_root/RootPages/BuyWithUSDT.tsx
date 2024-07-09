@@ -19,6 +19,7 @@ import UpArrow from '@/components/Icons/UpArrow';
 import BoughtTokensFailed from '@/components/shared/BoughtTokensFailed';
 import { useAuth } from '@/components/shared/Contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
+import { parseUnits } from 'viem';
 
 type ContributeData = {
     amount: number;
@@ -85,93 +86,127 @@ const BuyWithUSDT = (props: any) => {
     const [isBuyFailedModalOpen, setIsBuyFailedModalOpen] = useState(false);
     const contributeMutation = useContributeMutation(accessToken);
     const investmentMutate = useCreateInvestment(accessToken);
-    const [fullTransaction, setFulltransaction] = useState(false)
     const [rate, setRate] = useState(0);
+    const [isApproving, setIsApproving] = useState(false);
+    const [isBuying, setIsBuying] = useState(false);
 
-    async function handleBuy() {
+    const handleTransaction = async () => {
         if (!isConnected) {
             open();
-        } else {
-            writeContract({
-                address: BuyAddress,
-                abi: BUYABI,
-                functionName: 'buyTokens',
-                args: [BigInt(tokenAmount * 10 ** 18)],
-            });
-            setFulltransaction(true);
-            // if (isApproved) {
-            
-            // } else {
-            //     writeContract({
-            //         address: USDTAddress,
-            //         abi: USDTABI,
-            //         functionName: 'approve',
-            //         args: [BuyAddress, BigInt(tokenAmount * 10 ** 18)],
-            //     });
-                
-            // }
+            return;
         }
-    }
+
+        const amountInWei = parseUnits(tokenAmount.toString(), 18); 
+
+        console.log("Transaction amount in Wei:", amountInWei.toString());
+
+        if (!isApproved) {
+            setIsApproving(true);
+            try {
+                await writeContract({
+                    address: USDTAddress,
+                    abi: USDTABI,
+                    functionName: 'approve',
+                    args: [BuyAddress, amountInWei],
+                });
+            } catch (error) {
+                console.error("Approval error:", error);
+                setIsApproving(false);
+                toast({
+                    title: "Approval Failed",
+                    description: "There was an error during the approval process.",
+                    variant: "destructive",
+                });
+            }
+        } else {
+            setIsBuying(true);
+            try {
+                await writeContract({
+                    address: BuyAddress,
+                    abi: BUYABI,
+                    functionName: 'buyTokens',
+                    args: [amountInWei],
+                });
+            } catch (error) {
+                console.error("Buy error:", error);
+                setIsBuying(false);
+                toast({
+                    title: "Buy Failed",
+                    description: "There was an error during the buy process.",
+                    variant: "destructive",
+                });
+            }
+        }
+    };
 
     useEffect(() => {
-        if (isConfirmed && fullTransaction) {
-            setIsBuySuccessModalOpen(true);
-            setIsApproved(false);
+        if (isConfirmed) {
+            if (isApproving) {
+                setIsApproved(true);
+                setIsApproving(false);
+                toast({
+                    title: "Approval Successful",
+                    description: "You can now proceed with the purchase.",
+                });
+            } else if (isBuying) {
+                setIsBuySuccessModalOpen(true);
+                setIsBuying(false);
 
-            contributeMutation.mutate(
-                {
-                    amount: tokenAmount,
-                    walletAddress: address as string || "",
-                    userId: UserID as string || "",
-                    txHash: hash as string ||"",
-                    presaleId: presaleID as string || "",
-                    paymentMethod: 'USDT',
-                },
-                {
-                    onSuccess: (response: any) => {
-                        console.log(response);
-                        investmentMutate.mutate(
-                            { 
-                              amount: tokenAmount,
-                              userId: UserID as string || "",
-                              txHash: hash as string || "",
-                              paymentMethod: 'USDT', 
-                             },
-                            {
-                                onSuccess: (response: any) => {
-                                  console.log(response)
-                                  setTokenAmount(0);
-                                  toast({
-                                    title: "Success!",
-                                    description: "Your contribution was successfull",
-                                  })
-                                  console.log("SUCCESS")
+                contributeMutation.mutate(
+                    {
+                        amount: tokenAmount,
+                        walletAddress: address as string || "",
+                        userId: UserID as string || "",
+                        txHash: hash as string || "",
+                        presaleId: presaleID as string || "",
+                        paymentMethod: 'USDT',
+                    },
+                    {
+                        onSuccess: (response: any) => {
+                            console.log(response);
+                            investmentMutate.mutate(
+                                {
+                                    amount: tokenAmount,
+                                    userId: UserID as string || "",
+                                    txHash: hash as string || "",
+                                    paymentMethod: 'USDT',
                                 },
-                                onError: (error) => {
-                                    console.log(error);
-                                    setTokenAmount(0);
-                                    console.log("ERROR")
+                                {
+                                    onSuccess: (response: any) => {
+                                        console.log(response);
+                                        setTokenAmount(0);
+                                        toast({
+                                            title: "Success!",
+                                            description: "Your contribution was successful",
+                                        });
+                                        console.log("SUCCESS");
+                                    },
+                                    onError: (error) => {
+                                        console.log(error);
+                                        setTokenAmount(0);
+                                        console.log("ERROR");
+                                    }
                                 }
-                            }
-                          );
-                    },
-                    onError: (error) => {
-                        console.log(error);
-                    },
-                }
-            );
-
-            setFulltransaction(false);
-        } else if (isFailed && fullTransaction) {
+                            );
+                        },
+                        onError: (error) => {
+                            console.log(error);
+                        },
+                    }
+                );
+            }
+        } else if (isFailed) {
             setIsBuyFailedModalOpen(true);
+            setIsApproving(false);
+            setIsBuying(false);
             console.log(error);
+            toast({
+                title: "Transaction Failed",
+                description: "The transaction failed. Please try again.",
+                variant: "destructive",
+            });
         }
-
-        if(isConfirmed && !fullTransaction){
-            setIsApproved(true);
-        }
-
-    }, [isConfirmed, fullTransaction, isFailed]);
+    }, [isConfirmed, isFailed]);
 
     useEffect(() => {
         const storedValue = localStorage.getItem('salerate');
@@ -251,13 +286,17 @@ const BuyWithUSDT = (props: any) => {
                     <p className="text-white text-[12px]">You Get</p>
                     <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
-                        <p className='h-full text-white w-[75%]'>{tokenAmount * rate}</p>
+                        <p className='h-full text-white w-[75%]'>{(tokenAmount * rate) === 0 ? '' : (tokenAmount * rate)}</p>
                         <p className="text-white text-[12px] opacity-70">KARBON</p>
                     </div>
                 </label>
             </div>
 
-            <button disabled={isPending || isConfirming} onClick={handleBuy} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+            <button 
+                disabled={isPending || isConfirming || tokenAmount <= 0} 
+                onClick={handleTransaction} 
+                className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
+            >
                 <p className="font-bold text-[14px] shadow-sm">
                     {isConnected ? (
                         <>
@@ -265,11 +304,7 @@ const BuyWithUSDT = (props: any) => {
                                 <BarLoader />
                             ) : (
                                 <>
-                                    {!isApproved ? (
-                                        "Approve"
-                                    ) : (
-                                        "Buy"
-                                    )}
+                                    {!isApproved ? "Approve" : "Buy"}
                                 </>
                             )}
                         </>
