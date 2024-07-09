@@ -129,6 +129,7 @@ const BuyWithUSDT = (props: any) => {
                             {
                                 onSuccess: (response: any) => {
                                   console.log(response)
+                                  setTokenAmount(0);
                                   toast({
                                     title: "Success!",
                                     description: "Your contribution was successfull",
@@ -137,6 +138,7 @@ const BuyWithUSDT = (props: any) => {
                                 },
                                 onError: (error) => {
                                     console.log(error);
+                                    setTokenAmount(0);
                                     console.log("ERROR")
                                 }
                             }

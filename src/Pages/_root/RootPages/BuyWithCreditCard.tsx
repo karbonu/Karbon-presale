@@ -163,7 +163,8 @@ const BuyWithCreditCard = (props: any) => {
         {
           onSuccess: (response: any) => {
             console.log(response);
-            
+            setAmount('');
+            setRecievingValue(0);
             investmentMutate.mutate(
               { 
                 amount: Number(amount),
@@ -175,6 +176,8 @@ const BuyWithCreditCard = (props: any) => {
                 onSuccess: (response: any) => {
                   console.log(response);
                   setContributionLoading(false);
+                  setAmount('');
+                  setRecievingValue(0);
                   toast({
                     title: "Success!",
                     description: "Your contribution was successfull",
@@ -184,6 +187,8 @@ const BuyWithCreditCard = (props: any) => {
                   console.log(error);
                   console.log("ERROR");
                   setContributionLoading(false);
+                  setAmount('');
+                  setRecievingValue(0);
                   toast({
                     title: "Error!",
                     description: "Your contribution Failed",
@@ -196,6 +201,8 @@ const BuyWithCreditCard = (props: any) => {
             console.log(error);
             setContributionLoading(false);
             console.log("ERROR");
+            setAmount('');
+            setRecievingValue(0);
             toast({
               title: "Error!",
               description: "Your contribution Failed",

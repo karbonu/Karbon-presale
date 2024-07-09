@@ -162,8 +162,9 @@ const BuyWithPaypal = (props: any) => {
         },
         {
           onSuccess: (response: any) => {
-            console.log(response);
-            
+            console.log(response.data);
+            setAmount('');
+            setRecievingValue(0);
             investmentMutate.mutate(
               { 
                 amount: Number(amount),
@@ -173,8 +174,10 @@ const BuyWithPaypal = (props: any) => {
               },
               {
                 onSuccess: (response: any) => {
-                  console.log(response);
+                  console.log(response.data);
                   setContributionLoading(false);
+                  setAmount('');
+                  setRecievingValue(0);
                   toast({
                     title: "Success!",
                     description: "Your contribution was successfull",
@@ -184,6 +187,8 @@ const BuyWithPaypal = (props: any) => {
                   console.log(error);
                   console.log("ERROR");
                   setContributionLoading(false);
+                  setAmount('');
+                  setRecievingValue(0);
                   toast({
                     title: "Error!",
                     description: "Your contribution Failed",
@@ -196,6 +201,8 @@ const BuyWithPaypal = (props: any) => {
             console.log(error);
             setContributionLoading(false);
             console.log("ERROR");
+            setAmount('');
+            setRecievingValue(0);
             toast({
               title: "Error!",
               description: "Your contribution Failed",
