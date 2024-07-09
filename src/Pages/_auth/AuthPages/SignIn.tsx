@@ -230,9 +230,9 @@ const SignIn = () => {
                         onSuccess: (response) => {
                             console.log(response.data)
                             setUserID(response.data.user.id);
-                            setReferralCOde(response.data.user.referralCode as string || "");
+                            setReferralCOde(response.data.user.referralCode );
                             setAuthEmail(response.data.user.email);
-                            setAuthPassword('');
+                            setAuthPassword('' );
                             setAuthenticated(true);
                             toast({
                                 title: "Success!",
