@@ -73,10 +73,11 @@ const generateSimpleHash = (input: string): string => {
   return Math.abs(hash).toString(16); // Convert to hexadecimal
 };
 
-const Button = React.memo(({ onOrderCreate, onOrderApprove }: { 
+const Button = React.memo(({ onOrderCreate, onOrderApprove, onOrderCancel }: { 
   amount: any, 
   onOrderCreate: (data: any, actions: any) => Promise<string>,
-  onOrderApprove: (data: any, actions: any) => Promise<void>
+  onOrderApprove: (data: any, actions: any) => Promise<void>,
+  onOrderCancel: () => void,
 }) => {
   const [{ isPending }] = usePayPalScriptReducer();
 
@@ -84,8 +85,9 @@ const Button = React.memo(({ onOrderCreate, onOrderApprove }: {
   const paypalbuttonTransactionProps: PayPalButtonsComponentProps = useMemo(() => ({
     style: { layout: "vertical" },
     createOrder: onOrderCreate,
-    onApprove: onOrderApprove
-  }), [onOrderCreate, onOrderApprove]);
+    onApprove: onOrderApprove,
+    onCancel: onOrderCancel,
+  }), [onOrderCreate, onOrderApprove, onOrderCancel]);
 
   return (
     <>
@@ -96,7 +98,7 @@ const Button = React.memo(({ onOrderCreate, onOrderApprove }: {
 });
 
 const BuyWithPaypal = (props: any) => {
-  const { toast } = useToast()
+  const { toast } = useToast();
   const [amount, setAmount] = useState<string>('');
   const { UserID, presaleID, accessToken } = useAuth();
   const { address } = useAccount();
@@ -104,6 +106,7 @@ const BuyWithPaypal = (props: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rate, setRate] = useState(0);
   const [recievingValue, setRecievingValue] = useState(0);
+  const [orderCreated, setOrderCreated] = useState(false);
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
@@ -131,6 +134,8 @@ const BuyWithPaypal = (props: any) => {
   const mutation = useMutation(mutationOptions);
 
   const createOrder = useCallback((data: any, actions: any) => {
+
+    setOrderCreated(true);
     console.log("Creating order with amount:", amount);
     console.log(data)
     return actions.order.create({
@@ -145,7 +150,7 @@ const BuyWithPaypal = (props: any) => {
   }, [amount]);
 
   const onApprove = useCallback((data: any, actions: any) => {
-    setContributionLoading(true)
+    setContributionLoading(true);
     return actions.order.capture().then((details: any) => {
       console.log("Order captured:", details);
       const orderID = data.orderID;
@@ -182,6 +187,7 @@ const BuyWithPaypal = (props: any) => {
               },
               {
                 onSuccess: (response: any) => {
+                  setOrderCreated(false);
                   console.log(response.data);
                   setContributionLoading(false);
                   setAmount('');
@@ -190,7 +196,7 @@ const BuyWithPaypal = (props: any) => {
                   toast({
                     title: "Success!",
                     description: "Your contribution was successfull",
-                  })
+                  });
                 },
                 onError: (error) => {
                   console.log(error);
@@ -202,7 +208,7 @@ const BuyWithPaypal = (props: any) => {
                   toast({
                     title: "Error!",
                     description: "Your contribution Failed",
-                  })
+                  });
                 }
               }
             );
@@ -217,18 +223,23 @@ const BuyWithPaypal = (props: any) => {
             toast({
               title: "Error!",
               description: "Your contribution Failed",
-            })
+            });
           }
         }
       );
     });
   }, [UserID, amount, mutation, contributeMutation, investmentMutate, address, presaleID]);
 
+  const onCancel = useCallback(() => {
+    console.log("Order was cancelled.");
+    setContributionLoading(false);
+  }, []);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setAmount(value);
-    setRecievingValue(Number(e.target.value) * rate)
-    console.log(recievingValue)
+    setRecievingValue(Number(e.target.value) * rate);
+    console.log(recievingValue);
   };
 
   const handlePay = () => {
@@ -236,21 +247,29 @@ const BuyWithPaypal = (props: any) => {
       toast({
         title: "Error!",
         description: "Your need to enter an amount",
-      })
+      });
     }else{
       setContributionLoading(true);
       setIsModalOpen(true);
     }
-  }
+  };
 
   useEffect(() => {
     const storedValue = localStorage.getItem('salerate');
     if (storedValue != null) {
       const rate_ = parseInt(storedValue, 10);
       setRate(rate_);
-      console.log(rate_)
+      console.log(rate_);
     }
   }, []);
+
+  
+  useEffect(() => {
+    if(!isModalOpen && !orderCreated){
+      setContributionLoading(false);
+    }
+  }, [isModalOpen, orderCreated]);
+
 
 
   return (
@@ -315,6 +334,7 @@ const BuyWithPaypal = (props: any) => {
               amount={amount} 
               onOrderCreate={createOrder} 
               onOrderApprove={onApprove} 
+              onOrderCancel={onCancel} 
             />
           </DialogContent>
         </Dialog>
