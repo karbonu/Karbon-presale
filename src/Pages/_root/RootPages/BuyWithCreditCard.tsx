@@ -3,7 +3,7 @@ import { useAuth } from '@/components/shared/Contexts/AuthContext.tsx';
 import BackArrow from '@/components/Icons/BackArrow.tsx';
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
 import { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
-import PaypalLogo from '@/components/Icons/PaypalLogo.tsx';
+
 import axios from 'axios';
 import { useAccount } from 'wagmi';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
