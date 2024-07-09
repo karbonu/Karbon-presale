@@ -146,7 +146,7 @@ const SignUp = () => {
       {
         email,
         walletAddress: "",
-        referrerId: '',
+        referrerId: referralCode as string,
         password,
       },
       {
@@ -195,6 +195,38 @@ const SignUp = () => {
             {
                 onSuccess: (response: any) => {
                   nonce = response.data.nonce;
+
+                              
+                      loginMutation.mutate(
+                        { email, password, nonce },
+                        {
+                            onSuccess: (response: any) => {
+                                if(response.data.user.is_verified === false){
+                                    setStep(5)
+                                    return;
+                                }
+                                console.log(response.data)
+                                setUserID(response.data.user.id);
+                                setReferralCOde(response.data.user.referralCode);
+                                setAuthEmail(email);
+                                setAuthPassword(password);
+                                setAuthenticated(true);
+                                toast({
+                                  title: "Success!",
+                                  description: "Login Successfull",
+                                })
+                                navigate('/dashboard');
+                                setIsLoggingIn(false);
+                            },
+                            onError: () => {
+                              toast({
+                                title: "Error!",
+                                description: "Invalid Login Credentials",
+                              })
+                            }
+                        }
+                    );
+
                 },
                 onError: () => {
                   toast({
@@ -205,37 +237,6 @@ const SignUp = () => {
             }
         );
           
-
-
-          loginMutation.mutate(
-            { email, password, nonce },
-            {
-                onSuccess: (response: any) => {
-                    if(response.data.user.is_verified === false){
-                        setStep(5)
-                        return;
-                    }
-                    console.log(response.data)
-                    setUserID(response.data.user.id);
-                    setReferralCOde(response.data.user.referralCode);
-                    setAuthEmail(email);
-                    setAuthPassword(password);
-                    setAuthenticated(true);
-                    toast({
-                      title: "Success!",
-                      description: "Login Successfull",
-                    })
-                    navigate('/dashboard');
-                    setIsLoggingIn(false);
-                },
-                onError: () => {
-                  toast({
-                    title: "Error!",
-                    description: "Invalid Login Credentials",
-                  })
-                }
-            }
-        );
 
 
         },

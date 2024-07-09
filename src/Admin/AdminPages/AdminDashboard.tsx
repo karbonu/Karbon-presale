@@ -23,8 +23,9 @@ const AdminDashboard = () => {
     const [totalClaimed, setTotoalCLaimed] = useState(0);
     const [totalUnclaimed, setTotalUnclaimed] = useState(0);
     const[totalContribution, setTotalContribution] = useState(0);
-    const [decimalContribution, setDecimalCOntribution] = useState('')
+    const [decimalContribution, setDecimalCOntribution] = useState(0)
     const inputRef = useRef<HTMLInputElement>(null);
+
   
     const handlePasteClick = async () => {
       try {
@@ -50,8 +51,9 @@ const AdminDashboard = () => {
           const Contribute = Number(response.data._sum.amount);
           setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
           if(totalContribution === 0){
-            setDecimalCOntribution('00')
-          }
+            const newBalanceDecimal = Math.abs(response.data._sum.amount % 1).toFixed(2).slice(2);
+            setDecimalCOntribution(Number(newBalanceDecimal))
+        }
         } else {
           console.log(response);
         }
@@ -117,7 +119,7 @@ const AdminDashboard = () => {
                                 <div className="flex flex-row items-center space-x-2">
                                     <TotalBonusPaidOutIcon/>
                                     <div className="flex flex-row space-x-1">
-                                        <p className="text-white text-[24px]">{totalBonusPaid}</p>
+                                        <p className="text-white text-[24px]">{(totalBonusPaid).toFixed(2)}</p>
                                         <p className="text-white font-extralight text-[24px]">USDT</p>
                                     </div>
                                 </div>
@@ -128,7 +130,7 @@ const AdminDashboard = () => {
                                 <div className="flex flex-row items-center space-x-2">
                                     <PendingRequestIcon/>
                                     <div className="flex flex-row space-x-1">
-                                        <p className="text-white text-[24px]">{totalPendingRequests}</p>
+                                        <p className="text-white text-[24px]">{(totalPendingRequests).toFixed(2)}</p>
                                         <p className="text-white opacity-70 text-[16px]">${pendingRequestAmount}</p>
                                     </div>
                                 </div>
@@ -169,7 +171,7 @@ const AdminDashboard = () => {
                         <div className="flex flex-col space-y-3">
                             <p className="text-white text-[12px] opacity-70">TOTAL RAISED</p>
                             <div className="flex flex-row">
-                                <p className="text-white text-[24px]">{totalContribution}</p>
+                                <p className="text-white text-[24px]">{Math.round(totalContribution)}</p>
                                 <p className="text-white text-[16px]">.{decimalContribution}</p>
                             </div>
                         </div>
