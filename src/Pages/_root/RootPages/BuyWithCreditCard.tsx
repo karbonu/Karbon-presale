@@ -66,8 +66,8 @@ const generateSimpleHash = (input: string): string => {
   return Math.abs(hash).toString(16); // Convert to hexadecimal
 };
 
-const Button = React.memo(({ onOrderCreate, onOrderApprove }: { 
-  amount: any, 
+const Button = React.memo(({ onOrderCreate, onOrderApprove }: {
+  amount: any,
   onOrderCreate: (data: any, actions: any) => Promise<string>,
   onOrderApprove: (data: any, actions: any) => Promise<void>
 }) => {
@@ -120,7 +120,7 @@ const BuyWithCreditCard = (props: any) => {
       console.log(error);
     }
   };
-  
+
   const mutation = useMutation(mutationOptions);
 
   const createOrder = useCallback((data: any, actions: any) => {
@@ -152,13 +152,13 @@ const BuyWithCreditCard = (props: any) => {
       mutation.mutate({ orderID, userID: UserID, amount });
 
       contributeMutation.mutate(
-        { 
+        {
           amount: Number(amount),
           walletAddress: address as string || "",
           userId: UserID as string || "",
           txHash: txHash,
           presaleId: presaleID as string || "",
-          paymentMethod: 'Card', 
+          paymentMethod: 'Card',
         },
         {
           onSuccess: (response: any) => {
@@ -166,11 +166,11 @@ const BuyWithCreditCard = (props: any) => {
             setAmount('');
             setRecievingValue(0);
             investmentMutate.mutate(
-              { 
+              {
                 amount: Number(amount),
                 userId: UserID as string || "",
                 txHash: txHash,
-                paymentMethod: 'Card', 
+                paymentMethod: 'Card',
               },
               {
                 onSuccess: (response: any) => {
@@ -221,12 +221,12 @@ const BuyWithCreditCard = (props: any) => {
   };
 
   const handlePay = () => {
-    if(Number(amount) === 0){
+    if (Number(amount) === 0) {
       toast({
         title: "Error!",
         description: "Your need to enter an amount",
       })
-    }else{
+    } else {
       setContributionLoading(true);
       setIsModalOpen(true);
     }
@@ -251,7 +251,7 @@ const BuyWithCreditCard = (props: any) => {
             <p className="text-white text-[12px]">Back</p>
           </div>
           <div className="flex flex-row items-center pl-5 space-x-2">
-            <CreditCardlogo/>
+            <CreditCardlogo />
             <p className="text-white text-[14px]">Buy with Credit Card</p>
           </div>
         </div>
@@ -275,35 +275,35 @@ const BuyWithCreditCard = (props: any) => {
         </div>
 
         <div className="flex rotate-[180deg] w-full items-center justify-center">
-                <UpArrow />
-            </div>
+          <UpArrow />
+        </div>
 
-            <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
-                <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
-                    <p className="text-white text-[12px]">You Get</p>
-                    <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
-                    <div className="flex flex-row items-center justify-center space-x-2 flex-1">
-                        <p className='h-full text-white w-[75%]'>{recievingValue === 0 ? '' : recievingValue}</p>
-                        <p className="text-white text-[12px] opacity-70">KARBON</p>
-                    </div>
-                </label>
+        <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
+          <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
+            <p className="text-white text-[12px]">You Get</p>
+            <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
+            <div className="flex flex-row items-center justify-center space-x-2 flex-1">
+              <p className='h-full text-white w-[75%]'>{recievingValue === 0 ? '' : recievingValue}</p>
+              <p className="text-white text-[12px] opacity-70">KARBON</p>
             </div>
+          </label>
+        </div>
 
 
         <button disabled={contributionLoading} onClick={() => handlePay()} className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>
           {contributionLoading ? (
-            <BarLoader color='white'/>
-          ): (
+            <BarLoader color='white' />
+          ) : (
             "Pay with Credit Card"
           )}
-          </button>
+        </button>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          
+
           <DialogContent className='flex items-center justify-center bg-white w-[70%] py-20'>
-            <Button 
-              amount={amount} 
-              onOrderCreate={createOrder} 
-              onOrderApprove={onApprove} 
+            <Button
+              amount={amount}
+              onOrderCreate={createOrder}
+              onOrderApprove={onApprove}
             />
           </DialogContent>
         </Dialog>

@@ -114,7 +114,11 @@ const BuyWithPaypal = (props: any) => {
   };
 
   const verifyPayment = async (data: VerifyPaymentData) => {
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}payment/verify-payment`, data);
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}payment/verify-payment`, data, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    });
     return response.data;
   };
 
