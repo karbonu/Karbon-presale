@@ -207,7 +207,7 @@ const BuyWithPaypal = (props: any) => {
                   setRecievingValue(0);
                   setIsModalOpen(false);
                   toast({
-                    variant: "success",
+                    variant: "failure",
                     title: "Error!",
                     description: "Your contribution Failed",
                   });
@@ -223,7 +223,7 @@ const BuyWithPaypal = (props: any) => {
             setRecievingValue(0);
             setIsModalOpen(false);
             toast({
-              variant: "success",
+              variant: "failure",
               title: "Error!",
               description: "Your contribution Failed",
             });
