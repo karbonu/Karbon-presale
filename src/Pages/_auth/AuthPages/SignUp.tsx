@@ -24,7 +24,7 @@ import EyeIcon from "@/components/Icons/EyeIcon.tsx";
 import { useToast } from "@/components/ui/use-toast";
 
 const SignUp = () => {
-  const {toast} = useToast();
+  const { toast } = useToast();
   const [chanceInfo, setChanceInfo] = useState(true);
   const [step, setStep] = useState(1);
   const [password, setPassword] = useState('');
@@ -34,11 +34,11 @@ const SignUp = () => {
   const [revealConfirmError, setRevealConfirmError] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
   const [otp, setOtp] = useState("");
-  const {setUserID, setReferralCOde, setEmail : setAuthEmail, isAuthenticated, setPassword : setAuthPassword, setAuthenticated, referralCode, setAccessTToken } = useAuth()
+  const { setUserID, setReferralCOde, setEmail: setAuthEmail, isAuthenticated, setPassword: setAuthPassword, setAuthenticated, referralCode, setAccessTToken } = useAuth()
 
-  if(isAuthenticated){
+  if (isAuthenticated) {
     return <Navigate to="/dashboard" />;
-}
+  }
 
   const navigate = useNavigate();
   const [validation, setValidation] = useState({
@@ -54,9 +54,9 @@ const SignUp = () => {
   const loginMutation = useLoginMutation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isVerifying, setISVerifying] = useState(false);
-  const[verificationError, setverificationError] = useState('');
-  const [showPassword, setShowPassword] = useState(false); 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [verificationError, setverificationError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
 
@@ -108,29 +108,29 @@ const SignUp = () => {
 
 
   const handleRegister = () => {
-      if( password === ""){
+    if (password === "") {
+      toast({
+        title: "Invalid Password!",
+        description: "Please, Enter a valis password",
+      })
+      return;
+    } else {
+      if (confirmPassword === "") {
         toast({
-          title: "Invalid Password!",
-          description: "Please, Enter a valis password",
+          title: "Invalid Confirm Password!",
+          description: "Please, Enter a valis confirm password",
         })
         return;
-      }else{
-        if(confirmPassword === ""){
-          toast({
-            title: "Invalid Confirm Password!",
-            description: "Please, Enter a valis confirm password",
-          })
-          return;
-        }
       }
-    
+    }
+
 
     if (password !== confirmPassword) {
       setRevealConfirmError(true);
       return;
     }
     setIsRegistering(true);
-    
+
     registerMutation.mutate(
       {
         email,
@@ -142,6 +142,7 @@ const SignUp = () => {
         onSuccess: () => {
           setIsRegistering(false);
           toast({
+            variant: "success",
             title: "Success!",
             description: "Registration Successfull",
           })
@@ -150,6 +151,7 @@ const SignUp = () => {
         onError: (error) => {
           console.log(error);
           toast({
+            variant: "failure",
             title: "Error!",
             description: "Registration Failed, Try Again",
           })
@@ -163,6 +165,7 @@ const SignUp = () => {
 
     if (otp == "") {
       toast({
+        variant: "failure",
         title: "Enter a valid OTP!",
         description: "The One Time Password you entered is not valid",
       })
@@ -173,74 +176,78 @@ const SignUp = () => {
     verifyMutat.mutate(
       {
         email,
-        otp : Number(otp),
+        otp: Number(otp),
       },
       {
         onSuccess: () => {
-          
+
 
           initialNonceMutation.mutate(
             { email },
             {
-                onSuccess: (response: any) => {
-                  nonce = response.data.nonce;
+              onSuccess: (response: any) => {
+                nonce = response.data.nonce;
 
-                              
-                      loginMutation.mutate(
-                        { email, password, nonce },
-                        {
-                            onSuccess: (response: any) => {
-                                if(response.data.user.is_verified === false){
-                                    setStep(5)
-                                    return;
-                                }
-                                console.log(response.data)
-                                setAccessTToken(response.data.access_token);
-                                setUserID(response.data.user.id);
-                                setReferralCOde(response.data.user.referralCode);
-                                setAuthEmail(email);
-                                setAuthPassword(password);
-                                setAuthenticated(true);
-                                toast({
-                                  title: "Success!",
-                                  description: "Login Successfull",
-                                })
-                                navigate('/dashboard');
-                                setIsLoggingIn(false);
-                                setISVerifying(false);
-                            },
-                            onError: () => {
-                              toast({
-                                title: "Error!",
-                                description: "Invalid Login Credentials",
-                              })
-                              setISVerifying(false);
-                              setIsLoggingIn(false);
-                            }
-                        }
-                    );
 
-                },
-                onError: () => {
-                  toast({
-                    title: "Error!",
-                    description: "Account with entered email does not exist",
-                  })
-                }
+                loginMutation.mutate(
+                  { email, password, nonce },
+                  {
+                    onSuccess: (response: any) => {
+                      if (response.data.user.is_verified === false) {
+                        setStep(5)
+                        return;
+                      }
+                      console.log(response.data)
+                      setAccessTToken(response.data.access_token);
+                      setUserID(response.data.user.id);
+                      setReferralCOde(response.data.user.referralCode);
+                      setAuthEmail(email);
+                      setAuthPassword(password);
+                      setAuthenticated(true);
+                      toast({
+                        variant: "success",
+                        title: "Success!",
+                        description: "Login Successfull",
+                      })
+                      navigate('/dashboard');
+                      setIsLoggingIn(false);
+                      setISVerifying(false);
+                    },
+                    onError: () => {
+                      toast({
+                        variant: "failure",
+                        title: "Error!",
+                        description: "Invalid Login Credentials",
+                      })
+                      setISVerifying(false);
+                      setIsLoggingIn(false);
+                    }
+                  }
+                );
+
+              },
+              onError: () => {
+                toast({
+                  variant: "failure",
+                  title: "Error!",
+                  description: "Account with entered email does not exist",
+                })
+              }
             }
-        );
-          
+          );
+
 
 
         },
         onError: () => {
           toast({
+            variant: "failure",
             title: "Error!",
             description: "Invalid or Expired OTP",
           })
-            setISVerifying(false);
+          setISVerifying(false);
+        }
       }
-    }
     );
   };
 
@@ -248,105 +255,110 @@ const SignUp = () => {
 
   const handleemailKeyDown = (event: any) => {
     if (event.key === 'Enter') {
-      if(email === "" ){
+      if (email === "") {
         toast({
+          variant: "failure",
           title: "Invalid Email!",
           description: "Please, Enter a valis email",
         })
-      }else{
+      } else {
         setStep(2)
       }
     }
-};
+  };
 
 
 
-const handleVerificationKeyDown = (event: any) => {
-  if (event.key === 'Enter') {
+  const handleVerificationKeyDown = (event: any) => {
+    if (event.key === 'Enter') {
       handleVerify();
-  }
-};
+    }
+  };
 
 
 
-const socialSignIn = useSocialAuthMutation();
+  const socialSignIn = useSocialAuthMutation();
 
-const login = useGoogleLogin({
+  const login = useGoogleLogin({
     onSuccess: async (res) => {
       setRegistrationError('');
-        const token = res.access_token;
+      const token = res.access_token;
+      setIsRegistering(true);
+      try {
+        const userInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const { email, sub: userID } = userInfo.data;
         setIsRegistering(true);
-        try {
-            const userInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            const { email, sub: userID } = userInfo.data;
-            setIsRegistering(true);
-            socialSignIn.mutate(
-              { 
-                  token : token, 
-                  unique_id : userID,
-                  email : email, 
-                  phone : "",
-                  medium : 'google', 
-                  id_token : userID,
-                  ref_code : referralCode
-              },
+        socialSignIn.mutate(
+          {
+            token: token,
+            unique_id: userID,
+            email: email,
+            phone: "",
+            medium: 'google',
+            id_token: userID,
+            ref_code: referralCode
+          },
 
-              {
-                  onSuccess: (response ) => {
-                      localStorage.removeItem('referralCode');
-                      setAccessTToken(response.data.access_token);
-                      setUserID(response.data.user.id);
-                      setReferralCOde(response.data.user.referralCode );
-                      setAuthEmail(response.data.user.email);
-                      setAuthPassword('' );
-                      setAuthenticated(true);
-                      navigate('/dashboard');
-                      setIsLoggingIn(false);
-                      toast({
-                        title: "Success!",
-                        description: "Login Successfull",
-                      })
-                  },
-                  onError: () => {
-                    toast({
-                      title: "Error!",
-                      description: "Invalid Login Credentials",
-                    })
-                      setIsLoggingIn(false);
-                  }
-              }
-          );
+          {
+            onSuccess: (response) => {
+              localStorage.removeItem('referralCode');
+              setAccessTToken(response.data.access_token);
+              setUserID(response.data.user.id);
+              setReferralCOde(response.data.user.referralCode);
+              setAuthEmail(response.data.user.email);
+              setAuthPassword('');
+              setAuthenticated(true);
+              navigate('/dashboard');
+              setIsLoggingIn(false);
+              toast({
+                variant: "success",
+                title: "Success!",
+                description: "Login Successfull",
+              })
+            },
+            onError: () => {
+              toast({
+                variant: "failure",
+                title: "Error!",
+                description: "Invalid Login Credentials",
+              })
+              setIsLoggingIn(false);
+            }
+          }
+        );
 
 
 
-        } catch (error) {
-          toast({
-            title: "Error!",
-            description: "Login Failed, Try Again",
-          })
-          setIsRegistering(false);
-        }
+      } catch (error) {
+        toast({
+          variant: "failure",
+          title: "Error!",
+          description: "Login Failed, Try Again",
+        })
+        setIsRegistering(false);
+      }
     },
     onError: () => {
       toast({
+        variant: "failure",
         title: "Error!",
         description: "Login Failed, Try Again",
       })
     },
-});
+  });
 
-const handleStepOne = () => {
-  if(email === "" ){
-    toast({
-      title: "Invalid Email!",
-      description: "Please, Enter a valis email",
-    })
-  }else{
-    setStep(2)
+  const handleStepOne = () => {
+    if (email === "") {
+      toast({
+        title: "Invalid Email!",
+        description: "Please, Enter a valis email",
+      })
+    } else {
+      setStep(2)
+    }
   }
-}
 
   return (
     <div className="p-[60px] max-sm:p-5 max-sm:pt-10">
@@ -413,8 +425,8 @@ const handleStepOne = () => {
                   <div>
                     <button disabled={isLoggingIn} onClick={handleStepOne} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                       {isLoggingIn ? (
-                        <BarLoader/>
-                      ): (
+                        <BarLoader />
+                      ) : (
                         <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
                       )}
                     </button>
@@ -453,14 +465,14 @@ const handleStepOne = () => {
                     <input onChange={handleOTPChange} onKeyDown={handleVerificationKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="text" />
                   </div>
                   {verificationError && (
-                      <p className="text-[10px] w-full text-center text-red-500 mt-2">{verificationError}</p>
-                    )}
+                    <p className="text-[10px] w-full text-center text-red-500 mt-2">{verificationError}</p>
+                  )}
 
                   <div>
                     <button disabled={isVerifying} onClick={() => handleVerify()} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                       {isVerifying ? (
-                        <BarLoader/>
-                      ): (
+                        <BarLoader />
+                      ) : (
                         <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
                       )}
                     </button>
@@ -500,7 +512,7 @@ const handleStepOne = () => {
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
-                          <EyeIcongreen/>
+                          <EyeIcongreen />
                         ) : (
                           <EyeIcon />
                         )}
@@ -530,7 +542,7 @@ const handleStepOne = () => {
                     </div>
                   </div>
 
-                
+
                   <div className="flex flex-col space-y-2 relative">
                     <p className="text-white text-[14px] max-sm:text-[12px]">Confirm Password</p>
                     <input
@@ -539,12 +551,12 @@ const handleStepOne = () => {
                       value={confirmPassword}
                       onChange={handleConfirmPasswordChange}
                     />
-                  <div
+                    <div
                       className="absolute right-4 top-10 cursor-pointer"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
                       {showConfirmPassword ? (
-                        <EyeIcongreen/>
+                        <EyeIcongreen />
                       ) : (
                         <EyeIcon />
                       )}
@@ -556,16 +568,16 @@ const handleStepOne = () => {
                   <div>
                     <button disabled={isRegistering} onClick={handleRegister} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                       {isRegistering ? (
-                        <BarLoader/>
-                      ): (
+                        <BarLoader />
+                      ) : (
                         <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
                       )}
                     </button>
                   </div>
 
                   {registrationError && (
-                      <p className="text-[10px] w-full text-center text-red-500 mt-2">{registrationError}</p>
-                    )}
+                    <p className="text-[10px] w-full text-center text-red-500 mt-2">{registrationError}</p>
+                  )}
 
                   <div onClick={() => setStep(1)} className="flex flex-row w-full space-x-2 items-center justify-center cursor-pointer">
                     <div className="flex items-center justify-center">

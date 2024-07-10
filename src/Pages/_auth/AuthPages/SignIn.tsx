@@ -20,7 +20,7 @@ import { useToast } from '@/components/ui/use-toast.ts';
 
 
 const SignIn = () => {
-    const {toast} = useToast();
+    const { toast } = useToast();
     const [chanceInfo, setChanceInfo] = useState(true);
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState('');
@@ -33,40 +33,41 @@ const SignIn = () => {
     const [otp, setOtp] = useState("");
     const [isResetting, setIsResetting] = useState(false);
     const verifyMutat = useVerifyEmailMutation();
-    const[verificationError, setverificationError] = useState('');
+    const [verificationError, setverificationError] = useState('');
 
     const navigate = useNavigate();
-    
+
     const initialNonceMutation = useInitialNonceMutation();
     const loginMutation = useLoginMutation();
     const reserMutation = usePasswordResetMutate();
     const { setEmail: setAuthEmail, setPassword: setAuthPassword, isAuthenticated, setAuthenticated, setUserID, setReferralCOde, setWalletAddress, setAccessTToken } = useAuth();
 
-    if(isAuthenticated){
+    if (isAuthenticated) {
         return <Navigate to="/dashboard" />;
     }
 
     const handlePasswordReset = () => {
         setIsResetting(true);
-        
+
         reserMutation.mutate(
             { email },
             {
                 onSuccess: () => {
-                  setStep(4)
+                    setStep(4)
                 },
                 onError: () => {
                     toast({
+                        variant: "failure",
                         title: "Error!",
                         description: "Password Reset Failed ",
-                      })
+                    })
                     setIsResetting(false);
                 }
             }
         );
     };
 
-    
+
     const handleResetKeyDown = (event: any) => {
         if (event.key === 'Enter') {
             handlePasswordReset();
@@ -93,13 +94,14 @@ const SignIn = () => {
                     setStep(2);
                     setErrorMessage('');
                     setIsLoadingNonce(false);
-                    
+
                 },
                 onError: () => {
                     toast({
+                        variant: "failure",
                         title: "Error!",
                         description: "Account with entered email does not exist",
-                      })
+                    })
                     setIsLoadingNonce(false);
                 }
             }
@@ -119,7 +121,7 @@ const SignIn = () => {
             { email, password, nonce },
             {
                 onSuccess: (response: any) => {
-                    if(response.data.user.is_verified === false){
+                    if (response.data.user.is_verified === false) {
                         setStep(5)
                         return;
                     }
@@ -132,17 +134,19 @@ const SignIn = () => {
                     setAuthPassword(password);
                     setAuthenticated(true);
                     toast({
+                        variant: "success",
                         title: "Success!",
                         description: "Login Successfull",
-                      })
+                    })
                     navigate('/dashboard');
                     setIsLoggingIn(false);
                 },
                 onError: () => {
                     toast({
+                        variant: "failure",
                         title: "Error!",
                         description: "Invalid Login Credentials",
-                      })
+                    })
                     setIsLoggingIn(false);
                 }
             }
@@ -152,51 +156,53 @@ const SignIn = () => {
     const handleOTPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setOtp((event.target.value));
         setverificationError('');
-      };
-      const handleVerify = () => {
+    };
+    const handleVerify = () => {
 
         if (otp === "") {
             toast({
+                variant: "failure",
                 title: "Enter a valid OTP!",
                 description: "The One Time Password you entered is not valid",
-              })
-          return;
+            })
+            return;
         }
         setISVerifying(true);
         verifyMutat.mutate(
-          {
-            email,
-            otp : Number(otp),
-          },
-          {
-            onSuccess: (response: any) => {
-              console.log(response)
-              console.log(response.data)
-              setISVerifying(false);
-              handleInitialNonceRequest();
-              handleLoginRequest();
-              
+            {
+                email,
+                otp: Number(otp),
             },
-            onError: (error) => {
-                console.log(error)
-              setISVerifying(false);
-              toast({
-                title: "Error!",
-                description: "Invalid or Expired OTP",
-              })
-            },
-          }
-        );
-      };
+            {
+                onSuccess: (response: any) => {
+                    console.log(response)
+                    console.log(response.data)
+                    setISVerifying(false);
+                    handleInitialNonceRequest();
+                    handleLoginRequest();
 
-      
+                },
+                onError: (error) => {
+                    console.log(error)
+                    setISVerifying(false);
+                    toast({
+                        variant: "failure",
+                        title: "Error!",
+                        description: "Invalid or Expired OTP",
+                    })
+                },
+            }
+        );
+    };
+
+
     const handleVerificationKeyDown = (event: any) => {
         if (event.key === 'Enter') {
             handleVerify();
         }
     };
-    
-        
+
+
 
     const handleSignInKeyDown = (event: any) => {
         if (event.key === 'Enter') {
@@ -218,14 +224,14 @@ const SignIn = () => {
                 const { email, sub: userID } = userInfo.data;
                 setIsLoggingIn(true);
                 socialSignIn.mutate(
-                    { 
-                        token : token as string, 
-                        unique_id : userID as string,
-                        email : email as string, 
-                        phone : "",
-                        medium : 'google', 
-                        id_token : userID as string,
-                        ref_code : ""
+                    {
+                        token: token as string,
+                        unique_id: userID as string,
+                        email: email as string,
+                        phone: "",
+                        medium: 'google',
+                        id_token: userID as string,
+                        ref_code: ""
                     },
 
                     {
@@ -234,22 +240,24 @@ const SignIn = () => {
                             localStorage.removeItem('referralCode');
                             setAccessTToken(response.data.access_token);
                             setUserID(response.data.user.id);
-                            setReferralCOde(response.data.user.referralCode );
+                            setReferralCOde(response.data.user.referralCode);
                             setAuthEmail(response.data.user.email);
-                            setAuthPassword('' );
+                            setAuthPassword('');
                             setAuthenticated(true);
                             toast({
+                                variant: "success",
                                 title: "Success!",
                                 description: "Login Successfull",
-                              })
+                            })
                             navigate('/dashboard');
                             setIsLoggingIn(false);
                         },
                         onError: () => {
                             toast({
+                                variant: "failure",
                                 title: "Error!",
                                 description: "Login Failed, Try Again",
-                              })
+                            })
                             setIsLoggingIn(false);
                         }
                     }
@@ -258,18 +266,20 @@ const SignIn = () => {
 
             } catch (error) {
                 toast({
+                    variant: "failure",
                     title: "Error!",
                     description: "Login Failed, Try Again",
-                  })
-                  setIsLoggingIn(false);
+                })
+                setIsLoggingIn(false);
             }
         },
         onError: () => {
             toast({
+                variant: "failure",
                 title: "Error!",
                 description: "Login Failed, Try Again",
-              })
-              setIsLoggingIn(false);
+            })
+            setIsLoggingIn(false);
         },
     });
 
@@ -302,7 +312,7 @@ const SignIn = () => {
                                 <p className="text-white text-[20px] max-sm:text-[90%] font-semibold">Sign In</p>
 
                                 <div className="flex flex-col space-y-2">
-                                    <div onClick={() => {login()}} className="flex cursor-pointer flex-row w-[389px] max-sm:w-[100%] max-sm:h-[48px] h-[56px] bg-[#1C1C1C]">
+                                    <div onClick={() => { login() }} className="flex cursor-pointer flex-row w-[389px] max-sm:w-[100%] max-sm:h-[48px] h-[56px] bg-[#1C1C1C]">
                                         <div className="px-5 absolute max-sm:py-[0.7rem] py-3 flex items-center">
                                             <GoogleLogo />
                                         </div>
@@ -332,7 +342,7 @@ const SignIn = () => {
                                     <div>
                                         <button disabled={isLoadingNonce || isLoggingIn} onClick={handleInitialNonceRequest} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                             {isLoadingNonce || isLoggingIn ? (
-                                                <BarLoader/>
+                                                <BarLoader />
                                             ) : (
                                                 <p className="font-bold text-[14px] shadow-sm">
                                                     Sign In
@@ -376,8 +386,8 @@ const SignIn = () => {
                                     <div>
                                         <div onClick={handleLoginRequest} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                             {isLoggingIn ? (
-                                                <BarLoader/>
-                                            ): (
+                                                <BarLoader />
+                                            ) : (
                                                 <p className="font-bold text-[14px] shadow-sm">
                                                     Proceed
                                                 </p>
@@ -401,55 +411,55 @@ const SignIn = () => {
                 )}
 
                 {step === 3 && (
-                  <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
-                    <div className="w-[450px] py-5 max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
-                        <div className="py-5 px-8 flex flex-col space-y-5 justify-between h-full">
-                            <div className="flex flex-row space-x-2 items-center">
-                                <PasswordLogo />
-                                <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
-                            </div>
-
-                            <div className="flex flex-col space-y-5">
-                                <div className="flex flex-col space-y-2">
-                                    <p className="text-white text-[14px]">Enter Email</p>
-                                    <input onKeyDown={handleResetKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" onChange={handleEmailChange} />
+                    <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+                        <div className="w-[450px] py-5 max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                            <div className="py-5 px-8 flex flex-col space-y-5 justify-between h-full">
+                                <div className="flex flex-row space-x-2 items-center">
+                                    <PasswordLogo />
+                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
                                 </div>
-                                <div>
-                                    <button disabled={isResetting} onClick={handlePasswordReset} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                                        {isResetting ? (
-                                            <BarLoader/>
-                                        ): (
-                                            <p className="font-bold text-[14px] shadow-sm">
-                                                Reset Password
-                                            </p>
+
+                                <div className="flex flex-col space-y-5">
+                                    <div className="flex flex-col space-y-2">
+                                        <p className="text-white text-[14px]">Enter Email</p>
+                                        <input onKeyDown={handleResetKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" onChange={handleEmailChange} />
+                                    </div>
+                                    <div>
+                                        <button disabled={isResetting} onClick={handlePasswordReset} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                                            {isResetting ? (
+                                                <BarLoader />
+                                            ) : (
+                                                <p className="font-bold text-[14px] shadow-sm">
+                                                    Reset Password
+                                                </p>
+                                            )}
+                                        </button>
+                                        {errorMessage && (
+                                            <p className="text-[10px] w-full text-center text-red-500 mt-2">{verificationError}</p>
                                         )}
-                                    </button>
-                                    {errorMessage && (
-                                        <p className="text-[10px] w-full text-center text-red-500 mt-2">{verificationError}</p>
-                                    )}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div onClick={() => setStep(1)} className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
-                                <div className="flex items-center justify-center">
-                                    <BackArrow />
+                                <div onClick={() => setStep(1)} className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
+                                    <div className="flex items-center justify-center">
+                                        <BackArrow />
+                                    </div>
+                                    <p className="text-white text-[14px]">Back to Login</p>
                                 </div>
-                                <p className="text-white text-[14px]">Back to Login</p>
                             </div>
                         </div>
                     </div>
-                </div>  
                 )}
-                
+
                 {step === 4 && (
-                      <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+                    <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
                         <div className="w-[450px] py-5 max-sm:w-[100%] items-center justify-center bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 px-8 flex flex-col space-y-5 justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center justify-center">
                                     <PasswordLogo />
                                     <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
                                 </div>
-                                
+
                                 <div className="flex flex-col max-sm:flex-col max-sm:space-y-2 md:space-x-1 items-center">
                                     <p className="text-white opacity-80 text-[14px]">An OTP has been sent to </p>
                                     <p className="text-white text-[14px]">{email}</p>
@@ -467,50 +477,50 @@ const SignIn = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>  
+                    </div>
                 )}
 
-                {step === 5 &&(
+                {step === 5 && (
                     <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
-                    <div className="w-[450px] max-sm:w-[100%] h-[366px] bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
-                      <div className="px-8 flex flex-col justify-between h-full">
-                        <div className="flex flex-row space-x-2 items-center">
-                          <VerifyEmailIcon />
-                          <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Verify Email</p>
+                        <div className="w-[450px] max-sm:w-[100%] h-[366px] bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
+                            <div className="px-8 flex flex-col justify-between h-full">
+                                <div className="flex flex-row space-x-2 items-center">
+                                    <VerifyEmailIcon />
+                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Verify Email</p>
+                                </div>
+                                <p className="text-white text-[14px] max-sm:text-[12px]">Your email is not verified</p>
+                                <div className="flex flex-col space-y-1">
+                                    <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">Enter the four digit verification code sent to</p>
+                                    <p className="text-white text-[14px] max-sm:text-[12px]">{email}</p>
+                                </div>
+
+                                <div className="flex flex-col space-y-5">
+                                    <div className="flex flex-col space-y-2">
+                                        <p className="text-white text-[14px] max-sm:text-[12px]">Enter Verification Code</p>
+                                        <input onChange={handleOTPChange} onKeyDown={handleVerificationKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="text" />
+                                    </div>
+                                    {verificationError && (
+                                        <p className="text-[10px] w-full text-center text-red-500 mt-2">{verificationError}</p>
+                                    )}
+
+                                    <div>
+                                        <button disabled={isVerifying} onClick={() => handleVerify()} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                                            {isVerifying ? (
+                                                <BarLoader />
+                                            ) : (
+                                                <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <p className="text-white text-[14px] max-sm:text-[12px]">Your email is not verified</p>
-                        <div className="flex flex-col space-y-1">
-                          <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">Enter the four digit verification code sent to</p>
-                          <p className="text-white text-[14px] max-sm:text-[12px]">{email}</p>
-                        </div>
-        
-                        <div className="flex flex-col space-y-5">
-                          <div className="flex flex-col space-y-2">
-                            <p className="text-white text-[14px] max-sm:text-[12px]">Enter Verification Code</p>
-                            <input onChange={handleOTPChange} onKeyDown={handleVerificationKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="text" />
-                          </div>
-                          {verificationError && (
-                              <p className="text-[10px] w-full text-center text-red-500 mt-2">{verificationError}</p>
-                            )}
-        
-                          <div>
-                            <button disabled={isVerifying} onClick={() => handleVerify()} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                              {isVerifying ? (
-                                <BarLoader/>
-                              ): (
-                                <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 )}
 
                 {step === 6 && (
                     <PasswordReset
-                    email = {email}
+                        email={email}
                     />
                 )}
             </div>

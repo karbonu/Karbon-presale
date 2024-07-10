@@ -15,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast.ts"
 import { BarLoader } from "react-spinners"
 
 const AdminDashboard = () => {
-    const {toast} = useToast();
+    const { toast } = useToast();
     const [isPasted, setIsPasted] = useState(false);
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalReferrals, setTotalReferrals] = useState(0);
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     const [totalUnclaimed, setTotalUnclaimed] = useState(0);
     const [totalContribution, setTotalContribution] = useState(0);
     const [decimalContribution, setDecimalContribution] = useState(0);
-    const {accessToken, presaleID} = useAuth();
+    const { accessToken, presaleID } = useAuth();
     const [isCreating, setIsCreating] = useState(false);
     const [userID, setUserID] = useState('');
     const [amount, setAmount] = useState('');
@@ -35,14 +35,14 @@ const AdminDashboard = () => {
     const investMutate = useAdminCreateInvestmentMutation(accessToken);
 
     const handlePasteClick = async () => {
-      try {
-        const text = await navigator.clipboard.readText();
-        setUserID(text);
-        setIsPasted(true);
-        setTimeout(() => setIsPasted(false), 2000);
-      } catch (err) {
-        console.error('Failed to read clipboard contents: ', err);
-      }
+        try {
+            const text = await navigator.clipboard.readText();
+            setUserID(text);
+            setIsPasted(true);
+            setTimeout(() => setIsPasted(false), 2000);
+        } catch (err) {
+            console.error('Failed to read clipboard contents: ', err);
+        }
     };
 
     const handleUserIDKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -60,13 +60,13 @@ const AdminDashboard = () => {
     };
 
     useEffect(() => {
-        const fetchTotalContribution = async() => {
+        const fetchTotalContribution = async () => {
             const response = await getTotalContribution(accessToken, presaleID);
-            
+
             if (response !== 'Failed') {
                 const Contribute = Number(response.data._sum.amount);
                 setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
-                if(totalContribution === 0){
+                if (totalContribution === 0) {
                     const newBalanceDecimal = Math.abs(response.data._sum.amount % 1).toFixed(2).slice(2);
                     setDecimalContribution(Number(newBalanceDecimal))
                 }
@@ -88,14 +88,14 @@ const AdminDashboard = () => {
                 setTotalPendingRequests(isNaN(pendingrequest) ? 0 : pendingrequest);
                 setTotalUnclaimed(0);
                 setTotalClaimed(0)
-                if(totalPendingRequests === 0){
+                if (totalPendingRequests === 0) {
                     setTotalPendingRequestAmount(0);
                 }
             } else {
                 console.log(response);
             }
         };
-    
+
         fetchTotalContribution();
         fetchReferralCount();
     }, []);
@@ -103,6 +103,7 @@ const AdminDashboard = () => {
     const validateInputs = () => {
         if (!userID.trim()) {
             toast({
+                variant: "failure",
                 title: "Error!",
                 description: "User ID is required",
             });
@@ -110,6 +111,7 @@ const AdminDashboard = () => {
         }
         if (!amount.trim() || isNaN(Number(amount)) || Number(amount) <= 0) {
             toast({
+                variant: "failure",
                 title: "Error!",
                 description: "Please enter a valid amount",
             });
@@ -136,6 +138,7 @@ const AdminDashboard = () => {
                     setUserID('');
                     setAmount('');
                     toast({
+                        variant: "success",
                         title: "Success!",
                         description: "Investment created successfully",
                     });
@@ -144,6 +147,7 @@ const AdminDashboard = () => {
                     console.log(error);
                     setIsCreating(false);
                     toast({
+                        variant: "failure",
                         title: "Error!",
                         description: "Failed to create investment",
                     });
@@ -163,14 +167,14 @@ const AdminDashboard = () => {
                                 <div className="flex flex-col space-y-3">
                                     <p className="text-white text-[12px] opacity-70">TOTAL USERS</p>
                                     <div className="flex flex-row items-center space-x-2">
-                                        <TotalUsersIcon/>
+                                        <TotalUsersIcon />
                                         <p className="text-white text-[24px]">{totalUsers}</p>
                                     </div>
                                 </div>
                                 <div className="flex flex-col space-y-3">
                                     <p className="text-white text-[12px] opacity-70">TOTAL USERS REFERRED</p>
                                     <div className="flex flex-row items-center space-x-2">
-                                        <ReferredUsersIcon/>
+                                        <ReferredUsersIcon />
                                         <p className="text-white text-[24px]">{totalReferrals}</p>
                                     </div>
                                 </div>
@@ -179,7 +183,7 @@ const AdminDashboard = () => {
                                 <div className="flex flex-col space-y-3">
                                     <p className="text-white text-[12px] opacity-70">TOTAL BONUS PAID OUT</p>
                                     <div className="flex flex-row items-center space-x-2">
-                                        <TotalBonusPaidOutIcon/>
+                                        <TotalBonusPaidOutIcon />
                                         <div className="flex flex-row space-x-1">
                                             <p className="text-white text-[24px]">{(totalBonusPaid).toFixed(2)}</p>
                                             <p className="text-white font-extralight text-[24px]">USDT</p>
@@ -189,7 +193,7 @@ const AdminDashboard = () => {
                                 <div className="flex flex-col space-y-3">
                                     <p className="text-white text-[12px] opacity-70">PENDING BONUS REQUEST</p>
                                     <div className="flex flex-row items-center space-x-2">
-                                        <PendingRequestIcon/>
+                                        <PendingRequestIcon />
                                         <div className="flex flex-row space-x-1">
                                             <p className="text-white text-[24px]">{(totalPendingRequests).toFixed(2)}</p>
                                             <p className="text-white opacity-70 text-[16px]">${pendingRequestAmount}</p>
@@ -268,7 +272,7 @@ const AdminDashboard = () => {
                                             onKeyDown={handleAmountKeyDown}
                                         />
                                         <div className="flex flex-1 flex-row items-center justify-end space-x-1 pr-5 cursor-pointer">
-                                            <USDTIconRounded/>
+                                            <USDTIconRounded />
                                             <p className="text-white text-[10px]">
                                                 USDT
                                             </p>
@@ -280,7 +284,7 @@ const AdminDashboard = () => {
                                         className="bg-[#101010] w-[350px] h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] "
                                     >
                                         {isCreating ? (
-                                            <BarLoader color="#08E04A"/>
+                                            <BarLoader color="#08E04A" />
                                         ) : (
                                             <>
                                                 <div className='pr-4'>
@@ -297,13 +301,13 @@ const AdminDashboard = () => {
                 </div>
             </div>
             <div className="w-full">
-            <AdminDashboardTable/>
+                <AdminDashboardTable />
+
+            </div>
+
 
         </div>
-
-
-    </div>
-  )
+    )
 }
 
 export default AdminDashboard

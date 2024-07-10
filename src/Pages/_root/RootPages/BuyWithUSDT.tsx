@@ -37,35 +37,35 @@ type investmentData = {
     amount: number;
     txHash: string;
     paymentMethod: string;
-  };
-  
+};
 
-  export const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
+
+export const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
     return useMutation<AxiosResponse<any>, Error, ContributeData>({
-      mutationFn: (data: ContributeData) => {
-        console.log("Here is the data");
-        console.log(data);
-        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data, {
-          headers: {
-            'Authorization': `Bearer ${auth}`,
-          }
-        });
-      },
+        mutationFn: (data: ContributeData) => {
+            console.log("Here is the data");
+            console.log(data);
+            return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data, {
+                headers: {
+                    'Authorization': `Bearer ${auth}`,
+                }
+            });
+        },
     });
-  };
-  
-  export const useCreateInvestment = (auth: string): UseMutationResult<AxiosResponse<any>, Error, investmentData> => {
+};
+
+export const useCreateInvestment = (auth: string): UseMutationResult<AxiosResponse<any>, Error, investmentData> => {
     return useMutation<AxiosResponse<any>, Error, investmentData>({
-      mutationFn: (data: investmentData) => {
-        console.log("Investment Data ", data);
-        return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data, {
-          headers: {
-            'Authorization': `Bearer ${auth}`,
-          }
-        });
-      },
+        mutationFn: (data: investmentData) => {
+            console.log("Investment Data ", data);
+            return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data, {
+                headers: {
+                    'Authorization': `Bearer ${auth}`,
+                }
+            });
+        },
     });
-  };
+};
 
 const BuyWithUSDT = (props: any) => {
     const { toast } = useToast();
@@ -96,7 +96,7 @@ const BuyWithUSDT = (props: any) => {
             return;
         }
 
-        const amountInWei = parseUnits(tokenAmount.toString(), 18); 
+        const amountInWei = parseUnits(tokenAmount.toString(), 18);
 
         console.log("Transaction amount in Wei:", amountInWei.toString());
 
@@ -115,7 +115,7 @@ const BuyWithUSDT = (props: any) => {
                 toast({
                     title: "Approval Failed",
                     description: "There was an error during the approval process.",
-                    variant: "destructive",
+                    variant: "failure",
                 });
             }
         } else {
@@ -133,7 +133,7 @@ const BuyWithUSDT = (props: any) => {
                 toast({
                     title: "Buy Failed",
                     description: "There was an error during the buy process.",
-                    variant: "destructive",
+                    variant: "failure",
                 });
             }
         }
@@ -145,6 +145,7 @@ const BuyWithUSDT = (props: any) => {
                 setIsApproved(true);
                 setIsApproving(false);
                 toast({
+                    variant: "success",
                     title: "Approval Successful",
                     description: "You can now proceed with the purchase.",
                 });
@@ -176,6 +177,7 @@ const BuyWithUSDT = (props: any) => {
                                         console.log(response);
                                         setTokenAmount(0);
                                         toast({
+                                            variant: "success",
                                             title: "Success!",
                                             description: "Your contribution was successful",
                                         });
@@ -203,7 +205,7 @@ const BuyWithUSDT = (props: any) => {
             toast({
                 title: "Transaction Failed",
                 description: "The transaction failed. Please try again.",
-                variant: "destructive",
+                variant: "failure",
             });
         }
     }, [isConfirmed, isFailed]);
@@ -211,11 +213,11 @@ const BuyWithUSDT = (props: any) => {
     useEffect(() => {
         const storedValue = localStorage.getItem('salerate');
         if (storedValue != null) {
-          const rate_ = parseInt(storedValue, 10);
-          setRate(rate_);
-          console.log(rate_)
+            const rate_ = parseInt(storedValue, 10);
+            setRate(rate_);
+            console.log(rate_)
         }
-      }, []);
+    }, []);
 
 
     return (
@@ -292,9 +294,9 @@ const BuyWithUSDT = (props: any) => {
                 </label>
             </div>
 
-            <button 
-                disabled={isPending || isConfirming || tokenAmount <= 0} 
-                onClick={handleTransaction} 
+            <button
+                disabled={isPending || isConfirming || tokenAmount <= 0}
+                onClick={handleTransaction}
                 className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
             >
                 <p className="font-bold text-[14px] shadow-sm">

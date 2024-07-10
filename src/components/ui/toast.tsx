@@ -3,9 +3,12 @@
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
+import { X, AlertCircle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import SucccessIconSmall from "../Icons/SucccessIconSmall"
+import FailedIconSmall from "../Icons/FailedIconSmall"
+
 
 const ToastProvider = ToastPrimitives.Provider
 
@@ -23,7 +26,6 @@ const ToastViewport = React.forwardRef<
   />
 ))
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
-
 const toastVariants = cva(
   "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
   {
@@ -32,6 +34,8 @@ const toastVariants = cva(
         default: "border bg-background text-foreground",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
+        success: "border-[#08E04A] bg-[#121212] text-white",
+        failure: "border-red-500 bg-[#121212] text-white",
       },
     },
     defaultVariants: {
@@ -43,14 +47,29 @@ const toastVariants = cva(
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
-    VariantProps<typeof toastVariants>
+  VariantProps<typeof toastVariants>
 >(({ className, variant, ...props }, ref) => {
+  let IconComponent: React.ReactNode = null;
+
+  if (variant === 'success') {
+    IconComponent = <SucccessIconSmall />;
+  } else if (variant === 'failure') {
+    IconComponent = <FailedIconSmall />;
+  } else if (variant === 'destructive') {
+    IconComponent = <AlertCircle className="h-5 w-5" />;
+  }
+
   return (
     <ToastPrimitives.Root
       ref={ref}
       className={cn(toastVariants({ variant }), className)}
       {...props}
-    />
+    >
+      <div className="flex items-center space-x-4">
+        {IconComponent}
+        <div className="flex-1">{props.children}</div>
+      </div>
+    </ToastPrimitives.Root>
   )
 })
 Toast.displayName = ToastPrimitives.Root.displayName
