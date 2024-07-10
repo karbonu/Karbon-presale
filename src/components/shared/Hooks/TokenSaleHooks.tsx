@@ -51,9 +51,9 @@ export const getUserReferrals = async (UserID: string, auth: string): Promise<Ax
     }
 }
 
-export const getTotalContribution = async (auth: string): Promise<AxiosResponse<any> | 'Failed'> => {
+export const getTotalContribution = async (auth: string, saleID : string): Promise<AxiosResponse<any> | 'Failed'> => {
     try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/cly9asr6e0000tbafsf3w764u/total-contribution`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/${saleID}/total-contribution`, {
             headers: {
                 'Authorization': `Bearer ${auth}`,
                 'Cache-Control': 'no-cache',

@@ -177,7 +177,7 @@ const SignUp = () => {
       },
       {
         onSuccess: () => {
-          setISVerifying(false);
+          
 
           initialNonceMutation.mutate(
             { email },
@@ -207,12 +207,15 @@ const SignUp = () => {
                                 })
                                 navigate('/dashboard');
                                 setIsLoggingIn(false);
+                                setISVerifying(false);
                             },
                             onError: () => {
                               toast({
                                 title: "Error!",
                                 description: "Invalid Login Credentials",
                               })
+                              setISVerifying(false);
+                              setIsLoggingIn(false);
                             }
                         }
                     );
@@ -278,6 +281,7 @@ const login = useGoogleLogin({
                 headers: { Authorization: `Bearer ${token}` },
             });
             const { email, sub: userID } = userInfo.data;
+            setIsRegistering(true);
             socialSignIn.mutate(
               { 
                   token : token, 
@@ -322,6 +326,7 @@ const login = useGoogleLogin({
             title: "Error!",
             description: "Login Failed, Try Again",
           })
+          setIsRegistering(false);
         }
     },
     onError: () => {

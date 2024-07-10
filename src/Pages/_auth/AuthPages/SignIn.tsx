@@ -216,6 +216,7 @@ const SignIn = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const { email, sub: userID } = userInfo.data;
+                setIsLoggingIn(true);
                 socialSignIn.mutate(
                     { 
                         token : token as string, 
@@ -260,6 +261,7 @@ const SignIn = () => {
                     title: "Error!",
                     description: "Login Failed, Try Again",
                   })
+                  setIsLoggingIn(false);
             }
         },
         onError: () => {
@@ -267,6 +269,7 @@ const SignIn = () => {
                 title: "Error!",
                 description: "Login Failed, Try Again",
               })
+              setIsLoggingIn(false);
         },
     });
 

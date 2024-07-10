@@ -52,7 +52,7 @@ const TokenSale = () => {
   const [tokensBought, setTokensBought] = useState(0);
   const [referralCount, setReferralCount] = useState(0);
   const [fullTransaction, setFulltransaction] = useState(false);
-  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode, setPresaleID, accessToken} = useAuth();
+  const {UserID, setHasDisplayedConnectModal, hasDisplayedConnectModal, referralCode, setPresaleID, presaleID, accessToken} = useAuth();
   const [bonusAmount, setBonusAmount] = useState(0);
   const [bonusAmountRounded, setBonusAmountRounded] = useState(0);
   const payoutMitate = useRequestPayoutMitate(accessToken);
@@ -90,7 +90,7 @@ const TokenSale = () => {
         //console.log("Fetching data...");
   
         // Fetch total contribution
-        const contributionResponse = await getTotalContribution(accessToken as string);
+        const contributionResponse = await getTotalContribution(accessToken as string, presaleID);
 
         //console.log("Contribution response:", contributionResponse);
         if (contributionResponse !== 'Failed' && isMounted) {
