@@ -351,7 +351,7 @@ const BuyWithPaypal = (props: any) => {
 
             <div className='bg-black rounded-[8px] flex flex-col w-full'>
               <div className='flex flex-row items-center p-5 justify-between w-full'>
-                <p className="text-white font-bold text-[16px] max-sm:text-[14px]">{amount}</p>
+                <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{amount}</p>
                 <div className='flex flex-row items-center space-x-2'>
                   <p className="text-white font-thin text-[16px] max-sm:text-[14px]">USDT</p>
                   <USDTIconRounded />
@@ -367,7 +367,7 @@ const BuyWithPaypal = (props: any) => {
               </div>
 
               <div className='flex flex-row items-center p-5 justify-between w-full'>
-                <p className="text-white font-bold text-[16px] max-sm:text-[14px]">{recievingValue}</p>
+                <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{recievingValue}</p>
                 <div className='flex flex-row items-center space-x-2'>
                   <p className="text-white font-thin text-[16px] max-sm:text-[14px]">KARBON</p>
                   <KarbonIcon />
@@ -382,7 +382,7 @@ const BuyWithPaypal = (props: any) => {
 
             <div className='bg-black rounded-[8px] border-[#484848] border-[0.5px] flex flex-col w-full'>
               <div className='flex flex-row items-center p-5 justify-between w-full'>
-                <p className="text-white font-bold text-[12px] max-sm:text-[10px]">Price</p>
+                <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">Price</p>
                 <div className='flex flex-row items-center space-x-2'>
                   <p className="text-white  text-[12px] max-sm:text-[10px]">{rate} KARBON/USDT</p>
                 </div>
