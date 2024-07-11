@@ -428,6 +428,7 @@ const TokenSale = () => {
                     <PayoutModalSuccess
                       isDialogOpen={payoutSuccessOpen}
                       setIsDialogOpen={setPayoutSuccessOpen}
+                      tokenAmount={bonusAmount}
                     />
 
                     <PayoutModalFaliure
@@ -867,6 +868,7 @@ const TokenSale = () => {
                   <PayoutModalSuccess
                     isDialogOpen={payoutSuccessOpen}
                     setIsDialogOpen={setPayoutSuccessOpen}
+                    tokenAmount={bonusAmount}
                   />
 
                   <PayoutModalFaliure

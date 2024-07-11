@@ -78,7 +78,7 @@ const AdminPayoutModal = (props: any) => {
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <div className="flex flex-row space-x-2">
-                                {props.status === "Paid" ? (
+                                {props.status === "paid" ? (
                                     <>
                                         <p className="text-[#08E04A] font-medium text-[32px]">{props.amount}</p>
                                         <p className="text-[#08E04A] text-[32px] opacity-50">USDT</p>
@@ -90,7 +90,7 @@ const AdminPayoutModal = (props: any) => {
                                     </>
                                 )}
                             </div>
-                            {props.status !== "Paid" ? (
+                            {props.status !== "paid" ? (
                                 <div className='flex flex-row space-x-1 items-center'>
                                     <PendingLogo />
                                     <p className="text-[14px] text-white opacity-70">Pending</p>
@@ -116,7 +116,7 @@ const AdminPayoutModal = (props: any) => {
                             <Separator orientation='horizontal' className='bg-black w-full h-[2px]' />
                         </div>
                         <div className='px-10 w-full'>
-                            {props.status !== "Paid" ? (
+                            {props.status !== "paid" ? (
                                 <div className='border-[#282828] rounded-[4px] w-full border-[1px]'>
                                     <div className='p-5'>
                                         <p className='text-white text-[12px] opacity-50'>Transaction Link</p>
@@ -141,7 +141,7 @@ const AdminPayoutModal = (props: any) => {
                             )}
                         </div>
                         <div className='w-full px-10 items-center justify-center flex'>
-                            {props.status !== "Paid" ? (
+                            {props.status !== "paid" ? (
                                 <button onClick={handlePayout} disabled={isPaying} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px]">
                                     {isPaying ? (
 

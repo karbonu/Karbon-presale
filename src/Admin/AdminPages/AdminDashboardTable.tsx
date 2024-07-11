@@ -51,7 +51,7 @@ interface TableRow {
   amount: string;
   status: string;
   createdAt: string;
-  txHash: string | null; // Added txHash
+  txHash: string | null;
 }
 
 const AdminDashboardTable = () => {
@@ -70,19 +70,21 @@ const AdminDashboardTable = () => {
       const users: User[] = response.data;
       const formattedData: TableRow[] = users.flatMap((user: User) => {
         if (user.referrals.length === 0) return [];
-        return user.referrals.map((referral: Referral) => ({
-          walletAddress: user.walletAddress || 'N/A',
-          totalReferrals: user.referrals.length,
-          referralContribution: `${user.usdtSpent} USDT`,
-          bonus: `${referral.bonusAmount} USDT`,
-          isPaid: referral.bonusStatus === 'paid',
-          tx: referral.bonusStatus === 'paid' ? 'Paid' : 'Pending',
-          referralID: referral.id,
-          amount: referral.bonusAmount,
-          status: referral.bonusStatus,
-          createdAt: referral.createdAt,
-          txHash: referral.txHash, // Added txHash
-        }));
+        return user.referrals
+          .filter((referral: Referral) => ['paid', 'processing'].includes(referral.bonusStatus))
+          .map((referral: Referral) => ({
+            walletAddress: user.walletAddress || 'N/A',
+            totalReferrals: user.referrals.length,
+            referralContribution: `${user.usdtSpent} USDT`,
+            bonus: `${referral.bonusAmount} USDT`,
+            isPaid: referral.bonusStatus === 'paid',
+            tx: referral.bonusStatus === 'paid' ? 'Paid' : 'Pending',
+            referralID: referral.id,
+            amount: referral.bonusAmount,
+            status: referral.bonusStatus,
+            createdAt: referral.createdAt,
+            txHash: referral.txHash,
+          }));
       });
 
       // Sort data: unsettled first, then by createdAt
@@ -191,7 +193,7 @@ const AdminDashboardTable = () => {
           amount={selectedPayoutData.amount}
           status={selectedPayoutData.status}
           referralID={selectedPayoutData.referralID}
-          txHash={selectedPayoutData.txHash} // Added txHash
+          txHash={selectedPayoutData.txHash}
         />
       )}
     </div>
