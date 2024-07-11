@@ -289,7 +289,7 @@ const TokenSale = () => {
   const handlePayoutModal = () => {
     if (isConnected) {
       setIsRequesting(true);
-      if (bonusAmount > 500) {
+      if (bonusAmount > 0) {
         payoutMitate.mutate(
           { referralId: referralID },
           {
