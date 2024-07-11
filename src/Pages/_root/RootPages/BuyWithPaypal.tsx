@@ -349,7 +349,7 @@ const BuyWithPaypal = (props: any) => {
               </div>
             </div>
 
-            <div className='bg-black flex flex-col w-full'>
+            <div className='bg-black rounded-[8px] flex flex-col w-full'>
               <div className='flex flex-row items-center p-5 justify-between w-full'>
                 <p className="text-white font-bold text-[16px] max-sm:text-[14px]">{amount}</p>
                 <div className='flex flex-row items-center space-x-2'>
@@ -380,7 +380,7 @@ const BuyWithPaypal = (props: any) => {
             </div>
 
 
-            <div className='bg-black border-[#484848] border-[0.5px] flex flex-col w-full'>
+            <div className='bg-black rounded-[8px] border-[#484848] border-[0.5px] flex flex-col w-full'>
               <div className='flex flex-row items-center p-5 justify-between w-full'>
                 <p className="text-white font-bold text-[12px] max-sm:text-[10px]">Price</p>
                 <div className='flex flex-row items-center space-x-2'>

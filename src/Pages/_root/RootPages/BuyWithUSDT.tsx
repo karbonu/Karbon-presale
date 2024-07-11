@@ -1,10 +1,10 @@
+"use-client"
 import { useEffect, useState } from 'react';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount } from 'wagmi';
 import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
-import { BarLoader } from 'react-spinners';
 import BoughtTokensSuccess from '@/components/shared/BoughtTokensSuccess';
 import { USDTABI } from '@/components/shared/Constants/TokenABI';
 import { BuyAddress, USDTAddress } from '@/components/shared/Constants/Addresses.ts';
@@ -20,6 +20,11 @@ import BoughtTokensFailed from '@/components/shared/BoughtTokensFailed';
 import { useAuth } from '@/components/shared/Contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { parseUnits } from 'viem';
+import KarbonIcon from '@/components/Icons/KarbonIcon';
+import USDTIconRounded from '@/components/Icons/USDTIconRounded';
+import USDTIconBig from '@/components/Icons/USDTIconBig';
+import ConfirmSwapIcon from '@/components/Icons/ConfirmSwapIcon';
+import RingLoader from '@/components/Icons/RingLoader';
 
 type ContributeData = {
     amount: number;
@@ -30,15 +35,12 @@ type ContributeData = {
     paymentMethod: string;
 };
 
-
-
 type investmentData = {
     userId: string;
     amount: number;
     txHash: string;
     paymentMethod: string;
 };
-
 
 export const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
     return useMutation<AxiosResponse<any>, Error, ContributeData>({
@@ -72,10 +74,13 @@ const BuyWithUSDT = (props: any) => {
     const [tokenAmount, setTokenAmount] = useState(0);
     const { open } = useWeb3Modal();
     const { isConnected, address } = useAccount();
-    const [isApproved, setIsApproved] = useState(false);
     const { UserID, presaleID, accessToken } = useAuth();
-    const { data: hash, error, isPending, writeContract } = useWriteContract();
-    const { isLoading: isConfirming, isSuccess: isConfirmed, isError: isFailed } = useWaitForTransactionReceipt({ hash });
+    const { data: hash, error, writeContractAsync } = useWriteContract();
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [step, setStep] = useState(1);
+    const [deflector, setDeflector] = useState(0);
+
+    const { isSuccess: isConfirmed, isError: isFailed } = useWaitForTransactionReceipt({ hash });
     const { data: balance } = useReadContract({
         abi: USDTABI,
         address: USDTAddress,
@@ -90,69 +95,68 @@ const BuyWithUSDT = (props: any) => {
     const [isApproving, setIsApproving] = useState(false);
     const [isBuying, setIsBuying] = useState(false);
 
-    const handleTransaction = async () => {
-        if (!isConnected) {
-            open();
-            return;
+    const handleApprove = async () => {
+        setIsApproving(true);
+        setStep(2);
+        try {
+            const amountInWei = parseUnits(tokenAmount.toString(), 18);
+            await writeContractAsync({
+                address: USDTAddress,
+                abi: USDTABI,
+                functionName: 'approve',
+                args: [BuyAddress, amountInWei],
+            });
+        } catch (error) {
+            console.error("Approval error:", error);
+            setIsApproving(false);
+            setIsDialogOpen(false)
+            setStep(1)
+            toast({
+                title: "Approval Failed",
+                description: "There was an error during the approval process.",
+                variant: "failure",
+            });
         }
+    };
 
-        const amountInWei = parseUnits(tokenAmount.toString(), 18);
-
-        console.log("Transaction amount in Wei:", amountInWei.toString());
-
-        if (!isApproved) {
-            setIsApproving(true);
-            try {
-                await writeContract({
-                    address: USDTAddress,
-                    abi: USDTABI,
-                    functionName: 'approve',
-                    args: [BuyAddress, amountInWei],
-                });
-            } catch (error) {
-                console.error("Approval error:", error);
-                setIsApproving(false);
-                toast({
-                    title: "Approval Failed",
-                    description: "There was an error during the approval process.",
-                    variant: "failure",
-                });
-            }
-        } else {
-            setIsBuying(true);
-            try {
-                await writeContract({
-                    address: BuyAddress,
-                    abi: BUYABI,
-                    functionName: 'buyTokens',
-                    args: [amountInWei],
-                });
-            } catch (error) {
-                console.error("Buy error:", error);
-                setIsBuying(false);
-                toast({
-                    title: "Buy Failed",
-                    description: "There was an error during the buy process.",
-                    variant: "failure",
-                });
-            }
+    const handleBuy = async () => {
+        setIsBuying(true);
+        try {
+            const amountInWei = parseUnits(tokenAmount.toString(), 18);
+            await writeContractAsync({
+                address: BuyAddress,
+                abi: BUYABI,
+                functionName: 'buyTokens',
+                args: [amountInWei],
+            });
+        } catch (error) {
+            console.error("Buy error:", error);
+            setIsBuying(false);
+            setIsDialogOpen(false)
+            setStep(1)
+            toast({
+                title: "Buy Failed",
+                description: "There was an error during the buy process.",
+                variant: "failure",
+            });
         }
     };
 
     useEffect(() => {
         if (isConfirmed) {
             if (isApproving) {
-                setIsApproved(true);
+
                 setIsApproving(false);
                 toast({
-                    variant: "success",
                     title: "Approval Successful",
                     description: "You can now proceed with the purchase.",
+                    variant: "success",
                 });
+                setStep(3);
+                handleBuy();
             } else if (isBuying) {
-                setIsBuySuccessModalOpen(true);
+                setDeflector(tokenAmount * rate)
                 setIsBuying(false);
-
                 contributeMutation.mutate(
                     {
                         amount: tokenAmount,
@@ -175,17 +179,23 @@ const BuyWithUSDT = (props: any) => {
                                 {
                                     onSuccess: (response: any) => {
                                         console.log(response);
+
                                         setTokenAmount(0);
+                                        setIsDialogOpen(false);
+                                        setIsBuySuccessModalOpen(true);
+                                        setStep(1);
                                         toast({
-                                            variant: "success",
                                             title: "Success!",
                                             description: "Your contribution was successful",
+                                            variant: "success",
                                         });
                                         console.log("SUCCESS");
                                     },
                                     onError: (error) => {
                                         console.log(error);
                                         setTokenAmount(0);
+                                        setIsDialogOpen(false);
+                                        setStep(1);
                                         console.log("ERROR");
                                     }
                                 }
@@ -219,6 +229,13 @@ const BuyWithUSDT = (props: any) => {
         }
     }, []);
 
+    const handleProceed = () => {
+        if (isConnected) {
+            setIsDialogOpen(true)
+        } else {
+            open();
+        }
+    }
 
     return (
         <div className='w-full space-y-5 flex flex-col'>
@@ -238,7 +255,7 @@ const BuyWithUSDT = (props: any) => {
                             <p className="text-[14px] text-white">Karbon Finance does not guarantee any returns or profits from token purchases. We recommend conducting thorough research and seeking advice from financial professionals before investing. Karbon Finance reserves the right to amend or cancel the token sale at any time without prior notice</p>
                         </div>
 
-                        <div onClick={() => props.setIsDialogOpen(false)} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] ">
+                        <div onClick={() => setStep(2)} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] ">
                             <div className='pr-4'>
                                 <ForwardGreen />
                             </div>
@@ -264,7 +281,7 @@ const BuyWithUSDT = (props: any) => {
                 <p className="text-white text-[12px]">Amount</p>
                 <div className="flex flex-row items-center space-x-1">
                     <p className="text-white text-[12px] opacity-70">Wallet Balance</p>
-                    <p className="text-white text-[12px]">{Number(balance)?.toFixed(2)}</p>
+                    <p className="text-white text-[12px]">{(Number(balance) / (10 ** 18))?.toFixed(2)}</p>
                 </div>
             </div>
 
@@ -273,7 +290,13 @@ const BuyWithUSDT = (props: any) => {
                     <p className="text-white text-[12px]">You Buy</p>
                     <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
-                        <input id="buyInput" type="number" onChange={(e) => setTokenAmount(Number(e.target.value))} className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none" />
+                        <input
+                            id="buyInput"
+                            type="number"
+                            value={tokenAmount === 0 ? '' : tokenAmount}
+                            onChange={(e) => setTokenAmount(e.target.value === '' ? 0 : Number(e.target.value))}
+                            className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none"
+                        />
                         <p className="text-white text-[12px] opacity-70">USDT</p>
                     </div>
                 </label>
@@ -294,30 +317,144 @@ const BuyWithUSDT = (props: any) => {
                 </label>
             </div>
 
-            <button
-                disabled={isPending || isConfirming || tokenAmount <= 0}
-                onClick={handleTransaction}
-                className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
-            >
+            <button onClick={handleProceed} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                 <p className="font-bold text-[14px] shadow-sm">
                     {isConnected ? (
-                        <>
-                            {(isPending || isConfirming) ? (
-                                <BarLoader />
-                            ) : (
-                                <>
-                                    {!isApproved ? "Approve" : "Buy"}
-                                </>
-                            )}
-                        </>
+                        "Proceed"
                     ) : "Connect Wallet"}
                 </p>
             </button>
 
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[70%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>
+                    {step === 1 && (
+                        <>
+                            <div className='flex flex-row w-full justify-between items-center'>
+                                <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Confirm Contribution</p>
+                                <div onClick={() => setIsDialogOpen(false)} className=' cursor-pointer'>
+                                    <DialogClose />
+                                </div>
+                            </div>
+
+                            <div className='bg-black rounded-[8px] flex flex-col w-full'>
+                                <div className='flex flex-row items-center p-5 justify-between w-full'>
+                                    <p className="text-white font-bold text-[16px] max-sm:text-[14px]">{tokenAmount}</p>
+                                    <div className='flex flex-row items-center space-x-2'>
+                                        <p className="text-white font-thin text-[16px] max-sm:text-[14px]">USDT</p>
+                                        <USDTIconRounded />
+                                    </div>
+                                </div>
+
+                                <div className='flex px-5 space-x-5 flex-row w-full items-center justify-between'>
+                                    <Separator className='bg-[#282828] w-full flex-1 flex h-[1px]' />
+                                    <div className=' rotate-90'>
+                                        <ForwardGreen />
+                                    </div>
+                                    <Separator className='bg-[#282828] w-full flex-1 flex h-[1px]' />
+                                </div>
+
+                                <div className='flex flex-row items-center p-5 justify-between w-full'>
+                                    <p className="text-white font-bold text-[16px] max-sm:text-[14px]">{tokenAmount * rate}</p>
+                                    <div className='flex flex-row items-center space-x-2'>
+                                        <p className="text-white font-thin text-[16px] max-sm:text-[14px]">KARBON</p>
+                                        <KarbonIcon />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='w-full flex items-center justify-center'>
+                                <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>Output is estimated, you will receive your token with a transaction fee taken.</p>
+                            </div>
+
+                            <div className='bg-black rounded-[8px] border-[#484848] border-[0.5px] flex flex-col w-full'>
+                                <div className='flex flex-row items-center p-5 justify-between w-full'>
+                                    <p className="text-white font-bold text-[12px] max-sm:text-[10px]">Price</p>
+                                    <div className='flex flex-row items-center space-x-2'>
+                                        <p className="text-white  text-[12px] max-sm:text-[10px]">{rate} KARBON/USDT</p>
+                                    </div>
+                                </div>
+
+                                <div className='flex flex-row items-center p-5 justify-between w-full'>
+                                    <p className="text-white font-bold text-[12px] max-sm:text-[10px]">Fee</p>
+                                    <div className='flex flex-row items-center space-x-2'>
+                                        <p className="text-white  text-[12px] max-sm:text-[10px]">0.018 ETH</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button onClick={handleApprove} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                                <p className="font-bold text-[14px] shadow-sm">
+                                    {isConnected ? (
+                                        "Confirm Contribution"
+                                    ) : "Connect Wallet"}
+                                </p>
+                            </button>
+                        </>
+                    )}
+
+                    {step === 2 && (
+                        <>
+                            <div className='flex flex-row w-full justify-end items-end'>
+                                <div onClick={() => { setIsDialogOpen(false); setStep(1); }} className=' cursor-pointer'>
+                                    <DialogClose />
+                                </div>
+                            </div>
+
+                            <div className='w-full flex items-center justify-center flex-col space-y-2'>
+                                <USDTIconBig />
+                                <p className="text-white font-semibold text-[20px] max-sm:text-[14px]">Approve USDT</p>
+                            </div>
+
+                            <div className='w-full flex items-center justify-center'>
+                                <p className='text-white text-[12px]'>Swapping through <span className='font-bold'>{address?.slice(0, 15)}...</span></p>
+                            </div>
+
+                            <div className='ringImage'>
+                                <RingLoader />
+                            </div>
+
+                            <p className='text-white text-[12px] font-bold'>Proceed in your wallet</p>
+                        </>
+                    )}
+
+                    {step === 3 && (
+                        <>
+                            <div className='flex flex-row w-full justify-end items-end'>
+                                <div onClick={() => { setIsDialogOpen(false); setStep(1); }} className=' cursor-pointer'>
+                                    <DialogClose />
+                                </div>
+                            </div>
+
+                            <div className='w-full flex items-center justify-center flex-col space-y-2'>
+                                <ConfirmSwapIcon />
+                                <p className="text-white font-semibold text-[20px] max-sm:text-[14px]">Confirm Swap</p>
+                            </div>
+
+                            <div className='w-full flex items-center  flex-row justify-center space-x-5'>
+                                <div>
+                                    <p className='text-white font-normal text-[12px]'>{tokenAmount} USDT</p>
+                                </div>
+                                <div>
+                                    <ForwardGreen />
+                                </div>
+                                <div>
+                                    <p className='text-white font-bold text-[12px]'>{tokenAmount * rate} KARBON</p>
+                                </div>
+                            </div>
+                            <div className='ringImage'>
+                                <RingLoader />
+                            </div>
+
+                            <p className='text-white text-[12px] font-bold'>Proceed in your wallet</p>
+                        </>
+                    )}
+                </DialogContent>
+            </Dialog>
+
             <BoughtTokensSuccess
                 isDialogOpen={isBuySuccessModalOpen}
                 setIsDialogOpen={setIsBuySuccessModalOpen}
-                boughtAmount={tokenAmount}
+                boughtAmount={deflector}
             />
 
             <BoughtTokensFailed
@@ -329,3 +466,4 @@ const BuyWithUSDT = (props: any) => {
 };
 
 export default BuyWithUSDT;
+
