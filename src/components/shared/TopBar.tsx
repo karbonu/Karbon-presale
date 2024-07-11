@@ -64,6 +64,8 @@ const TopBar = () => {
   const [isModalOpen, setisModalOpen] = useState(false);
   const connectMutate = useConnectWallet(accessToken);
 
+
+
   const handleSignOut = () => {
     setPassword('');
     setEmail('');
@@ -114,7 +116,8 @@ const TopBar = () => {
       {
         onSuccess: () => {
           setWalletAddress(address as string);
-          setisModalOpen(false)
+          setisModalOpen(false);
+
           toast({
             variant: 'success',
             title: "Success!",
@@ -123,7 +126,6 @@ const TopBar = () => {
         },
         onError: (error) => {
           console.log(error);
-          disconnect();
           setisModalOpen(false);
 
           toast({
@@ -151,15 +153,23 @@ const TopBar = () => {
     if (isConnected) {
       storeWallet();
     }
+
+
   }, [isConnected]);
+
+
+  const handleModalClose = () => {
+
+    setisModalOpen(false)
+  }
 
   return (
     <div className="w-full">
-      <Dialog open={isModalOpen} onOpenChange={setisModalOpen}>
+      <Dialog open={isModalOpen} onOpenChange={handleModalClose}>
 
         <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[70%] p-10 max-sm:py-7 max-sm:px-5 flex-col outline-none space-y-5'>
           <div className='flex flex-row w-full justify-end items-end'>
-            <div onClick={() => setisModalOpen(false)} className=' cursor-pointer'>
+            <div onClick={() => handleModalClose()} className=' cursor-pointer'>
               <DialogClose />
             </div>
           </div>

@@ -79,6 +79,7 @@ const TokenSale = () => {
   const animatedTokensBought = useCountUp(tokensBought, 1000, previousTokensBought);
   const animatedTotalAmount = useCountUp(totalAmount, 1000, previousTotalAmount);
   const animatedTotalAmountDecimal = useCountUp(decimalTotalAmount, 1000, previousTotalAmountDecimal);
+  const [requested, setRequested] = useState(false);
 
 
 
@@ -246,7 +247,7 @@ const TokenSale = () => {
 
     fetchPresaleData();
     fetchReferralCount();
-  }, []);
+  }, [isRequesting, requested]);
 
 
 
@@ -288,6 +289,7 @@ const TokenSale = () => {
 
   const handlePayoutModal = () => {
     if (isConnected) {
+      setRequested(!requested)
       setIsRequesting(true);
       if (bonusAmount > 0) {
         payoutMitate.mutate(
@@ -297,6 +299,7 @@ const TokenSale = () => {
               console.log(response)
               setPayoutSuccessOpen(true);
               setIsRequesting(false);
+              setRequested(!requested)
             },
             onError: (error) => {
               console.log(error)
@@ -307,6 +310,7 @@ const TokenSale = () => {
         );
       } else {
         setIsRequesting(false);
+        setRequested(!requested)
         setPayoutFaliure(true);
       }
     } else {
