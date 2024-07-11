@@ -237,6 +237,11 @@ const BuyWithUSDT = (props: any) => {
         }
     }
 
+    const handleDialogClose = () => {
+        setIsDialogOpen(false);
+        setStep(1);
+    }
+
     return (
         <div className='w-full space-y-5 flex flex-col'>
             <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
@@ -325,8 +330,8 @@ const BuyWithUSDT = (props: any) => {
                 </p>
             </button>
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[70%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>
+            <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
+                <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[80%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>
                     {step === 1 && (
                         <>
                             <div className='flex flex-row w-full justify-between items-center'>
@@ -406,7 +411,7 @@ const BuyWithUSDT = (props: any) => {
                             </div>
 
                             <div className='w-full flex items-center justify-center'>
-                                <p className='text-white text-[12px]'>Swapping through <span className='font-bold'>{address?.slice(0, 15)}...</span></p>
+                                <p className='text-white text-[12px] max-sm:text-[10px]'>Swapping through <span className='font-bold'>{address?.slice(0, 15)}...</span></p>
                             </div>
 
                             <div className='ringImage'>
@@ -430,11 +435,11 @@ const BuyWithUSDT = (props: any) => {
                                 <p className="text-white font-semibold text-[20px] max-sm:text-[14px]">Confirm Swap</p>
                             </div>
 
-                            <div className='w-full flex items-center  flex-row justify-center space-x-5'>
+                            <div className='w-full flex max-sm:flex-col items-center max-sm:space-y-2  flex-row justify-center md:space-x-5'>
                                 <div>
                                     <p className='text-white font-normal text-[12px]'>{tokenAmount} USDT</p>
                                 </div>
-                                <div>
+                                <div className=' max-sm:rotate-90'>
                                     <ForwardGreen />
                                 </div>
                                 <div>
