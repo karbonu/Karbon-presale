@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useAccount } from "wagmi";
-import axios from "axios";
+import { useAccount, useDisconnect } from "wagmi";
+import axios, { AxiosResponse } from "axios";
 
 import DownIcon from "../Icons/DownIcon.tsx";
 import EthIcon from "../Icons/EthIcon.tsx";
@@ -24,16 +24,47 @@ import SettingsIconBig from "../Icons/SettingsIconBig.tsx";
 import SettingsIconWhiteBig from "../Icons/SettingsIconWhiteBig.tsx";
 import RedirectIcon from "../Icons/RedirectIcon.tsx";
 import { useAuth } from "./Contexts/AuthContext.tsx";
+import { Dialog, DialogContent } from "../ui/dialog.tsx";
+import DialogClose from "../Icons/DialogClose.tsx";
+import WalletAlertIcon from "../Icons/WalletAlertIcon.tsx";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { useToast } from "../ui/use-toast.ts";
+
+
+type walletConnect = {
+  email: string;
+  walletAddress: string;
+  password: string;
+};
+
+
+export const useConnectWallet = (auth: string): UseMutationResult<AxiosResponse<any>, Error, walletConnect> => {
+  return useMutation<AxiosResponse<any>, Error, walletConnect>({
+    mutationFn: (data: walletConnect) => {
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}users/connect-wallet`, data, {
+        headers: {
+          'Authorization': `Bearer ${auth}`,
+        },
+      });
+    },
+  });
+};
+
+
 
 const TopBar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const { toast } = useToast();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const location = useLocation();
-  const { email, password, setPassword, setEmail, walletAddress, setWalletAddress, setAuthenticated, setReferralCOde, setUserID, setHasDisplayedConnectModal } = useAuth();
+  const { email, password, accessToken, setPassword, setEmail, walletAddress, setWalletAddress, setAuthenticated, setReferralCOde, setUserID, setHasDisplayedConnectModal } = useAuth();
   const { open } = useWeb3Modal();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+  const [isModalOpen, setisModalOpen] = useState(false);
+  const connectMutate = useConnectWallet(accessToken);
 
-  const handleSignOut =() => {
+  const handleSignOut = () => {
     setPassword('');
     setEmail('');
     setUserID('');
@@ -41,6 +72,7 @@ const TopBar = () => {
     setWalletAddress('')
     setHasDisplayedConnectModal(false)
     setAuthenticated(false);
+    disconnect();
   }
 
   let title;
@@ -72,34 +104,91 @@ const TopBar = () => {
     setShowDropdown(!showDropdown);
   };
 
-  // Function to store wallet information
-  const storeWallet = async () => {
-    if(walletAddress === "" || walletAddress == null){
-    
-      try {
-        await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}users/connect-wallet`, {
-          email,
-          walletAddress: address,
-          password: password, 
-        });
-      } catch (error) {
-        console.log("Failed storing wallet to backend");
-      }
+  const handleStore = () => {
+    connectMutate.mutate(
+      {
+        email,
+        walletAddress: address as string,
+        password
+      },
+      {
+        onSuccess: () => {
+          setWalletAddress(address as string);
+          setisModalOpen(false)
+          toast({
+            variant: 'success',
+            title: "Success!",
+            description: "Wallet Connected Successfully",
+          })
+        },
+        onError: (error) => {
+          console.log(error);
+          disconnect();
+          setisModalOpen(false);
 
-    }else{
+          toast({
+            variant: 'failure',
+            title: "Error!",
+            description: "Wallet Connection Failed, Try Again",
+          })
+        }
+      }
+    );
+  }
+
+
+  const storeWallet = () => {
+    if (walletAddress === "" || walletAddress === null || walletAddress === address as string) {
+      handleStore();
+    } else {
+      setisModalOpen(true);
       console.log("Wrong connected address")
     }
   };
 
-  // Trigger the wallet store function when the wallet connects
+
   useEffect(() => {
-    if (address) {
+    if (isConnected) {
       storeWallet();
     }
-  }, [address]);
+  }, [isConnected]);
 
   return (
     <div className="w-full">
+      <Dialog open={isModalOpen} onOpenChange={setisModalOpen}>
+
+        <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[70%] p-10 max-sm:py-7 max-sm:px-5 flex-col outline-none space-y-5'>
+          <div className='flex flex-row w-full justify-end items-end'>
+            <div onClick={() => setisModalOpen(false)} className=' cursor-pointer'>
+              <DialogClose />
+            </div>
+          </div>
+
+          <div className="flex flex-col w-full space-y-2 items-center justify-center">
+            <WalletAlertIcon />
+            <p className="text-white font-semibold text-[20px] max-sm:text-[16px]">Do you want to switch wallet?</p>
+            <p className="text-white text-center w-[248px] text-[12px] max-sm:text-[10px]">You have connected to a new wallet that is different from a previous one.</p>
+          </div>
+
+          <div className="flex flex-col w-full items-center justify-center space-y-4">
+            <div className="flex flex-row w-full items-center justify-between rounded-[8px] bg-black p-5">
+              <p className="text-white text-[12px]">Previous Wallet</p>
+              <p className="text-white text-[12px]">{walletAddress?.slice(0, 10)}...{walletAddress?.slice(-4)}</p>
+            </div>
+
+            <div className="flex flex-row w-full items-center justify-between rounded-[8px] bg-black p-5">
+              <p className="text-white text-[12px]">New Wallet</p>
+              <p className="text-white text-[12px]">{address?.slice(0, 10)}...{address?.slice(-4)}</p>
+            </div>
+          </div>
+
+          <button onClick={handleStore} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] outline-none rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+            <p className="font-bold text-[14px] shadow-sm">Switch to New Wallet</p>
+          </button>
+
+
+        </DialogContent>
+      </Dialog>
       <div className="flex items-center justify-between">
         <p className="text-white font-semibold max-lg:hidden text-[20px] max-sm:text-[14px]">{title}</p>
         <a href="/dashboard" className="lg:hidden">
@@ -131,9 +220,8 @@ const TopBar = () => {
               {showDropdown && (
                 <div
                   onMouseLeave={handleDropdown}
-                  className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${
-                    showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
-                  }`}
+                  className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
+                    }`}
                 >
                   <div className="flex flex-col">
                     <div className="p-5 flex flex-col w-full space-y-3">
@@ -192,9 +280,8 @@ const TopBar = () => {
               {showDropdown && (
                 <div
                   onMouseLeave={handleDropdown}
-                  className={`bg-[#121212] border-[1px] border-[#282828] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${
-                    showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
-                  }`}
+                  className={`bg-[#121212] border-[1px] border-[#282828] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
+                    }`}
                 >
                   <div className="flex flex-col">
                     <div className="p-5 flex flex-col w-full space-y-3">
@@ -222,7 +309,7 @@ const TopBar = () => {
                     </div>
                   </div>
                   <div className="w-full cursor-pointer bg-[#0C0C0C]">
-                    <div onClick={handleSignOut}  className="p-3 flex items-center justify-center">
+                    <div onClick={handleSignOut} className="p-3 flex items-center justify-center">
                       <p className="text-[#FF3636] text-[12px]">Sign Out</p>
                     </div>
                   </div>
@@ -313,7 +400,7 @@ const TopBar = () => {
                       </div>
                     </div>
 
-                    <div onClick={handleSignOut}  className="w-full flex cursor-pointer  items-center justify-center bg-[#0C0C0C]">
+                    <div onClick={handleSignOut} className="w-full flex cursor-pointer  items-center justify-center bg-[#0C0C0C]">
                       <p className="text-[#FF3636] py-4 text-[16px]">Sign Out</p>
                     </div>
 

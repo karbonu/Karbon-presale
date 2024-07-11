@@ -8,6 +8,7 @@ import { BarLoader } from "react-spinners";
 import { usePasswoedUpdateMutate } from "@/components/shared/Hooks/UseAuthMutation.tsx";
 import EyeIcon from "@/components/Icons/EyeIcon.tsx";
 import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
+import { useDisconnect } from "wagmi";
 
 const ProfileSettings = () => {
   const [copied, setCopied] = useState(false);
@@ -21,6 +22,7 @@ const ProfileSettings = () => {
   const passwordUpdateMutate = usePasswoedUpdateMutate(accessToken);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { disconnect } = useDisconnect();
 
   const ReferralLink = `${window.location.origin}/signup?referralCode=${UserID}`
 
@@ -60,6 +62,7 @@ const ProfileSettings = () => {
     setReferralCOde('');
     setHasDisplayedConnectModal(false);
     setAuthenticated(false);
+    disconnect();
   };
 
   const validatePasswords = () => {
@@ -103,7 +106,7 @@ const ProfileSettings = () => {
             setPasswordSuccess('');
           }, 2000);
         },
-        onError: (error : any) => {
+        onError: (error: any) => {
           console.log(error);
           setIsUpdatingPassword(false);
           setPasswordError('Password Change Failed, Try Again');
@@ -207,11 +210,10 @@ const ProfileSettings = () => {
               <button
                 disabled={passwordError !== '' || isUpdatingPassword || passwordSuccess !== ''}
                 onClick={handleChangePassword}
-                className={`text-[14px] text-white w-max px-8 py-2 border-[1px] rounded-full cursor-pointer transition ease-in-out ${
-                  passwordError || passwordSuccess
+                className={`text-[14px] text-white w-max px-8 py-2 border-[1px] rounded-full cursor-pointer transition ease-in-out ${passwordError || passwordSuccess
                     ? 'bg-red-500 border-red-500 cursor-not-allowed'
                     : 'bg-transparent border-white opacity-70 hover:opacity-100 hover:text-black hover:bg-white'
-                }`}
+                  }`}
               >
                 {isUpdatingPassword ? <BarLoader color="#FFFFFF" /> : "Update Password"}
               </button>

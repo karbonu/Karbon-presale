@@ -12,7 +12,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 const PasswordReset = (props: any) => {
-  const {toast} = useToast();
+  const { toast } = useToast();
   const [step, setStep] = useState(1);
   const [OTP, setOTP] = useState('');
   const [verificationError, setVerificationError] = useState('');
@@ -70,6 +70,7 @@ const PasswordReset = (props: any) => {
   const handleVerify = () => {
     if (Number(OTP) === 0) {
       toast({
+        variant: 'failure',
         title: "Enter a valid OTP!",
         description: "The One Time Password you entered is not valid",
       })
@@ -81,12 +82,13 @@ const PasswordReset = (props: any) => {
     verifyMutate.mutate(
       {
         email,
-        otp : Number(OTP),
+        otp: Number(OTP),
       },
       {
         onSuccess: (response: any) => {
           console.log(response.data);
           toast({
+            variant: 'success',
             title: "Success!",
             description: "OTP Verification Successfull",
           })
@@ -96,6 +98,7 @@ const PasswordReset = (props: any) => {
         onError: (error) => {
           console.log(error);
           toast({
+            variant: 'failure',
             title: "Error!",
             description: "OTP Verification Failed",
           })
@@ -115,10 +118,11 @@ const PasswordReset = (props: any) => {
         newPassword: password
       },
       {
-        onSuccess: () => { 
+        onSuccess: () => {
           setIsVerifying(false);
           navigate('/')
           toast({
+            variant: 'success',
             title: "Success!",
             description: "Password Reset Successfull",
           })
@@ -127,6 +131,7 @@ const PasswordReset = (props: any) => {
           console.log(error);
           setIsVerifying(false);
           toast({
+            variant: 'failure',
             title: "Error!",
             description: "Password Reset Failed, Try Again",
           })
@@ -207,7 +212,7 @@ const PasswordReset = (props: any) => {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeIcongreen/>
+                      <EyeIcongreen />
                     ) : (
                       <EyeIcon />
                     )}
@@ -244,12 +249,12 @@ const PasswordReset = (props: any) => {
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
                   />
-                 <div
+                  <div
                     className="absolute right-4 top-10 cursor-pointer"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
-                      <EyeIcongreen/>
+                      <EyeIcongreen />
                     ) : (
                       <EyeIcon />
                     )}
