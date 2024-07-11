@@ -404,7 +404,7 @@ const TokenSale = () => {
                 <div className="flex flex-row w-full justify-between pr-10 pb-10">
 
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[12px] opacity-70">BONUS EARNED</p>
+                    <p className="text-white text-[12px] opacity-70">UNCLAIMED BONUS</p>
                     <div className="flex flex-row ">
                       <p className="text-white text-[28px]">${bonusAmount}</p>
                       <p className="text-white text-[18px]">.{bonusAmountRounded}</p>
@@ -822,7 +822,7 @@ const TokenSale = () => {
 
                 <div className="flex flex-row  space-x-10">
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[12px] opacity-70">BONUS EARNED</p>
+                    <p className="text-white text-[12px] opacity-70">UNCLAIMED BONUS</p>
                     <div className="flex flex-row ">
                       <p className="text-white text-[28px]">${bonusAmount}</p>
                       <p className="text-white text-[18px]">.{bonusAmountRounded}</p>
