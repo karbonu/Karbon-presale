@@ -14,6 +14,10 @@ import { useToast } from '@/components/ui/use-toast';
 import { BarLoader } from 'react-spinners';
 import { Separator } from '@/components/ui/separator';
 import UpArrow from '@/components/Icons/UpArrow';
+import DialogClose from '@/components/Icons/DialogClose';
+import USDTIconRounded from '@/components/Icons/USDTIconRounded';
+import ForwardGreen from '@/components/Icons/ForwardGreen';
+import KarbonIcon from '@/components/Icons/KarbonIcon';
 
 interface VerifyPaymentData {
   orderID: string;
@@ -91,7 +95,7 @@ const Button = React.memo(({ onOrderCreate, onOrderApprove, onOrderCancel }: {
 
   return (
     <>
-      {isPending ? <h2>Load Smart Payment Button...</h2> : null}
+      {isPending ? <h2 className='text-white'>Load Smart Payment Button...</h2> : null}
       <PayPalButtons fundingSource={"paypal"} {...paypalbuttonTransactionProps} />
     </>
   );
@@ -252,6 +256,7 @@ const BuyWithPaypal = (props: any) => {
   const handlePay = () => {
     if (Number(amount) === 0) {
       toast({
+        variant: "failure",
         title: "Error!",
         description: "Your need to enter an amount",
       });
@@ -336,7 +341,55 @@ const BuyWithPaypal = (props: any) => {
         </button>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
 
-          <DialogContent className='flex items-center justify-center bg-white w-[70%] py-20'>
+          <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[70%] p-10 max-sm:py-7 max-sm:px-5 flex-col space-y-10'>
+            <div className='flex flex-row w-full justify-between items-center'>
+              <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Confirm Contribution</p>
+              <div onClick={() => setIsModalOpen(false)} className=' cursor-pointer'>
+                <DialogClose />
+              </div>
+            </div>
+
+            <div className='bg-black flex flex-col w-full'>
+              <div className='flex flex-row items-center p-5 justify-between w-full'>
+                <p className="text-white font-bold text-[16px] max-sm:text-[14px]">{amount}</p>
+                <div className='flex flex-row items-center space-x-2'>
+                  <p className="text-white font-thin text-[16px] max-sm:text-[14px]">USDT</p>
+                  <USDTIconRounded />
+                </div>
+              </div>
+
+              <div className='flex px-5 space-x-5 flex-row w-full items-center justify-center'>
+                <Separator className='bg-[#282828] flex-1 flex h-[1px]' />
+                <div className=' rotate-90'>
+                  <ForwardGreen />
+                </div>
+                <Separator className='bg-[#282828] flex-1 flex h-[1px]' />
+              </div>
+
+              <div className='flex flex-row items-center p-5 justify-between w-full'>
+                <p className="text-white font-bold text-[16px] max-sm:text-[14px]">{recievingValue}</p>
+                <div className='flex flex-row items-center space-x-2'>
+                  <p className="text-white font-thin text-[16px] max-sm:text-[14px]">KARBON</p>
+                  <KarbonIcon />
+                </div>
+              </div>
+            </div>
+
+            <div className='w-full flex items-center justify-center'>
+              <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>Output is estimated, you will receive your token with a transaction fee taken.</p>
+            </div>
+
+
+            <div className='bg-black border-[#484848] border-[0.5px] flex flex-col w-full'>
+              <div className='flex flex-row items-center p-5 justify-between w-full'>
+                <p className="text-white font-bold text-[12px] max-sm:text-[10px]">Price</p>
+                <div className='flex flex-row items-center space-x-2'>
+                  <p className="text-white  text-[12px] max-sm:text-[10px]">{rate} KARBON/USDT</p>
+                </div>
+              </div>
+            </div>
+
+
             <Button
               amount={amount}
               onOrderCreate={createOrder}
