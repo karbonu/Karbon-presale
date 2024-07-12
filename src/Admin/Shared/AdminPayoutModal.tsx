@@ -68,7 +68,7 @@ const AdminPayoutModal = (props: any) => {
 
     return (
         <Dialog open={props.payoutModalOpen} onOpenChange={props.setPayoutModalOpen}>
-            <DialogContent className='flex items-center justify-center w-[412px] h-[433px]'>
+            <DialogContent className='flex items-center justify-center outline-none w-[412px] h-[433px]'>
                 <div className='w-[412px] h-[433px] bg-[#101010] rounded-[16px] outline-none ring-0 border-0 outline-0'>
                     <div className='py-10 space-y-[1.3rem] flex flex-col items-center justify-center'>
                         <div className='flex px-10 flex-row w-full items-center justify-between'>
