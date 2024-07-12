@@ -62,7 +62,6 @@ const TokenSale = () => {
   const { open } = useWeb3Modal();
   const [referralID, setReferralID] = useState('');
   const [isRequesting, setIsRequesting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [endDate, setEndDate] = useState('');
   const [startDate, setStartDate] = useState('');
   const [target, setTarger] = useState(0);
@@ -310,7 +309,6 @@ const TokenSale = () => {
             },
             onError: (error) => {
               console.log(error)
-              setErrorMessage('Payout Request Failed');
               toast({
                 variant: "failure",
                 title: "Error!",
@@ -439,9 +437,7 @@ const TokenSale = () => {
                         "Connect Wallet"
                       )}
                     </div>
-                    {errorMessage && (
-                      <p className="text-[12px] w-full text-center text-red-500 mt-2">{errorMessage}</p>
-                    )}
+
                     <PayoutModalSuccess
                       isDialogOpen={payoutSuccessOpen}
                       setIsDialogOpen={setPayoutSuccessOpen}
@@ -879,9 +875,7 @@ const TokenSale = () => {
                       "Connect Wallet"
                     )}
                   </div>
-                  {errorMessage && (
-                    <p className="text-[12px] w-full text-center text-red-500 mt-2">{errorMessage}</p>
-                  )}
+
                   <PayoutModalSuccess
                     isDialogOpen={payoutSuccessOpen}
                     setIsDialogOpen={setPayoutSuccessOpen}
