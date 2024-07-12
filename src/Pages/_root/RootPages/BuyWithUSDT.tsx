@@ -238,8 +238,7 @@ const BuyWithUSDT = (props: any) => {
     }
 
     const handleDialogClose = () => {
-        setIsDialogOpen(false);
-        setStep(1);
+
     }
 
     return (
@@ -336,7 +335,7 @@ const BuyWithUSDT = (props: any) => {
                         <>
                             <div className='flex flex-row w-full justify-between items-center'>
                                 <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Confirm Contribution</p>
-                                <div onClick={() => setIsDialogOpen(false)} className=' cursor-pointer'>
+                                <div onClick={() => { setIsDialogOpen(false); setStep(1); }} className=' cursor-pointer'>
                                     <DialogClose />
                                 </div>
                             </div>
@@ -435,11 +434,11 @@ const BuyWithUSDT = (props: any) => {
                                 <p className="text-white font-semibold text-[20px] max-sm:text-[14px]">Confirm Swap</p>
                             </div>
 
-                            <div className='w-full flex max-sm:flex-col items-center max-sm:space-y-2  flex-row justify-center md:space-x-5'>
+                            <div className='w-full flex flex-col items-center space-y-2  justify-center '>
                                 <div>
                                     <p className='text-white font-normal text-[12px]'>{tokenAmount} USDT</p>
                                 </div>
-                                <div className=' max-sm:rotate-90'>
+                                <div className=' rotate-90'>
                                     <ForwardGreen />
                                 </div>
                                 <div>

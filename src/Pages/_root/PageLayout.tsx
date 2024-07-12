@@ -21,7 +21,7 @@ const PageLayout = () => {
         <TopBar />
         <div className='flex py-5 w-full'>
           {isDropDownOpen && (
-            <div className='absolute w-full h-full bg-black bg-opacity-50 transition ease-in-out fade-in-10 fade-out-10'>
+            <div className={`absolute ${isDropDownOpen ? 'animate-in' : 'animate-out'} w-full h-full bg-black bg-opacity-50 transition ease-in-out fade-in-10 fade-out-10`}>
             </div>
           )}
           <Outlet />
