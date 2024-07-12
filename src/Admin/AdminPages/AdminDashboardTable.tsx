@@ -6,6 +6,7 @@ import PaidTXIcon from "@/components/Icons/PaidTXIcon";
 import PendingPayoutIcon from "@/components/Icons/PendingPayoutIcon";
 import UnpaidTXIcon from '@/components/Icons/UnpaidTXIcon';
 import AdminPayoutModal from '../Shared/AdminPayoutModal';
+import { useAdminAuth } from '../Hooks/AdminAuthContext';
 
 interface Referral {
   id: string;
@@ -58,13 +59,15 @@ const AdminDashboardTable = () => {
   const [selectedTab, setSelectedTab] = useState<string>('All');
   const [tableData, setTableData] = useState<TableRow[]>([]);
   const [payoutModalOpen, setPayoutModalOpen] = useState<boolean>(false);
+  const { accessToken } = useAdminAuth();
   const [selectedPayoutData, setSelectedPayoutData] = useState<TableRow | null>(null);
 
   const fetchData = async () => {
     try {
       const response = await axios.get('https://karbon.plana.ng/admin/users', {
         headers: {
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache',
+          'Authorization': `Bearer ${accessToken}`,
         }
       });
       const users: User[] = response.data;

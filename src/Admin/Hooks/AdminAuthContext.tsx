@@ -1,47 +1,73 @@
 // src/Contexts/AdminAuthContext.tsx
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useAccount } from 'wagmi';
+
 
 interface AdminAuthContextType {
-  isAuthenticated: boolean;
-  connectWallet: () => void;
-  disconnectWaller: () => void;
+  isAdminAuthenticated: boolean;
+  setIsAdminAuthenticated: (isAdminAuthenticated: boolean) => void;
+  accessToken: string;
+  setAccessTToken: (accessToken: string) => void;
+  presaleID: string;
+  setPresaleID: (presaleID: string) => void;
+  lastSignInTime: number;
+  setLastSignInTime: (time: number) => void;
+
 }
 
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
 
-const ADMIN_WALLET_ADDRESS = "0x7A9907da563fc9C80265a846F08b2ca413177F03"; 
 
 export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
-  const { address, isConnected } = useAccount();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
     return localStorage.getItem('isAdminAuthenticated') === 'true';
   });
+  const [accessToken, setAccessTToken] = useState(localStorage.getItem('accesstoken') || "");
+  const [lastSignInTime, setLastSignInTime] = useState<number>(parseInt(localStorage.getItem('lastSignInTime') || '0'));
+  const [presaleID, setPresaleID] = useState(localStorage.getItem('presaleid') || "");
 
-  useEffect(() => {
-    if (isConnected && address === ADMIN_WALLET_ADDRESS) {
-      setIsAuthenticated(true);
-      localStorage.setItem('isAdminAuthenticated', 'true');
-    } else {
-      setIsAuthenticated(false);
-      localStorage.removeItem('isAdminAuthenticated');
-    }
-  }, [isConnected, address]);
 
-  const connectWallet = async () => {
-    if (isConnected && address === ADMIN_WALLET_ADDRESS) {
-      setIsAuthenticated(true);
-      localStorage.setItem('isAdminAuthenticated', 'true');
-    }
+
+  const clearAuthData = () => {
+    setAccessTToken('');
+    setPresaleID('');
+    setIsAdminAuthenticated(false);
+    setLastSignInTime(0);
+    localStorage.clear();
   };
 
-  const disconnectWaller = () =>{
-    setIsAuthenticated(false);
-    localStorage.removeItem('isAdminAuthenticated');
-  }
+  useEffect(() => {
+    const checkSessionExpiration = () => {
+      const currentTime = Date.now();
+      if (lastSignInTime > 0 && currentTime - lastSignInTime > 10 * 60 * 60 * 1000) {
+        clearAuthData();
+      }
+    };
+
+    checkSessionExpiration();
+    const intervalId = setInterval(checkSessionExpiration, 60000);
+
+    return () => clearInterval(intervalId);
+  }, [lastSignInTime]);
+
+
+
+  useEffect(() => {
+    localStorage.setItem('accesstoken', accessToken);
+  }, [accessToken]);
+
+
+  useEffect(() => {
+    localStorage.setItem('lastSignInTime', lastSignInTime.toString());
+  }, [lastSignInTime]);
+
+
+  useEffect(() => {
+    localStorage.setItem('isAdminAuthenticated', JSON.stringify(isAdminAuthenticated));
+  }, [isAdminAuthenticated]);
 
   return (
-    <AdminAuthContext.Provider value={{ isAuthenticated, connectWallet, disconnectWaller }}>
+    <AdminAuthContext.Provider value={{ isAdminAuthenticated, setIsAdminAuthenticated, accessToken, setAccessTToken, presaleID, setPresaleID, lastSignInTime, setLastSignInTime }}>
       {children}
     </AdminAuthContext.Provider>
   );

@@ -5,9 +5,9 @@ import { useAdminAuth } from './AdminAuthContext.tsx';
 
 
 const AdminProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useAdminAuth();
+  const { isAdminAuthenticated } = useAdminAuth();
 
-  if (!isAuthenticated) {
+  if (!isAdminAuthenticated) {
     return <Navigate to="/adminSignin" />;
   }
 

@@ -11,12 +11,14 @@ import CheckMark from '@/components/Icons/CheckMark';
 import { useCompletePayoutMutate } from '../Hooks/AdminCompletePayout';
 import { useToast } from '@/components/ui/use-toast';
 import { BarLoader } from 'react-spinners';
+import { useAdminAuth } from '../Hooks/AdminAuthContext';
 
 const AdminPayoutModal = (props: any) => {
     const { toast } = useToast();
     const [isCopied, setIsCopied] = useState(false);
-    const [isPaying, setIsPaying] = useState(false)
-    const payoutMutate = useCompletePayoutMutate();
+    const [isPaying, setIsPaying] = useState(false);
+    const { accessToken } = useAdminAuth();
+    const payoutMutate = useCompletePayoutMutate(accessToken);
 
     const handleCopy = (text: string) => {
         navigator.clipboard.writeText(text).then(() => {

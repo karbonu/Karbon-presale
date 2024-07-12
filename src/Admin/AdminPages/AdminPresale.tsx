@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import ForwardGreen from '@/components/Icons/ForwardGreen.tsx'; 
+import ForwardGreen from '@/components/Icons/ForwardGreen.tsx';
 import { useCreatePresaleMutate } from '../Hooks/CreatePresaleMutate.tsx';
+import { useAdminAuth } from '../Hooks/AdminAuthContext.tsx';
 
 const AdminPresale = () => {
+  const { accessToken } = useAdminAuth();
   const [formValues, setFormValues] = useState({
     name: '',
     rate: '',
@@ -20,7 +22,7 @@ const AdminPresale = () => {
     totalContribution: 0,
   });
 
-  const createMutate = useCreatePresaleMutate();
+  const createMutate = useCreatePresaleMutate(accessToken);
 
   const [vesting, setVesting] = useState([{ percentage: '', releaseDate: '' }]);
 
@@ -92,7 +94,7 @@ const AdminPresale = () => {
     <div className="bg-[#101010] w-full h-auto rounded-[8px] p-8">
       <div className="p-5 flex flex-col space-y-5">
         <p className="text-white text-[24px] font-bold">Create Presale</p>
-        
+
         <div className="flex flex-col space-y-5">
           <div className="flex flex-row space-x-4">
             <div className="flex flex-col w-1/2">
