@@ -155,8 +155,8 @@ const TokenSale = () => {
         console.log("Response is : ", response)
         const referrerID = response.data.data.id;
         const newCount = Number(response.data.totalReferrals);
-        const newBalanceRaw = Number(response.data.totalBonusRecieved);
-        const processingRaw = Number(response.data.pendingBonusProcessing);
+        const newBalanceRaw = Number(response.data.data.paidRequestbonusAmount);
+        const processingRaw = Number(response.data.data.pendingRequestbonusAmount);
         const totalAmountRaw = Number(response.data.totalBonusEarned);
 
         setReferralID(referrerID)
