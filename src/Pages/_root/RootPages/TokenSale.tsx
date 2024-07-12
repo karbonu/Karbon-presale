@@ -35,6 +35,7 @@ import { useRequestPayoutMitate } from "@/components/shared/Hooks/UseRequestPayo
 import { isNaN } from "lodash";
 import useCountUp from "@/components/shared/Hooks/UseCountUp.tsx";
 import { useToast } from "@/components/ui/use-toast.ts";
+import axios from "axios";
 
 
 const TokenSale = () => {
@@ -307,12 +308,19 @@ const TokenSale = () => {
                 description: "Payout Request was made successfully",
               })
             },
-            onError: (error) => {
-              console.log(error)
+            onError: (error: unknown) => {
+              let errorMessage = "Payout Request Failed, Try Again";
+              if (axios.isAxiosError(error) && error.response) {
+                // If it's an Axios error with a response, we can access the response data
+                errorMessage = error.response.data?.message || errorMessage;
+              } else if (error instanceof Error) {
+                // If it's a standard Error object, we can access the message property
+                errorMessage = error.message || errorMessage;
+              }
               toast({
                 variant: "failure",
                 title: "Error!",
-                description: "Payout Request Failed, Try Again",
+                description: errorMessage,
               })
               setIsRequesting(false);
             }
@@ -322,7 +330,6 @@ const TokenSale = () => {
         setIsRequesting(false);
         setRequested(!requested)
         setPayoutFaliure(true);
-
       }
     } else {
       setIsRequesting(false);
@@ -330,7 +337,6 @@ const TokenSale = () => {
     }
     setIsRequesting(false);
   }
-
 
 
 
