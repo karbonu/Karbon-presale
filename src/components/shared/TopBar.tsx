@@ -156,7 +156,7 @@ const TopBar = () => {
     }
 
 
-  }, [isConnected]);
+  }, [isConnected, address]);
 
 
   const handleModalClose = () => {
