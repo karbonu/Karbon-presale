@@ -25,6 +25,8 @@ interface AuthContextType {
   setIsGoogleSignIn: (isGoogleSignIn: boolean) => void;
   hasDisplayedConnectModal: boolean;
   setHasDisplayedConnectModal: (hasDisplayedConnectModal: boolean) => void;
+  isDropDownOpen: boolean;
+  setIsDropDownOpen: (isDropDownOpen: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,6 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(JSON.parse(localStorage.getItem('isAuthenticated') || 'false'));
   const [isGoogleSignIn, setIsGoogleSignIn] = useState<boolean>(JSON.parse(localStorage.getItem('isGoogleSignIn') || 'false'));
   const [hasDisplayedConnectModal, setHasDisplayedConnectModal] = useState<boolean>(JSON.parse(localStorage.getItem('displayedModalConnect') || 'false'));
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
 
 
   const clearAuthData = () => {
@@ -122,7 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
   return (
-    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, setHasDisplayedConnectModal, hasDisplayedConnectModal, setWalletAddress, walletAddress, presaleID, setPresaleID, accessToken, setAccessTToken, isGoogleSignIn, setIsGoogleSignIn, lastSignInTime, setLastSignInTime, }}>
+    <AuthContext.Provider value={{ email, setEmail, isAuthenticated, setAuthenticated, UserID, setUserID, password, setPassword, referralCode, setReferralCOde, setHasDisplayedConnectModal, hasDisplayedConnectModal, setWalletAddress, walletAddress, presaleID, setPresaleID, accessToken, setAccessTToken, isGoogleSignIn, setIsGoogleSignIn, lastSignInTime, setLastSignInTime, isDropDownOpen, setIsDropDownOpen }}>
       {children}
     </AuthContext.Provider>
   );
