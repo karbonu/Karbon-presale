@@ -2,9 +2,7 @@ import AppleLogo from "@/components/Icons/AppleLogo.tsx";
 import CloseIcon from "@/components/Icons/CloseIcon.tsx";
 import GoogleLogo from "@/components/Icons/GoogleLogo.tsx";
 import KarbonLogo from "@/components/Icons/KarbonLogo.tsx";
-import { Label } from "@/components/ui/label.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { useState } from "react";
 
 import VerifyEmailIcon from "@/components/Icons/VerifyEmailIcon.tsx";
@@ -413,15 +411,11 @@ const SignUp = () => {
                   <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
                 </div>
 
-                <div className="flex px-8 flex-row space-x-3 items-center">
-                  <Checkbox id="terms" />
-                  <Label htmlFor="terms" className="text-white opacity-50 text-[14px] max-sm:text-[12px]">
-                    By creating an account, I agree to Karbon's <a href='https://karbon-website.vercel.app/terms-of-use' target='blank' className="underline underline-offset-2">Terms of Service</a> and <a href='https://karbon-website.vercel.app/privacy-policy' target='blank' className="underline underline-offset-2">Privacy Policy</a>
-                  </Label>
-                </div>
-
                 <div className="flex px-8 flex-col space-y-5">
                   <input onKeyDown={handleemailKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
+                  <div className="  items-center opacity-70 text-white font-normal font-inter text-[12px]">
+                    By creating an account, I agree to Karbon's <a href='https://karbon-website.vercel.app/terms-of-use' target='blank' className="underline underline-offset-2">Terms of Service</a> and <a href='https://karbon-website.vercel.app/privacy-policy' target='blank' className="underline underline-offset-2">Privacy Policy</a>
+                  </div>
                   <div>
                     <button disabled={isLoggingIn} onClick={handleStepOne} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                       {isLoggingIn ? (
