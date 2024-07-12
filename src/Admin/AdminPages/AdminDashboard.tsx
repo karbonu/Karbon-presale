@@ -78,6 +78,7 @@ const AdminDashboard = () => {
         const fetchReferralCount = async () => {
             const response = await getDashboardData(accessToken);
             if (response !== 'Failed') {
+                console.log(response.data)
                 const totalusers = Number(response.data.totalUsers);
                 const totalreferrals = Number(response.data.totalReferrals);
                 const paidbonus = Number(response.data.totalBonusPaid);

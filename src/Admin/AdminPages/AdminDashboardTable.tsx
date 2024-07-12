@@ -1,4 +1,3 @@
-// src/components/AdminDashboardTable.tsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PaidBonusIcon from "@/components/Icons/PaidBonusIcon";
@@ -13,6 +12,7 @@ interface Referral {
   userId: string;
   referredUserId: string | null;
   bonusAmount: string;
+  paidRequestbonusAmount: string;
   bonus: string | null;
   txHash: string | null;
   bonusStatus: string;
@@ -64,30 +64,42 @@ const AdminDashboardTable = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://karbon.plana.ng/admin/users', {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}admin/users`, {
         headers: {
           'Cache-Control': 'no-cache',
           'Authorization': `Bearer ${accessToken}`,
         }
       });
       const users: User[] = response.data;
+      console.log(response.data);
       const formattedData: TableRow[] = users.flatMap((user: User) => {
         if (user.referrals.length === 0) return [];
         return user.referrals
-          .filter((referral: Referral) => ['paid', 'processing'].includes(referral.bonusStatus))
-          .map((referral: Referral) => ({
-            walletAddress: user.walletAddress || 'N/A',
-            totalReferrals: user.referrals.length,
-            referralContribution: `${user.usdtSpent} USDT`,
-            bonus: `${referral.bonusAmount} USDT`,
-            isPaid: referral.bonusStatus === 'paid',
-            tx: referral.bonusStatus === 'paid' ? 'Paid' : 'Pending',
-            referralID: referral.id,
-            amount: referral.bonusAmount,
-            status: referral.bonusStatus,
-            createdAt: referral.createdAt,
-            txHash: referral.txHash,
-          }));
+          .filter((referral: Referral) => {
+            // Include referrals that are paid, processing, or have a paidRequestbonusAmount > 0
+            return referral.bonusStatus === 'paid' ||
+              (referral.bonusStatus === 'pending' && parseFloat(referral.paidRequestbonusAmount) > 0) ||
+              referral.bonusStatus === 'processing';
+          })
+          .map((referral: Referral) => {
+            const isPaid = referral.bonusStatus === 'paid' ||
+              (referral.bonusStatus === 'pending' && parseFloat(referral.paidRequestbonusAmount) > 0);
+            const amount = isPaid ? referral.paidRequestbonusAmount : referral.bonusAmount;
+
+            return {
+              walletAddress: user.walletAddress || 'N/A',
+              totalReferrals: user.referrals.length,
+              referralContribution: `${user.usdtSpent} USDT`,
+              bonus: `${amount} USDT`,
+              isPaid,
+              tx: isPaid ? 'Paid' : 'Pending',
+              referralID: referral.id,
+              amount,
+              status: isPaid ? 'paid' : referral.bonusStatus,
+              createdAt: referral.createdAt,
+              txHash: referral.txHash,
+            };
+          });
       });
 
       // Sort data: unsettled first, then by createdAt
@@ -123,11 +135,18 @@ const AdminDashboardTable = () => {
   };
 
   const filteredData = tableData.filter(row => {
-    if (selectedTab === 'All') return true;
-    if (selectedTab === 'Paid') return row.isPaid;
-    if (selectedTab === 'Pending') return !row.isPaid;
+    if (selectedTab === 'All') {
+      return row.status === 'paid' || row.status === 'processing' || (row.status === 'pending' && parseFloat(row.amount) > 0);
+    }
+    if (selectedTab === 'Paid') {
+      return row.status === 'paid' || (row.status === 'pending' && parseFloat(row.amount) > 0);
+    }
+    if (selectedTab === 'Pending') {
+      return row.status === 'processing';
+    }
     return true;
   });
+
 
   return (
     <div className="w-full bg-[#101010] rounded-[8px]">
@@ -140,7 +159,7 @@ const AdminDashboardTable = () => {
             All Requests
           </div>
           <div
-            className={`flex cursor-pointer items-center rounded-full text-white text-[14px] py-1 px-3 ${selectedTab === 'Pending' ? 'border-white' : 'bg-white bg-opacity-5 border-transparent hover:bg-opacity-0 border-[1px] hover:border-white'}`}
+            className={`flex cursor-pointer items-center rounded-full text-white text-[14px] py-1 px-3 ${selectedTab === 'Pending' ? 'border-white border-[1px]' : 'bg-white bg-opacity-5 border-transparent hover:bg-opacity-0 border-[1px] hover:border-white'}`}
             onClick={() => handleTabClick('Pending')}
           >
             <div className="pr-2">
@@ -149,7 +168,7 @@ const AdminDashboardTable = () => {
             Pending payout
           </div>
           <div
-            className={`flex cursor-pointer items-center rounded-full text-white text-[14px] py-1 px-3 ${selectedTab === 'Paid' ? 'border-white' : 'bg-white bg-opacity-5 border-transparent hover:bg-opacity-0 border-[1px] hover:border-white'}`}
+            className={`flex cursor-pointer items-center rounded-full text-white text-[14px] py-1 px-3 ${selectedTab === 'Paid' ? 'border-white border-[1px]' : 'bg-white bg-opacity-5 border-transparent hover:bg-opacity-0 border-[1px] hover:border-white'}`}
             onClick={() => handleTabClick('Paid')}
           >
             <div className="pr-2">
