@@ -51,6 +51,7 @@ const AdminPayoutModal = (props: any) => {
                         description: "Payout Successfull",
                     })
                     setIsPaying(false);
+                    props.setPayoutModalOpen()
                 },
                 onError: (error) => {
                     console.log(error);
@@ -66,14 +67,14 @@ const AdminPayoutModal = (props: any) => {
     }
 
     return (
-        <Dialog open={props.payoutModalOpen} onOpenChange={props.setPauoutModalOpen}>
+        <Dialog open={props.payoutModalOpen} onOpenChange={props.setPayoutModalOpen}>
             <DialogContent className='flex items-center justify-center w-[412px] h-[433px]'>
                 <div className='w-[412px] h-[433px] bg-[#101010] rounded-[16px] outline-none ring-0 border-0 outline-0'>
                     <div className='py-10 space-y-[1.3rem] flex flex-col items-center justify-center'>
                         <div className='flex px-10 flex-row w-full items-center justify-between'>
                             <div className='w-full flex flex-row items-center justify-between'>
                                 <p className="text-white font-semibold text-[16px]">Payout Request</p>
-                                <div onClick={() => props.setPauoutModalOpen()} className='cursor-pointer '>
+                                <div onClick={() => props.setPayoutModalOpen()} className='cursor-pointer '>
                                     <DialogClose />
                                 </div>
                             </div>
@@ -158,7 +159,7 @@ const AdminPayoutModal = (props: any) => {
                                     )}
                                 </button>
                             ) : (
-                                <div className="bg-transparent px-6 py-1 flex items-center justify-center w-max cursor-pointer hover:border-[#08E04A] transition ease-in-out hover:text-[#08E04A] text-[14px] font-bold text-white rounded-[58px] border-[1px]" onClick={() => props.setPauoutModalOpen(false)}>
+                                <div className="bg-transparent px-6 py-1 flex items-center justify-center w-max cursor-pointer hover:border-[#08E04A] transition ease-in-out hover:text-[#08E04A] text-[14px] font-bold text-white rounded-[58px] border-[1px]" onClick={() => props.setPayoutModalOpen()}>
                                     Close
                                 </div>
                             )}

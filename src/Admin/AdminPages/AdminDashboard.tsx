@@ -13,6 +13,7 @@ import { getTotalContribution } from "@/components/shared/Hooks/TokenSaleHooks.t
 import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx"
 import { useToast } from "@/components/ui/use-toast.ts"
 import { BarLoader } from "react-spinners"
+import useSocketIO from "@/components/shared/Constants/UseSocket.ts"
 
 const AdminDashboard = () => {
     const { toast } = useToast();
@@ -31,6 +32,8 @@ const AdminDashboard = () => {
     const [userID, setUserID] = useState('');
     const [amount, setAmount] = useState('');
     const amountInputRef = useRef<HTMLInputElement>(null);
+    const SOCKET_URL = "https://karbon.plana.ng";
+    const { lastMessage } = useSocketIO(SOCKET_URL);
 
     const investMutate = useAdminCreateInvestmentMutation(accessToken);
 
@@ -99,7 +102,7 @@ const AdminDashboard = () => {
 
         fetchTotalContribution();
         fetchReferralCount();
-    }, []);
+    }, [lastMessage]);
 
     const validateInputs = () => {
         if (!userID.trim()) {

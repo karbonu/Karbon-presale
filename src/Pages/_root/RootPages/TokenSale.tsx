@@ -36,6 +36,7 @@ import { isNaN } from "lodash";
 import useCountUp from "@/components/shared/Hooks/UseCountUp.tsx";
 import { useToast } from "@/components/ui/use-toast.ts";
 import axios from "axios";
+import useSocketIO from "@/components/shared/Constants/UseSocket.ts";
 
 
 const TokenSale = () => {
@@ -82,6 +83,11 @@ const TokenSale = () => {
   const animatedTotalAmount = useCountUp(totalAmount, 1000, previousTotalAmount);
   const animatedTotalAmountDecimal = useCountUp(decimalTotalAmount, 1000, previousTotalAmountDecimal);
   const [requested, setRequested] = useState(false);
+
+
+
+  const SOCKET_URL = "https://karbon.plana.ng";
+  const { lastMessage } = useSocketIO(SOCKET_URL);
 
 
 
@@ -137,13 +143,7 @@ const TokenSale = () => {
 
     fetchData();
 
-    const intervalId = setInterval(fetchData, 5000);
-
-    return () => {
-      isMounted = false;
-      clearInterval(intervalId);
-    };
-  }, [UserID, totalContribution, target]);
+  }, [lastMessage]);
 
 
 
@@ -249,7 +249,7 @@ const TokenSale = () => {
 
     fetchPresaleData();
     fetchReferralCount();
-  }, [isRequesting, requested]);
+  }, [lastMessage]);
 
 
 

@@ -6,6 +6,7 @@ import PendingPayoutIcon from "@/components/Icons/PendingPayoutIcon";
 import UnpaidTXIcon from '@/components/Icons/UnpaidTXIcon';
 import AdminPayoutModal from '../Shared/AdminPayoutModal';
 import { useAdminAuth } from '../Hooks/AdminAuthContext';
+import useSocketIO from '@/components/shared/Constants/UseSocket';
 
 interface Referral {
   id: string;
@@ -19,6 +20,7 @@ interface Referral {
   claimed: boolean;
   createdAt: string;
   updatedAt: string;
+  pendingRequestbonusAmount: string;
 }
 
 interface User {
@@ -61,6 +63,8 @@ const AdminDashboardTable = () => {
   const [payoutModalOpen, setPayoutModalOpen] = useState<boolean>(false);
   const { accessToken } = useAdminAuth();
   const [selectedPayoutData, setSelectedPayoutData] = useState<TableRow | null>(null);
+  const SOCKET_URL = "https://karbon.plana.ng";
+  const { lastMessage } = useSocketIO(SOCKET_URL);
 
   const fetchData = async () => {
     try {
@@ -84,7 +88,7 @@ const AdminDashboardTable = () => {
           .map((referral: Referral) => {
             const isPaid = referral.bonusStatus === 'paid' ||
               (referral.bonusStatus === 'pending' && parseFloat(referral.paidRequestbonusAmount) > 0);
-            const amount = isPaid ? referral.paidRequestbonusAmount : referral.bonusAmount;
+            const amount = isPaid ? referral.paidRequestbonusAmount : referral.pendingRequestbonusAmount;
 
             return {
               walletAddress: user.walletAddress || 'N/A',
@@ -118,7 +122,7 @@ const AdminDashboardTable = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [lastMessage]);
 
   const handleTabClick = (tab: string) => {
     setSelectedTab(tab);
