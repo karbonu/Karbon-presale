@@ -57,7 +57,7 @@ const TopBar = () => {
   const { toast } = useToast();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const location = useLocation();
-  const { email, password, accessToken, setPassword, setEmail, walletAddress, setWalletAddress, setAuthenticated, setReferralCOde, setUserID, setHasDisplayedConnectModal } = useAuth();
+  const { email, password, accessToken, setPassword, setEmail, setIsGoogleSignIn, walletAddress, setWalletAddress, setAuthenticated, setReferralCOde, setUserID, setHasDisplayedConnectModal } = useAuth();
   const { open } = useWeb3Modal();
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
@@ -74,6 +74,7 @@ const TopBar = () => {
     setWalletAddress('')
     setHasDisplayedConnectModal(false)
     setAuthenticated(false);
+    setIsGoogleSignIn(false);
     disconnect();
   }
 

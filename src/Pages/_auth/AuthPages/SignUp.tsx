@@ -32,7 +32,17 @@ const SignUp = () => {
   const [revealConfirmError, setRevealConfirmError] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
   const [otp, setOtp] = useState("");
-  const { setUserID, setReferralCOde, setEmail: setAuthEmail, isAuthenticated, setPassword: setAuthPassword, setAuthenticated, referralCode, setAccessTToken } = useAuth()
+  const { setUserID,
+    setReferralCOde,
+    setEmail: setAuthEmail,
+    isAuthenticated,
+    setPassword: setAuthPassword,
+    setAuthenticated,
+    referralCode,
+    setAccessTToken,
+    setIsGoogleSignIn,
+    setLastSignInTime
+  } = useAuth()
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" />;
@@ -199,6 +209,7 @@ const SignUp = () => {
                       setAccessTToken(response.data.access_token);
                       setUserID(response.data.user.id);
                       setReferralCOde(response.data.user.referralCode);
+                      setLastSignInTime(Date.now());
                       setAuthEmail(email);
                       setAuthPassword(password);
                       setAuthenticated(true);
@@ -282,6 +293,7 @@ const SignUp = () => {
       setRegistrationError('');
       const token = res.access_token;
       setIsRegistering(true);
+      setIsLoggingIn(true);
       try {
         const userInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
           headers: { Authorization: `Bearer ${token}` },
@@ -306,6 +318,8 @@ const SignUp = () => {
               setUserID(response.data.user.id);
               setReferralCOde(response.data.user.referralCode);
               setAuthEmail(response.data.user.email);
+              setLastSignInTime(Date.now());
+              setIsGoogleSignIn(true)
               setAuthPassword('');
               setAuthenticated(true);
               navigate('/dashboard');
@@ -335,6 +349,7 @@ const SignUp = () => {
           title: "Error!",
           description: "Login Failed, Try Again",
         })
+        setIsLoggingIn(false);
         setIsRegistering(false);
       }
     },

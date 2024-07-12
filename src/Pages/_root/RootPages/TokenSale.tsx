@@ -34,9 +34,11 @@ import { useAuth } from "@/components/shared/Contexts/AuthContext.tsx";
 import { useRequestPayoutMitate } from "@/components/shared/Hooks/UseRequestPayoutMutation.tsx";
 import { isNaN } from "lodash";
 import useCountUp from "@/components/shared/Hooks/UseCountUp.tsx";
+import { useToast } from "@/components/ui/use-toast.ts";
 
 
 const TokenSale = () => {
+  const { toast } = useToast();
   const { isConnected } = useAccount();
   const [loading, setIsLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState(0);
@@ -299,11 +301,21 @@ const TokenSale = () => {
               console.log(response)
               setPayoutSuccessOpen(true);
               setIsRequesting(false);
-              setRequested(!requested)
+              setRequested(!requested);
+              toast({
+                variant: "success",
+                title: "Success!",
+                description: "Payout Request was made successfully",
+              })
             },
             onError: (error) => {
               console.log(error)
               setErrorMessage('Payout Request Failed');
+              toast({
+                variant: "failure",
+                title: "Error!",
+                description: "Payout Request Failed, Try Again",
+              })
               setIsRequesting(false);
             }
           }
@@ -312,6 +324,7 @@ const TokenSale = () => {
         setIsRequesting(false);
         setRequested(!requested)
         setPayoutFaliure(true);
+
       }
     } else {
       setIsRequesting(false);

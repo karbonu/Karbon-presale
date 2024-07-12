@@ -9,10 +9,12 @@ import { usePasswoedUpdateMutate } from "@/components/shared/Hooks/UseAuthMutati
 import EyeIcon from "@/components/Icons/EyeIcon.tsx";
 import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 import { useDisconnect } from "wagmi";
+import { useToast } from "@/components/ui/use-toast";
 
 const ProfileSettings = () => {
+  const { toast } = useToast();
   const [copied, setCopied] = useState(false);
-  const { email, setPassword, setReferralCOde, setUserID, setEmail, setAuthenticated, accessToken, UserID, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
+  const { email, setPassword, setReferralCOde, setUserID, isGoogleSignIn, setIsGoogleSignIn, setEmail, setAuthenticated, accessToken, UserID, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -62,6 +64,7 @@ const ProfileSettings = () => {
     setReferralCOde('');
     setHasDisplayedConnectModal(false);
     setAuthenticated(false);
+    setIsGoogleSignIn(false)
     disconnect();
   };
 
@@ -101,7 +104,11 @@ const ProfileSettings = () => {
         onSuccess: () => {
           setIsUpdatingPassword(false);
           setPassword(newPassword);
-          setPasswordSuccess('Password updated successfully');
+          toast({
+            variant: "success",
+            title: "Success!",
+            description: "Password Change Successfully",
+          })
           setTimeout(() => {
             setPasswordSuccess('');
           }, 2000);
@@ -109,7 +116,11 @@ const ProfileSettings = () => {
         onError: (error: any) => {
           console.log(error);
           setIsUpdatingPassword(false);
-          setPasswordError('Password Change Failed, Try Again');
+          toast({
+            variant: "failure",
+            title: "Error!",
+            description: "Password Change Failed, Try Again",
+          })
         }
       }
     );
@@ -155,72 +166,78 @@ const ProfileSettings = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-1 max-lg:w-full">
-        <div className="bg-black border-[1px] border-[#282828] max-lg:w-full rounded-[8px]">
-          <div className="flex flex-col p-5 space-y-4 max-lg:w-full">
-            <p className="text-white font-medium text-[20px]">Change Password</p>
-            <div className="flex flex-row max-lg:flex-col max-lg:space-y-2 w-full items-center justify-between md:space-x-2">
-              <div className="flex flex-col max-lg:w-full space-y-2 relative">
-                <p className="text-white text-[12px]">New Password</p>
-                <input
-                  type={showNewPassword ? "text" : "password"}
-                  className="outline-none focus:outline-[1px]  pl-5 focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
-                  value={newPassword}
-                  onChange={handleNewPasswordChange}
-                />
-                <div
-                  className="absolute right-4 top-[1.8rem] cursor-pointer"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                >
-                  {showNewPassword ? (
-                    <EyeIcongreen />
-                  ) : (
-                    <EyeIcon />
-                  )}
+
+      {!isGoogleSignIn && (
+        <div className="flex flex-1 max-lg:w-full">
+          <div className="bg-black border-[1px] border-[#282828] max-lg:w-full rounded-[8px]">
+            <div className="flex flex-col p-5 space-y-4 max-lg:w-full">
+              <p className="text-white font-medium text-[20px]">Change Password</p>
+              <div className="flex flex-row max-lg:flex-col max-lg:space-y-2 w-full items-center justify-between md:space-x-2">
+                <div className="flex flex-col max-lg:w-full space-y-2 relative">
+                  <p className="text-white text-[12px]">New Password</p>
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    className="outline-none focus:outline-[1px]  pl-5 focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
+                    value={newPassword}
+                    onChange={handleNewPasswordChange}
+                  />
+                  <div
+                    className="absolute right-4 top-[1.8rem] cursor-pointer"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                  >
+                    {showNewPassword ? (
+                      <EyeIcongreen />
+                    ) : (
+                      <EyeIcon />
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col max-lg:w-full space-y-2 relative">
+                  <p className="text-white text-[12px]">Confirm New Password</p>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    className="outline-none focus:outline-[1px] pl-5 focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                    onKeyDown={(e) => e.key === 'Enter' && handleChangePassword()}
+                  />
+                  <div
+                    className="absolute right-4 top-[1.8rem] cursor-pointer"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeIcongreen />
+                    ) : (
+                      <EyeIcon />
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-col max-lg:w-full space-y-2 relative">
-                <p className="text-white text-[12px]">Confirm New Password</p>
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  className="outline-none focus:outline-[1px] pl-5 focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                  onKeyDown={(e) => e.key === 'Enter' && handleChangePassword()}
-                />
-                <div
-                  className="absolute right-4 top-[1.8rem] cursor-pointer"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <EyeIcongreen />
-                  ) : (
-                    <EyeIcon />
-                  )}
-                </div>
-              </div>
-            </div>
-            {passwordError && (
-              <p className="text-[10px] text-red-500">{passwordError}</p>
-            )}
-            {passwordSuccess && (
-              <p className="text-[10px] text-[#08E04A]">{passwordSuccess}</p>
-            )}
-            <div>
-              <button
-                disabled={passwordError !== '' || isUpdatingPassword || passwordSuccess !== ''}
-                onClick={handleChangePassword}
-                className={`text-[14px] text-white w-max px-8 py-2 border-[1px] rounded-full cursor-pointer transition ease-in-out ${passwordError || passwordSuccess
+              {passwordError && (
+                <p className="text-[10px] text-red-500">{passwordError}</p>
+              )}
+              {passwordSuccess && (
+                <p className="text-[10px] text-[#08E04A]">{passwordSuccess}</p>
+              )}
+              <div>
+                <button
+                  disabled={passwordError !== '' || isUpdatingPassword || passwordSuccess !== ''}
+                  onClick={handleChangePassword}
+                  className={`text-[14px] text-white w-max px-8 py-2 border-[1px] rounded-full cursor-pointer transition ease-in-out ${passwordError || passwordSuccess
                     ? 'bg-red-500 border-red-500 cursor-not-allowed'
                     : 'bg-transparent border-white opacity-70 hover:opacity-100 hover:text-black hover:bg-white'
-                  }`}
-              >
-                {isUpdatingPassword ? <BarLoader color="#FFFFFF" /> : "Update Password"}
-              </button>
+                    }`}
+                >
+                  {isUpdatingPassword ? <BarLoader color="#FFFFFF" /> : "Update Password"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+
+
       <div className="flex flex-row max-lg:flex-col pt-10 justify-between items-center max-lg:space-y-2">
         <div className="flex flex-row lg:space-x-40 max-lg:w-full max-lg:justify-between max-sm:px-5">
           <p className="text-[8px] text-white opacity-30">Copyright © 2024 Karbon. All rights reserved.</p>

@@ -40,7 +40,18 @@ const SignIn = () => {
     const initialNonceMutation = useInitialNonceMutation();
     const loginMutation = useLoginMutation();
     const reserMutation = usePasswordResetMutate();
-    const { setEmail: setAuthEmail, setPassword: setAuthPassword, isAuthenticated, setAuthenticated, setUserID, setReferralCOde, setWalletAddress, setAccessTToken } = useAuth();
+    const { setEmail: setAuthEmail,
+        setPassword: setAuthPassword,
+        isAuthenticated,
+        setAuthenticated,
+        setUserID,
+        setReferralCOde,
+        setWalletAddress,
+        setAccessTToken,
+        setIsGoogleSignIn,
+        setLastSignInTime
+    } = useAuth();
+
 
     if (isAuthenticated) {
         return <Navigate to="/dashboard" />;
@@ -127,6 +138,7 @@ const SignIn = () => {
                     }
                     setAccessTToken(response.data.access_token);
                     setWalletAddress(response.data.user.walletAddress)
+                    setLastSignInTime(Date.now());
                     console.log(response.data)
                     setUserID(response.data.user.id);
                     setReferralCOde(response.data.user.referralCode);
@@ -238,6 +250,8 @@ const SignIn = () => {
                         onSuccess: (response) => {
                             console.log(response.data)
                             localStorage.removeItem('referralCode');
+                            setIsGoogleSignIn(true);
+                            setLastSignInTime(Date.now());
                             setAccessTToken(response.data.access_token);
                             setUserID(response.data.user.id);
                             setReferralCOde(response.data.user.referralCode);
