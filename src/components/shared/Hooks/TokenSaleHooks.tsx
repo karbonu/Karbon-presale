@@ -10,7 +10,7 @@ export const getPresaleID = async (auth: string): Promise<AxiosResponse<any> | '
         });
         return response;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return 'Failed';
     }
 }
@@ -27,7 +27,7 @@ export const getTotalUSDSpent = async (UserID: string, auth: string): Promise<Ax
         });
         return response;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return 'Failed';
     }
 }
@@ -42,16 +42,16 @@ export const getUserReferrals = async (UserID: string, auth: string): Promise<Ax
                 'Expires': '0',
             }
         });
-        console.log("user id");
-        console.log(UserID);
+        // console.log("user id");
+        // console.log(UserID);
         return response;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return 'Failed';
     }
 }
 
-export const getTotalContribution = async (auth: string, saleID : string): Promise<AxiosResponse<any> | 'Failed'> => {
+export const getTotalContribution = async (auth: string, saleID: string): Promise<AxiosResponse<any> | 'Failed'> => {
     try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}presale/${saleID}/total-contribution`, {
             headers: {
@@ -63,7 +63,7 @@ export const getTotalContribution = async (auth: string, saleID : string): Promi
         });
         return response;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return 'Failed';
     }
 };

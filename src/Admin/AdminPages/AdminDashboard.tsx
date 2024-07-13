@@ -22,7 +22,7 @@ const AdminDashboard = () => {
     const [totalReferrals, setTotalReferrals] = useState(0);
     const [totalBonusPaid, setTotalBonusPaid] = useState(0);
     const [totalPendingRequests, setTotalPendingRequests] = useState(0);
-    const [pendingRequestAmount, setTotalPendingRequestAmount] = useState(0);
+    // const [pendingRequestAmount, setTotalPendingRequestAmount] = useState(0);
     const [totalClaimed, setTotalClaimed] = useState(0);
     const [totalUnclaimed, setTotalUnclaimed] = useState(0);
     const [totalContribution, setTotalContribution] = useState(0);
@@ -32,7 +32,7 @@ const AdminDashboard = () => {
     const [userID, setUserID] = useState('');
     const [amount, setAmount] = useState('');
     const amountInputRef = useRef<HTMLInputElement>(null);
-    const SOCKET_URL = "https://karbon.plana.ng";
+    const SOCKET_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
     const { lastMessage } = useSocketIO(SOCKET_URL);
 
     const investMutate = useAdminCreateInvestmentMutation(accessToken);
@@ -64,8 +64,8 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         const fetchTotalContribution = async () => {
-            const response = await getTotalContribution(accessToken, presaleID);
-
+            const response = await getTotalContribution(accessToken as string, presaleID);
+            // console.log(response);
             if (response !== 'Failed') {
                 const Contribute = Number(response.data._sum.amount);
                 setTotalContribution(isNaN(Contribute) ? 0 : Contribute);
@@ -74,14 +74,14 @@ const AdminDashboard = () => {
                     setDecimalContribution(Number(newBalanceDecimal))
                 }
             } else {
-                console.log(response);
+                // console.log(response);
             }
         }
 
         const fetchReferralCount = async () => {
-            const response = await getDashboardData(accessToken);
+            const response = await getDashboardData(accessToken as string);
             if (response !== 'Failed') {
-                console.log(response.data)
+                // console.log("Admin Ref Count Data", response.data)
                 const totalusers = Number(response.data.totalUsers);
                 const totalreferrals = Number(response.data.totalReferrals);
                 const paidbonus = Number(response.data.totalBonusPaid);
@@ -92,11 +92,11 @@ const AdminDashboard = () => {
                 setTotalPendingRequests(isNaN(pendingrequest) ? 0 : pendingrequest);
                 setTotalUnclaimed(0);
                 setTotalClaimed(0)
-                if (totalPendingRequests === 0) {
-                    setTotalPendingRequestAmount(0);
-                }
+                // if (totalPendingRequests === 0) {
+                //     setTotalPendingRequestAmount(0);
+                // }
             } else {
-                console.log(response);
+                // console.log(response);
             }
         };
 
@@ -135,9 +135,9 @@ const AdminDashboard = () => {
                 txHash: ''
             },
             {
-                onSuccess: (response: any) => {
-                    console.log(response);
-                    console.log(response.data);
+                onSuccess: () => {
+                    // console.log(response);
+                    // console.log(response.data);
                     setIsCreating(false);
                     setUserID('');
                     setAmount('');
@@ -147,8 +147,8 @@ const AdminDashboard = () => {
                         description: "Investment created successfully",
                     });
                 },
-                onError: (error: any) => {
-                    console.log(error);
+                onError: () => {
+                    // console.log(error);
                     setIsCreating(false);
                     toast({
                         variant: "failure",
@@ -199,8 +199,8 @@ const AdminDashboard = () => {
                                     <div className="flex flex-row items-center space-x-2">
                                         <PendingRequestIcon />
                                         <div className="flex flex-row space-x-1">
-                                            <p className="text-white text-[24px]">{(totalPendingRequests).toFixed(2)}</p>
-                                            <p className="text-white opacity-70 text-[16px]">${pendingRequestAmount}</p>
+                                            <p className="text-white text-[24px]">${(totalPendingRequests).toFixed(2)}</p>
+                                            {/* <p className="text-white opacity-70 text-[16px]">${pendingRequestAmount}</p> */}
                                         </div>
                                     </div>
                                 </div>

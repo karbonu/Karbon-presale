@@ -27,17 +27,17 @@ const useSocketIO = (url: string) => {
         socketRef.current.on('connect', () => {
             setIsConnected(true);
             setConnectionError(null);
-            console.log('Connected to Socket.IO server');
+            // console.log('Connected to Socket.IO server');
         });
 
-        socketRef.current.on('disconnect', (reason) => {
+        socketRef.current.on('disconnect', () => {
             setIsConnected(false);
-            console.log('Disconnected from Socket.IO server:', reason);
+            // console.log('Disconnected from Socket.IO server:', reason);
         });
 
         socketRef.current.on('connect_error', (error) => {
             setConnectionError(error.message);
-            console.error('Connection error:', error);
+            // console.error('Connection error:', error);
         });
 
         // Listen for all events

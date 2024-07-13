@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import ForwardGreen from '@/components/Icons/ForwardGreen.tsx';
 import { useCreatePresaleMutate } from '../Hooks/CreatePresaleMutate.tsx';
 import { useAdminAuth } from '../Hooks/AdminAuthContext.tsx';
+import { useToast } from '@/components/ui/use-toast.ts';
 
 const AdminPresale = () => {
+  const { toast } = useToast();
   const { accessToken } = useAdminAuth();
   const [formValues, setFormValues] = useState({
     name: '',
@@ -78,14 +80,21 @@ const AdminPresale = () => {
       vesting: vestingData
     };
 
-    console.log(data);
+    // console.log(data);
     createMutate.mutate(data, {
-      onSuccess: (response) => {
-        console.log(response)
-        console.log('Presale created successfully');
+      onSuccess: () => {
+        toast({
+          variant: 'success',
+          title: "Success!",
+          description: "Presale created successfully",
+        })
       },
-      onError: (error) => {
-        console.error('Error creating presale:', error);
+      onError: () => {
+        toast({
+          variant: 'failure',
+          title: "Error!",
+          description: "Presale creation failed",
+        })
       }
     });
   };

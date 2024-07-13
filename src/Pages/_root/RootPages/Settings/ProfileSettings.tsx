@@ -113,8 +113,8 @@ const ProfileSettings = () => {
             setPasswordSuccess('');
           }, 2000);
         },
-        onError: (error: any) => {
-          console.log(error);
+        onError: () => {
+          // console.log(error);
           setIsUpdatingPassword(false);
           toast({
             variant: "failure",

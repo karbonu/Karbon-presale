@@ -45,8 +45,8 @@ type investmentData = {
 export const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
     return useMutation<AxiosResponse<any>, Error, ContributeData>({
         mutationFn: (data: ContributeData) => {
-            console.log("Here is the data");
-            console.log(data);
+            // console.log("Here is the data");
+            // console.log(data);
             return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data, {
                 headers: {
                     'Authorization': `Bearer ${auth}`,
@@ -59,7 +59,7 @@ export const useContributeMutation = (auth: string): UseMutationResult<AxiosResp
 export const useCreateInvestment = (auth: string): UseMutationResult<AxiosResponse<any>, Error, investmentData> => {
     return useMutation<AxiosResponse<any>, Error, investmentData>({
         mutationFn: (data: investmentData) => {
-            console.log("Investment Data ", data);
+            // console.log("Investment Data ", data);
             return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data, {
                 headers: {
                     'Authorization': `Bearer ${auth}`,
@@ -75,7 +75,7 @@ const BuyWithUSDT = (props: any) => {
     const { open } = useWeb3Modal();
     const { isConnected, address } = useAccount();
     const { UserID, presaleID, accessToken } = useAuth();
-    const { data: hash, error, writeContractAsync } = useWriteContract();
+    const { data: hash, writeContractAsync } = useWriteContract();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [step, setStep] = useState(1);
     const [deflector, setDeflector] = useState(0);
@@ -107,7 +107,7 @@ const BuyWithUSDT = (props: any) => {
                 args: [BuyAddress, amountInWei],
             });
         } catch (error) {
-            console.error("Approval error:", error);
+            // console.error("Approval error:", error);
             setIsApproving(false);
             setIsDialogOpen(false)
             setStep(1)
@@ -130,7 +130,7 @@ const BuyWithUSDT = (props: any) => {
                 args: [amountInWei],
             });
         } catch (error) {
-            console.error("Buy error:", error);
+            // console.error("Buy error:", error);
             setIsBuying(false);
             setIsDialogOpen(false)
             setStep(1)
@@ -167,8 +167,8 @@ const BuyWithUSDT = (props: any) => {
                         paymentMethod: 'USDT',
                     },
                     {
-                        onSuccess: (response: any) => {
-                            console.log(response);
+                        onSuccess: () => {
+                            // console.log(response);
                             investmentMutate.mutate(
                                 {
                                     amount: tokenAmount,
@@ -177,8 +177,8 @@ const BuyWithUSDT = (props: any) => {
                                     paymentMethod: 'USDT',
                                 },
                                 {
-                                    onSuccess: (response: any) => {
-                                        console.log(response);
+                                    onSuccess: () => {
+                                        // console.log(response);
 
                                         setTokenAmount(0);
                                         setIsDialogOpen(false);
@@ -191,12 +191,12 @@ const BuyWithUSDT = (props: any) => {
                                         });
                                         console.log("SUCCESS");
                                     },
-                                    onError: (error) => {
-                                        console.log(error);
+                                    onError: () => {
+                                        // console.log(error);
                                         setTokenAmount(0);
                                         setIsDialogOpen(false);
                                         setStep(1);
-                                        console.log("ERROR");
+                                        // console.log("ERROR");
                                     }
                                 }
                             );
@@ -211,7 +211,7 @@ const BuyWithUSDT = (props: any) => {
             setIsBuyFailedModalOpen(true);
             setIsApproving(false);
             setIsBuying(false);
-            console.log(error);
+            // console.log(error);
             toast({
                 title: "Transaction Failed",
                 description: "The transaction failed. Please try again.",
@@ -225,7 +225,7 @@ const BuyWithUSDT = (props: any) => {
         if (storedValue != null) {
             const rate_ = parseInt(storedValue, 10);
             setRate(rate_);
-            console.log(rate_)
+            // console.log(rate_)
         }
     }, []);
 

@@ -31,10 +31,10 @@ const AdminPayoutModal = (props: any) => {
 
 
     const handlePayout = () => {
-        console.log(props)
+        // console.log(props)
         setIsPaying(true);
         const id = props.referralID
-        console.log("ID is ", id)
+        // console.log("ID is ", id)
         const hash = props.txHash
         payoutMutate.mutate(
             {
@@ -43,8 +43,8 @@ const AdminPayoutModal = (props: any) => {
 
             },
             {
-                onSuccess: (response: any) => {
-                    console.log(response.data);
+                onSuccess: () => {
+                    // console.log(response.data);
                     toast({
                         variant: 'success',
                         title: "Success!",
@@ -53,8 +53,8 @@ const AdminPayoutModal = (props: any) => {
                     setIsPaying(false);
                     props.setPayoutModalOpen()
                 },
-                onError: (error) => {
-                    console.log(error);
+                onError: () => {
+                    // console.log(error);
                     toast({
                         variant: 'failure',
                         title: "Error!",
@@ -145,7 +145,7 @@ const AdminPayoutModal = (props: any) => {
                         </div>
                         <div className='w-full px-10 items-center justify-center flex'>
                             {props.status !== "paid" ? (
-                                <button onClick={handlePayout} disabled={isPaying} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px]">
+                                <button onClick={handlePayout} disabled={isPaying} className="bg-black outline-none w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px]">
                                     {isPaying ? (
 
                                         <BarLoader color='white' />

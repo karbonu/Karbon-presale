@@ -63,7 +63,7 @@ const AdminDashboardTable = () => {
   const [payoutModalOpen, setPayoutModalOpen] = useState<boolean>(false);
   const { accessToken } = useAdminAuth();
   const [selectedPayoutData, setSelectedPayoutData] = useState<TableRow | null>(null);
-  const SOCKET_URL = "https://karbon.plana.ng";
+  const SOCKET_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
   const { lastMessage } = useSocketIO(SOCKET_URL);
 
   const fetchData = async () => {
@@ -75,7 +75,7 @@ const AdminDashboardTable = () => {
         }
       });
       const users: User[] = response.data;
-      console.log(response.data);
+      // console.log(response.data);
       const formattedData: TableRow[] = users.flatMap((user: User) => {
         if (user.referrals.length === 0) return [];
         return user.referrals
@@ -116,7 +116,7 @@ const AdminDashboardTable = () => {
 
       setTableData(sortedData);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      // console.error("Error fetching data:", error);
     }
   };
 

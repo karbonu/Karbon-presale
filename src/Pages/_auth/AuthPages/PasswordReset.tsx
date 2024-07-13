@@ -85,8 +85,8 @@ const PasswordReset = (props: any) => {
         otp: Number(OTP),
       },
       {
-        onSuccess: (response: any) => {
-          console.log(response.data);
+        onSuccess: () => {
+          // console.log(response.data);
           toast({
             variant: 'success',
             title: "Success!",
@@ -95,8 +95,8 @@ const PasswordReset = (props: any) => {
           setStep(2);
           setIsVerifying(false);
         },
-        onError: (error) => {
-          console.log(error);
+        onError: () => {
+          // console.log(error);
           toast({
             variant: 'failure',
             title: "Error!",
@@ -127,8 +127,8 @@ const PasswordReset = (props: any) => {
             description: "Password Reset Successfull",
           })
         },
-        onError: (error) => {
-          console.log(error);
+        onError: () => {
+          // console.log(error);
           setIsVerifying(false);
           toast({
             variant: 'failure',

@@ -139,7 +139,7 @@ const SignIn = () => {
                     setAccessTToken(response.data.access_token);
                     setWalletAddress(response.data.user.walletAddress)
                     setLastSignInTime(Date.now());
-                    console.log(response.data)
+                    // console.log(response.data)
                     setUserID(response.data.user.id);
                     setReferralCOde(response.data.user.referralCode);
                     setAuthEmail(email);
@@ -186,16 +186,16 @@ const SignIn = () => {
                 otp: Number(otp),
             },
             {
-                onSuccess: (response: any) => {
-                    console.log(response)
-                    console.log(response.data)
+                onSuccess: () => {
+                    // console.log(response)
+                    // console.log(response.data)
                     setISVerifying(false);
                     handleInitialNonceRequest();
                     handleLoginRequest();
 
                 },
-                onError: (error) => {
-                    console.log(error)
+                onError: () => {
+                    // console.log(error)
                     setISVerifying(false);
                     toast({
                         variant: "failure",
@@ -248,7 +248,7 @@ const SignIn = () => {
 
                     {
                         onSuccess: (response) => {
-                            console.log(response.data)
+                            // console.log(response.data)
                             localStorage.removeItem('referralCode');
                             setIsGoogleSignIn(true);
                             setLastSignInTime(Date.now());

@@ -156,8 +156,8 @@ const SignUp = () => {
           })
           setStep(3);
         },
-        onError: (error) => {
-          console.log(error);
+        onError: () => {
+          // console.log(error);
           toast({
             variant: "failure",
             title: "Error!",
@@ -205,7 +205,7 @@ const SignUp = () => {
                         setStep(5)
                         return;
                       }
-                      console.log(response.data)
+                      // console.log(response.data)
                       setAccessTToken(response.data.access_token);
                       setUserID(response.data.user.id);
                       setReferralCOde(response.data.user.referralCode);

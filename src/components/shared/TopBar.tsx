@@ -140,8 +140,8 @@ const TopBar = () => {
             description: "Wallet Connected Successfully",
           })
         },
-        onError: (error) => {
-          console.log(error);
+        onError: () => {
+          // console.log(error);
           setisModalOpen(false);
 
           toast({
@@ -160,7 +160,7 @@ const TopBar = () => {
       handleStore();
     } else {
       setisModalOpen(true);
-      console.log("Wrong connected address")
+      // console.log("Wrong connected address")
     }
   };
 

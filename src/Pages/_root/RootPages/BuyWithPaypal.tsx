@@ -44,8 +44,8 @@ type InvestmentData = {
 export const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
   return useMutation<AxiosResponse<any>, Error, ContributeData>({
     mutationFn: (data: ContributeData) => {
-      console.log("Here is the data");
-      console.log(data);
+      // console.log("Here is the data");
+      // console.log(data);
       return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data, {
         headers: {
           'Authorization': `Bearer ${auth}`,
@@ -58,7 +58,7 @@ export const useContributeMutation = (auth: string): UseMutationResult<AxiosResp
 export const useCreateInvestment = (auth: string): UseMutationResult<AxiosResponse<any>, Error, InvestmentData> => {
   return useMutation<AxiosResponse<any>, Error, InvestmentData>({
     mutationFn: (data: InvestmentData) => {
-      console.log("Investment Data ", data);
+      // console.log("Investment Data ", data);
       return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data, {
         headers: {
           'Authorization': `Bearer ${auth}`,
@@ -144,7 +144,7 @@ const BuyWithPaypal = (props: any) => {
   const createOrder = useCallback((data: any, actions: any) => {
 
     setOrderCreated(true);
-    console.log("Creating order with amount:", amount);
+    // console.log("Creating order with amount:", amount);
     console.log(data)
     return actions.order.create({
       purchase_units: [
@@ -160,7 +160,7 @@ const BuyWithPaypal = (props: any) => {
   const onApprove = useCallback((data: any, actions: any) => {
     setContributionLoading(true);
     return actions.order.capture().then((details: any) => {
-      console.log("Order captured:", details);
+      // console.log("Order captured:", details);
       const orderID = data.orderID;
 
       // Generate a simple hash based on order details
@@ -181,8 +181,8 @@ const BuyWithPaypal = (props: any) => {
           paymentMethod: 'PayPal',
         },
         {
-          onSuccess: (response: any) => {
-            console.log(response.data);
+          onSuccess: () => {
+            // console.log(response.data);
             setAmount('');
             setIsModalOpen(false);
             setRecievingValue(0);
@@ -194,9 +194,9 @@ const BuyWithPaypal = (props: any) => {
                 paymentMethod: 'PayPal',
               },
               {
-                onSuccess: (response: any) => {
+                onSuccess: () => {
                   setOrderCreated(false);
-                  console.log(response.data);
+                  // console.log(response.data);
                   setContributionLoading(false);
                   setAmount('');
                   setRecievingValue(0);
@@ -207,9 +207,9 @@ const BuyWithPaypal = (props: any) => {
                     description: "Your contribution was successfull",
                   });
                 },
-                onError: (error) => {
-                  console.log(error);
-                  console.log("ERROR");
+                onError: () => {
+                  // console.log(error);
+                  // console.log("ERROR");
                   setContributionLoading(false);
                   setAmount('');
                   setRecievingValue(0);
@@ -223,10 +223,10 @@ const BuyWithPaypal = (props: any) => {
               }
             );
           },
-          onError: (error) => {
-            console.log(error);
+          onError: () => {
+            // console.log(error);
             setContributionLoading(false);
-            console.log("ERROR");
+            // console.log("ERROR");
             setAmount('');
             setRecievingValue(0);
             setIsModalOpen(false);
@@ -242,7 +242,7 @@ const BuyWithPaypal = (props: any) => {
   }, [UserID, amount, mutation, contributeMutation, investmentMutate, address, presaleID]);
 
   const onCancel = useCallback(() => {
-    console.log("Order was cancelled.");
+    // console.log("Order was cancelled.");
     setContributionLoading(false);
   }, []);
 
@@ -250,7 +250,7 @@ const BuyWithPaypal = (props: any) => {
     const value = e.target.value;
     setAmount(value);
     setRecievingValue(Number(e.target.value) * rate);
-    console.log(recievingValue);
+    // console.log(recievingValue);
   };
 
   const handlePay = () => {
@@ -271,7 +271,7 @@ const BuyWithPaypal = (props: any) => {
     if (storedValue != null) {
       const rate_ = parseInt(storedValue, 10);
       setRate(rate_);
-      console.log(rate_);
+      // console.log(rate_);
     }
   }, []);
 

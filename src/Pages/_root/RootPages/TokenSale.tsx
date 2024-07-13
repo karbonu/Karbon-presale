@@ -44,6 +44,7 @@ const TokenSale = () => {
   const { isConnected } = useAccount();
   const [loading, setIsLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState(0);
+  const [tempAmount, setTempAmount] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [payoutSuccessOpen, setPayoutSuccessOpen] = useState(false);
   const [payoutFaliure, setPayoutFaliure] = useState(false);
@@ -64,8 +65,8 @@ const TokenSale = () => {
   const { open } = useWeb3Modal();
   const [referralID, setReferralID] = useState('');
   const [isRequesting, setIsRequesting] = useState(false);
-  const [endDate, setEndDate] = useState('');
-  const [startDate, setStartDate] = useState('');
+  // const [endDate, setEndDate] = useState('');
+  // const [startDate, setStartDate] = useState('');
   const [target, setTarger] = useState(0);
   const [totalContribution, setTotalContribution] = useState(0);
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -86,7 +87,7 @@ const TokenSale = () => {
 
 
 
-  const SOCKET_URL = "https://karbon.plana.ng";
+  const SOCKET_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
   const { lastMessage } = useSocketIO(SOCKET_URL);
 
 
@@ -152,7 +153,7 @@ const TokenSale = () => {
     const fetchReferralCount = async () => {
       const response = await getUserReferrals(UserID, accessToken);
       if (response !== 'Failed') {
-        console.log("Response is : ", response)
+        // console.log("Response is : ", response)
         const referrerID = response.data.data.id;
         const newCount = Number(response.data.totalReferrals);
         const newBalanceRaw = Number(response.data.data.paidRequestbonusAmount);
@@ -185,9 +186,10 @@ const TokenSale = () => {
         setBonusAmount(isNaN(totalAmount) ? 0 : totalAmount);
         setBonusAmountRounded(isNaN(Number(totalAmountDecimal)) ? 0 : Number(totalAmountDecimal));
 
-      } else {
-        console.log(response);
       }
+      //  else {
+      // console.log(response);
+      // }
     };
 
     const fetchPresaleData = async () => {
@@ -200,21 +202,22 @@ const TokenSale = () => {
         const rate = Number(response.data.rate);
         setSaleRate(isNaN(rate) ? 0 : rate);
         localStorage.setItem('salerate', JSON.stringify(response.data.rate));
-        console.log(startDate)
-        console.log(endDate)
+        // console.log(startDate)
+        // console.log(endDate)
         setTarger(target);
-        setEndDate(enddate);
+
         setPresaleID(presale);
-        setStartDate(startdate);
+
 
         setTarger(1000000)
 
-        console.log("Target is ", target)
+        // console.log("Target is ", target)
 
         initializeCountdown(new Date(startdate), new Date(enddate));
-      } else {
-        console.log(response);
       }
+      //  else {
+      //   console.log(response);
+      // }
     };
 
     const initializeCountdown = (start: Date, end: Date) => {
@@ -271,7 +274,7 @@ const TokenSale = () => {
   const handleCopy = () => {
     const link = ReferralLink ?? "";
     navigator.clipboard.writeText((link)).then(() => {
-      console.log(ReferralLink)
+      // console.log(ReferralLink)
       setCopied(true);
 
       if (timeoutRef) {
@@ -294,11 +297,12 @@ const TokenSale = () => {
       setRequested(!requested)
       setIsRequesting(true);
       if (bonusAmount > 0) {
+        setTempAmount(bonusAmount);
         payoutMitate.mutate(
           { referralId: referralID },
           {
-            onSuccess: (response) => {
-              console.log(response)
+            onSuccess: () => {
+              // console.log(response)
               setPayoutSuccessOpen(true);
               setIsRequesting(false);
               setRequested(!requested);
@@ -447,7 +451,7 @@ const TokenSale = () => {
                     <PayoutModalSuccess
                       isDialogOpen={payoutSuccessOpen}
                       setIsDialogOpen={setPayoutSuccessOpen}
-                      tokenAmount={bonusAmount}
+                      tokenAmount={tempAmount}
                     />
 
                     <PayoutModalFaliure

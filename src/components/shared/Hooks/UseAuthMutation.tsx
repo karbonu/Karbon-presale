@@ -12,7 +12,7 @@ type InitialNonceResponse = {
 export const useInitialNonceMutation = (): UseMutationResult<AxiosResponse<InitialNonceResponse>, Error, InitialNonceData> => {
   return useMutation<AxiosResponse<InitialNonceResponse>, Error, InitialNonceData>({
     mutationFn: (data: InitialNonceData) => {
-      return axios.post( `${import.meta.env.VITE_BACKEND_API_URL}auth/initial`, data);
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}auth/initial`, data);
     },
   });
 };
@@ -33,7 +33,7 @@ export const useLoginMutation = (): UseMutationResult<AxiosResponse<any>, Error,
 
 type verifyEmailData = {
   email: string;
-  otp : number;
+  otp: number;
 };
 
 
@@ -58,7 +58,7 @@ type SocialAuthData = {
 export const useSocialAuthMutation = (): UseMutationResult<AxiosResponse<any>, Error, SocialAuthData> => {
   return useMutation<AxiosResponse<any>, Error, SocialAuthData>({
     mutationFn: (data: SocialAuthData) => {
-      console.log(data);
+      // console.log(data);
       return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}auth/social-register`, data);
     },
   });
@@ -73,7 +73,7 @@ type passwordUpdate = {
 export const usePasswoedUpdateMutate = (auth: string): UseMutationResult<AxiosResponse<any>, Error, passwordUpdate> => {
   return useMutation<AxiosResponse<any>, Error, passwordUpdate>({
     mutationFn: (data: passwordUpdate) => {
-      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}users/password/update`, data,  {
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}users/password/update`, data, {
         headers: {
           'Authorization': `Bearer ${auth}`,
         },
