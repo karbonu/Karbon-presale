@@ -25,6 +25,7 @@ import USDTIconRounded from '@/components/Icons/USDTIconRounded';
 import USDTIconBig from '@/components/Icons/USDTIconBig';
 import ConfirmSwapIcon from '@/components/Icons/ConfirmSwapIcon';
 import RingLoader from '@/components/Icons/RingLoader';
+import { useTranslation } from 'react-i18next';
 
 type ContributeData = {
     amount: number;
@@ -70,6 +71,7 @@ export const useCreateInvestment = (auth: string): UseMutationResult<AxiosRespon
 };
 
 const BuyWithUSDT = (props: any) => {
+    const { t } = useTranslation();
     const { toast } = useToast();
     const [tokenAmount, setTokenAmount] = useState(0);
     const { open } = useWeb3Modal();
@@ -112,8 +114,8 @@ const BuyWithUSDT = (props: any) => {
             setIsDialogOpen(false)
             setStep(1)
             toast({
-                title: "Approval Failed",
-                description: "There was an error during the approval process.",
+                title: t('approvalFailed'),
+                description: t('approvalError'),
                 variant: "failure",
             });
         }
@@ -135,8 +137,8 @@ const BuyWithUSDT = (props: any) => {
             setIsDialogOpen(false)
             setStep(1)
             toast({
-                title: "Buy Failed",
-                description: "There was an error during the buy process.",
+                title: t('buyFailed'),
+                description: t('buyError'),
                 variant: "failure",
             });
         }
@@ -148,8 +150,8 @@ const BuyWithUSDT = (props: any) => {
 
                 setIsApproving(false);
                 toast({
-                    title: "Approval Successful",
-                    description: "Purchasing Now.",
+                    title: t('approvalSuccessful'),
+                    description: t('purchasingNow'),
                     variant: "success",
                 });
                 setStep(3);
@@ -185,8 +187,8 @@ const BuyWithUSDT = (props: any) => {
                                         setIsBuySuccessModalOpen(true);
                                         setStep(1);
                                         toast({
-                                            title: "Success!",
-                                            description: "Your contribution was successful",
+                                            title: t('success'),
+                                            description: t('contributionSuccess'),
                                             variant: "success",
                                         });
                                         console.log("SUCCESS");
@@ -214,7 +216,7 @@ const BuyWithUSDT = (props: any) => {
             // console.log(error);
             toast({
                 title: "Transaction Failed",
-                description: "The transaction failed. Please try again.",
+                description: t('transactionFailed'),
                 variant: "failure",
             });
         }
@@ -246,7 +248,7 @@ const BuyWithUSDT = (props: any) => {
             <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
                 <DialogContent className='bg-[#101010] border-[#282828] pb-5 py-10 px-10 flex flex-col w-[412px] max-sm:w-[90%] items-center justify-center rounded-[16px] outline-none'>
                     <div className='w-full flex flex-row items-center justify-between'>
-                        <p className="text-white font-semibold text-[20px]">Disclaimer</p>
+                        <p className="text-white font-semibold text-[20px]">{t('disclaimer')}</p>
                         <div onClick={() => props.setIsDialogOpen(false)} className='cursor-pointer '>
                             <DialogClose />
                         </div>
@@ -263,7 +265,7 @@ const BuyWithUSDT = (props: any) => {
                             <div className='pr-4'>
                                 <ForwardGreen />
                             </div>
-                            Continue to Buy
+                            {t('continueToBuy')}
                         </div>
                     </div>
                 </DialogContent>
@@ -276,7 +278,7 @@ const BuyWithUSDT = (props: any) => {
                     </div>
                     <div className="flex flex-row items-center space-x-2">
                         <USDTIcon />
-                        <p className="text-white text-[14px]">Buy with USDT</p>
+                        <p className="text-white text-[14px]">{t('buyWithUsdt')}</p>
                     </div>
                 </div>
             </div>
@@ -291,7 +293,7 @@ const BuyWithUSDT = (props: any) => {
 
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
                 <label htmlFor="buyInput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
-                    <p className="text-white text-[12px]">You Buy</p>
+                    <p className="text-white text-[12px]">{t('youBuy')}</p>
                     <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
                         <input
@@ -312,7 +314,7 @@ const BuyWithUSDT = (props: any) => {
 
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
                 <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
-                    <p className="text-white text-[12px]">You Get</p>
+                    <p className="text-white text-[12px]">{t('youGet')}</p>
                     <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
                         <p className='h-full text-white w-[75%]'>{(tokenAmount * rate) === 0 ? '' : (tokenAmount * rate)}</p>
@@ -334,7 +336,7 @@ const BuyWithUSDT = (props: any) => {
                     {step === 1 && (
                         <>
                             <div className='flex flex-row w-full justify-between items-center'>
-                                <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Confirm Contribution</p>
+                                <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{t('confirmContribution')}</p>
                                 <div onClick={() => { setIsDialogOpen(false); setStep(1); }} className=' cursor-pointer'>
                                     <DialogClose />
                                 </div>
@@ -367,12 +369,12 @@ const BuyWithUSDT = (props: any) => {
                             </div>
 
                             <div className='w-full flex items-center justify-center'>
-                                <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>Output is estimated, you will receive your token with a transaction fee taken.</p>
+                                <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>{t('outputEstimated')}.</p>
                             </div>
 
                             <div className='bg-black rounded-[8px] border-[#484848] border-[0.5px] flex flex-col w-full'>
                                 <div className='flex flex-row items-center p-5 justify-between w-full'>
-                                    <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">Price</p>
+                                    <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">{t('price')}</p>
                                     <div className='flex flex-row items-center space-x-2'>
                                         <p className="text-white  text-[12px] max-sm:text-[10px]">{rate} KARBON/USDT</p>
                                     </div>
@@ -389,8 +391,8 @@ const BuyWithUSDT = (props: any) => {
                             <button onClick={handleApprove} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                 <p className="font-bold text-[14px] shadow-sm">
                                     {isConnected ? (
-                                        "Confirm Contribution"
-                                    ) : "Connect Wallet"}
+                                        t('confirmContribution')
+                                    ) : t('connectWallet')}
                                 </p>
                             </button>
                         </>
@@ -406,18 +408,18 @@ const BuyWithUSDT = (props: any) => {
 
                             <div className='w-full flex items-center justify-center flex-col space-y-2'>
                                 <USDTIconBig />
-                                <p className="text-white font-semibold text-[20px] max-sm:text-[14px]">Approve USDT</p>
+                                <p className="text-white font-semibold text-[20px] max-sm:text-[14px]">{t('approveUsdt')}</p>
                             </div>
 
                             <div className='w-full flex items-center justify-center'>
-                                <p className='text-white text-[12px] max-sm:text-[10px]'>Swapping through <span className='font-bold'>{address?.slice(0, 15)}...</span></p>
+                                <p className='text-white text-[12px] max-sm:text-[10px]'>{t('swappingThrough')} <span className='font-bold'>{address?.slice(0, 15)}...</span></p>
                             </div>
 
                             <div className='ringImage'>
                                 <RingLoader />
                             </div>
 
-                            <p className='text-white text-[12px] font-bold'>Proceed in your wallet</p>
+                            <p className='text-white text-[12px] font-bold'>{t('proceedInWallet')}</p>
                         </>
                     )}
 
@@ -431,7 +433,7 @@ const BuyWithUSDT = (props: any) => {
 
                             <div className='w-full flex items-center justify-center flex-col space-y-2'>
                                 <ConfirmSwapIcon />
-                                <p className="text-white font-semibold text-[20px] max-sm:text-[14px]">Confirm Swap</p>
+                                <p className="text-white font-semibold text-[20px] max-sm:text-[14px]">{t('confirmSwap')}</p>
                             </div>
 
                             <div className='w-full flex flex-col items-center space-y-2  justify-center '>
@@ -449,7 +451,7 @@ const BuyWithUSDT = (props: any) => {
                                 <RingLoader />
                             </div>
 
-                            <p className='text-white text-[12px] font-bold'>Proceed in your wallet</p>
+                            <p className='text-white text-[12px] font-bold'>{t('proceedInWallet')}</p>
                         </>
                     )}
                 </DialogContent>
