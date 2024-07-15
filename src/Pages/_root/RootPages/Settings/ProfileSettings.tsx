@@ -10,8 +10,10 @@ import EyeIcon from "@/components/Icons/EyeIcon.tsx";
 import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 import { useDisconnect } from "wagmi";
 import { useToast } from "@/components/ui/use-toast";
+import { useTranslation } from "react-i18next";
 
 const ProfileSettings = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const { email, setPassword, setReferralCOde, setUserID, isGoogleSignIn, setIsGoogleSignIn, setEmail, setAuthenticated, accessToken, UserID, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
@@ -74,22 +76,22 @@ const ProfileSettings = () => {
     const specialCharacterPattern = /[!@#$%^&*(),.?":{}|<>]/;
 
     if (newPassword !== confirmPassword) {
-      setPasswordError('Passwords do not match');
+      setPasswordError(t('passwordsDoNotMatch'));
       return false;
     } else if (newPassword.length < 10) {
-      setPasswordError('Password must be at least 10 characters long');
+      setPasswordError(t('minLength'));
       return false;
     } else if (!numberPattern.test(newPassword)) {
-      setPasswordError('Password must contain at least one number');
+      setPasswordError(t('mustContainNumber'));
       return false;
     } else if (!capitalLetterPattern.test(newPassword)) {
-      setPasswordError('Password must contain at least one capital letter');
+      setPasswordError(t('mustContainUpper'));
       return false;
     } else if (!specialCharacterPattern.test(newPassword)) {
-      setPasswordError('Password must contain at least one special character');
+      setPasswordError(t('mustContainSpecial'));
       return false;
     } else if (newPassword === currentPassword) {
-      setPasswordError('New password cannot be the same as the current password');
+      setPasswordError(t('newPasswordSame'));
       return false;
     } else {
       setPasswordError('');
@@ -107,7 +109,7 @@ const ProfileSettings = () => {
           toast({
             variant: "success",
             title: "Success!",
-            description: "Password Changed Successfully",
+            description: t('passwordChangeSuccess'),
           })
           setTimeout(() => {
             setPasswordSuccess('');
@@ -119,7 +121,7 @@ const ProfileSettings = () => {
           toast({
             variant: "failure",
             title: "Error!",
-            description: "Password Change Failed, Try Again",
+            description: t('passwordChangeFailed'),
           })
         }
       }
@@ -141,7 +143,7 @@ const ProfileSettings = () => {
           <div className="p-3 flex-col space-y-3 h-full justify-between">
             <div className="flex flex-row rounded-[2px] justify-center py-1 space-x-1 items-center border-[1px] border-[#282828] max-w-[54px]">
               <WalletIcon />
-              <p className="text-white text-[10px] opacity-70">Email</p>
+              <p className="text-white text-[10px] opacity-70">{t('email')}</p>
             </div>
             <div className="flex flex-row items-center space-x-5">
               <p className="text-white font-light text-[14px] max-lg:text-[12px] ">{email}</p>
@@ -152,14 +154,14 @@ const ProfileSettings = () => {
           <div className="p-3 flex-col space-y-3 h-full justify-between">
             <div className="flex flex-row rounded-[2px] justify-center py-1 space-x-1 items-center border-[1px] border-[#282828] max-w-[97px]">
               <WalletIcon />
-              <p className="text-white text-[10px] opacity-70">Referral Link</p>
+              <p className="text-white text-[10px] opacity-70">{t('referralLink')}</p>
             </div>
             <div className="flex flex-row items-center space-x-5">
               <p className="text-white font-light text-[14px] max-lg:text-[12px] ">{ReferralLink.slice(0, 30)}...</p>
               <div onClick={handleCopy} className="flex flex-row space-x-2 cursor-pointer">
                 {copied ? <CheckMark /> : <CopyIcon />}
                 <p className="text-[#08E04A] text-[10px]">
-                  {copied ? "Copied" : "Copy"}
+                  {copied ? t('copied') : t('copy')}
                 </p>
               </div>
             </div>
@@ -171,10 +173,10 @@ const ProfileSettings = () => {
         <div className="flex flex-1 max-lg:w-full">
           <div className="bg-black border-[1px] border-[#282828] max-lg:w-full rounded-[8px]">
             <div className="flex flex-col p-5 space-y-4 max-lg:w-full">
-              <p className="text-white font-medium text-[20px]">Change Password</p>
+              <p className="text-white font-medium text-[20px]">{t('changePassword')}</p>
               <div className="flex flex-row max-lg:flex-col max-lg:space-y-2 w-full items-center justify-between md:space-x-2">
                 <div className="flex flex-col max-lg:w-full space-y-2 relative">
-                  <p className="text-white text-[12px]">New Password</p>
+                  <p className="text-white text-[12px]">{t('newPassword')}</p>
                   <input
                     type={showNewPassword ? "text" : "password"}
                     className="outline-none focus:outline-[1px]  pl-5 focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
@@ -193,7 +195,7 @@ const ProfileSettings = () => {
                   </div>
                 </div>
                 <div className="flex flex-col max-lg:w-full space-y-2 relative">
-                  <p className="text-white text-[12px]">Confirm New Password</p>
+                  <p className="text-white text-[12px]">{t('confirmNewPassword')}</p>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     className="outline-none focus:outline-[1px] pl-5 focus:outline-[#282828] bg-[#181818] w-[347px] max-lg:w-[100%] h-[40px] text-white"
@@ -245,7 +247,7 @@ const ProfileSettings = () => {
         </div>
         <div className="bg-black cursor-pointer hover:scale-95 transition ease-in-out border-[1px] border-[#282828] rounded-[4px]">
           <div onClick={handleSignOut} className="flex flex-row space-x-1 items-center px-4 py-2">
-            <p className="text-[#FF3636] text-[16px]">Sign Out</p>
+            <p className="text-[#FF3636] text-[16px]">{t('signOut')}</p>
           </div>
         </div>
       </div>
