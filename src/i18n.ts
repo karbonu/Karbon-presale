@@ -603,7 +603,7 @@ i18n
     .init({
         resources,
         debug: true,
-        // lng: 'tr',
+        lng: 'en',
         fallbackLng: "en",
         returnObjects: true,
         interpolation: {
