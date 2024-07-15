@@ -29,6 +29,7 @@ import DialogClose from "../Icons/DialogClose.tsx";
 import WalletAlertIcon from "../Icons/WalletAlertIcon.tsx";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { useToast } from "../ui/use-toast.ts";
+import { useTranslation } from "react-i18next";
 
 
 type walletConnect = {
@@ -53,11 +54,13 @@ export const useConnectWallet = (auth: string): UseMutationResult<AxiosResponse<
 
 
 const TopBar = () => {
+  const { t } = useTranslation();
   const [showDropdown, setShowDropdown] = useState(false);
   const { toast } = useToast();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const location = useLocation();
-  const { email,
+  const {
+    email,
     password,
     accessToken,
     setPassword,
@@ -70,7 +73,8 @@ const TopBar = () => {
     setUserID,
     setHasDisplayedConnectModal,
     setIsDropDownOpen,
-    isDropDownOpen } = useAuth();
+    isDropDownOpen
+  } = useAuth();
 
   const { open } = useWeb3Modal();
   const { address, isConnected } = useAccount();
@@ -78,37 +82,35 @@ const TopBar = () => {
   const [isModalOpen, setisModalOpen] = useState(false);
   const connectMutate = useConnectWallet(accessToken);
 
-
-
   const handleSignOut = () => {
     setPassword('');
     setEmail('');
     setUserID('');
     setReferralCOde('');
-    setWalletAddress('')
-    setHasDisplayedConnectModal(false)
+    setWalletAddress('');
+    setHasDisplayedConnectModal(false);
     setAuthenticated(false);
     setIsGoogleSignIn(false);
     disconnect();
-  }
+  };
 
   let title;
   const currentPath = location.pathname;
 
   if (currentPath === "/dashboard/tokensale") {
-    title = "Token Sale DApp";
+    title = t('tokenSaleDApp');
   } else if (currentPath === "/dashboard/claimtokens") {
-    title = "Claim Token";
+    title = t('claimToken');
   } else if (
     currentPath === "/dashboard/settings" ||
     currentPath === "/dashboard/settings/profilesettings" ||
     currentPath === "/dashboard/settings/walletsettings"
   ) {
-    title = "Settings";
+    title = t('settings');
   } else if (currentPath === "/dashboard") {
-    title = "Token Sale DApp";
+    title = t('tokenSaleDApp');
   } else {
-    title = "Invalid Path";
+    title = t('invalidPath');
   }
 
   const firstLink = location.pathname === "/dashboard" ? "/dashboard" : "/dashboard/tokensale";
@@ -119,7 +121,7 @@ const TopBar = () => {
 
   const handleDropdown = () => {
     setShowDropdown(!showDropdown);
-    setIsDropDownOpen(!isDropDownOpen)
+    setIsDropDownOpen(!isDropDownOpen);
   };
 
   const handleStore = () => {
@@ -136,48 +138,40 @@ const TopBar = () => {
 
           toast({
             variant: 'success',
-            title: "Success!",
-            description: "Wallet Connected Successfully",
-          })
+            title: t('success'),
+            description: t('walletConnected'),
+          });
         },
         onError: () => {
-          // console.log(error);
           setisModalOpen(false);
 
           toast({
             variant: 'failure',
-            title: "Error!",
-            description: "Wallet Connection Failed, Try Again",
-          })
+            title: t('error'),
+            description: t('walletConnectionFailed'),
+          });
         }
       }
     );
-  }
-
+  };
 
   const storeWallet = () => {
     if (walletAddress === "" || walletAddress === null || walletAddress === address as string) {
       handleStore();
     } else {
       setisModalOpen(true);
-      // console.log("Wrong connected address")
     }
   };
-
 
   useEffect(() => {
     if (isConnected) {
       storeWallet();
     }
-
-
   }, [isConnected, address]);
 
-
   const handleModalClose = () => {
-
-    setisModalOpen(false)
-  }
+    setisModalOpen(false);
+  };
 
   return (
     <div className="w-full">
@@ -192,24 +186,24 @@ const TopBar = () => {
 
           <div className="flex flex-col w-full space-y-2 items-center justify-center">
             <WalletAlertIcon />
-            <p className="text-white font-semibold text-[20px] max-sm:text-[16px]">Do you want to switch wallet?</p>
-            <p className="text-white text-center w-[248px] text-[12px] max-sm:text-[10px]">You have connected to a new wallet that is different from a previous one.</p>
+            <p className="text-white font-semibold text-[20px] max-sm:text-[16px]">{t('switchWallet')}</p>
+            <p className="text-white text-center w-[248px] text-[12px] max-sm:text-[10px]">{t('connectedNewWallet')}</p>
           </div>
 
           <div className="flex flex-col w-full items-center justify-center space-y-4">
             <div className="flex flex-row w-full items-center justify-between rounded-[8px] bg-black p-5">
-              <p className="text-white text-[12px]">Previous Wallet</p>
+              <p className="text-white text-[12px]">{t('previousWallet')}</p>
               <p className="text-white text-[12px]">{walletAddress?.slice(0, 10)}...{walletAddress?.slice(-4)}</p>
             </div>
 
             <div className="flex flex-row w-full items-center justify-between rounded-[8px] bg-black p-5">
-              <p className="text-white text-[12px]">New Wallet</p>
+              <p className="text-white text-[12px]">{t('newWallet')}</p>
               <p className="text-white text-[12px]">{address?.slice(0, 10)}...{address?.slice(-4)}</p>
             </div>
           </div>
 
           <button onClick={handleStore} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] outline-none rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-            <p className="font-bold text-[14px] shadow-sm">Switch to New Wallet</p>
+            <p className="font-bold text-[14px] shadow-sm">{t('switchToNewWallet')}</p>
           </button>
 
 
@@ -230,7 +224,7 @@ const TopBar = () => {
                   className="bg-[#101010] hover:border-[#08E04A] border-[1px] border-transparent transition ease-out py-2 px-3 items-center flex flex-row space-x-2 rounded-[4px] cursor-pointer"
                 >
                   <ConnectIconGreen />
-                  <p className="text-white text-[12px]">Connect Wallet</p>
+                  <p className="text-white text-[12px]">{t('connectWallet')}</p>
                 </div>
 
                 <div
@@ -257,7 +251,7 @@ const TopBar = () => {
                         className="bg-[#0C0C0C] cursor-pointer rounded-[4px]"
                       >
                         <div className="flex flex-row items-center justify-between p-3">
-                          <p className="text-[12px] text-white">Profile</p>
+                          <p className="text-[12px] text-white">{t('profile')}</p>
                           <ForwardIcon />
                         </div>
                       </a>
@@ -268,7 +262,7 @@ const TopBar = () => {
                         className="bg-[#0C0C0C] cursor-pointer rounded-[4px]"
                       >
                         <div className="flex flex-row items-center justify-between p-3">
-                          <p className="text-[12px] text-white">Wallet Settings</p>
+                          <p className="text-[12px] text-white">{t('walletSettings')}</p>
                           <ForwardIcon />
                         </div>
                       </a>
@@ -276,7 +270,7 @@ const TopBar = () => {
                   </div>
                   <div onClick={handleSignOut} className="w-full cursor-pointer bg-[#0C0C0C]">
                     <div className="p-3 flex items-center justify-center">
-                      <p className="text-[#FF3636] text-[12px]">Sign Out</p>
+                      <p className="text-[#FF3636] text-[12px]">{t('signOut')}</p>
                     </div>
                   </div>
                 </div>
@@ -317,7 +311,7 @@ const TopBar = () => {
                         className="bg-[#0C0C0C] cursor-pointer rounded-[4px]"
                       >
                         <div className="flex flex-row items-center justify-between p-3">
-                          <p className="text-[12px] text-white">Profile</p>
+                          <p className="text-[12px] text-white">{t('profile')}</p>
                           <ForwardIcon />
                         </div>
                       </a>
@@ -328,7 +322,7 @@ const TopBar = () => {
                         className="bg-[#0C0C0C] cursor-pointer rounded-[4px]"
                       >
                         <div className="flex flex-row items-center justify-between p-3">
-                          <p className="text-[12px] text-white">Wallet Settings</p>
+                          <p className="text-[12px] text-white">{t('walletSettings')}</p>
                           <ForwardIcon />
                         </div>
                       </a>
@@ -336,7 +330,7 @@ const TopBar = () => {
                   </div>
                   <div className="w-full cursor-pointer bg-[#0C0C0C]">
                     <div onClick={handleSignOut} className="p-3 flex items-center justify-center">
-                      <p className="text-[#FF3636] text-[12px]">Sign Out</p>
+                      <p className="text-[#FF3636] text-[12px]">{t('signOut')}</p>
                     </div>
                   </div>
                 </div>
@@ -353,7 +347,7 @@ const TopBar = () => {
                   className="bg-[#101010] hover:border-[#08E04A] border-[1px] border-transparent transition ease-out py-2 px-3 items-center flex flex-row space-x-2 rounded-[4px] cursor-pointer"
                 >
                   <ConnectIconGreen />
-                  <p className="text-white text-[12px]">Connect Wallet</p>
+                  <p className="text-white text-[12px]">{t('connectWallet')}</p>
                 </div>
               ) : (
                 <div onClick={() => open()} className="flex flex-row cursor-pointer space-x-2">
@@ -383,7 +377,7 @@ const TopBar = () => {
                         {({ isActive }) => (
                           <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
                             {isActive ? <TokenSaleIconBig /> : <TokenSaleWhiteBig />}
-                            <p className="font-semibold text-[20px] text-white">Token Sale</p>
+                            <p className="font-semibold text-[20px] text-white">{t('tokenSale')}</p>
                           </div>
                         )}
                       </NavLink>
@@ -395,7 +389,7 @@ const TopBar = () => {
                         {({ isActive }) => (
                           <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
                             {isActive ? <ClaimTokensBig /> : <ClaimTokensWhiteBig />}
-                            <p className="font-semibold text-[20px] text-white">Claim Token</p>
+                            <p className="font-semibold text-[20px] text-white">{t('settings')}</p>
                           </div>
                         )}
                       </NavLink>
@@ -407,7 +401,7 @@ const TopBar = () => {
                         {({ isActive }) => (
                           <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
                             {isActive ? <SettingsIconBig /> : <SettingsIconWhiteBig />}
-                            <p className="font-semibold text-[20px] text-white">Settings</p>
+                            <p className="font-semibold text-[20px] text-white">{t('settings')}</p>
                           </div>
                         )}
                       </NavLink>
@@ -417,21 +411,21 @@ const TopBar = () => {
                   <div onClick={() => setShowMobileMenu(false)} className="flex flex-col space-y-2">
                     <div className="flex flex-col space-y-5 pb-5 pl-5 ">
                       <div className="flex flex-row cursor-pointer items-center space-x-2">
-                        <p className="text-white opacity-50 text-[14px]">Terms of Service</p>
+                        <p className="text-white opacity-50 text-[14px]">{t('termsOfService')}</p>
                         <RedirectIcon />
                       </div>
                       <div className="flex flex-row cursor-pointer items-center space-x-2">
-                        <p className="text-white opacity-50 text-[14px]">Privacy Policy</p>
+                        <p className="text-white opacity-50 text-[14px]">{t('privacyPolicy')}</p>
                         <RedirectIcon />
                       </div>
                     </div>
 
                     <div onClick={handleSignOut} className="w-full flex cursor-pointer  items-center justify-center bg-[#0C0C0C]">
-                      <p className="text-[#FF3636] py-4 text-[16px]">Sign Out</p>
+                      <p className="text-[#FF3636] py-4 text-[16px]">{t('signOut')}</p>
                     </div>
 
                     <div className="pb-10 pt-2 px-5 flex flex-col space-y-5">
-                      <p className="text-white opacity-50 font-bold text-[12px]">Connect with us</p>
+                      <p className="text-white opacity-50 font-bold text-[12px]">{t('connectWithUs')}</p>
                       <div className="flex flex-row space-x-5">
                         <div onClick={() => setShowMobileMenu(false)} className="hover:opacity-100 opacity-50 transition ease-in-out cursor-pointer">
                           <DiscordLogo />
