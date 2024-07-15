@@ -37,9 +37,11 @@ import useCountUp from "@/components/shared/Hooks/UseCountUp.tsx";
 import { useToast } from "@/components/ui/use-toast.ts";
 import axios from "axios";
 import useSocketIO from "@/components/shared/Constants/UseSocket.ts";
+import { useTranslation } from "react-i18next";
 
 
 const TokenSale = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { isConnected } = useAccount();
   const [loading, setIsLoading] = useState(true);
@@ -70,7 +72,7 @@ const TokenSale = () => {
   const [target, setTarger] = useState(0);
   const [totalContribution, setTotalContribution] = useState(0);
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [saleStatus, setSaleStatus] = useState('SALE STARTS IN');
+  const [saleStatus, setSaleStatus] = useState(t('saleStartsIn'));
   const [saleRate, setSaleRate] = useState(0);
   const [totalBonusPending, setTotalBonusPending] = useState(0);
   const [recievedAmount, setRecievedAmount] = useState(0);
@@ -226,7 +228,7 @@ const TokenSale = () => {
         let distance = start.getTime() - now.getTime();
 
         if (distance > 0) {
-          setSaleStatus('SALE STARTS IN');
+          setSaleStatus(t('saleStartsIn'));
         } else {
           distance = end.getTime() - now.getTime();
           setSaleStatus('SALE ENDS IN');
@@ -308,8 +310,8 @@ const TokenSale = () => {
               setRequested(!requested);
               toast({
                 variant: "success",
-                title: "Success!",
-                description: "Payout Request was made successfully",
+                title: t('success'),
+                description: t('payoutRequestSuccess'),
               })
             },
             onError: (error: unknown) => {
@@ -391,23 +393,23 @@ const TokenSale = () => {
 
           <div className='pt-8 pb-5 px-8 flex flex-col space-y-3'>
             <p className='text-white font-bold text-[20px] max-sm:text-[16px]'>Connect a wallet</p>
-            <p className='text-[14px] text-white max-sm:text-[10px]'>For maximum payment experience, connect a crypto/web3 wallet to buy with USDT.</p>
+            <p className='text-[14px] text-white max-sm:text-[10px]'>{t('connectWeb3Wallet')}</p>
 
-            <p className='text-white text-[12px] opacity-50'>Supported network is Ethereum</p>
+            <p className='text-white text-[12px] opacity-50'>{t('supportedNetwork')}</p>
 
             <div>
               <div onClick={() => open()} className="flex flex-row space-x-2 items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                 <ConnectWalletIconBlack />
                 <p className="font-bold text-[12px] shadow-sm">
-                  Connect wallet
+                  {t('connectWallet')}
                 </p>
               </div>
             </div>
 
             <div className='flex pt-2 flex-row space-x-2 items-center justify-center'>
-              <p className='text-white text-[14px] max-sm:text-[12px]  font-light opacity-70'>Don’t have a wallet?</p>
+              <p className='text-white text-[14px] max-sm:text-[12px]  font-light opacity-70'>{t('noWallet')}</p>
               <div onClick={handleCloseConnectModal} className='flex flex-row cursor-pointer items-center space-x-1'>
-                <p className='text-[#08E04A] text-[14px] max-sm:text-[12px]'>Skip</p>
+                <p className='text-[#08E04A] text-[14px] max-sm:text-[12px]'>{t('skip')}</p>
                 <ForwardShortGreen />
 
               </div>
@@ -424,12 +426,12 @@ const TokenSale = () => {
             <div className="flex items-center w-[795px] h-[367px] justify-between flex-col ">
 
               <div className="flex flex-col space-y-7 h-[230px] w-[795px] border-[1px] border-[#282828] bg-[#121212] p-5 rounded-t-[16px]">
-                <p className="text-white text-[20px] font-bold">Referrals</p>
+                <p className="text-white text-[20px] font-bold">{t('referrals')}</p>
 
                 <div className="flex flex-row w-full justify-between pr-10 pb-10">
 
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[12px] opacity-70">UNCLAIMED BONUS</p>
+                    <p className="text-white text-[12px] opacity-70">{t('unclaimedBonus')}</p>
                     <div className="flex flex-row ">
                       <p className="text-white text-[28px]">${bonusAmount}</p>
                       <p className="text-white text-[18px]">.{bonusAmountRounded}</p>
@@ -440,11 +442,11 @@ const TokenSale = () => {
                           {isRequesting ? (
                             <BarLoader color="#FFFFFF" />
                           ) : (
-                            "Request Payout"
+                            t('requestPayout')
                           )}
                         </>
                       ) : (
-                        "Connect Wallet"
+                        t('connectWallet')
                       )}
                     </div>
 
@@ -464,7 +466,7 @@ const TokenSale = () => {
                   </div>
 
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[12px] opacity-70">CLAIMED BONUS</p>
+                    <p className="text-white text-[12px] opacity-70">{t('claimedBonus')}</p>
                     <div className="flex flex-row ">
                       <p className="text-white text-[28px]">${recievedAmount}</p>
                       <p className="text-white text-[18px]">.{recievedAmountRounded}</p>
@@ -475,7 +477,7 @@ const TokenSale = () => {
                   </div>
 
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[12px] opacity-70">TOTAL REFERRALS</p>
+                    <p className="text-white text-[12px] opacity-70">{t('totalReferrals')}</p>
                     <div className="flex flex-row ">
                       <p className="text-white text-[28px]">{referralCount}</p>
 
@@ -487,7 +489,7 @@ const TokenSale = () => {
               </div>
 
               <div className="flex flex-col space-y-3 w-[795px] h-[135px] border-[1px] border-t-0 border-[#282828] bg-[#121212] p-5 rounded-b-[16px]">
-                <p className="text-[16px] text-white font-semibold">Start earning extra money!</p>
+                <p className="text-[16px] text-white font-semibold">{t('startEarning')}!</p>
                 <p className="text-white opacity-70 text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
 
                 <div className="flex flex-row space-x-5 items-center">
@@ -509,7 +511,7 @@ const TokenSale = () => {
 
 
                   <div className="flex flex-row items-center space-x-3">
-                    <p className="text-[12px] text-white opacity-70 ">Share on</p>
+                    <p className="text-[12px] text-white opacity-70 ">{t('shareOn')}</p>
 
                     <a href={discordShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                       <DiscordLogo />
@@ -532,11 +534,11 @@ const TokenSale = () => {
             </div>
 
             <div className="flex flex-col pt-5 space-y-3">
-              <p className="text-white font-bold text-[20px]">Transactions</p>
+              <p className="text-white font-bold text-[20px]">{t('transactions')}</p>
               <div className="flex flex-row items-center justify-between">
 
                 <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
-                  <p className="text-[12px] opacity-70 text-white">AMOUNT SPENT</p>
+                  <p className="text-[12px] opacity-70 text-white">{t('amountSpent')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{animatedTotalAmount}</p>
                     <p className="text-white text-[16px]">.{animatedTotalAmountDecimal}</p>
@@ -545,7 +547,7 @@ const TokenSale = () => {
                 </div>
 
                 <div className="min-w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
-                  <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
+                  <p className="text-[12px] opacity-70 text-white">{t('tokensBought')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{animatedTokensBought}</p>
                     <p className="text-white font-extralight text-[24px]">KARBON</p>
@@ -553,7 +555,7 @@ const TokenSale = () => {
                 </div>
 
                 <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
-                  <p className="text-[12px] opacity-70 text-white">TOKEN VALUE</p>
+                  <p className="text-[12px] opacity-70 text-white">{t('tokenValue')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{saleRate}</p>
                     <p className="text-white text-[16px]">.00</p>
@@ -569,7 +571,7 @@ const TokenSale = () => {
 
               <div className=" bg-[#121212] border-[1px] border-[#282828] rounded-b-[8px]">
                 <div className="flex items-center justify-center flex-col space-y-5 py-5">
-                  <p className="text-[12px] text-white opacity-70">ESTIMATED CLAIM TIME</p>
+                  <p className="text-[12px] text-white opacity-70">{t('estimatedClaimTime')}</p>
                   <div className="flex flex-row space-x-2 items-center justify-center">
                     <p className="text-white text-[20px]">{countdown.days}d</p>
                     <p className="text-white text-[20px]">{countdown.hours}h</p>
@@ -588,7 +590,7 @@ const TokenSale = () => {
             <div className="flex flex-col w-[341px] border-[#282828] p-5  rounded-t-[8px] bg-[#121212] ">
               <div className="flex flex-col space-y-7">
                 <div className="flex flex-row items-center justify-between">
-                  <p className="text-white text-[14px] font-medium">Presale Progress</p>
+                  <p className="text-white text-[14px] font-medium">{t('presaleProgress')}</p>
                   <div className="flex flex-row items-center space-x-4">
                     <p className="text-white opacity-70 text-[14px]">${animatedContribution}</p>
                     <Dot />
@@ -612,7 +614,7 @@ const TokenSale = () => {
 
             <div className="rounded-b-[8px] bg-[#121212]">
               <div className="flex flex-col space-y-5">
-                <p className="text-white px-5 pt-5  font-bold text-[20px]">Contribute</p>
+                <p className="text-white px-5 pt-5  font-bold text-[20px]">{t('contribute')}</p>
                 <div className="px-5">
                   <div
                     className="fade-transition"
@@ -688,7 +690,7 @@ const TokenSale = () => {
 
 
                 <div>
-                  <p className="text-white px-5 text-[12px]">By contributing to the presale you acknowledge and accept these <span onClick={() => setIsTermsAndCondOpen(true)} className=" cursor-pointer underline underline-offset-2">terms and conditions</span>.</p>
+                  <p className="text-white px-5 text-[12px]">{t('byContributing')} <span onClick={() => setIsTermsAndCondOpen(true)} className=" cursor-pointer underline underline-offset-2">{t('')}</span>.</p>
                 </div>
 
                 <TermsAndCond
@@ -698,7 +700,7 @@ const TokenSale = () => {
 
                 <div className="flex w-[341px] border-[#282828] h-[67px] items-center justify-between flex-row border-t-[1px] border-b-[1px]">
                   <div className="w-[70%] bg-black h-full items-center pl-5 flex">
-                    <p className="text-white opacity-50 w-[183px] text-[12px]">A chance to buy Karbon tokens at half of the launch price.</p>
+                    <p className="text-white opacity-50 w-[183px] text-[12px]">{t('chanceBuy')}.</p>
                   </div>
                   <div className="w-[30%] bg-green-500 h-full"></div>
                   <div className="absolute right-[4.00rem]">
@@ -736,7 +738,7 @@ const TokenSale = () => {
             <div className="p-5 flex flex-col space-y-5">
               <div className="flex flex-col space-y-7">
                 <div className="flex flex-row items-center justify-between">
-                  <p className="text-white text-[14px] font-semibold">Presale Progress</p>
+                  <p className="text-white text-[14px] font-semibold">{t('presaleProgress')}</p>
                   <div className="flex flex-row items-center space-x-4">
                     <p className="text-white opacity-70 text-[14px]">${animatedContribution}</p>
 
@@ -760,7 +762,7 @@ const TokenSale = () => {
                 </div>
               </div>
 
-              <p className="text-white  font-bold text-[20px]">Contribute</p>
+              <p className="text-white  font-bold text-[20px]">{t('contribute')}</p>
               <div className="">
                 <div
                   className="fade-transition"
@@ -772,7 +774,7 @@ const TokenSale = () => {
                       <div onClick={() => setSelectedMethod(1)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
                         <div className="flex flex-row w-full items-center justify-between ">
                           <CreditCardlogo />
-                          <p className="text-white text-[14px]">Buy with Credit Card</p>
+                          <p className="text-white text-[14px]">{t('buyWithCreditCard')}</p>
                           <ForwardIcon />
                         </div>
                       </div>
@@ -784,7 +786,7 @@ const TokenSale = () => {
                             className={`text-white text-[14px] ${isConnected ? "text-center w-full" : "pl-10"}`}
                           >Buy with USDT</p>
                           {!isConnected && (
-                            <p className="text-[#08E04A] text-[10px]">Connect Wallet</p>
+                            <p className="text-[#08E04A] text-[10px]">{t('connectWallet')}</p>
                           )}
                         </div>
                       </div>
@@ -792,7 +794,7 @@ const TokenSale = () => {
                       <div onClick={() => setSelectedMethod(3)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
                         <div className="flex flex-row w-full items-center justify-between ">
                           <PaypalLogo />
-                          <p className="text-white text-[14px]">Buy with PayPal</p>
+                          <p className="text-white text-[14px]">{t('buyWithPaypal2')}</p>
                           <ForwardIcon />
                         </div>
                       </div>
@@ -832,7 +834,7 @@ const TokenSale = () => {
               </div>
 
               <div>
-                <p className="text-white px-1 text-[12px]">By contributing to the presale you acknowledge and accept these <span onClick={() => setIsTermsAndCondOpen(true)} className=" cursor-pointer underline underline-offset-2">terms and conditions</span>.</p>
+                <p className="text-white px-1 text-[12px]">{t('byContributing')} <span onClick={() => setIsTermsAndCondOpen(true)} className=" cursor-pointer underline underline-offset-2">{t('')}</span>.</p>
               </div>
             </div>
           </div>
@@ -841,18 +843,18 @@ const TokenSale = () => {
             <div className="bg-[#121212] rounded-[8ox]">
 
               <div className="p-5 flex-col space-y-6">
-                <p className="text-white text-[20px] font-bold">Referrals</p>
+                <p className="text-white text-[20px] font-bold">{t('referrals')}</p>
 
                 <div className="flex flex-row  space-x-10">
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[12px] opacity-70">UNCLAIMED BONUS</p>
+                    <p className="text-white text-[12px] opacity-70">{t('unclaimedBonus')}</p>
                     <div className="flex flex-row ">
                       <p className="text-white text-[28px]">${bonusAmount}</p>
                       <p className="text-white text-[18px]">.{bonusAmountRounded}</p>
                     </div>
                   </div>
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[12px] opacity-70">CLAIMED BONUS</p>
+                    <p className="text-white text-[12px] opacity-70">{t('claimedBonus')}</p>
                     <div className="flex flex-row ">
                       <p className="text-white text-[28px]">${recievedAmount}</p>
                       <p className="text-white text-[18px]">.{recievedAmountRounded}</p>
@@ -866,7 +868,7 @@ const TokenSale = () => {
 
                 <div className="flex flex-row justify-between items-center w-full">
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[12px] opacity-70">TOTAL REFERRALS</p>
+                    <p className="text-white text-[12px] opacity-70">{t('totalReferrals')}</p>
                     <div className="flex flex-row ">
                       <p className="text-white text-[28px]">{referralCount}</p>
 
@@ -878,11 +880,11 @@ const TokenSale = () => {
                         {isRequesting ? (
                           <BarLoader color="#FFFFFF" />
                         ) : (
-                          "Request Payout"
+                          t('requestPayout')
                         )}
                       </>
                     ) : (
-                      "Connect Wallet"
+                      t('connectWallet')
                     )}
                   </div>
 
@@ -919,7 +921,7 @@ const TokenSale = () => {
                 </div>
 
                 <div className="flex flex-row items-center space-x-3">
-                  <p className="text-[12px] text-white opacity-70e">Share on</p>
+                  <p className="text-[12px] text-white opacity-70e">{t('shareOn')}</p>
 
                   <a href={discordShareUrl} target="blank" className=" opacity-85 hover:opacity-100 cursor-pointer hover:scale-110 transition ease-in-out">
                     <DiscordLogo />
@@ -943,10 +945,10 @@ const TokenSale = () => {
 
           <div className="bg-[#121212] rounded-[8ox]">
             <div className="p-5">
-              <p className="text-white font-bold text-[20px]">Transactions</p>
+              <p className="text-white font-bold text-[20px]">{t('transactions')}</p>
               <div className="flex flex-col space-y-5 py-5">
                 <div className="space-y-2">
-                  <p className="text-[12px] opacity-70 text-white">AMOUNT SPENT</p>
+                  <p className="text-[12px] opacity-70 text-white">{t('amountSpent')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{totalAmount}</p>
                     <p className="text-white text-[16px]">.{decimalTotalAmount}</p>
@@ -955,7 +957,7 @@ const TokenSale = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-[12px] opacity-70 text-white">TOKENS BOUGHT</p>
+                  <p className="text-[12px] opacity-70 text-white">{t('tokensBought')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{tokensBought}</p>
                     <p className="text-white font-extralight text-[24px]">KARBON</p>
@@ -963,7 +965,7 @@ const TokenSale = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-[12px] opacity-70 text-white">TOKEN VALUE</p>
+                  <p className="text-[12px] opacity-70 text-white">{t('tokenValue')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{saleRate}</p>
                     <p className="text-white text-[16px]">.00</p>
@@ -976,7 +978,7 @@ const TokenSale = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-[12px] text-white opacity-70">ESTIMATED CLAIM TIME</p>
+                  <p className="text-[12px] text-white opacity-70">{t('estimatedClaimTime')}</p>
                   <div className="flex flex-row space-x-2">
                     <p className="text-white text-[20px]">{countdown.days}d</p>
                     <p className="text-white text-[20px]">{countdown.hours}h</p>
