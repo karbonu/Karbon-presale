@@ -1,12 +1,13 @@
 import {
     Dialog,
     DialogContent,
-} from "@/components/ui/dialog.tsx"
-import DialogClose from "../Icons/DialogClose.tsx"
-import FailedModalIcon from "../Icons/FailedModalIcon.tsx"
-
+} from "@/components/ui/dialog.tsx";
+import DialogClose from "../Icons/DialogClose.tsx";
+import FailedModalIcon from "../Icons/FailedModalIcon.tsx";
+import { useTranslation } from "react-i18next"; // Update the import to useTranslation
 
 const BoughtTokensFailed = (props: any) => {
+    const { t } = useTranslation(); // Update to use useTranslation
     return (
         <div>
             <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
@@ -20,18 +21,20 @@ const BoughtTokensFailed = (props: any) => {
                     <div className="w-full py-5 flex flex-col space-y-5 items-center justify-center">
                         <FailedModalIcon />
                         <div className="flex flex-col items-center justify-center space-y-2">
-                            <p className=" text-[#FF3636] font-medium text-[32px]">Failed</p>
+                            <p className=" text-[#FF3636] font-medium text-[32px]">{t('failed')}</p>
                         </div>
-                        <p className="text-center text-white w-[251px] text-[14px] leading-6 tracking-normal">We were not able to complete your contribution. You can <span onClick={() => props.setIsDialogOpen(false)} className="text-[#08E04A] cursor-pointer">try again.</span> </p>
+                        <p className="text-center text-white w-[251px] text-[14px] leading-6 tracking-normal">
+                            {t('unableToComplete')} <span onClick={() => props.setIsDialogOpen(false)} className="text-[#08E04A] cursor-pointer">{t('tryAgain')}</span>
+                        </p>
 
                         <div onClick={() => props.setIsDialogOpen(false)} className="bg-transparent py-2 px-10 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
-                            Close
+                            {t('close')}
                         </div>
                     </div>
                 </DialogContent>
             </Dialog>
         </div>
-    )
+    );
 }
 
-export default BoughtTokensFailed
+export default BoughtTokensFailed;
