@@ -1,9 +1,8 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { useAuth } from '@/components/shared/Contexts/AuthContext.tsx';
-import BackArrow from '@/components/Icons/BackArrow.tsx';
-import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer, PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
+import React, { useState, useCallback, useEffect } from 'react';
+import { useAuth } from '@/components/shared/Contexts/AuthContext';
+import BackArrow from '@/components/Icons/BackArrow';
+import { PayPalScriptProvider, PayPalHostedFieldsProvider, PayPalHostedField, usePayPalHostedFields } from "@paypal/react-paypal-js";
 import { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
-
 import axios from 'axios';
 import { useAccount } from 'wagmi';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
@@ -13,6 +12,10 @@ import { useToast } from '@/components/ui/use-toast';
 import { BarLoader } from 'react-spinners';
 import { Separator } from '@/components/ui/separator';
 import UpArrow from '@/components/Icons/UpArrow';
+import DialogClose from '@/components/Icons/DialogClose';
+import USDTIconRounded from '@/components/Icons/USDTIconRounded';
+import ForwardGreen from '@/components/Icons/ForwardGreen';
+import KarbonIcon from '@/components/Icons/KarbonIcon';
 import CreditCardlogo from '@/components/Icons/CreditCardlogo';
 
 interface VerifyPaymentData {
@@ -37,21 +40,26 @@ type InvestmentData = {
   paymentMethod: string;
 };
 
-const useContributeMutation = (): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
+const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
   return useMutation<AxiosResponse<any>, Error, ContributeData>({
     mutationFn: (data: ContributeData) => {
-      console.log("Here is the data")
-      console.log(data);
-      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data);
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data, {
+        headers: {
+          'Authorization': `Bearer ${auth}`,
+        }
+      });
     },
   });
 };
 
-const useCreateInvestment = (): UseMutationResult<AxiosResponse<any>, Error, InvestmentData> => {
+const useCreateInvestment = (auth: string): UseMutationResult<AxiosResponse<any>, Error, InvestmentData> => {
   return useMutation<AxiosResponse<any>, Error, InvestmentData>({
     mutationFn: (data: InvestmentData) => {
-      console.log("Investment DAta ", data);
-      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data);
+      return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data, {
+        headers: {
+          'Authorization': `Bearer ${auth}`,
+        }
+      });
     },
   });
 };
@@ -66,52 +74,68 @@ const generateSimpleHash = (input: string): string => {
   return Math.abs(hash).toString(16); // Convert to hexadecimal
 };
 
-const Button = React.memo(({ onOrderCreate, onOrderApprove }: {
-  amount: any,
-  onOrderCreate: (data: any, actions: any) => Promise<string>,
-  onOrderApprove: (data: any, actions: any) => Promise<void>
-}) => {
-  const [{ isPending }] = usePayPalScriptReducer();
+const SubmitPayment = ({ amount, onApprove, onError }: any) => {
+  const hostedFields = usePayPalHostedFields() as any;
 
+  const submitHandler = () => {
+    if (typeof hostedFields?.submit !== "function") {
+      console.error("Hosted fields submit function not available");
+      return;
+    }
 
-  const paypalbuttonTransactionProps: PayPalButtonsComponentProps = useMemo(() => ({
-    style: { layout: "vertical" },
-    createOrder: onOrderCreate,
-    onApprove: onOrderApprove
-  }), [onOrderCreate, onOrderApprove]);
+    hostedFields
+      .submit({
+        cardholderName: "John Doe",
+      })
+      .then((orderData: any) => {
+        onApprove(orderData);
+      })
+      .catch((err: any) => {
+        onError(err);
+      });
+  };
 
   return (
-    <>
-      {isPending ? <h2>Load Smart Payment Button...</h2> : null}
-      <PayPalButtons fundingSource={"card"} {...paypalbuttonTransactionProps} />
-    </>
+    <button
+      onClick={submitHandler}
+      className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
+    >
+      <p className="font-bold text-[14px] shadow-sm">Pay ${amount}</p>
+    </button>
   );
-});
+};
 
 const BuyWithCreditCard = (props: any) => {
-  const { toast } = useToast()
+  const { toast } = useToast();
   const [amount, setAmount] = useState<string>('');
-  const { UserID, presaleID } = useAuth();
+  const { UserID, presaleID, accessToken } = useAuth();
   const { address } = useAccount();
   const [contributionLoading, setContributionLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rate, setRate] = useState(0);
   const [recievingValue, setRecievingValue] = useState(0);
+  const [orderCreated, setOrderCreated] = useState(false);
+  const [step, setStep] = useState(1);
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
-    currency: "USD"
+    currency: "USD",
+    components: "buttons,hosted-fields",
   };
 
   const verifyPayment = async (data: VerifyPaymentData) => {
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}payment/verify-payment`, data);
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}payment/verify-payment`, data, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    });
     return response.data;
   };
 
-  const contributeMutation = useContributeMutation();
-  const investmentMutate = useCreateInvestment();
+  const contributeMutation = useContributeMutation(accessToken);
+  const investmentMutate = useCreateInvestment(accessToken);
 
-  const mutationOptions = {
+  const mutation = useMutation({
     mutationFn: verifyPayment,
     onSuccess: (data: any) => {
       console.log(data);
@@ -119,138 +143,142 @@ const BuyWithCreditCard = (props: any) => {
     onError: (error: any) => {
       console.log(error);
     }
-  };
+  });
 
-  const mutation = useMutation(mutationOptions);
+  const handleApprove = useCallback((data: any) => {
+    setContributionLoading(true);
+    const orderID = data.orderID;
+    const hashInput = `${orderID}${Date.now()}`;
+    const txHash = generateSimpleHash(hashInput);
 
-  const createOrder = useCallback((data: any, actions: any) => {
-    console.log("Creating order with amount:", amount);
-    console.log(data)
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: amount
-          }
-        }
-      ]
-    });
-  }, [amount]);
+    mutation.mutate({ orderID, userID: UserID, amount });
 
-  const onApprove = useCallback((data: any, actions: any) => {
-    setContributionLoading(true)
-    return actions.order.capture().then((details: any) => {
-      console.log("Order captured:", details);
-      const orderID = data.orderID;
-
-      // Generate a simple hash based on order details
-      const hashInput = `${orderID}${details.payer.email_address}${details.purchase_units[0].amount.value}${Date.now()}`;
-      const txHash = generateSimpleHash(hashInput);
-
-      console.log("Generated txHash:", txHash);
-
-      mutation.mutate({ orderID, userID: UserID, amount });
-
-      contributeMutation.mutate(
-        {
-          amount: Number(amount),
-          walletAddress: address as string || "",
-          userId: UserID as string || "",
-          txHash: txHash,
-          presaleId: presaleID as string || "",
-          paymentMethod: 'Card',
-        },
-        {
-          onSuccess: (response: any) => {
-            console.log(response);
-            setAmount('');
-            setRecievingValue(0);
-            investmentMutate.mutate(
-              {
-                amount: Number(amount),
-                userId: UserID as string || "",
-                txHash: txHash,
-                paymentMethod: 'Card',
+    contributeMutation.mutate(
+      {
+        amount: Number(amount),
+        walletAddress: address as string || "",
+        userId: UserID as string || "",
+        txHash: txHash,
+        presaleId: presaleID as string || "",
+        paymentMethod: 'Card',
+      },
+      {
+        onSuccess: () => {
+          setAmount('');
+          setIsModalOpen(false);
+          setRecievingValue(0);
+          investmentMutate.mutate(
+            {
+              amount: Number(amount),
+              userId: UserID as string || "",
+              txHash: txHash,
+              paymentMethod: 'Card',
+            },
+            {
+              onSuccess: () => {
+                setOrderCreated(false);
+                setContributionLoading(false);
+                setAmount('');
+                setRecievingValue(0);
+                setIsModalOpen(false);
+                toast({
+                  variant: "success",
+                  title: "Success!",
+                  description: "Your contribution was successful",
+                });
               },
-              {
-                onSuccess: (response: any) => {
-                  console.log(response);
-                  setContributionLoading(false);
-                  setAmount('');
-                  setRecievingValue(0);
-                  toast({
-                    title: "Success!",
-                    description: "Your contribution was successfull",
-                  })
-                },
-                onError: (error) => {
-                  console.log(error);
-                  console.log("ERROR");
-                  setContributionLoading(false);
-                  setAmount('');
-                  setRecievingValue(0);
-                  toast({
-                    title: "Error!",
-                    description: "Your contribution Failed",
-                  })
-                }
+              onError: () => {
+                setContributionLoading(false);
+                setAmount('');
+                setRecievingValue(0);
+                setIsModalOpen(false);
+                toast({
+                  variant: "failure",
+                  title: "Error!",
+                  description: "Your contribution Failed",
+                });
               }
-            );
-          },
-          onError: (error) => {
-            console.log(error);
-            setContributionLoading(false);
-            console.log("ERROR");
-            setAmount('');
-            setRecievingValue(0);
-            toast({
-              title: "Error!",
-              description: "Your contribution Failed",
-            })
-          }
+            }
+          );
+        },
+        onError: () => {
+          setContributionLoading(false);
+          setAmount('');
+          setRecievingValue(0);
+          setIsModalOpen(false);
+          toast({
+            variant: "failure",
+            title: "Error!",
+            description: "Your contribution Failed",
+          });
         }
-      );
-    });
+      }
+    );
   }, [UserID, amount, mutation, contributeMutation, investmentMutate, address, presaleID]);
+
+  const handleError = useCallback((err: any) => {
+    console.error(err);
+    setContributionLoading(false);
+    toast({
+      variant: "failure",
+      title: "Error!",
+      description: "Payment failed. Please try again.",
+    });
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setAmount(value);
-    setRecievingValue(Number(e.target.value) * rate)
-    console.log(recievingValue)
+    setRecievingValue(Number(value) * rate);
   };
 
   const handlePay = () => {
     if (Number(amount) === 0) {
       toast({
+        variant: "failure",
         title: "Error!",
-        description: "Your need to enter an amount",
-      })
+        description: "You need to enter an amount",
+      });
     } else {
       setContributionLoading(true);
       setIsModalOpen(true);
     }
-  }
+  };
 
   useEffect(() => {
     const storedValue = localStorage.getItem('salerate');
     if (storedValue != null) {
       const rate_ = parseInt(storedValue, 10);
       setRate(rate_);
-      console.log(rate_)
     }
   }, []);
 
+  useEffect(() => {
+    if (!isModalOpen && !orderCreated) {
+      setContributionLoading(false);
+    }
+  }, [isModalOpen, orderCreated]);
+
+  const createOrder = () => {
+    return (window as any).paypal.createOrder({
+      purchase_units: [{
+        amount: {
+          currency_code: "USD",
+          value: amount
+        }
+      }]
+    });
+  };
 
   return (
     <PayPalScriptProvider options={paypalScriptOptions}>
       <div className="w-full flex items-center px-3 rounded-[4px] bg-[#1C1C1C] h-[40px]">
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center justify-between ">
           <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer flex-row items-center justify-center space-x-1">
             <BackArrow />
             <p className="text-white text-[12px]">Back</p>
           </div>
-          <div className="flex flex-row items-center pl-5 space-x-2">
+          <div className="flex pl-5 flex-row items-center space-x-2">
             <CreditCardlogo />
             <p className="text-white text-[14px]">Buy with Credit Card</p>
           </div>
@@ -289,22 +317,131 @@ const BuyWithCreditCard = (props: any) => {
           </label>
         </div>
 
-
-        <button disabled={contributionLoading} onClick={() => handlePay()} className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>
+        <button
+          disabled={contributionLoading}
+          onClick={() => { handlePay(); setStep(1); }}
+          className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'
+        >
           {contributionLoading ? (
             <BarLoader color='white' />
           ) : (
             "Pay with Credit Card"
           )}
         </button>
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
 
-          <DialogContent className='flex items-center justify-center bg-white w-[70%] py-20'>
-            <Button
-              amount={amount}
-              onOrderCreate={createOrder}
-              onOrderApprove={onApprove}
-            />
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[70%] p-10 max-sm:py-7 max-sm:px-5 flex-col space-y-10'>
+            {step === 1 && (
+              <>
+                <div className='flex flex-row w-full justify-between items-center'>
+                  <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Confirm Contribution</p>
+                  <div onClick={() => setIsModalOpen(false)} className='cursor-pointer'>
+                    <DialogClose />
+                  </div>
+                </div>
+
+                <div className='bg-black rounded-[8px] flex flex-col w-full'>
+                  <div className='flex flex-row items-center p-5 justify-between w-full'>
+                    <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{amount}</p>
+                    <div className='flex flex-row items-center space-x-2'>
+                      <p className="text-white font-thin text-[16px] max-sm:text-[14px]">USDT</p>
+                      <USDTIconRounded />
+                    </div>
+                  </div>
+
+                  <div className='flex px-5 space-x-5 flex-row w-full items-center justify-center'>
+                    <Separator className='bg-[#282828] flex-1 flex h-[1px]' />
+                    <div className='rotate-90'>
+                      <ForwardGreen />
+                    </div>
+                    <Separator className='bg-[#282828] flex-1 flex h-[1px]' />
+                  </div>
+
+                  <div className='flex flex-row items-center p-5 justify-between w-full'>
+                    <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{recievingValue}</p>
+                    <div className='flex flex-row items-center space-x-2'>
+                      <p className="text-white font-thin text-[16px] max-sm:text-[14px]">KARBON</p>
+                      <KarbonIcon />
+                    </div>
+                  </div>
+                </div>
+
+                <div className='w-full flex items-center justify-center'>
+                  <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>Output is estimated, you will receive your token with a transaction fee taken.</p>
+                </div>
+
+                <div className='bg-black rounded-[8px] border-[#484848] border-[0.5px] flex flex-col w-full'>
+                  <div className='flex flex-row items-center p-5 justify-between w-full'>
+                    <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">Price</p>
+                    <div className='flex flex-row items-center space-x-2'>
+                      <p className="text-white text-[12px] max-sm:text-[10px]">{rate} KARBON/USDT</p>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setStep(2)}
+                  className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
+                >
+                  <p className="font-bold text-[14px] shadow-sm">Proceed</p>
+                </button>
+              </>
+            )}
+            {step === 2 && (
+              <>
+                <div className='flex flex-row w-full justify-between items-center'>
+                  <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Enter Payment Details</p>
+                  <div onClick={() => setIsModalOpen(false)} className='cursor-pointer'>
+                    <DialogClose />
+                  </div>
+                </div>
+                <PayPalHostedFieldsProvider createOrder={createOrder}>
+                  <div className="w-full space-y-4">
+                    <div className="w-full">
+                      <label htmlFor="card-number" className="block text-sm font-medium text-white mb-1">Card Number</label>
+                      <PayPalHostedField
+                        id="card-number"
+                        hostedFieldType="number"
+                        options={{
+                          selector: "#card-number",
+                          placeholder: "4111 1111 1111 1111"
+                        }}
+                        className="w-full p-2 bg-black text-white rounded border border-gray-600"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label htmlFor="cvv" className="block text-sm font-medium text-white mb-1">CVV</label>
+                      <PayPalHostedField
+                        id="cvv"
+                        hostedFieldType="cvv"
+                        options={{
+                          selector: "#cvv",
+                          placeholder: "123"
+                        }}
+                        className="w-full p-2 bg-black text-white rounded border border-gray-600"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label htmlFor="expiration-date" className="block text-sm font-medium text-white mb-1">Expiration Date</label>
+                      <PayPalHostedField
+                        id="expiration-date"
+                        hostedFieldType="expirationDate"
+                        options={{
+                          selector: "#expiration-date",
+                          placeholder: "MM/YY"
+                        }}
+                        className="w-full p-2 bg-black text-white rounded border border-gray-600"
+                      />
+                    </div>
+                  </div>
+                  <SubmitPayment
+                    amount={amount}
+                    onApprove={handleApprove}
+                    onError={handleError}
+                  />
+                </PayPalHostedFieldsProvider>
+              </>
+            )}
           </DialogContent>
         </Dialog>
       </div>

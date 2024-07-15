@@ -119,14 +119,14 @@ const SignUp = () => {
     if (password === "") {
       toast({
         title: "Invalid Password!",
-        description: "Please, Enter a valis password",
+        description: "Enter a valid password",
       })
       return;
     } else {
       if (confirmPassword === "") {
         toast({
           title: "Invalid Confirm Password!",
-          description: "Please, Enter a valis confirm password",
+          description: "Enter a valid confirm password",
         })
         return;
       }
@@ -268,7 +268,7 @@ const SignUp = () => {
         toast({
           variant: "failure",
           title: "Invalid Email!",
-          description: "Please, Enter a valis email",
+          description: "Please, Enter a valid email",
         })
       } else {
         setStep(2)
@@ -366,7 +366,7 @@ const SignUp = () => {
     if (email === "") {
       toast({
         title: "Invalid Email!",
-        description: "Please, Enter a valis email",
+        description: "Please, Enter a valid email",
       })
     } else {
       setStep(2)

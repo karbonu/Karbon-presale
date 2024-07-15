@@ -59,6 +59,15 @@ dependencies:
   gapi-script:
     specifier: ^1.2.0
     version: 1.2.0
+  i18next:
+    specifier: ^23.12.1
+    version: 23.12.1
+  i18next-browser-languagedetector:
+    specifier: ^8.0.0
+    version: 8.0.0
+  i18next-http-backend:
+    specifier: ^2.5.2
+    version: 2.5.2
   input-otp:
     specifier: ^1.2.4
     version: 1.2.4(react-dom@18.3.1)(react@18.3.1)
@@ -89,6 +98,9 @@ dependencies:
   react-helmet-async:
     specifier: ^2.0.5
     version: 2.0.5(react@18.3.1)
+  react-i18next:
+    specifier: ^14.1.2
+    version: 14.1.2(i18next@23.12.1)(react-dom@18.3.1)(react-native@0.74.2)(react@18.3.1)
   react-pro-sidebar:
     specifier: ^1.1.0
     version: 1.1.0(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
@@ -121,7 +133,7 @@ dependencies:
     version: 2.16.1(typescript@5.5.2)
   wagmi:
     specifier: ^2.10.5
-    version: 2.10.5(@tanstack/react-query@5.45.1)(@types/react@18.3.3)(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
+    version: 2.10.5(@tanstack/react-query@5.45.1)(@types/react@18.3.3)(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
   web3:
     specifier: ^4.10.0
     version: 4.10.0(typescript@5.5.2)
@@ -2385,7 +2397,7 @@ packages:
       - supports-color
     dev: false
 
-  /@metamask/sdk-install-modal-web@0.26.0(i18next@22.5.1)(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1):
+  /@metamask/sdk-install-modal-web@0.26.0(i18next@22.5.1)(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1):
     resolution: {integrity: sha512-LyDQFIsWWyU0ZgZR3O9LzRqKzXcYUEGJRCNfb26IjFOquvmQosbhQV0jDNlVa8Tk2Fg4ykTPoaauANh6sVJYVQ==}
     peerDependencies:
       i18next: 22.5.1
@@ -2405,11 +2417,11 @@ packages:
       qr-code-styling: 1.6.0-rc.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-i18next: 13.5.0(i18next@22.5.1)(react-dom@18.3.1)(react-native@0.74.2)(react@18.3.1)
+      react-i18next: 14.1.2(i18next@23.12.1)(react-dom@18.3.1)(react-native@0.74.2)(react@18.3.1)
       react-native: 0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7)(@types/react@18.3.3)(react@18.3.1)
     dev: false
 
-  /@metamask/sdk@0.26.0(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1):
+  /@metamask/sdk@0.26.0(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1):
     resolution: {integrity: sha512-kCVtyGEqCcq0n4i08yeLwNT5cjnreVUNucJr+DMwUlQJ2JCSqAzrYSPhlk1k4LBqhje1OvLoEDJ6JnRshwMZtw==}
     peerDependencies:
       react: ^18.2.0
@@ -2423,7 +2435,7 @@ packages:
       '@metamask/onboarding': 1.0.1
       '@metamask/providers': 15.0.0
       '@metamask/sdk-communication-layer': 0.26.0(cross-fetch@4.0.0)(eciesjs@0.3.19)(eventemitter2@6.4.9)(readable-stream@3.6.2)(socket.io-client@4.7.5)
-      '@metamask/sdk-install-modal-web': 0.26.0(i18next@22.5.1)(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1)
+      '@metamask/sdk-install-modal-web': 0.26.0(i18next@22.5.1)(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1)
       '@types/dom-screen-wake-lock': 1.0.3
       bowser: 2.11.0
       cross-fetch: 4.0.0
@@ -3287,7 +3299,7 @@ packages:
       react-remove-scroll: 2.5.7(@types/react@18.3.3)(react@18.3.1)
       ua-parser-js: 1.0.38
       viem: 2.16.1(typescript@5.5.2)
-      wagmi: 2.10.5(@tanstack/react-query@5.45.1)(@types/react@18.3.3)(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
+      wagmi: 2.10.5(@tanstack/react-query@5.45.1)(@types/react@18.3.3)(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
     transitivePeerDependencies:
       - '@types/react'
     dev: false
@@ -4361,7 +4373,7 @@ packages:
       - supports-color
     dev: true
 
-  /@wagmi/connectors@5.0.17(@types/react@18.3.3)(@wagmi/core@2.11.5)(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1):
+  /@wagmi/connectors@5.0.17(@types/react@18.3.3)(@wagmi/core@2.11.5)(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1):
     resolution: {integrity: sha512-fy14qLAZ3c+XI8WDBrTkNVOHOszE5a0h6IMQmAvoJm6blgi3o4GQHQ32oVl0zl6Kauzh8EM/pqmfPTkHGkkIvQ==}
     peerDependencies:
       '@wagmi/core': 2.11.5
@@ -4372,7 +4384,7 @@ packages:
         optional: true
     dependencies:
       '@coinbase/wallet-sdk': 4.0.3
-      '@metamask/sdk': 0.26.0(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1)
+      '@metamask/sdk': 0.26.0(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1)
       '@safe-global/safe-apps-provider': 0.18.1(typescript@5.5.2)
       '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.5.2)
       '@wagmi/core': 2.11.5(@types/react@18.3.3)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
@@ -5088,7 +5100,7 @@ packages:
       vue:
         optional: true
     dependencies:
-      '@wagmi/connectors': 5.0.17(@types/react@18.3.3)(@wagmi/core@2.11.5)(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
+      '@wagmi/connectors': 5.0.17(@types/react@18.3.3)(@wagmi/core@2.11.5)(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
       '@wagmi/core': 2.11.5(@types/react@18.3.3)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
       '@walletconnect/ethereum-provider': 2.13.0(@types/react@18.3.3)(react@18.3.1)
       '@web3modal/polyfills': 5.0.3
@@ -6919,8 +6931,28 @@ packages:
       '@babel/runtime': 7.24.7
     dev: false
 
+  /i18next-browser-languagedetector@8.0.0:
+    resolution: {integrity: sha512-zhXdJXTTCoG39QsrOCiOabnWj2jecouOqbchu3EfhtSHxIB5Uugnm9JaizenOy39h7ne3+fLikIjeW88+rgszw==}
+    dependencies:
+      '@babel/runtime': 7.24.7
+    dev: false
+
+  /i18next-http-backend@2.5.2:
+    resolution: {integrity: sha512-+K8HbDfrvc1/2X8jpb7RLhI9ZxBDpx3xogYkQwGKlWAUXLSEGXzgdt3EcUjLlBCdMwdQY+K+EUF6oh8oB6rwHw==}
+    dependencies:
+      cross-fetch: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /i18next@22.5.1:
     resolution: {integrity: sha512-8TGPgM3pAD+VRsMtUMNknRz3kzqwp/gPALrWMsDnmC1mKqJwpWyooQRLMcbTwq8z8YwSmuj+ZYvc+xCuEpkssA==}
+    dependencies:
+      '@babel/runtime': 7.24.7
+    dev: false
+
+  /i18next@23.12.1:
+    resolution: {integrity: sha512-l4y291ZGRgUhKuqVSiqyuU2DDzxKStlIWSaoNBR4grYmh0X+pRYbFpTMs3CnJ5ECKbOI8sQcJ3PbTUfLgPRaMA==}
     dependencies:
       '@babel/runtime': 7.24.7
     dev: false
@@ -8745,8 +8777,8 @@ packages:
       react-side-effect: 2.1.2(react@18.3.1)
     dev: false
 
-  /react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1)(react-native@0.74.2)(react@18.3.1):
-    resolution: {integrity: sha512-CFJ5NDGJ2MUyBohEHxljOq/39NQ972rh1ajnadG9BjTk+UXbHLq4z5DKEbEQBDoIhUmmbuS/fIMJKo6VOax1HA==}
+  /react-i18next@14.1.2(i18next@23.12.1)(react-dom@18.3.1)(react-native@0.74.2)(react@18.3.1):
+    resolution: {integrity: sha512-FSIcJy6oauJbGEXfhUgVeLzvWBhIBIS+/9c6Lj4niwKZyGaGb4V4vUbATXSlsHJDXXB+ociNxqFNiFuV1gmoqg==}
     peerDependencies:
       i18next: '>= 23.2.3'
       react: '>= 16.8.0'
@@ -8760,7 +8792,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.7
       html-parse-stringify: 3.0.1
-      i18next: 22.5.1
+      i18next: 23.12.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-native: 0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7)(@types/react@18.3.3)(react@18.3.1)
@@ -10132,7 +10164,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /wagmi@2.10.5(@tanstack/react-query@5.45.1)(@types/react@18.3.3)(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1):
+  /wagmi@2.10.5(@tanstack/react-query@5.45.1)(@types/react@18.3.3)(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1):
     resolution: {integrity: sha512-/fB8tu0pKVwX7XZ80pOFflIVhkSYactJoDZZ5OEj6JoFx2DadpHgLEYGp1g/mm2Qlfswzp/uKzF8eNzBtFj5eg==}
     peerDependencies:
       '@tanstack/react-query': '>=5.0.0'
@@ -10144,7 +10176,7 @@ packages:
         optional: true
     dependencies:
       '@tanstack/react-query': 5.45.1(react@18.3.1)
-      '@wagmi/connectors': 5.0.17(@types/react@18.3.3)(@wagmi/core@2.11.5)(react-dom@18.3.1)(react-i18next@13.5.0)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
+      '@wagmi/connectors': 5.0.17(@types/react@18.3.3)(@wagmi/core@2.11.5)(react-dom@18.3.1)(react-i18next@14.1.2)(react-native@0.74.2)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
       '@wagmi/core': 2.11.5(@types/react@18.3.3)(react@18.3.1)(typescript@5.5.2)(viem@2.16.1)
       react: 18.3.1
       typescript: 5.5.2

@@ -149,7 +149,7 @@ const BuyWithUSDT = (props: any) => {
                 setIsApproving(false);
                 toast({
                     title: "Approval Successful",
-                    description: "You can now proceed with the purchase.",
+                    description: "Purchasing Now.",
                     variant: "success",
                 });
                 setStep(3);

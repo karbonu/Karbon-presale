@@ -107,7 +107,7 @@ const ProfileSettings = () => {
           toast({
             variant: "success",
             title: "Success!",
-            description: "Password Change Successfully",
+            description: "Password Changed Successfully",
           })
           setTimeout(() => {
             setPasswordSuccess('');
