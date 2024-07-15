@@ -18,6 +18,7 @@ import DialogClose from '@/components/Icons/DialogClose';
 import USDTIconRounded from '@/components/Icons/USDTIconRounded';
 import ForwardGreen from '@/components/Icons/ForwardGreen';
 import KarbonIcon from '@/components/Icons/KarbonIcon';
+import { useTranslation } from 'react-i18next';
 
 interface VerifyPaymentData {
   orderID: string;
@@ -102,6 +103,7 @@ const Button = React.memo(({ onOrderCreate, onOrderApprove, onOrderCancel }: {
 });
 
 const BuyWithPaypal = (props: any) => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [amount, setAmount] = useState<string>('');
   const { UserID, presaleID, accessToken } = useAuth();
@@ -203,8 +205,8 @@ const BuyWithPaypal = (props: any) => {
                   setIsModalOpen(false);
                   toast({
                     variant: "success",
-                    title: "Success!",
-                    description: "Your contribution was successfull",
+                    title: t('success'),
+                    description: t('contributionSuccess'),
                   });
                 },
                 onError: () => {
@@ -216,8 +218,8 @@ const BuyWithPaypal = (props: any) => {
                   setIsModalOpen(false);
                   toast({
                     variant: "failure",
-                    title: "Error!",
-                    description: "Your contribution Failed",
+                    title: t('error'),
+                    description: t('contributionFailed'),
                   });
                 }
               }
@@ -232,8 +234,8 @@ const BuyWithPaypal = (props: any) => {
             setIsModalOpen(false);
             toast({
               variant: "failure",
-              title: "Error!",
-              description: "Your contribution Failed",
+              title: t('error'),
+              description: t('contributionFailed'),
             });
           }
         }
@@ -257,8 +259,8 @@ const BuyWithPaypal = (props: any) => {
     if (Number(amount) === 0) {
       toast({
         variant: "failure",
-        title: "Error!",
-        description: "Your need to enter an amount",
+        title: t('error'),
+        description: t('enterAmount'),
       });
     } else {
       setContributionLoading(true);
@@ -294,14 +296,14 @@ const BuyWithPaypal = (props: any) => {
           </div>
           <div className="flex flex-row items-center space-x-2">
             <PaypalLogo />
-            <p className="text-white text-[14px]">Buy with Paypal</p>
+            <p className="text-white text-[14px]">{t('buyWithPaypal')}</p>
           </div>
         </div>
       </div>
       <div className="flex flex-col py-5 items-center justify-center space-y-5">
         <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
           <label htmlFor="buyInput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
-            <p className="text-white text-[12px]">You Buy</p>
+            <p className="text-white text-[12px]">{t('youBuy')}</p>
             <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
             <div className="flex flex-row items-center justify-center space-x-2 flex-1">
               <input
@@ -322,7 +324,7 @@ const BuyWithPaypal = (props: any) => {
 
         <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
           <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
-            <p className="text-white text-[12px]">You Get</p>
+            <p className="text-white text-[12px]">{t('youGet')}</p>
             <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
             <div className="flex flex-row items-center justify-center space-x-2 flex-1">
               <p className='h-full text-white w-[75%]'>{recievingValue === 0 ? '' : recievingValue}</p>
@@ -336,14 +338,14 @@ const BuyWithPaypal = (props: any) => {
           {contributionLoading ? (
             <BarLoader color='white' />
           ) : (
-            "Pay with Paypal"
+            t('payWithPaypal')
           )}
         </button>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
 
           <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[70%] p-10 max-sm:py-7 max-sm:px-5 flex-col space-y-10'>
             <div className='flex flex-row w-full justify-between items-center'>
-              <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Confirm Contribution</p>
+              <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{t('confirmContribution')}</p>
               <div onClick={() => setIsModalOpen(false)} className=' cursor-pointer'>
                 <DialogClose />
               </div>
@@ -376,13 +378,13 @@ const BuyWithPaypal = (props: any) => {
             </div>
 
             <div className='w-full flex items-center justify-center'>
-              <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>Output is estimated, you will receive your token with a transaction fee taken.</p>
+              <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>t('outputEstimated</p>
             </div>
 
 
             <div className='bg-black rounded-[8px] border-[#484848] border-[0.5px] flex flex-col w-full'>
               <div className='flex flex-row items-center p-5 justify-between w-full'>
-                <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">Price</p>
+                <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">{t('price')}</p>
                 <div className='flex flex-row items-center space-x-2'>
                   <p className="text-white  text-[12px] max-sm:text-[10px]">{rate} KARBON/USDT</p>
                 </div>
