@@ -10,8 +10,10 @@ import EyeIcon from '@/components/Icons/EyeIcon.tsx';
 import EyeIcongreen from '@/components/Icons/EyeIcongreen.tsx';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const PasswordReset = (props: any) => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [step, setStep] = useState(1);
   const [OTP, setOTP] = useState('');
@@ -71,8 +73,8 @@ const PasswordReset = (props: any) => {
     if (Number(OTP) === 0) {
       toast({
         variant: 'failure',
-        title: "Enter a valid OTP!",
-        description: "The One Time Password you entered is not valid",
+        title: t('enterOTP'),
+        description: t('invalidOTP'),
       })
       return;
     }
@@ -89,8 +91,8 @@ const PasswordReset = (props: any) => {
           // console.log(response.data);
           toast({
             variant: 'success',
-            title: "Success!",
-            description: "OTP Verification Successfull",
+            title: t('success'),
+            description: t('otpSuccess'),
           })
           setStep(2);
           setIsVerifying(false);
@@ -99,8 +101,8 @@ const PasswordReset = (props: any) => {
           // console.log(error);
           toast({
             variant: 'failure',
-            title: "Error!",
-            description: "OTP Verification Failed",
+            title: t('error'),
+            description: t('otpFailed'),
           })
           setIsVerifying(false);
         },
@@ -123,8 +125,8 @@ const PasswordReset = (props: any) => {
           navigate('/')
           toast({
             variant: 'success',
-            title: "Success!",
-            description: "Password Reset Successfull",
+            title: t('success'),
+            description: t('passwordResetSuccess'),
           })
         },
         onError: () => {
@@ -132,8 +134,8 @@ const PasswordReset = (props: any) => {
           setIsVerifying(false);
           toast({
             variant: 'failure',
-            title: "Error!",
-            description: "Password Reset Failed, Try Again",
+            title: t('error'),
+            description: t('passwordResetFailed'),
           })
         }
       }
@@ -159,11 +161,11 @@ const PasswordReset = (props: any) => {
             <div className="px-8 flex space-y-5 flex-col justify-between h-full">
               <div className="flex flex-row space-x-2 items-center">
                 <PasswordLogo />
-                <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
+                <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">{t('resetPassword')}</p>
               </div>
               <div className="flex flex-col space-y-5">
                 <div className="flex flex-col space-y-2">
-                  <p className="text-white text-[14px] max-sm:text-[12px]">Enter OTP</p>
+                  <p className="text-white text-[14px] max-sm:text-[12px]">{t('enterOtp')}</p>
                   <input
                     onChange={handleOTPChange}
                     onKeyDown={handleOTPKeydown}
@@ -179,7 +181,7 @@ const PasswordReset = (props: any) => {
                     {isVerifying ? (
                       <BarLoader />
                     ) : (
-                      <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
+                      <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">{t('proceed')}</p>
                     )}
                   </button>
                 </div>
@@ -195,12 +197,12 @@ const PasswordReset = (props: any) => {
             <div className="py-5 px-8 flex flex-col justify-between h-full">
               <div className="flex flex-row space-x-2 items-center pb-5">
                 <PasswordLogo />
-                <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Create a new password</p>
+                <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">{t('createNewPassword')}</p>
               </div>
 
               <div className="flex flex-col space-y-5">
                 <div className="flex flex-col space-y-2 relative">
-                  <p className="text-white text-[14px] max-sm:text-[12px]">Password</p>
+                  <p className="text-white text-[14px] max-sm:text-[12px]">{t('password')}</p>
                   <input
                     className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4"
                     type={showPassword ? "text" : "password"}
@@ -221,28 +223,28 @@ const PasswordReset = (props: any) => {
                 <div className="flex flex-col">
                   <div className="flex flex-row items-center space-x-2">
                     <PasswordIconComp condition={validation.minLength} />
-                    <p className={!validation.minLength ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Must contain at least 10 characters</p>
+                    <p className={!validation.minLength ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>{t('minCharacters')}</p>
                   </div>
                   <div className="flex flex-row items-center space-x-2">
                     <PasswordIconComp condition={validation.upperCase} />
-                    <p className={!validation.upperCase ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Upper case character</p>
+                    <p className={!validation.upperCase ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>{t('upperCase')}</p>
                   </div>
                   <div className="flex flex-row items-center space-x-2">
                     <PasswordIconComp condition={validation.lowerCase} />
-                    <p className={!validation.lowerCase ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Lower case character</p>
+                    <p className={!validation.lowerCase ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>{t('lowerCase')}</p>
                   </div>
                   <div className="flex flex-row items-center space-x-2">
                     <PasswordIconComp condition={validation.number} />
-                    <p className={!validation.number ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Number</p>
+                    <p className={!validation.number ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>{t('number')}</p>
                   </div>
                   <div className="flex flex-row items-center space-x-2">
                     <PasswordIconComp condition={validation.specialChar} />
-                    <p className={!validation.specialChar ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>Special Character</p>
+                    <p className={!validation.specialChar ? 'text-[14px] max-sm:text-[12px] text-white opacity-55' : 'text-[14px] max-sm:text-[12px] text-[#08E04A]'}>{t('specialCharacter')}</p>
                   </div>
                 </div>
 
                 <div className="flex flex-col space-y-2 relative">
-                  <p className="text-white text-[14px] max-sm:text-[12px]">Confirm Password</p>
+                  <p className="text-white text-[14px] max-sm:text-[12px]">{t('confirmPassword')}</p>
                   <input
                     className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4"
                     type={showConfirmPassword ? "text" : "password"}
@@ -260,7 +262,7 @@ const PasswordReset = (props: any) => {
                     )}
                   </div>
                   {revealConfirmError && (
-                    <p className="text-[10px] text-red-500">Password does not match</p>
+                    <p className="text-[10px] text-red-500">{t('passwordMismatch')}</p>
                   )}
                 </div>
                 <div>
@@ -271,7 +273,7 @@ const PasswordReset = (props: any) => {
                     {isVerifying ? (
                       <BarLoader />
                     ) : (
-                      <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Reset Password</p>
+                      <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">{t('resetPassword')}</p>
                     )}
                   </div>
                   {verificationError && (
@@ -283,7 +285,7 @@ const PasswordReset = (props: any) => {
                   <div className="flex items-center justify-center">
                     <BackArrow />
                   </div>
-                  <p className="text-white text-[14px]">Back</p>
+                  <p className="text-white text-[14px]">{t('back')}</p>
                 </a>
               </div>
             </div>
@@ -297,12 +299,12 @@ const PasswordReset = (props: any) => {
               <div className="flex flex-row space-x-2 items-center justify-center">
                 <SucccessIconSmall />
               </div>
-              <p className="text-white font-bold text-center text-[20px]">Password Reset Successful</p>
+              <p className="text-white font-bold text-center text-[20px]">{t('passwordResetSuccess')}</p>
               <a href="/sign-in" className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
                 <div className="flex items-center justify-center">
                   <BackArrow />
                 </div>
-                <p className="text-white text-[14px]">Back to Login</p>
+                <p className="text-white text-[14px]">{t('backToLogin')}</p>
               </a>
             </div>
           </div>

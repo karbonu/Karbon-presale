@@ -215,7 +215,7 @@ const BuyWithUSDT = (props: any) => {
             setIsBuying(false);
             // console.log(error);
             toast({
-                title: "Transaction Failed",
+                title: t('transactionFailedTitle'),
                 description: t('transactionFailed'),
                 variant: "failure",
             });
@@ -256,9 +256,9 @@ const BuyWithUSDT = (props: any) => {
 
                     <div className="w-full py-5 flex flex-col space-y-5 items-center justify-center">
                         <div className="opacity-70 flex flex-col space-y-5">
-                            <p className="text-[14px] text-white">By participating in the Karbon token seed sale, you acknowledge that tokens are sold at a discounted price, 50% of the launch price</p>
-                            <p className="text-[14px] text-white">Additionally, there is a 6-month vesting period before seed investors can start claiming tokens. Please be aware of the risks involved in cryptocurrency investments, including market volatility and regulatory uncertainties</p>
-                            <p className="text-[14px] text-white">Karbon Finance does not guarantee any returns or profits from token purchases. We recommend conducting thorough research and seeking advice from financial professionals before investing. Karbon Finance reserves the right to amend or cancel the token sale at any time without prior notice</p>
+                            <p className="text-[14px] text-white">{t('participateAcknowledgement')}</p>
+                            <p className="text-[14px] text-white">{t('vestingPeriodNotice')}</p>
+                            <p className="text-[14px] text-white">{t('noGuaranteeNotice')}</p>
                         </div>
 
                         <div onClick={() => setStep(2)} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] ">
@@ -274,7 +274,7 @@ const BuyWithUSDT = (props: any) => {
                 <div className="flex flex-row items-center justify-between w-[213px]">
                     <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer flex-row items-center justify-center space-x-1">
                         <BackArrow />
-                        <p className="text-white text-[12px]">Back</p>
+                        <p className="text-white text-[12px]">{t('back')}</p>
                     </div>
                     <div className="flex flex-row items-center space-x-2">
                         <USDTIcon />
@@ -284,9 +284,9 @@ const BuyWithUSDT = (props: any) => {
             </div>
 
             <div className="flex flex-row w-full items-center justify-between">
-                <p className="text-white text-[12px]">Amount</p>
+                <p className="text-white text-[12px]">{t('amount')}</p>
                 <div className="flex flex-row items-center space-x-1">
-                    <p className="text-white text-[12px] opacity-70">Wallet Balance</p>
+                    <p className="text-white text-[12px] opacity-70">{t('walletBalance')}</p>
                     <p className="text-white text-[12px]">{(Number(balance) / (10 ** 18))?.toFixed(2)}</p>
                 </div>
             </div>
@@ -326,8 +326,9 @@ const BuyWithUSDT = (props: any) => {
             <button onClick={handleProceed} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                 <p className="font-bold text-[14px] shadow-sm">
                     {isConnected ? (
-                        "Proceed"
-                    ) : "Connect Wallet"}
+                        t('proceed')
+                    ) : t('connectWallet')
+                    }
                 </p>
             </button>
 
@@ -381,7 +382,7 @@ const BuyWithUSDT = (props: any) => {
                                 </div>
 
                                 <div className='flex flex-row items-center p-5 justify-between w-full'>
-                                    <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">Fee</p>
+                                    <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">{t('fee')}</p>
                                     <div className='flex flex-row items-center space-x-2'>
                                         <p className="text-white  text-[12px] max-sm:text-[10px]">0.018 ETH</p>
                                     </div>

@@ -16,10 +16,12 @@ import axios from 'axios';
 import VerifyEmailIcon from '@/components/Icons/VerifyEmailIcon.tsx';
 import PasswordReset from './PasswordReset.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
+import { useTranslation } from 'react-i18next';
 
 
 
 const SignIn = () => {
+    const { t } = useTranslation();
     const { toast } = useToast();
     const [chanceInfo, setChanceInfo] = useState(true);
     const [step, setStep] = useState(1);
@@ -69,8 +71,8 @@ const SignIn = () => {
                 onError: () => {
                     toast({
                         variant: "failure",
-                        title: "Error!",
-                        description: "Password Reset Failed ",
+                        title: t('error'),
+                        description: t('passwordResetFailed'),
                     })
                     setIsResetting(false);
                 }
@@ -110,8 +112,8 @@ const SignIn = () => {
                 onError: () => {
                     toast({
                         variant: "failure",
-                        title: "Error!",
-                        description: "Account with entered email does not exist",
+                        title: t('error'),
+                        description: t('accountNotExist'),
                     })
                     setIsLoadingNonce(false);
                 }
@@ -147,8 +149,8 @@ const SignIn = () => {
                     setAuthenticated(true);
                     toast({
                         variant: "success",
-                        title: "Success!",
-                        description: "Login Successfull",
+                        title: t('success'),
+                        description: t('loginSuccess'),
                     })
                     navigate('/dashboard');
                     setIsLoggingIn(false);
@@ -156,8 +158,8 @@ const SignIn = () => {
                 onError: () => {
                     toast({
                         variant: "failure",
-                        title: "Error!",
-                        description: "Invalid Login Credentials",
+                        title: t('error'),
+                        description: t('invalidRoleRedirect'),
                     })
                     setIsLoggingIn(false);
                 }
@@ -174,8 +176,8 @@ const SignIn = () => {
         if (otp === "") {
             toast({
                 variant: "failure",
-                title: "Enter a valid OTP!",
-                description: "The One Time Password you entered is not valid",
+                title: t('enterOTP'),
+                description: t('invalidOTP'),
             })
             return;
         }
@@ -199,8 +201,8 @@ const SignIn = () => {
                     setISVerifying(false);
                     toast({
                         variant: "failure",
-                        title: "Error!",
-                        description: "Invalid or Expired OTP",
+                        title: t('error'),
+                        description: t('invalidExpiredOTP'),
                     })
                 },
             }
@@ -260,8 +262,8 @@ const SignIn = () => {
                             setAuthenticated(true);
                             toast({
                                 variant: "success",
-                                title: "Success!",
-                                description: "Login Successfull",
+                                title: t('success'),
+                                description: t('loginSuccess'),
                             })
                             navigate('/dashboard');
                             setIsLoggingIn(false);
@@ -269,8 +271,8 @@ const SignIn = () => {
                         onError: () => {
                             toast({
                                 variant: "failure",
-                                title: "Error!",
-                                description: "Login Failed, Try Again",
+                                title: t('error'),
+                                description: t('loginFailed'),
                             })
                             setIsLoggingIn(false);
                         }
@@ -281,8 +283,8 @@ const SignIn = () => {
             } catch (error) {
                 toast({
                     variant: "failure",
-                    title: "Error!",
-                    description: "Login Failed, Try Again",
+                    title: t('error'),
+                    description: t('loginFailed'),
                 })
                 setIsLoggingIn(false);
             }
@@ -290,8 +292,8 @@ const SignIn = () => {
         onError: () => {
             toast({
                 variant: "failure",
-                title: "Error!",
-                description: "Login Failed, Try Again",
+                title: t('error'),
+                description: t('loginFailed'),
             })
             setIsLoggingIn(false);
         },
@@ -311,7 +313,7 @@ const SignIn = () => {
                             <CloseIcon />
                         </div>
                         <div>
-                            <p className="text-white text-[10px]">A chance to buy Karbon tokens at half of the launch price.</p>
+                            <p className="text-white text-[10px]">{t('chanceToBuy')}</p>
                         </div>
                         <div>
                             <img src="./assets/halfPriceNotification.svg" />
@@ -323,7 +325,7 @@ const SignIn = () => {
                     <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
                         <div className="w-[450px] max-sm:w-[100%] h-[456px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 px-8 flex flex-col justify-between h-full">
-                                <p className="text-white text-[20px] max-sm:text-[90%] font-semibold">Sign In</p>
+                                <p className="text-white text-[20px] max-sm:text-[90%] font-semibold">{t('signIn')}</p>
 
                                 <div className="flex flex-col space-y-2">
                                     <div onClick={() => { login() }} className="flex cursor-pointer flex-row w-[389px] max-sm:w-[100%] max-sm:h-[48px] h-[56px] bg-[#1C1C1C]">
@@ -331,7 +333,7 @@ const SignIn = () => {
                                             <GoogleLogo />
                                         </div>
                                         <div className="flex-1 flex items-center justify-center">
-                                            <p className="text-white text-[14px] max-sm:text-[10px]">Sign in with Google</p>
+                                            <p className="text-white text-[14px] max-sm:text-[10px]">{t('signInGoogle')}</p>
                                         </div>
                                     </div>
 
@@ -340,14 +342,14 @@ const SignIn = () => {
                                             <AppleLogo />
                                         </div>
                                         <div className="flex-1 flex items-center justify-center">
-                                            <p className="text-white text-[14px] max-sm:text-[10px]">Sign in with Apple ID</p>
+                                            <p className="text-white text-[14px] max-sm:text-[10px]">{t('signInApple')}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="flex flex-row space-x-4 w-full items-center justify-center max-sm:justify-between">
                                     <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
-                                    <p className="text-white text-[14px] max-sm:text-[12px]">or sign in with email</p>
+                                    <p className="text-white text-[14px] max-sm:text-[12px]">{t('signInEmail')}</p>
                                     <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
                                 </div>
 
@@ -370,8 +372,8 @@ const SignIn = () => {
                                 </div>
 
                                 <div className="flex flex-row space-x-2 items-center justify-center">
-                                    <p className="text-white text-[14px] max-sm:text-[12px]">Don't have an account?</p>
-                                    <a href="/sign-up" className="text-[14px] max-sm:text-[12px] text-[#08E04A] font-semibold">Sign Up</a>
+                                    <p className="text-white text-[14px] max-sm:text-[12px]">{t('noAccount')}?</p>
+                                    <a href="/sign-up" className="text-[14px] max-sm:text-[12px] text-[#08E04A] font-semibold">{t('signUp')}</a>
                                 </div>
                             </div>
                         </div>
@@ -384,16 +386,16 @@ const SignIn = () => {
                             <div className="py-5 px-8 flex flex-col justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center">
                                     <PasswordLogo />
-                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Enter Password</p>
+                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">{t('enterPassword')}</p>
                                 </div>
                                 <div className="flex flex-row space-x-1 items-center">
-                                    <p className="text-white opacity-80 text-[14px]">Welcome</p>
+                                    <p className="text-white opacity-80 text-[14px]">{t('welcome')}</p>
                                     <p className="text-white text-[14px]">{email}</p>
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
                                     <div className="flex flex-col space-y-2">
-                                        <p className="text-white text-[14px]">Password</p>
+                                        <p className="text-white text-[14px]">{t('password')}</p>
                                         <input onKeyDown={handleSignInKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
                                     </div>
                                     <p onClick={() => setStep(3)} className="text-[14px] max-sm:text-[12px] cursor-pointer text-[#08E04A] font-semibold">Forgot Password?</p>
@@ -403,7 +405,7 @@ const SignIn = () => {
                                                 <BarLoader />
                                             ) : (
                                                 <p className="font-bold text-[14px] shadow-sm">
-                                                    Proceed
+                                                    {t('proceed')}
                                                 </p>
                                             )}
                                         </div>
@@ -417,7 +419,7 @@ const SignIn = () => {
                                     <div className="flex items-center justify-center">
                                         <BackArrow />
                                     </div>
-                                    <p className="text-white text-[14px]">Back</p>
+                                    <p className="text-white text-[14px]">{t('back')}</p>
                                 </div>
                             </div>
                         </div>
@@ -430,12 +432,12 @@ const SignIn = () => {
                             <div className="py-5 px-8 flex flex-col space-y-5 justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center">
                                     <PasswordLogo />
-                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
+                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">{t('resetPassword')}</p>
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
                                     <div className="flex flex-col space-y-2">
-                                        <p className="text-white text-[14px]">Enter Email</p>
+                                        <p className="text-white text-[14px]">{t('enterEmail')}</p>
                                         <input onKeyDown={handleResetKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" onChange={handleEmailChange} />
                                     </div>
                                     <div>
@@ -444,7 +446,7 @@ const SignIn = () => {
                                                 <BarLoader />
                                             ) : (
                                                 <p className="font-bold text-[14px] shadow-sm">
-                                                    Reset Password
+                                                    {t('resetPassword')}
                                                 </p>
                                             )}
                                         </button>
@@ -458,7 +460,7 @@ const SignIn = () => {
                                     <div className="flex items-center justify-center">
                                         <BackArrow />
                                     </div>
-                                    <p className="text-white text-[14px]">Back to Login</p>
+                                    <p className="text-white text-[14px]">{t('backToLogin')}</p>
                                 </div>
                             </div>
                         </div>
@@ -471,23 +473,23 @@ const SignIn = () => {
                             <div className="py-5 px-8 flex flex-col space-y-5 justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center justify-center">
                                     <PasswordLogo />
-                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Reset Password</p>
+                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">{t('resetPassword')}</p>
                                 </div>
 
                                 <div className="flex flex-col max-sm:flex-col max-sm:space-y-2 md:space-x-1 items-center">
-                                    <p className="text-white opacity-80 text-[14px]">An OTP has been sent to </p>
+                                    <p className="text-white opacity-80 text-[14px]">{t('otpSent')} </p>
                                     <p className="text-white text-[14px]">{email}</p>
                                 </div>
 
                                 <a onClick={() => setStep(6)} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                                    <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
+                                    <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">{t('proceed')}</p>
                                 </a>
 
                                 <div onClick={() => setStep(1)} className="flex flex-row space-x-2 items-center justify-center cursor-pointer">
                                     <div className="flex items-center justify-center">
                                         <BackArrow />
                                     </div>
-                                    <p className="text-white text-[14px]">Back to Login</p>
+                                    <p className="text-white text-[14px]">{t('backToLogin')}</p>
                                 </div>
                             </div>
                         </div>
@@ -500,17 +502,17 @@ const SignIn = () => {
                             <div className="px-8 flex flex-col justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center">
                                     <VerifyEmailIcon />
-                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">Verify Email</p>
+                                    <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">{t('verifyEmail')}</p>
                                 </div>
-                                <p className="text-white text-[14px] max-sm:text-[12px]">Your email is not verified</p>
+                                <p className="text-white text-[14px] max-sm:text-[12px]">{t('emailNotVerified')}</p>
                                 <div className="flex flex-col space-y-1">
-                                    <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">Enter the four digit verification code sent to</p>
+                                    <p className="text-white text-[14px] max-sm:text-[12px] opacity-70">{t('enterVerificationCode')}</p>
                                     <p className="text-white text-[14px] max-sm:text-[12px]">{email}</p>
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
                                     <div className="flex flex-col space-y-2">
-                                        <p className="text-white text-[14px] max-sm:text-[12px]">Enter Verification Code</p>
+                                        <p className="text-white text-[14px] max-sm:text-[12px]">{t('enterVerificationCodeTitle')}</p>
                                         <input onChange={handleOTPChange} onKeyDown={handleVerificationKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="text" />
                                     </div>
                                     {verificationError && (
@@ -522,7 +524,7 @@ const SignIn = () => {
                                             {isVerifying ? (
                                                 <BarLoader />
                                             ) : (
-                                                <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">Proceed</p>
+                                                <p className="font-bold text-[14px] max-sm:text-[12px] shadow-sm">{t('proceed')}</p>
                                             )}
                                         </button>
                                     </div>
@@ -539,7 +541,7 @@ const SignIn = () => {
                 )}
             </div>
             <div className="lg:absolute lg:bottom-10 flex items-center justify-center py-10 lg:left-[43.5%]">
-                <p className="text-white text-[10px] opacity-50">Copyright © 2024 Karbon. All rights reserved.</p>
+                <p className="text-white text-[10px] opacity-50">{t('copyright')}</p>
             </div>
         </div>
     );

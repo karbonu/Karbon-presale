@@ -17,6 +17,7 @@ import USDTIconRounded from '@/components/Icons/USDTIconRounded';
 import ForwardGreen from '@/components/Icons/ForwardGreen';
 import KarbonIcon from '@/components/Icons/KarbonIcon';
 import CreditCardlogo from '@/components/Icons/CreditCardlogo';
+import { useTranslation } from "react-i18next";
 
 interface VerifyPaymentData {
   orderID: string;
@@ -76,6 +77,7 @@ const generateSimpleHash = (input: string): string => {
 
 const SubmitPayment = ({ amount, onApprove, onError }: any) => {
   const hostedFields = usePayPalHostedFields() as any;
+  const { t } = useTranslation();
 
   const submitHandler = () => {
     if (typeof hostedFields?.submit !== "function") {
@@ -100,12 +102,13 @@ const SubmitPayment = ({ amount, onApprove, onError }: any) => {
       onClick={submitHandler}
       className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
     >
-      <p className="font-bold text-[14px] shadow-sm">Pay ${amount}</p>
+      <p className="font-bold text-[14px] shadow-sm">{t('pay')} ${amount}</p>
     </button>
   );
 };
 
 const BuyWithCreditCard = (props: any) => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [amount, setAmount] = useState<string>('');
   const { UserID, presaleID, accessToken } = useAuth();
@@ -183,8 +186,8 @@ const BuyWithCreditCard = (props: any) => {
                 setIsModalOpen(false);
                 toast({
                   variant: "success",
-                  title: "Success!",
-                  description: "Your contribution was successful",
+                  title: t('success'),
+                  description: t('contributionSuccessful'),
                 });
               },
               onError: () => {
@@ -194,8 +197,8 @@ const BuyWithCreditCard = (props: any) => {
                 setIsModalOpen(false);
                 toast({
                   variant: "failure",
-                  title: "Error!",
-                  description: "Your contribution Failed",
+                  title: t('error'),
+                  description: t('contributionFailed'),
                 });
               }
             }
@@ -208,23 +211,23 @@ const BuyWithCreditCard = (props: any) => {
           setIsModalOpen(false);
           toast({
             variant: "failure",
-            title: "Error!",
-            description: "Your contribution Failed",
+            title: t('error'),
+            description: t('contributionFailed'),
           });
         }
       }
     );
-  }, [UserID, amount, mutation, contributeMutation, investmentMutate, address, presaleID]);
+  }, [UserID, amount, mutation, contributeMutation, investmentMutate, address, presaleID, t, toast]);
 
   const handleError = useCallback((err: any) => {
     console.error(err);
     setContributionLoading(false);
     toast({
       variant: "failure",
-      title: "Error!",
-      description: "Payment failed. Please try again.",
+      title: t('error'),
+      description: t('paymentFailed'),
     });
-  }, []);
+  }, [t, toast]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -236,8 +239,8 @@ const BuyWithCreditCard = (props: any) => {
     if (Number(amount) === 0) {
       toast({
         variant: "failure",
-        title: "Error!",
-        description: "You need to enter an amount",
+        title: t('error'),
+        description: t('enterAmount'),
       });
     } else {
       setContributionLoading(true);
@@ -276,18 +279,18 @@ const BuyWithCreditCard = (props: any) => {
         <div className="flex flex-row items-center justify-between ">
           <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer flex-row items-center justify-center space-x-1">
             <BackArrow />
-            <p className="text-white text-[12px]">Back</p>
+            <p className="text-white text-[12px]">{t('back')}</p>
           </div>
           <div className="flex pl-5 flex-row items-center space-x-2">
             <CreditCardlogo />
-            <p className="text-white text-[14px]">Buy with Credit Card</p>
+            <p className="text-white text-[14px]">{t('buyWithCreditCard')}</p>
           </div>
         </div>
       </div>
       <div className="flex flex-col py-5 items-center justify-center space-y-5">
         <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
           <label htmlFor="buyInput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
-            <p className="text-white text-[12px]">You Buy</p>
+            <p className="text-white text-[12px]">{t('youBuy')}</p>
             <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
             <div className="flex flex-row items-center justify-center space-x-2 flex-1">
               <input
@@ -308,7 +311,7 @@ const BuyWithCreditCard = (props: any) => {
 
         <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
           <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
-            <p className="text-white text-[12px]">You Get</p>
+            <p className="text-white text-[12px]">{t('youGet')}</p>
             <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
             <div className="flex flex-row items-center justify-center space-x-2 flex-1">
               <p className='h-full text-white w-[75%]'>{recievingValue === 0 ? '' : recievingValue}</p>
@@ -325,7 +328,7 @@ const BuyWithCreditCard = (props: any) => {
           {contributionLoading ? (
             <BarLoader color='white' />
           ) : (
-            "Pay with Credit Card"
+            t('buyWithCreditCard')
           )}
         </button>
 
@@ -334,7 +337,7 @@ const BuyWithCreditCard = (props: any) => {
             {step === 1 && (
               <>
                 <div className='flex flex-row w-full justify-between items-center'>
-                  <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Confirm Contribution</p>
+                  <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{t('confirmContribution')}</p>
                   <div onClick={() => setIsModalOpen(false)} className='cursor-pointer'>
                     <DialogClose />
                   </div>
@@ -367,12 +370,12 @@ const BuyWithCreditCard = (props: any) => {
                 </div>
 
                 <div className='w-full flex items-center justify-center'>
-                  <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>Output is estimated, you will receive your token with a transaction fee taken.</p>
+                  <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>{t('outputEstimated')}</p>
                 </div>
 
                 <div className='bg-black rounded-[8px] border-[#484848] border-[0.5px] flex flex-col w-full'>
                   <div className='flex flex-row items-center p-5 justify-between w-full'>
-                    <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">Price</p>
+                    <p className="text-white font-semibold text-[12px] max-sm:text-[10px]">{t('price')}</p>
                     <div className='flex flex-row items-center space-x-2'>
                       <p className="text-white text-[12px] max-sm:text-[10px]">{rate} KARBON/USDT</p>
                     </div>
@@ -383,14 +386,14 @@ const BuyWithCreditCard = (props: any) => {
                   onClick={() => setStep(2)}
                   className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
                 >
-                  <p className="font-bold text-[14px] shadow-sm">Proceed</p>
+                  <p className="font-bold text-[14px] shadow-sm">{t('proceed')}</p>
                 </button>
               </>
             )}
             {step === 2 && (
               <>
                 <div className='flex flex-row w-full justify-between items-center'>
-                  <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">Enter Payment Details</p>
+                  <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{t('enterPaymentDetails')}</p>
                   <div onClick={() => setIsModalOpen(false)} className='cursor-pointer'>
                     <DialogClose />
                   </div>
@@ -398,7 +401,7 @@ const BuyWithCreditCard = (props: any) => {
                 <PayPalHostedFieldsProvider createOrder={createOrder}>
                   <div className="w-full space-y-4">
                     <div className="w-full">
-                      <label htmlFor="card-number" className="block text-sm font-medium text-white mb-1">Card Number</label>
+                      <label htmlFor="card-number" className="block text-sm font-medium text-white mb-1">{t('cardNumber')}</label>
                       <PayPalHostedField
                         id="card-number"
                         hostedFieldType="number"
@@ -410,7 +413,7 @@ const BuyWithCreditCard = (props: any) => {
                       />
                     </div>
                     <div className="w-full">
-                      <label htmlFor="cvv" className="block text-sm font-medium text-white mb-1">CVV</label>
+                      <label htmlFor="cvv" className="block text-sm font-medium text-white mb-1">{t('cvv')}</label>
                       <PayPalHostedField
                         id="cvv"
                         hostedFieldType="cvv"
@@ -422,7 +425,7 @@ const BuyWithCreditCard = (props: any) => {
                       />
                     </div>
                     <div className="w-full">
-                      <label htmlFor="expiration-date" className="block text-sm font-medium text-white mb-1">Expiration Date</label>
+                      <label htmlFor="expiration-date" className="block text-sm font-medium text-white mb-1">{t('expirationDate')}</label>
                       <PayPalHostedField
                         id="expiration-date"
                         hostedFieldType="expirationDate"

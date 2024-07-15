@@ -44,7 +44,7 @@ const WalletSettings = () => {
 
             <div className="border-[1px] border-[#282828] max-w-[740px] max-lg:w-full max-sm:h-full h-[95px] bg-black rounded-[8px]">
                 <div className="p-3 flex-col space-y-3 h-full justify-between">
-                    <div className="flex flex-row rounded-[2px] justify-center py-1 space-x-1 items-center border-[1px] border-[#282828] max-w-[110px]">
+                    <div className="flex flex-row rounded-[2px] justify-center py-1 space-x-1 items-center border-[1px] border-[#282828] max-w-[150px]">
                         <WalletIcon />
                         <p className="text-white text-[10px] opacity-70">{t('walletAddress')}</p>
                     </div>
@@ -62,7 +62,7 @@ const WalletSettings = () => {
                             <div onClick={handleCopy} className="flex flex-row space-x-2 cursor-pointer">
                                 {copied ? <CheckMark /> : <CopyIcon />}
                                 <p className="text-[#08E04A] text-[10px]">
-                                    {copied ? "Copied" : "Copy Address"}
+                                    {copied ? t('copied') : t('copy')}
                                 </p>
                             </div>
                         )}
@@ -82,7 +82,7 @@ const WalletSettings = () => {
 
             <div className="flex flex-row max-lg:flex-col pt-10 justify-between items-center max-lg:space-y-2">
                 <div className="flex flex-row lg:space-x-40 max-lg:w-full max-lg:justify-between max-sm:px-5">
-                    <p className="text-[8px] text-white opacity-30">Copyright © 2024 Karbon. All rights reserved.</p>
+                    <p className="text-[8px] text-white opacity-30">{t('copyright')}.</p>
                     <p className="text-[8px] text-white opacity-30">Gaziantep, Türkiye</p>
                 </div>
 

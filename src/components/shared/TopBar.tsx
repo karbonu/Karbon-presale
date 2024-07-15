@@ -240,9 +240,7 @@ const TopBar = () => {
               {showDropdown && (
                 <div
                   onMouseLeave={handleDropdown}
-                  className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
-                    }`}
-                >
+                  className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"}`}>
                   <div className="flex flex-col">
                     <div className="p-5 flex flex-col w-full space-y-3">
                       <a

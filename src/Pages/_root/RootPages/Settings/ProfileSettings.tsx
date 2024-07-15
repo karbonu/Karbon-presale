@@ -108,7 +108,7 @@ const ProfileSettings = () => {
           setPassword(newPassword);
           toast({
             variant: "success",
-            title: "Success!",
+            title: t('success'),
             description: t('passwordChangeSuccess'),
           })
           setTimeout(() => {
@@ -120,7 +120,7 @@ const ProfileSettings = () => {
           setIsUpdatingPassword(false);
           toast({
             variant: "failure",
-            title: "Error!",
+            title: t('error'),
             description: t('passwordChangeFailed'),
           })
         }
@@ -230,7 +230,7 @@ const ProfileSettings = () => {
                     : 'bg-transparent border-white opacity-70 hover:opacity-100 hover:text-black hover:bg-white'
                     }`}
                 >
-                  {isUpdatingPassword ? <BarLoader color="#FFFFFF" /> : "Update Password"}
+                  {isUpdatingPassword ? <BarLoader color="#FFFFFF" /> : t('updatePassword')}
                 </button>
               </div>
             </div>
@@ -242,7 +242,7 @@ const ProfileSettings = () => {
 
       <div className="flex flex-row max-lg:flex-col pt-10 justify-between items-center max-lg:space-y-2">
         <div className="flex flex-row lg:space-x-40 max-lg:w-full max-lg:justify-between max-sm:px-5">
-          <p className="text-[8px] text-white opacity-30">Copyright © 2024 Karbon. All rights reserved.</p>
+          <p className="text-[8px] text-white opacity-30">{t('copyright')}</p>
           <p className="text-[8px] text-white opacity-30">Gaziantep, Türkiye</p>
         </div>
         <div className="bg-black cursor-pointer hover:scale-95 transition ease-in-out border-[1px] border-[#282828] rounded-[4px]">

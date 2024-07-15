@@ -292,7 +292,7 @@ const BuyWithPaypal = (props: any) => {
         <div className="flex flex-row items-center justify-between w-[213px]">
           <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer flex-row items-center justify-center space-x-1">
             <BackArrow />
-            <p className="text-white text-[12px]">Back</p>
+            <p className="text-white text-[12px]">{t('back')}</p>
           </div>
           <div className="flex flex-row items-center space-x-2">
             <PaypalLogo />
@@ -378,7 +378,7 @@ const BuyWithPaypal = (props: any) => {
             </div>
 
             <div className='w-full flex items-center justify-center'>
-              <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>t('outputEstimated</p>
+              <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>{t('outputEstimated')}</p>
             </div>
 
 

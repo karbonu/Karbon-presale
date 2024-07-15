@@ -423,7 +423,7 @@ const TokenSale = () => {
       <div className=" flex pb-10 max-lg:hidden">
         <div className="flex flex-row  w-full justify-between space-x-5">
           <div className="flex flex-col w-[795px] ">
-            <div className="flex items-center w-[795px] h-[367px] justify-between flex-col ">
+            <div className="flex items-center w-[795px] min-h-[367px] justify-between flex-col ">
 
               <div className="flex flex-col space-y-7 h-[230px] w-[795px] border-[1px] border-[#282828] bg-[#121212] p-5 rounded-t-[16px]">
                 <p className="text-white text-[20px] font-bold">{t('referrals')}</p>
@@ -436,7 +436,7 @@ const TokenSale = () => {
                       <p className="text-white text-[28px]">${bonusAmount}</p>
                       <p className="text-white text-[18px]">.{bonusAmountRounded}</p>
                     </div>
-                    <div onClick={handlePayoutModal} className="bg-transparent py-2 px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
+                    <div onClick={handlePayoutModal} className="bg-transparent py-2 px-4 flex items-center justify-center cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
                       {isConnected ? (
                         <>
                           {isRequesting ? (
@@ -488,9 +488,9 @@ const TokenSale = () => {
 
               </div>
 
-              <div className="flex flex-col space-y-3 w-[795px] h-[135px] border-[1px] border-t-0 border-[#282828] bg-[#121212] p-5 rounded-b-[16px]">
+              <div className="flex flex-col space-y-3 w-[795px] min-h-[135px] border-[1px] border-t-0 border-[#282828] bg-[#121212] p-5 rounded-b-[16px]">
                 <p className="text-[16px] text-white font-semibold">{t('startEarning')}!</p>
-                <p className="text-white opacity-70 text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
+                <p className="text-white opacity-70 text-[12px]">{t('copyReferral')}</p>
 
                 <div className="flex flex-row space-x-5 items-center">
                   <div className="flex flex-row items-center py-2 pl-4 bg-black space-x-10">
@@ -626,27 +626,23 @@ const TokenSale = () => {
                         <div onClick={() => setSelectedMethod(1)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
                           <div className="flex flex-row w-full items-center justify-between ">
                             <CreditCardlogo />
-                            <p className="text-white text-[14px]">Buy with Credit Card</p>
+                            <p className="text-white text-[14px]">{t('buyWithCreditCard')}</p>
                             <ForwardIcon />
                           </div>
                         </div>
 
                         <div onClick={() => { setIsDialogOpen(true); setSelectedMethod(2) }} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
-                          <div className={`flex flex-row w-full items-center ${!isConnected ? 'justify-between' : ''}`}>
+                          <div className="flex flex-row w-full items-center justify-between ">
                             <USDTLogoBig />
-                            <p
-                              className={`text-white text-[14px] ${isConnected ? "text-center w-full" : "pl-10"}`}
-                            >Buy with USDT</p>
-                            {!isConnected && (
-                              <p className="text-[#08E04A] text-[10px]">Connect Wallet</p>
-                            )}
+                            <p className={`text-white text-[14px] `}>{t('buyWithUsdt')}</p>
+                            <ForwardIcon />
                           </div>
                         </div>
 
                         <div onClick={() => setSelectedMethod(3)} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
                           <div className="flex flex-row w-full items-center justify-between ">
                             <PaypalLogo />
-                            <p className="text-white text-[14px]">Buy with PayPal</p>
+                            <p className="text-white text-[14px]">{t('buyWithPaypal2')}</p>
                             <ForwardIcon />
                           </div>
                         </div>
@@ -712,8 +708,8 @@ const TokenSale = () => {
 
                 <div className="w-full pb-5 px-5  flex items-center justify-between">
                   <div className="flex flex-col">
-                    <p className="text-white text-[8px] opacity-50">Copyright © 2024 Karbon</p>
-                    <p className="text-white text-[8px] opacity-50">All rights reserved</p>
+                    <p className="text-white text-[8px] opacity-50">{t('copyrightText')}</p>
+                    <p className="text-white text-[8px] opacity-50">{t('allRightsReserved')}</p>
                   </div>
                   <p className="text-white text-[8px] opacity-50">Gaziantep, Türkiye</p>
 
@@ -732,7 +728,7 @@ const TokenSale = () => {
 
       <div className="lg:hidden">
         <div className="flex flex-col py-5 space-y-5">
-          <p className="text-white text-[20px] font-bold">Token Sale DApp</p>
+          <p className="text-white text-[20px] font-bold">{t('tokenSaleDApp')}</p>
 
           <div className="bg-[#121212] rounded-[8ox]">
             <div className="p-5 flex flex-col space-y-5">
@@ -779,15 +775,11 @@ const TokenSale = () => {
                         </div>
                       </div>
 
-                      <div onClick={() => { setIsDialogOpen(true); setSelectedMethod(2) }} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[40px]">
-                        <div className={`flex flex-row w-full items-center ${!isConnected ? 'justify-between' : ''}`}>
+                      <div onClick={() => { setIsDialogOpen(true); setSelectedMethod(2) }} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
+                        <div className="flex flex-row w-full items-center justify-between ">
                           <USDTLogoBig />
-                          <p
-                            className={`text-white text-[14px] ${isConnected ? "text-center w-full" : "pl-10"}`}
-                          >Buy with USDT</p>
-                          {!isConnected && (
-                            <p className="text-[#08E04A] text-[10px]">{t('connectWallet')}</p>
-                          )}
+                          <p className={`text-white text-[14px] `}>{t('buyWithUsdt')}</p>
+                          <ForwardIcon />
                         </div>
                       </div>
 
@@ -905,8 +897,8 @@ const TokenSale = () => {
 
             <div className="bg-[#121212] rounded-[8ox]">
               <div className="p-5 flex flex-col opacity-70 space-y-5">
-                <p className="text-[16px] text-white">Start earning extra money!</p>
-                <p className="text-white text-[12px]">Copy your unique referral code and earn 2.5% commissions from every investment made by your referred investors.</p>
+                <p className="text-[16px] text-white">{t('startEarning')}!</p>
+                <p className="text-white text-[12px]">{t('copyReferral')}</p>
 
                 <div className="flex flex-row max-w-[339px] items-center py-2 bg-black space-x-10">
                   <div>

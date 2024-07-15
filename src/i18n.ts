@@ -178,11 +178,34 @@ const resources = {
             buyWithPaypal2: "Buy with PayPal",
             byContributing: "By contributing to the presale you acknowledge and accept these",
             chanceBuy: "A chance to buy Karbon tokens at half of the launch price",
+            invalidEmail: "Invalid Email",
+            enterValidEmail: "Please, Enter a valid email",
+            enterVerificationCodeTitle: "Enter Verification Code",
+            copyright: "Copyright © 2024 Karbon. All rights reserved",
+            updatePassword: "Update Password",
+            copyrightText: "Copyright © 2024 Karbon",  // Added this line
+            allRightsReserved: "All rights reserved",  // Added this line
+            amount: "Amount",
+            walletBalance: "Wallet Balance",
+            fee: "Fee",
+            participateAcknowledgement: "By participating in the Karbon token seed sale, you acknowledge that tokens are sold at a discounted price, 50% of the launch price",
+            vestingPeriodNotice: "Additionally, there is a 6-month vesting period before seed investors can start claiming tokens. Please be aware of the risks involved in cryptocurrency investments, including market volatility and regulatory uncertainties",
+            noGuaranteeNotice: "Karbon Finance does not guarantee any returns or profits from token purchases. We recommend conducting thorough research and seeking advice from financial professionals before investing. Karbon Finance reserves the right to amend or cancel the token sale at any time without prior notice",
+            transactionFailedTitle: "Transaction Failed",
+            vestingSchedule: "Vesting Schedule",
+            vestingPeriod: "VESTING PERIOD",
+            tokensReleased: "TOKENS RELEASED",
+            estimatedReleaseDate: "ESTIMATED RELEASE DATE",
+            noTransactionsYet: "No Transactions Yet",
+            buyTokensToGetStarted: "Buy Tokens to get started",
+            enterEmail: "Enter Email",
+            enterOtp: "Enter OTP",
         }
     },
     de: {
         translation: {
             error: "Fehler",
+            enterEmail: "E-Mail eingeben",
             accountNotExist: "Konto mit eingegebener E-Mail existiert nicht",
             invalidRoleRedirect: "Ungültige Rolle, Weiterleitung zum Dashboard",
             invalidLogin: "Ungültige Anmeldeinformationen",
@@ -352,10 +375,52 @@ const resources = {
             buyWithPaypal2: "Mit PayPal kaufen",
             byContributing: "Durch die Teilnahme am Vorverkauf erkennen Sie diese an und akzeptieren diese",
             chanceBuy: "Eine Chance, Karbon-Token zum halben Startpreis zu kaufen",
+            invalidEmail: "Ungültige E-Mail",
+            enterValidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+            enterVerificationCodeTitle: "Bestätigungscode eingeben",
+            copyright: "Copyright © 2024 Karbon. Alle Rechte vorbehalten",
+            updatePassword: "Passwort aktualisieren",
+            amount: "Betrag",
+            walletBalance: "Wallet-Guthaben",
+            fee: "Gebühr",
+            participateAcknowledgement: "Durch die Teilnahme am Karbon-Token-Seed-Verkauf erkennen Sie an, dass Token zu einem ermäßigten Preis verkauft werden, 50% des Startpreises",
+            vestingPeriodNotice: "Zusätzlich gibt es eine 6-monatige Sperrfrist, bevor Seed-Investoren mit der Einlösung von Token beginnen können. Bitte seien Sie sich der Risiken bewusst, die mit Investitionen in Kryptowährungen verbunden sind, einschließlich Marktschwankungen und regulatorischen Unsicherheiten",
+            noGuaranteeNotice: "Karbon Finance garantiert keine Renditen oder Gewinne aus Token-Käufen. Wir empfehlen, gründliche Recherchen durchzuführen und Rat von Finanzexperten einzuholen, bevor Sie investieren. Karbon Finance behält sich das Recht vor, den Token-Verkauf jederzeit ohne vorherige Ankündigung zu ändern oder zu stornieren",
+            transactionFailedTitle: "Transaktion fehlgeschlagen",
+            vestingSchedule: "Sperrfristplan",
+            vestingPeriod: "SPERRFRIST",
+            tokensReleased: "FREIGEGEBENE TOKEN",
+            estimatedReleaseDate: "GESCHÄTZTES FREIGABEDATUM",
+            noTransactionsYet: "Noch keine Transaktionen",
+            copyrightText: "Copyright © 2024 Karbon",  // Added this line
+            allRightsReserved: "Alle Rechte vorbehalten",  // Added this line
+            buyTokensToGetStarted: "Kaufen Sie Token, um zu beginnen",
+            enterOtp: "OTP eingeben",
         }
     },
     tr: {
         translation: {
+            invalidEmail: "Geçersiz E-posta",
+            enterEmail: "E-posta Girin",
+            enterValidEmail: "Lütfen geçerli bir e-posta adresi girin",
+            enterVerificationCodeTitle: "Doğrulama Kodunu Girin",
+            copyright: "Telif Hakkı © 2024 Karbon. Tüm hakları saklıdır",
+            updatePassword: "Şifreyi Güncelle",
+            amount: "Tutar",
+            walletBalance: "Cüzdan Bakiyesi",
+            fee: "Ücret",
+            participateAcknowledgement: "Karbon token tohum satışına katılarak, tokenların lansman fiyatının %50'si olan indirimli fiyattan satıldığını kabul edersiniz",
+            vestingPeriodNotice: "Ayrıca, tohum yatırımcılarının tokenları talep etmeye başlamadan önce 6 aylık bir vade süresi bulunmaktadır. Kripto para yatırımlarıyla ilgili risklerin, piyasa dalgalanmaları ve düzenleyici belirsizlikler dahil olmak üzere farkında olun",
+            noGuaranteeNotice: "Karbon Finance, token alımlarından kar veya getiri garanti etmez. Yatırım yapmadan önce kapsamlı araştırmalar yapmanızı ve mali uzmanlardan tavsiye almanızı öneririz. Karbon Finance, token satışını önceden haber vermeksizin herhangi bir zamanda değiştirme veya iptal etme hakkını saklı tutar",
+            transactionFailedTitle: "İşlem Başarısız",
+            vestingSchedule: "Hakediş Programı",
+            vestingPeriod: "BEKLEME SÜRESİ",
+            tokensReleased: "SERBEST BIRAKILAN TOKENLER",
+            estimatedReleaseDate: "TAHMİNİ SERBEST BIRAKMA TARİHİ",
+            noTransactionsYet: "Henüz İşlem Yok",
+            copyrightText: "Telif Hakkı © 2024 Karbon",  // Added this line
+            allRightsReserved: "Tüm hakları saklıdır",  // Added this line
+            buyTokensToGetStarted: "Başlamak için Token Satın Alın",
             error: "Hata",
             accountNotExist: "Girilen e-posta ile hesap bulunamadı",
             invalidRoleRedirect: "Geçersiz Rol, panele yönlendiriliyor",
@@ -526,6 +591,7 @@ const resources = {
             buyWithPaypal2: "Paypal ile Satın Al",
             byContributing: "Ön satışa katkıda bulunarak bunları kabul ettiğinizi ve kabul ettiğinizi belirtirsiniz",
             chanceBuy: "Karbon tokenlarını lansman fiyatının yarısına alma şansı",
+            enterOtp: "OTP Girin",
         }
     }
 };
@@ -537,6 +603,7 @@ i18n
     .init({
         resources,
         debug: true,
+        // lng: 'tr',
         fallbackLng: "en",
         returnObjects: true,
         interpolation: {
