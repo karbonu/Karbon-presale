@@ -504,7 +504,7 @@ const TokenSale = () => {
                     >
                       {copied ? <CheckMark /> : <CopyIcon />}
                       <p className="text-[#08E04A] text-[10px]">
-                        {copied ? "Copied" : "Copy"}
+                        {copied ? t('copied') : t('copy')}
                       </p>
                     </div>
                   </div>
@@ -915,7 +915,7 @@ const TokenSale = () => {
                   <div onClick={handleCopy} className="flex flex-row items-center space-x-1 pr-2 cursor-pointer">
                     {copied ? <CheckMark /> : <CopyIcon />}
                     <p className="text-[#08E04A] text-[10px]">
-                      {copied ? "Copied" : "Copy"}
+                      {copied ? t('copied') : t('copy')}
                     </p>
                   </div>
                 </div>
