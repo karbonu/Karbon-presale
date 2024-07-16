@@ -265,7 +265,7 @@ const TopBar = () => {
 
         <div className="max-lg:hidden flex flex-row items-center relative space-x-2">
           <div className="flex flex-col items-center">
-            <div onClick={() => setIsLanguageDropActive(!isLanguageDropActive)} className="bg-[#101010] flex flex-row items-center space-x-2 px-2 py-2 border-[#282828] border-[1px]   rounded-sm cursor-pointer">
+            <div onClick={() => setIsLanguageDropActive(!isLanguageDropActive)} className="bg-[#101010] hover:border-[#08E04A] transition ease-in-out flex flex-row items-center space-x-2 px-2 py-2 border-[#282828] border-[1px]   rounded-sm cursor-pointer">
               <div>
                 {selectedLanguage === 1 && (
                   <EnglishFlag />
