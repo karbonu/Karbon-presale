@@ -30,6 +30,9 @@ import WalletAlertIcon from "../Icons/WalletAlertIcon.tsx";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { useToast } from "../ui/use-toast.ts";
 import { useTranslation } from "react-i18next";
+import GermanyFlag from "../Icons/GermanyFlag.tsx";
+import TurkeyLogo from "../Icons/TurkeyLogo.tsx";
+import EnglishFlag from "../Icons/EnglishFlag.tsx";
 
 
 type walletConnect = {
@@ -55,6 +58,8 @@ export const useConnectWallet = (auth: string): UseMutationResult<AxiosResponse<
 
 const TopBar = () => {
   const { t } = useTranslation();
+  const [selectedLanguage, setSelectedLangyage] = useState(1);
+  const [isLanguageDropActive, setIsLanguageDropActive] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const { toast } = useToast();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -173,6 +178,49 @@ const TopBar = () => {
     setisModalOpen(false);
   };
 
+
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    console.log(i18n.language)
+
+    if (i18n.language === 'en') {
+      setSelectedLangyage(1);
+    } else {
+      if (i18n.language === 'de') {
+        setSelectedLangyage(3);
+      } else {
+        setSelectedLangyage(2);
+      }
+    }
+    if (i18n.language !== 'en' && i18n.language !== 'tr' && i18n.language !== 'de') {
+      setSelectedLangyage(1);
+    }
+  }, []);
+
+
+
+  const changeLanguage = (languageIndex: any) => {
+    if (languageIndex === selectedLanguage) {
+      console.log("current Index set");
+    } else {
+      if (languageIndex === 3) {
+
+        i18n.changeLanguage('de');
+        setSelectedLangyage(3);
+        // setIsDropActive(false);
+      } else {
+        if (languageIndex === 2) {
+          i18n.changeLanguage('tr');
+          setSelectedLangyage(2);
+        } else {
+          i18n.changeLanguage('en');
+          setSelectedLangyage(1);
+        }
+        // setIsDropActive(false);
+      }
+    }
+  }
+
   return (
     <div className="w-full">
       <Dialog open={isModalOpen} onOpenChange={handleModalClose}>
@@ -215,7 +263,37 @@ const TopBar = () => {
           <KarbonLogo />
         </a>
 
-        <div className="max-lg:hidden">
+        <div className="max-lg:hidden flex flex-row items-center relative space-x-2">
+          <div className="flex flex-col items-center">
+            <div onClick={() => setIsLanguageDropActive(!isLanguageDropActive)} className="bg-[#101010] flex flex-row items-center space-x-2 px-1 py-2 border-[#282828] border-[1px]   rounded-sm cursor-pointer">
+              {selectedLanguage === 1 && (
+                <EnglishFlag />
+              )}
+              {selectedLanguage === 2 && (
+                <TurkeyLogo />
+              )}
+              {selectedLanguage === 3 && (
+                <GermanyFlag />
+              )}
+              <div className={isLanguageDropActive ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
+                <DownIcon />
+              </div>
+            </div>
+            {isLanguageDropActive && (
+              <div className={`absolute z-50 bg-[#101010] mt-10 flex flex-col space-y-2 py-2 px-3 border-[#282828] border-[1px]   rounded-sm ${isLanguageDropActive ? 'animate-accordion-down' : 'animate-accordion-up'}`}>
+                <div onClick={() => { changeLanguage(1); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 1 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                  <EnglishFlag />
+                </div>
+                <div onClick={() => { changeLanguage(2); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 2 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                  <TurkeyLogo />
+                </div>
+                <div onClick={() => { changeLanguage(3); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 3 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                  <GermanyFlag />
+                </div>
+
+              </div>
+            )}
+          </div>
           {!address ? (
             <div className="flex flex-col">
               <div className="flex flex-row space-x-2">
