@@ -112,13 +112,17 @@ const TopBar = () => {
     currentPath === "/dashboard/settings/walletsettings"
   ) {
     title = t('settings');
-  } else if (currentPath === "/dashboard") {
+  } else if (currentPath === "/dashboard" || currentPath === "/dashboard/") {
     title = t('tokenSaleDApp');
   } else {
     title = t('invalidPath');
   }
 
-  const firstLink = location.pathname === "/dashboard" ? "/dashboard" : "/dashboard/tokensale";
+  const firstLink = location.pathname === "/dashboard"
+    ? "/dashboard"
+    : location.pathname === "/dashboard/tokensale"
+      ? "/dashboard/tokensale"
+      : '/dashboard/';
 
   const activeClassName = "flex bg-black w-[100%] border-l border-l-[4px] border-[#08E04A]";
   const inactiveClassName =
