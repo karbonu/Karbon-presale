@@ -636,7 +636,7 @@ const TokenSale = () => {
                           <svg width="68" height="86" viewBox="0 0 68 86" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M52.75 36.75V21.125C52.75 10.7697 44.3553 2.375 34 2.375C23.6447 2.375 15.25 10.7697 15.25 21.125V36.75M12.125 83.625H55.875C61.0527 83.625 65.25 79.4277 65.25 74.25V46.125C65.25 40.9473 61.0527 36.75 55.875 36.75H12.125C6.94733 36.75 2.75 40.9473 2.75 46.125V74.25C2.75 79.4277 6.94733 83.625 12.125 83.625Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                           </svg>
-                          <p className="text-white font-light text-[20px]">The Sale has Ended</p>
+                          <p className="text-white font-light text-[20px]">{t('saleEnded')}</p>
                         </div>
                       </>
                     ) : saleStarted ? (
@@ -675,7 +675,7 @@ const TokenSale = () => {
                           <svg width="68" height="86" viewBox="0 0 68 86" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M52.75 36.75V21.125C52.75 10.7697 44.3553 2.375 34 2.375C23.6447 2.375 15.25 10.7697 15.25 21.125V36.75M12.125 83.625H55.875C61.0527 83.625 65.25 79.4277 65.25 74.25V46.125C65.25 40.9473 61.0527 36.75 55.875 36.75H12.125C6.94733 36.75 2.75 40.9473 2.75 46.125V74.25C2.75 79.4277 6.94733 83.625 12.125 83.625Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                           </svg>
-                          <p className="text-white font-light text-[20px]">The Sale has not Started</p>
+                          <p className="text-white font-light text-[20px]">{t('saleNotStarted')}</p>
                         </div>
                       </>
                     )}
@@ -802,7 +802,7 @@ const TokenSale = () => {
                       <svg width="68" height="86" viewBox="0 0 68 86" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M52.75 36.75V21.125C52.75 10.7697 44.3553 2.375 34 2.375C23.6447 2.375 15.25 10.7697 15.25 21.125V36.75M12.125 83.625H55.875C61.0527 83.625 65.25 79.4277 65.25 74.25V46.125C65.25 40.9473 61.0527 36.75 55.875 36.75H12.125C6.94733 36.75 2.75 40.9473 2.75 46.125V74.25C2.75 79.4277 6.94733 83.625 12.125 83.625Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                       </svg>
-                      <p className="text-white font-light text-[20px]">The Sale has Ended</p>
+                      <p className="text-white font-light text-[20px]">{t('saleEnded')}</p>
                     </div>
                   ) : saleStarted ? (
                     <>
@@ -839,7 +839,7 @@ const TokenSale = () => {
                       <svg width="68" height="86" viewBox="0 0 68 86" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M52.75 36.75V21.125C52.75 10.7697 44.3553 2.375 34 2.375C23.6447 2.375 15.25 10.7697 15.25 21.125V36.75M12.125 83.625H55.875C61.0527 83.625 65.25 79.4277 65.25 74.25V46.125C65.25 40.9473 61.0527 36.75 55.875 36.75H12.125C6.94733 36.75 2.75 40.9473 2.75 46.125V74.25C2.75 79.4277 6.94733 83.625 12.125 83.625Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                       </svg>
-                      <p className="text-white font-light text-[20px]">The Sale has not Started Yet</p>
+                      <p className="text-white font-light text-[20px]">{t('saleNotStarted')} Yet</p>
                     </div>
                   )}
                 </div>

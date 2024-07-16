@@ -129,6 +129,8 @@ const resources = {
             connectYourWallet: "Connect Your Wallet",
             network: "Network",
             ethereum: "Ethereum",
+            saleEnded: "The Sale has Ended",
+            saleNotStarted: "The Sale has not Started",
             disconnectWallet: "Disconnect Wallet",
             contributionSuccess: "Your contribution was successful",
             contributionFailed: "Your contribution Failed",
@@ -222,6 +224,8 @@ const resources = {
             password: "Passwort",
             proceed: "Fortfahren",
             back: "Zurück",
+            saleEnded: "Der Verkauf ist beendet",  // Added this line
+            saleNotStarted: "Der Verkauf hat noch nicht begonnen",  // Added this line
             failed: "Gescheitert",
             unableToComplete: "Wir konnten Ihren Beitrag nicht abschließen. Sie können es erneut versuchen",
             close: "Schließen",
@@ -429,6 +433,8 @@ const resources = {
             success: "Başarılı",
             loginFailed: "Giriş Başarısız, Tekrar Deneyin",
             admin: "Yönetici",
+            saleEnded: "Satış sona erdi",  // Added this line
+            saleNotStarted: "Satış başlamadı",  // Added this line
             signIn: "Giriş Yap",
             signInGoogle: "Google ile giriş yap",
             signInApple: "Apple ID ile giriş yap",
