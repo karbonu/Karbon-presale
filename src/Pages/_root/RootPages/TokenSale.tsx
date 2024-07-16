@@ -87,6 +87,7 @@ const TokenSale = () => {
   const animatedTotalAmountDecimal = useCountUp(decimalTotalAmount, 1000, previousTotalAmountDecimal);
   const [requested, setRequested] = useState(false);
   const [saleEnded, setSaleEnded] = useState(false);
+  const [saleStarted, setSaleStarted] = useState(false);
 
 
 
@@ -235,8 +236,11 @@ const TokenSale = () => {
           if (distance <= 0) {
             setSaleStatus('SALE ENDED');
             setSaleEnded(true);
+            setSaleStarted(false);
           } else {
             setSaleStatus('SALE ENDS IN');
+            setSaleStarted(true);
+            setSaleEnded(false);
           }
         }
         if (distance < 0) {
@@ -607,7 +611,7 @@ const TokenSale = () => {
                 </div>
                 <div className="flex flex-col w-full items-center justify-center space-y-3">
                   <p className="text-white opacity-70 text-[10px]">{saleStatus}</p>
-                  <div className={`flex flex-row space-x-2 items-center justify-center ${saleEnded ? 'opacity-40' : ''}`}>
+                  <div className={`flex flex-row space-x-2 items-center justify-center ${saleEnded || !saleStarted ? 'opacity-40' : ''}`}>
                     <p className="text-white text-[20px]">{countdown.days}d</p>
                     <p className="text-white text-[20px]">{countdown.hours}h</p>
                     <p className="text-white text-[20px]">{countdown.minutes}m</p>
@@ -632,13 +636,10 @@ const TokenSale = () => {
                           <svg width="68" height="86" viewBox="0 0 68 86" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M52.75 36.75V21.125C52.75 10.7697 44.3553 2.375 34 2.375C23.6447 2.375 15.25 10.7697 15.25 21.125V36.75M12.125 83.625H55.875C61.0527 83.625 65.25 79.4277 65.25 74.25V46.125C65.25 40.9473 61.0527 36.75 55.875 36.75H12.125C6.94733 36.75 2.75 40.9473 2.75 46.125V74.25C2.75 79.4277 6.94733 83.625 12.125 83.625Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                           </svg>
-
                           <p className="text-white font-light text-[20px]">The Sale has Ended</p>
-
                         </div>
                       </>
-                    ) : (
-
+                    ) : saleStarted ? (
                       <>
                         {selectedMethod === 0 && (
                           <div className="flex flex-col space-y-2 items-center justify-center">
@@ -668,7 +669,15 @@ const TokenSale = () => {
                           </div>
                         )}
                       </>
-
+                    ) : (
+                      <>
+                        <div className="flex py-6 space-y-4 flex-col items-center justify-center">
+                          <svg width="68" height="86" viewBox="0 0 68 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M52.75 36.75V21.125C52.75 10.7697 44.3553 2.375 34 2.375C23.6447 2.375 15.25 10.7697 15.25 21.125V36.75M12.125 83.625H55.875C61.0527 83.625 65.25 79.4277 65.25 74.25V46.125C65.25 40.9473 61.0527 36.75 55.875 36.75H12.125C6.94733 36.75 2.75 40.9473 2.75 46.125V74.25C2.75 79.4277 6.94733 83.625 12.125 83.625Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                          <p className="text-white font-light text-[20px]">The Sale has not Started</p>
+                        </div>
+                      </>
                     )}
 
                   </div>
@@ -772,7 +781,7 @@ const TokenSale = () => {
                 </div>
                 <div className="flex flex-col w-full items-center justify-center space-y-3">
                   <p className="text-white opacity-70 text-[10px]">{saleStatus}</p>
-                  <div className={`flex flex-row space-x-2 items-center justify-center ${saleEnded ? 'opacity-40' : ''}`}>
+                  <div className={`flex flex-row space-x-2 items-center justify-center ${saleEnded || !saleStarted ? 'opacity-40' : ''}`}>
                     <p className="text-white text-[20px]">{countdown.days}d</p>
                     <p className="text-white text-[20px]">{countdown.hours}h</p>
                     <p className="text-white text-[20px]">{countdown.minutes}m</p>
@@ -793,11 +802,9 @@ const TokenSale = () => {
                       <svg width="68" height="86" viewBox="0 0 68 86" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M52.75 36.75V21.125C52.75 10.7697 44.3553 2.375 34 2.375C23.6447 2.375 15.25 10.7697 15.25 21.125V36.75M12.125 83.625H55.875C61.0527 83.625 65.25 79.4277 65.25 74.25V46.125C65.25 40.9473 61.0527 36.75 55.875 36.75H12.125C6.94733 36.75 2.75 40.9473 2.75 46.125V74.25C2.75 79.4277 6.94733 83.625 12.125 83.625Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                       </svg>
-
                       <p className="text-white font-light text-[20px]">The Sale has Ended</p>
-
                     </div>
-                  ) : (
+                  ) : saleStarted ? (
                     <>
                       {selectedMethod === 0 && (
                         <div className="flex flex-col space-y-2 items-center justify-center">
@@ -827,6 +834,13 @@ const TokenSale = () => {
                         </div>
                       )}
                     </>
+                  ) : (
+                    <div className="flex py-5 space-y-2 flex-col items-center justify-center">
+                      <svg width="68" height="86" viewBox="0 0 68 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M52.75 36.75V21.125C52.75 10.7697 44.3553 2.375 34 2.375C23.6447 2.375 15.25 10.7697 15.25 21.125V36.75M12.125 83.625H55.875C61.0527 83.625 65.25 79.4277 65.25 74.25V46.125C65.25 40.9473 61.0527 36.75 55.875 36.75H12.125C6.94733 36.75 2.75 40.9473 2.75 46.125V74.25C2.75 79.4277 6.94733 83.625 12.125 83.625Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <p className="text-white font-light text-[20px]">The Sale has not Started Yet</p>
+                    </div>
                   )}
                 </div>
                 <div
