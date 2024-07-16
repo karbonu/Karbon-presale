@@ -23,8 +23,8 @@ module.exports = {
       animation: {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
-      backgroundImage:{
-        'dotBG' : "url('/assets/dotBG.svg')"
+      backgroundImage: {
+        'dotBG': "url('/assets/dotBG.svg')"
       },
       screens: {
         'sm': '640px',
@@ -84,8 +84,8 @@ module.exports = {
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "accordion-down": "accordion-down 0.1s ease-out",
+        "accordion-up": "accordion-up 0.1s ease-out",
       },
     },
   },
