@@ -1,5 +1,6 @@
 // src/components/shared/Contexts/AuthContext.tsx
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 interface AuthContextType {
@@ -46,8 +47,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [hasDisplayedConnectModal, setHasDisplayedConnectModal] = useState<boolean>(JSON.parse(localStorage.getItem('displayedModalConnect') || 'false'));
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
 
+  const navigate = useNavigate();
 
   const clearAuthData = () => {
+    localStorage.clear();
+    navigate('/')
     setEmail('');
     setUserID('');
     setPassword('');
@@ -60,7 +64,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setHasDisplayedConnectModal(false);
     setLastSignInTime(0);
 
-    localStorage.clear();
   };
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     checkSessionExpiration();
-    const intervalId = setInterval(checkSessionExpiration, 60000);
+    const intervalId = setInterval(checkSessionExpiration, 2000);
 
     return () => clearInterval(intervalId);
   }, [lastSignInTime]);
