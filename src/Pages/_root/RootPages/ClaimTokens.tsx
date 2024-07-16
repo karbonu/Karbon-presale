@@ -1,5 +1,5 @@
 import MetaTags from "@/components/shared/MetaTags.tsx"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ClimbingBoxLoader } from "react-spinners";
 import Dot from "@/components/Icons/Dot.tsx";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
@@ -8,6 +8,9 @@ import DownIcon from "@/components/Icons/DownIcon.tsx";
 import { useAccount } from "wagmi";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useTranslation } from "react-i18next";
+import useSocketIO from "@/components/shared/Constants/UseSocket";
+import { getPresaleID, getTotalUSDSpent } from "@/components/shared/Hooks/TokenSaleHooks";
+import { useAuth } from "@/components/shared/Contexts/AuthContext";
 
 
 
@@ -15,75 +18,105 @@ const ClaimTokens = () => {
   const { t } = useTranslation()
   const [loading, setIsLoading] = useState(true);
   const [showMobileSchedule, setShowMobileSchedule] = useState(false);
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const handleSchedule = () => {
     setShowMobileSchedule(!showMobileSchedule)
   }
+  const { UserID, accessToken, setPresaleID } = useAuth();
+  const [decimalTotalAmount, setDecimalTotalAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [saleRate, setSaleRate] = useState(0);
+  const [tokensBought, setTokensBought] = useState(0);
 
-  const tableData = [
-    {
-      index: "1",
-      karbonAmount: "5,462",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "2",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "3",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "4",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "5",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "6",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "7",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "7",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "7",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-    {
-      index: "7",
-      karbonAmount: "517",
-      releaseMonth: "02 FEB",
-      releaseTime: "19:23:00",
-    },
-  ]
+  const tableData = [] as any
 
   const { isConnected } = useAccount();
   const { open } = useWeb3Modal();
+
+
+  const SOCKET_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
+  const { lastMessage } = useSocketIO(SOCKET_URL);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+
+        const dollarResponse = await getTotalUSDSpent(UserID as string, accessToken);
+        if (dollarResponse !== 'Failed' && isMounted) {
+          const totalAmount_ = dollarResponse.data.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
+          const amount = Math.trunc(totalAmount_);
+          const dollarAmount = isNaN(amount) ? 0 : amount;
+
+          const decimal = Math.abs(totalAmount_ % 1).toFixed(2).slice(2);
+
+          setDecimalTotalAmount(Number(decimal));
+          setTotalAmount(dollarAmount);
+
+          const newTokensBought = dollarAmount * saleRate;
+
+          setTokensBought(newTokensBought);
+        }
+      } catch (error) {
+        //console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+
+  }, [lastMessage]);
+
+
+
+
+  useEffect(() => {
+
+    const fetchPresaleData = async () => {
+      const response = await getPresaleID(accessToken);
+      if (response !== 'Failed') {
+        const presale = response.data.id;
+        // const enddate = response.data.endDate;
+        const startdate = response.data.startDate;
+        const rate = Number(response.data.rate);
+        setSaleRate(isNaN(rate) ? 0 : rate);
+        localStorage.setItem('salerate', JSON.stringify(response.data.rate));
+
+        setPresaleID(presale);
+
+        initializeCountdown(new Date(startdate));
+      }
+
+    };
+
+    const initializeCountdown = (start: Date) => {
+      const updateCountdown = () => {
+        const now = new Date();
+        let distance = start.getTime() - now.getTime();
+
+        if (distance < 0) {
+          clearInterval(intervalId);
+          setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        setCountdown({ days, hours, minutes, seconds });
+      };
+
+      updateCountdown();
+      const intervalId = setInterval(updateCountdown, 1000);
+      return () => clearInterval(intervalId);
+    };
+
+    fetchPresaleData();
+
+  }, [lastMessage]);
+
+
 
   const handleClaimAction = () => {
     if (!isConnected) {
@@ -126,7 +159,7 @@ const ClaimTokens = () => {
               <div className="flex flex-col space-y-2">
                 <p className="text-white text-[80%] opacity-70">{t('tokensBought')}</p>
                 <div className="flex flex-row space-x-1">
-                  <p className="text-white text-[140%]">00.00345</p>
+                  <p className="text-white text-[140%]">{tokensBought}</p>
                   <p className="text-white text-[140%] opacity-50">KARBON</p>
                 </div>
               </div>
@@ -134,8 +167,8 @@ const ClaimTokens = () => {
               <div className="flex flex-col space-y-2">
                 <p className="text-white text-[80%] opacity-70">{t('amountSpent')}</p>
                 <div className="flex flex-row space-x-1">
-                  <p className="text-white text-[140%]">21,325</p>
-                  <p className="text-white text-[14px]">.45</p>
+                  <p className="text-white text-[140%]">{totalAmount}</p>
+                  <p className="text-white text-[14px]">.{decimalTotalAmount}</p>
                   <p className="text-white text-[140%] opacity-50">USDT</p>
                 </div>
               </div>
@@ -143,15 +176,20 @@ const ClaimTokens = () => {
               <div className="flex flex-col space-y-2">
                 <p className="text-white text-[80%] opacity-70">{t('tokenValue')}</p>
                 <div className="flex flex-row space-x-1">
-                  <p className="text-white text-[140%]">21,325</p>
-                  <p className="text-white text-[14px]">.45</p>
+                  <p className="text-white text-[140%]">{saleRate}</p>
+                  <p className="text-white text-[14px]">.00</p>
                   <p className="text-white text-[140%] opacity-50">USDT</p>
                 </div>
               </div>
 
               <div className="flex flex-col space-y-2">
                 <p className="text-white text-[80%] opacity-70">{t('estimatedClaimTime')}</p>
-                <p className="text-white text-[140%]">1d 22h 45m 34s</p>
+                <div className="flex flex-row space-x-2">
+                  <p className="text-white text-[20px]">{countdown.days}d</p>
+                  <p className="text-white text-[20px]">{countdown.hours}h</p>
+                  <p className="text-white text-[20px]">{countdown.minutes}m</p>
+                  <p className="text-white text-[20px]">{countdown.seconds}s</p>
+                </div>
               </div>
 
             </div>
@@ -187,7 +225,7 @@ const ClaimTokens = () => {
                 </thead>
                 <ScrollArea className="w-[100%] h-[22.5rem]">
                   <tbody>
-                    {tableData === null ? (
+                    {tableData.length === 0 ? (
                       <div className="bg-black flex min-h-[42vh] items-center justify-center flex-col space-y-5">
                         <NoTrasactionsLogo />
                         <div className="flex flex-col space-y-1 items-center justify-center">
@@ -198,7 +236,7 @@ const ClaimTokens = () => {
                       </div>
                     ) : (
                       <>
-                        {tableData.map((data) => (
+                        {tableData.map((data: any) => (
                           <tr className="hover:bg-black border-b-[1px] h-[47px] pl-5 pr-14 w-full flex flex-row items-center justify-between border-b-[#151515] hover:bg-opacity-40 bg-black bg-opacity-40" key={data.index}>
                             <td className="font-bold text-white text-start">{data.index}</td>
 
@@ -235,7 +273,7 @@ const ClaimTokens = () => {
                   <table className="w-full">
                     <tbody>
                       <ScrollArea className="h-[380px] w-full">
-                        {tableData === null ? (
+                        {tableData.length === 0 ? (
                           <div className="bg-black flex min-h-[42vh] items-center justify-center flex-col space-y-5">
                             <NoTrasactionsLogo />
                             <div className="flex flex-col space-y-1 items-center justify-center">
@@ -246,7 +284,7 @@ const ClaimTokens = () => {
                           </div>
                         ) : (
                           <>
-                            {tableData.map((data) => (
+                            {tableData.map((data: any) => (
                               <tr className=" border-b-[1px] w-full flex flex-row  justify-between border-b-[#151515] hover:bg-opacity-40 bg-black bg-opacity-40" key={data.index}>
                                 <td className="font-bold text-white text-start">{data.index}</td>
                                 <td className="flex flex-col pr-3 items-end justify-end space-y-2">
