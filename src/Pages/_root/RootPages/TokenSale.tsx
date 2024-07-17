@@ -40,6 +40,8 @@ import useSocketIO from "@/components/shared/Constants/UseSocket.ts";
 import { useTranslation } from "react-i18next";
 import ForwardIconBlack from "@/components/Icons/ForwardIconBlack.tsx";
 import BackIconGreen from "@/components/Icons/BackIconGreen.tsx";
+import { useMediaQuery } from "@/components/shared/Hooks/UseMediaQuery.tsx";
+import { Sheet, SheetContent } from "@/components/ui/sheet.tsx";
 
 
 const TokenSale = () => {
@@ -91,6 +93,7 @@ const TokenSale = () => {
   const [saleEnded, setSaleEnded] = useState(false);
   const [saleStarted, setSaleStarted] = useState(false);
   const [showContributeMobile, setShowContributeMobile] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 640px)")
 
 
 
@@ -399,44 +402,86 @@ const TokenSale = () => {
         description="Buy Karbon token and participate in the referral"
       />
 
-      <Dialog open={isConnectModalOpen} onOpenChange={handleCloseConnectModal}>
-        <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] max-sm:w-[290px] items-center justify-center outline-none'>
-          <div className='w-full'>
-            <img
-              src='/assets/connectWalletImage.svg'
-            />
-            <div onClick={handleCloseConnectModal} className='absolute cursor-pointer  top-4 right-4'>
-              <DialogClose />
-            </div>
-          </div>
-
-          <div className='pt-8 pb-5 px-8 flex flex-col space-y-3'>
-            <p className='text-white font-bold text-[20px] max-sm:text-[16px]'>Connect a wallet</p>
-            <p className='text-[14px] text-white max-sm:text-[10px]'>{t('connectWeb3Wallet')}</p>
-
-            <p className='text-white text-[12px] opacity-50'>{t('supportedNetwork')}</p>
-
-            <div>
-              <div onClick={() => open()} className="flex flex-row space-x-2 items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                <ConnectWalletIconBlack />
-                <p className="font-bold text-[12px] shadow-sm">
-                  {t('connectWallet')}
-                </p>
+      {!isMobile ? (
+        <Dialog open={isConnectModalOpen} onOpenChange={handleCloseConnectModal}>
+          <DialogContent className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-[380px] max-sm:w-[290px] items-center justify-center outline-none'>
+            <div className='w-full'>
+              <img
+                src='/assets/connectWalletImage.svg'
+              />
+              <div onClick={handleCloseConnectModal} className='absolute cursor-pointer  top-4 right-4'>
+                <DialogClose />
               </div>
             </div>
 
-            <div className='flex pt-2 flex-row space-x-2 items-center justify-center'>
-              <p className='text-white text-[14px] max-sm:text-[12px]  font-light opacity-70'>{t('noWallet')}</p>
-              <div onClick={handleCloseConnectModal} className='flex flex-row cursor-pointer items-center space-x-1'>
-                <p className='text-[#08E04A] text-[14px] max-sm:text-[12px]'>{t('skip')}</p>
-                <ForwardShortGreen />
+            <div className='pt-8 pb-5 px-8 flex flex-col space-y-3'>
+              <p className='text-white font-bold text-[20px] max-sm:text-[16px]'>Connect a wallet</p>
+              <p className='text-[14px] text-white max-sm:text-[10px]'>{t('connectWeb3Wallet')}</p>
 
+              <p className='text-white text-[12px] opacity-50'>{t('supportedNetwork')}</p>
+
+              <div>
+                <div onClick={() => open()} className="flex flex-row space-x-2 items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                  <ConnectWalletIconBlack />
+                  <p className="font-bold text-[12px] shadow-sm">
+                    {t('connectWallet')}
+                  </p>
+                </div>
               </div>
 
+              <div className='flex pt-2 flex-row space-x-2 items-center justify-center'>
+                <p className='text-white text-[14px] max-sm:text-[12px]  font-light opacity-70'>{t('noWallet')}</p>
+                <div onClick={handleCloseConnectModal} className='flex flex-row cursor-pointer items-center space-x-1'>
+                  <p className='text-[#08E04A] text-[14px] max-sm:text-[12px]'>{t('skip')}</p>
+                  <ForwardShortGreen />
+
+                </div>
+
+              </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Sheet open={isConnectModalOpen} onOpenChange={handleCloseConnectModal}>
+          <SheetContent side={"bottom"} className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-full rounded-t-[24px] items-center justify-center outline-none'>
+            <div className='w-full'>
+              <img
+                src='/assets/WalletImageMobile.svg'
+                className="rounded-t-[24px]"
+              />
+              <div onClick={handleCloseConnectModal} className='absolute cursor-pointer  top-4 right-4'>
+                <DialogClose />
+              </div>
+            </div>
+
+            <div className='pt-8 pb-5 px-8 flex flex-col space-y-3'>
+              <p className='text-white font-bold text-[20px] max-sm:text-[16px]'>Connect a wallet</p>
+              <p className='text-[14px] text-white max-sm:text-[10px]'>{t('connectWeb3Wallet')}</p>
+
+              <p className='text-white text-[12px] opacity-50'>{t('supportedNetwork')}</p>
+
+              <div>
+                <div onClick={() => open()} className="flex flex-row space-x-2 items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                  <ConnectWalletIconBlack />
+                  <p className="font-bold text-[12px] shadow-sm">
+                    {t('connectWallet')}
+                  </p>
+                </div>
+              </div>
+
+              <div className='flex pt-2 pb-5 flex-row space-x-2 items-center justify-center'>
+                <p className='text-white text-[14px] max-sm:text-[12px]  font-light opacity-70'>{t('noWallet')}</p>
+                <div onClick={handleCloseConnectModal} className='flex flex-row cursor-pointer items-center space-x-1'>
+                  <p className='text-[#08E04A] text-[14px] max-sm:text-[12px]'>{t('skip')}</p>
+                  <ForwardShortGreen />
+
+                </div>
+
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
 
 
       <div className=" flex pb-10 max-lg:hidden">
