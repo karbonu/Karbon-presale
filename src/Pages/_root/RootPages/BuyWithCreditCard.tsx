@@ -276,14 +276,17 @@ const BuyWithCreditCard = (props: any) => {
   return (
     <PayPalScriptProvider options={paypalScriptOptions}>
       <div className="w-full flex items-center px-3 rounded-[4px] bg-[#1C1C1C] h-[40px]">
-        <div className="flex flex-row items-center justify-between ">
-          <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer flex-row items-center justify-center space-x-1">
+        <div className="flex flex-row items-center justify-between max-sm:w-full ">
+          <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer max-sm:hidden flex-row items-center justify-center space-x-1">
             <BackArrow />
             <p className="text-white text-[12px]">{t('back')}</p>
           </div>
-          <div className="flex pl-5 flex-row items-center space-x-2">
+          <div className="flex md:pl-5 flex-row items-center space-x-2">
             <CreditCardlogo />
             <p className="text-white text-[14px]">{t('buyWithCreditCard')}</p>
+          </div>
+          <div className=' md:hidden rotate-[270deg]'>
+            <BackArrow />
           </div>
         </div>
       </div>

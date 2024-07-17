@@ -261,7 +261,7 @@ const BuyWithUSDT = (props: any) => {
                             <p className="text-[14px] text-white">{t('noGuaranteeNotice')}</p>
                         </div>
 
-                        <div onClick={() => setStep(2)} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] ">
+                        <div onClick={() => props.setIsDialogOpen(false)} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] ">
                             <div className='pr-4'>
                                 <ForwardGreen />
                             </div>
@@ -271,14 +271,17 @@ const BuyWithUSDT = (props: any) => {
                 </DialogContent>
             </Dialog>
             <div className="w-full flex items-center px-3 rounded-[4px] bg-[#1C1C1C] h-[40px]">
-                <div className="flex flex-row items-center justify-between w-[213px]">
-                    <div onClick={() => props.setSelectedMethod(0)} className="flex cursor-pointer flex-row items-center justify-center space-x-1">
+                <div className="flex flex-row items-center justify-between max-sm:w-full ">
+                    <div onClick={() => props.setSelectedMethod(0)} className="flex  max-sm:hidden cursor-pointer flex-row items-center justify-center space-x-1">
                         <BackArrow />
                         <p className="text-white text-[12px]">{t('back')}</p>
                     </div>
-                    <div className="flex flex-row items-center space-x-2">
+                    <div className="flex flex-row items-center md:px-5 space-x-2">
                         <USDTIcon />
                         <p className="text-white text-[14px]">{t('buyWithUsdt')}</p>
+                    </div>
+                    <div className=' md:hidden rotate-[270deg]'>
+                        <BackArrow />
                     </div>
                 </div>
             </div>
