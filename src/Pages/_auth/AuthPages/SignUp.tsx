@@ -376,14 +376,14 @@ const SignUp = () => {
   }
 
   return (
-    <div className="p-[60px] max-sm:p-5 max-sm:pt-10">
-      <div className="max-sm:flex max-sm:items-center max-sm:justify-center">
+    <div className="p-[60px] max-sm:p-2 ">
+      <div className="max-sm:flex max-sm:items-start max-sm:justify-start max-sm:pt-10 max-sm:pl-5">
         <KarbonLogo />
       </div>
 
       <div className="flex items-center justify-center w-full flex-col">
         {chanceInfo && (
-          <div className="flex absolute top-20 max-sm:top-18 max-sm:w-[80%] flex-row space-x-3 items-center justify-between pl-5 rounded-[8px] border-[1px] border-[#282828] w-[421px] h-[52px] bg-black">
+          <div className="flex absolute top-20 max-sm:hidden max-sm:w-[80%] flex-row space-x-3 items-center justify-between pl-5 rounded-[8px] border-[1px] border-[#282828] w-[421px] h-[52px] bg-black">
             <div onClick={() => setChanceInfo(false)}>
               <CloseIcon />
             </div>
@@ -397,10 +397,10 @@ const SignUp = () => {
         )}
 
         {step === 1 && (
-          <div className="flex flex-col items-center justify-center pt-[6rem]">
+          <div className="flex flex-col items-center justify-center md:pt-[7rem] max-sm:pt-[4rem]">
             <div className="w-[437px] max-sm:w-[100%] h-[495px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
               <div className="py-5 flex flex-col justify-between h-full">
-                <p className="text-white px-8 text-[20px] max-sm:text-[16px] font-semibold">{t('createAccount')}</p>
+                <p className="text-white px-5 text-[20px] max-sm:text-[16px] font-semibold">{t('createAccount')}</p>
 
                 <div className="flex flex-col px-5 items-center justify-center space-y-2">
                   <div onClick={() => login()} className="flex cursor-pointer flex-row w-[389px] max-sm:w-[100%] h-[56px] bg-[#1C1C1C]">
@@ -422,13 +422,13 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                <div className="flex px-8 flex-row space-x-4 w-full items-center justify-center max-sm:justify-between">
+                <div className="flex px-8 max-sm:px-5 flex-row space-x-4 w-full items-center justify-center max-sm:justify-between">
                   <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
                   <p className="text-white text-[14px] max-sm:text-[12px]">{t('signUpEmail')}</p>
                   <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
                 </div>
 
-                <div className="flex px-8 flex-col space-y-5">
+                <div className="flex px-8 max-sm:px-5 flex-col space-y-5">
                   <input onKeyDown={handleemailKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
                   <div className="  items-center opacity-70 text-white font-normal font-inter text-[12px]">
                     {t('agreeToTerms')} <a href='https://karbon-website.vercel.app/terms-of-use' target='blank' className="underline underline-offset-2">{t('termsOfService')}</a> and <a href='https://karbon-website.vercel.app/privacy-policy' target='blank' className="underline underline-offset-2">{t('privacyPolicy')}</a>
@@ -454,9 +454,9 @@ const SignUp = () => {
         )}
 
         {step === 3 && (
-          <div className="flex flex-col w-full items-center justify-center pt-[7rem]">
+          <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[4rem]">
             <div className="w-[450px] max-sm:w-[100%] h-[366px] bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
-              <div className="px-8 flex flex-col justify-between h-full">
+              <div className="px-8 max-sm:px-5 flex flex-col justify-between h-full">
                 <div className="flex flex-row space-x-2 items-center">
                   <VerifyEmailIcon />
                   <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">{t('verifyEmail')}</p>
@@ -495,9 +495,9 @@ const SignUp = () => {
         )}
 
         {step === 2 && (
-          <div className="flex flex-col w-full items-center justify-center pt-[5rem]">
+          <div className="flex flex-col w-full items-center justify-center pt-[5rem] max-sm:pt-[3rem]">
             <div className="w-[450px] max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
-              <div className="py-5 px-8 flex flex-col justify-between h-full">
+              <div className="py-5 px-8 max-sm:px-5 flex flex-col justify-between h-full">
                 <div className="flex flex-row space-x-2 items-center pb-5">
                   <PasswordLogo />
                   <p className="text-white text-[20px] max-sm:text-[16px] font-semibold">{t('createPassword')}</p>
