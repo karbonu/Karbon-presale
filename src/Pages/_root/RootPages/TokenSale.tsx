@@ -763,8 +763,8 @@ const TokenSale = () => {
           <p className="text-white text-[20px] font-bold">{t('tokenSaleDApp')}</p>
 
           <div className="bg-[#121212] rounded-[8ox]">
-            <div className="p-5 flex flex-col space-y-5">
-              <div className="flex flex-col space-y-7">
+            <div className="p-3 flex flex-col space-y-5">
+              <div className="flex p-3 flex-col rounded-[8px] bg-black space-y-7">
                 <div className="flex flex-row items-center justify-between">
                   <p className="text-white text-[14px] font-semibold">{t('presaleProgress')}</p>
                   <div className="flex flex-row items-center space-x-4">
