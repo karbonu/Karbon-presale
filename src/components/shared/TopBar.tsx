@@ -119,11 +119,7 @@ const TopBar = () => {
     title = t('invalidPath');
   }
 
-  const firstLink = location.pathname === "/dashboard"
-    ? "/dashboard"
-    : location.pathname === "/dashboard/tokensale"
-      ? "/dashboard/tokensale"
-      : '/dashboard';
+  const firstLink = location.pathname === '/dashboard' ? '/dashboard' : '/dashboard/tokensale';
 
   const activeClassName = "flex bg-black w-[100%] border-l border-l-[4px] border-[#08E04A]";
   const inactiveClassName =
