@@ -122,7 +122,7 @@ const TopBar = () => {
     ? "/dashboard"
     : location.pathname === "/dashboard/tokensale"
       ? "/dashboard/tokensale"
-      : '/dashboard/';
+      : '/dashboard';
 
   const activeClassName = "flex bg-black w-[100%] border-l border-l-[4px] border-[#08E04A]";
   const inactiveClassName =
