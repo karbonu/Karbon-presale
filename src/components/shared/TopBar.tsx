@@ -419,8 +419,8 @@ const TopBar = () => {
         </div>
         <div className="lg:hidden">
           <div className="flex flex-row items-center space-x-3">
-            <div>
-              {!address ? (
+            <div className="flex flex-col items-center justify-center w-full">
+              {/* {!address ? (
                 <div
                   onClick={() => open()}
                   className="bg-[#101010] hover:border-[#08E04A] border-[1px] border-transparent transition ease-out py-2 px-3 items-center flex flex-row space-x-2 rounded-[4px] cursor-pointer"
@@ -432,6 +432,58 @@ const TopBar = () => {
                 <div onClick={() => open()} className="flex flex-row cursor-pointer space-x-2">
                   <EthIcon />
                   <p className="text-white text-[12px]"> {`${address.slice(0, 11)}...`}</p>
+                </div>
+              )} */}
+
+              <div className="bg-[#101010] border-[1px] border-[#282828] rounded-[4px]">
+                <div className="px-2 py-2">
+                  <div className="flex flex-row space-x-4">
+                    <div onClick={handleDropdown} className="flex cursor-pointer flex-row items-center space-x-2">
+                      <p className="text-[12px] text-white">{email.slice(0, 5)}... {email.slice(-10)}</p>
+                      <div className={showDropdown ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
+                        <DownIcon />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {showDropdown && (
+                <div
+                  onMouseLeave={handleDropdown}
+                  className={`bg-[#121212] border-[1px] border-[#282828] transition-all duration-300 overflow-hidden w-[291px]  fade-transition ${showDropdown ? ' animate-accordion-down' : ' animate-accordion-up'} z-50 absolute top-[5rem] left-1/2  -translate-x-1/2  ${showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
+                    }`}
+                >
+                  <div className="flex flex-col">
+                    <div className="p-5 flex flex-col w-full space-y-3">
+                      <a
+                        href="/dashboard/settings/profilesettings"
+                        onClick={handleDropdown}
+                        className="bg-[#0C0C0C] cursor-pointer rounded-[4px]"
+                      >
+                        <div className="flex flex-row items-center justify-between p-3">
+                          <p className="text-[12px] text-white">{t('profile')}</p>
+                          <ForwardIcon />
+                        </div>
+                      </a>
+
+                      <a
+                        href="/dashboard/settings/walletsettings"
+                        onClick={handleDropdown}
+                        className="bg-[#0C0C0C] cursor-pointer rounded-[4px]"
+                      >
+                        <div className="flex flex-row items-center justify-between p-3">
+                          <p className="text-[12px] text-white">{t('walletSettings')}</p>
+                          <ForwardIcon />
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="w-full cursor-pointer bg-[#0C0C0C]">
+                    <div onClick={handleSignOut} className="p-3 flex items-center justify-center">
+                      <p className="text-[#FF3636] text-[12px]">{t('signOut')}</p>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
