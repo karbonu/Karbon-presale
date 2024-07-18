@@ -140,7 +140,7 @@ const ProfileSettings = () => {
     <div className="flex flex-col pt-10 space-y-3">
       <MetaTags title="Karbon Sale | Profile Settings" />
       <div className="flex flex-row max-lg:flex-col max-lg:space-y-2 w-full lg:space-x-2 justify-between">
-        <div className="border-[1px] border-[#282828] h-[95px] md:min-w-[364px] max-lg:w-full bg-black rounded-[8px]">
+        <div className="border-[1px] border-[#282828] max-sm:bg-[#101010] h-[95px] md:min-w-[364px] max-lg:w-full bg-black rounded-[8px]">
           <div className="p-3 flex-col space-y-3 h-full justify-between">
             <div className="flex flex-row rounded-[2px] justify-center py-1 space-x-1 items-center border-[1px] border-[#282828] max-w-[54px]">
               <WalletIcon />
@@ -151,7 +151,7 @@ const ProfileSettings = () => {
             </div>
           </div>
         </div>
-        <div className="border-[1px] border-[#282828] h-[95px] md:min-w-[364px] max-lg:w-full bg-black rounded-[8px]">
+        <div className="border-[1px] border-[#282828] max-sm:bg-[#101010] h-[95px] md:min-w-[364px] max-lg:w-full bg-black rounded-[8px]">
           <div className="p-3 flex-col space-y-3 h-full justify-between">
             <div className="flex flex-row rounded-[2px] justify-center py-1 space-x-1 items-center border-[1px] border-[#282828] max-w-[97px]">
               <WalletIcon />
@@ -172,7 +172,7 @@ const ProfileSettings = () => {
 
       {!isGoogleSignIn && (
         <div className="flex flex-1 max-lg:w-full">
-          <div className="bg-black border-[1px] border-[#282828] max-lg:w-full rounded-[8px]">
+          <div className="bg-black border-[1px] max-sm:bg-[#101010] border-[#282828] max-lg:w-full rounded-[8px]">
             <div className="flex flex-col p-5 space-y-4 max-lg:w-full">
               <p className="text-white font-medium text-[20px]">{t('changePassword')}</p>
               <div className="flex flex-row max-lg:flex-col max-lg:space-y-2 w-full items-center justify-between md:space-x-2">
@@ -226,9 +226,9 @@ const ProfileSettings = () => {
                 <button
                   disabled={passwordError !== '' || isUpdatingPassword || passwordSuccess !== ''}
                   onClick={handleChangePassword}
-                  className={`text-[14px] text-white w-max px-8 py-2 border-[1px] rounded-full cursor-pointer transition ease-in-out ${passwordError || passwordSuccess
+                  className={`text-[14px] text-black font-bold w-max px-8 py-2 border-[1px] rounded-full cursor-pointer transition ease-in-out ${passwordError || passwordSuccess
                     ? 'bg-red-500 border-red-500 cursor-not-allowed'
-                    : 'bg-transparent border-white opacity-70 hover:opacity-100 hover:text-black hover:bg-white'
+                    : ' border-transparent hover:border-white bg-[#08E04A] opacity-70 hover:opacity-100 hover:text-white hover:bg-transparent'
                     }`}
                 >
                   {isUpdatingPassword ? <BarLoader color="#FFFFFF" /> : t('updatePassword')}
@@ -241,15 +241,19 @@ const ProfileSettings = () => {
 
 
 
-      <div className="flex flex-row max-lg:flex-col pt-10 justify-between items-center max-lg:space-y-2">
-        <div className="flex flex-row lg:space-x-40 max-lg:w-full max-lg:justify-between max-sm:px-5">
+      <div className="flex flex-row max-lg:flex-col md:pt-10 justify-between md:items-center max-lg:space-y-2">
+        <div className="flex flex-row max-sm:hidden lg:space-x-40 max-lg:w-full max-lg:justify-between max-sm:px-5">
           <p className="text-[8px] text-white opacity-30">{t('copyright')}</p>
           <p className="text-[8px] text-white opacity-30">Gaziantep, Türkiye</p>
         </div>
-        <div className="bg-black cursor-pointer hover:scale-95 transition ease-in-out border-[1px] border-[#282828] rounded-[4px]">
+        <div className="bg-black cursor-pointer hover:scale-95 w-max transition ease-in-out border-[1px] border-[#282828] rounded-[4px]">
           <div onClick={handleSignOut} className="flex flex-row space-x-1 items-center px-4 py-2">
             <p className="text-[#FF3636] text-[16px]">{t('signOut')}</p>
           </div>
+        </div>
+        <div className="flex md:hidden w-full flex-col pt-10 ">
+          <p className="text-[12px] text-white opacity-30">Gaziantep, Türkiye</p>
+          <p className="text-[12px] text-white  opacity-30">{t('copyright')}</p>
         </div>
       </div>
     </div>

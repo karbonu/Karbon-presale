@@ -42,7 +42,7 @@ const WalletSettings = () => {
                 title="Karbon Sale | Waallet Settings"
             />
 
-            <div className="border-[1px] border-[#282828] max-w-[740px] max-lg:w-full max-sm:h-full h-[95px] bg-black rounded-[8px]">
+            <div className="border-[1px] border-[#282828] max-w-[740px] max-lg:w-full max-sm:h-full h-[95px] max-sm:bg-[#101010] bg-black rounded-[8px]">
                 <div className="p-3 flex-col space-y-3 h-full justify-between">
                     <div className="flex flex-row rounded-[2px] justify-center py-1 space-x-1 items-center border-[1px] border-[#282828] max-w-[150px]">
                         <WalletIcon />
@@ -70,7 +70,7 @@ const WalletSettings = () => {
                 </div>
             </div>
 
-            <div className="border-[1px] border-[#282828] max-w-[740px] max-lg:w-full max-sm:h-full h-[95px] bg-black rounded-[8px]">
+            <div className="border-[1px] max-sm:bg-[#101010] border-[#282828] max-w-[740px] max-lg:w-full max-sm:h-full h-[95px] bg-black rounded-[8px]">
                 <div className="p-3 flex-col space-y-3 h-full justify-between">
                     <div className="flex flex-row rounded-[2px]  justify-center py-1 space-x-1 items-center border-[1px] border-[#282828] max-w-[73px]">
                         <KeyIcon />
@@ -80,21 +80,25 @@ const WalletSettings = () => {
                 </div>
             </div>
 
-            <div className="flex flex-row max-lg:flex-col pt-10 justify-between items-center max-lg:space-y-2">
-                <div className="flex flex-row lg:space-x-40 max-lg:w-full max-lg:justify-between max-sm:px-5">
+            <div className="flex  flex-row max-lg:flex-col md:pt-10 justify-between md:items-center max-lg:space-y-2">
+                <div className="flex max-sm:hidden flex-row lg:space-x-40 max-lg:w-full max-lg:justify-between max-sm:px-5">
                     <p className="text-[8px] text-white opacity-30">{t('copyright')}.</p>
                     <p className="text-[8px] text-white opacity-30">Gaziantep, Türkiye</p>
                 </div>
 
 
                 {address && (
-                    <div className="bg-black cursor-pointer hover:scale-95 transition ease-in-out border-[1px] border-[#282828] rounded-[4px]">
+                    <div className="bg-black cursor-pointer max-sm:items-start max-sm:justify-start w-max hover:scale-95 transition ease-in-out border-[1px] border-[#282828] rounded-[4px]">
                         <div onClick={() => disconnect()} className="flex flex-row space-x-1 items-center px-4 py-2">
                             <DisconnectIcon />
                             <p className="text-[#FF3636] text-[16px]">{t('disconnectWallet')}</p>
                         </div>
                     </div>
                 )}
+                <div className="flex md:hidden w-full absolute bottom-5 items-start pl-5 flex-col left-1/2 transform -translate-x-1/2   ">
+                    <p className="text-[12px] text-white opacity-30">Gaziantep, Türkiye</p>
+                    <p className="text-[12px] text-white  opacity-30">{t('copyright')}</p>
+                </div>
             </div>
 
         </div>
