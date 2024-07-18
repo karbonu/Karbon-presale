@@ -9,7 +9,7 @@ import { BarLoader } from 'react-spinners';
 import EyeIcon from '@/components/Icons/EyeIcon.tsx';
 import EyeIcongreen from '@/components/Icons/EyeIcongreen.tsx';
 import { useToast } from '@/components/ui/use-toast';
-import { useNavigate } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
 
 const PasswordReset = (props: any) => {
@@ -26,7 +26,7 @@ const PasswordReset = (props: any) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for toggling confirm password visibility
   const passwordOtpMutate = usePasswordOTPMutate();
   const verifyMutate = useVerifyEmailMutation();
-  const navigate = useNavigate();
+
   const [validation, setValidation] = useState({
     minLength: false,
     upperCase: false,
@@ -122,7 +122,7 @@ const PasswordReset = (props: any) => {
       {
         onSuccess: () => {
           setIsVerifying(false);
-          navigate('/')
+          window.location.reload();
           toast({
             variant: 'success',
             title: t('success'),

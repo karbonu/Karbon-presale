@@ -16,7 +16,7 @@ const ProfileSettings = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
-  const { email, setPassword, setReferralCOde, setUserID, isGoogleSignIn, setIsGoogleSignIn, setEmail, setAuthenticated, accessToken, UserID, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
+  const { email, setPassword, setReferralCOde, setUserID, setIsDropDownOpen, isGoogleSignIn, setIsGoogleSignIn, setEmail, setAuthenticated, accessToken, UserID, password: currentPassword, setHasDisplayedConnectModal } = useAuth();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -66,6 +66,7 @@ const ProfileSettings = () => {
     setReferralCOde('');
     setHasDisplayedConnectModal(false);
     setAuthenticated(false);
+    setIsDropDownOpen(false);
     setIsGoogleSignIn(false)
     disconnect();
   };

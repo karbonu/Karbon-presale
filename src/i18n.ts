@@ -202,12 +202,14 @@ const resources = {
             buyTokensToGetStarted: "Buy Tokens to get started",
             enterEmail: "Enter Email",
             enterOtp: "Enter OTP",
+            forgotPassword: "Forgot Password",
         }
     },
     de: {
         translation: {
             error: "Fehler",
             enterEmail: "E-Mail eingeben",
+            forgotPassword: "Passwort vergessen",
             accountNotExist: "Konto mit eingegebener E-Mail existiert nicht",
             invalidRoleRedirect: "Ungültige Rolle, Weiterleitung zum Dashboard",
             invalidLogin: "Ungültige Anmeldeinformationen",
@@ -412,6 +414,7 @@ const resources = {
             updatePassword: "Şifreyi Güncelle",
             amount: "Tutar",
             walletBalance: "Cüzdan Bakiyesi",
+            forgotPassword: "Şifremi Unuttum",
             fee: "Ücret",
             participateAcknowledgement: "Karbon token tohum satışına katılarak, tokenların lansman fiyatının %50'si olan indirimli fiyattan satıldığını kabul edersiniz",
             vestingPeriodNotice: "Ayrıca, tohum yatırımcılarının tokenları talep etmeye başlamadan önce 6 aylık bir vade süresi bulunmaktadır. Kripto para yatırımlarıyla ilgili risklerin, piyasa dalgalanmaları ve düzenleyici belirsizlikler dahil olmak üzere farkında olun",

@@ -347,21 +347,21 @@ const SignIn = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-row space-x-4 w-full items-center justify-center max-sm:justify-between">
-                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
+                                <div className="flex flex-row space-x-4 w-full items-center justify-between max-sm:justify-between">
+                                    <Separator orientation="horizontal" className="max-w-[20%] max-sm:max-w-[20%]" />
                                     <p className="text-white text-[14px] max-sm:text-[12px]">{t('signInEmail')}</p>
-                                    <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
+                                    <Separator orientation="horizontal" className="max-w-[20%] max-sm:max-w-[20%]" />
                                 </div>
 
                                 <div className="flex flex-col space-y-5">
-                                    <input onKeyDown={handleEmailKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
+                                    <input onKeyDown={handleEmailKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" placeholder={t('enterEmail')} value={email} onChange={handleEmailChange} />
                                     <div>
                                         <button disabled={isLoadingNonce || isLoggingIn} onClick={handleInitialNonceRequest} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                             {isLoadingNonce || isLoggingIn ? (
                                                 <BarLoader />
                                             ) : (
                                                 <p className="font-bold text-[14px] shadow-sm">
-                                                    Sign In
+                                                    {t('signIn')}
                                                 </p>
                                             )}
                                         </button>
@@ -398,7 +398,7 @@ const SignIn = () => {
                                         <p className="text-white text-[14px]">{t('password')}</p>
                                         <input onKeyDown={handleSignInKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="password" value={password} onChange={handlePasswordChange} />
                                     </div>
-                                    <p onClick={() => setStep(3)} className="text-[14px] max-sm:text-[12px] cursor-pointer text-[#08E04A] font-semibold">Forgot Password?</p>
+                                    <p onClick={() => setStep(3)} className="text-[14px] max-sm:text-[12px] cursor-pointer text-[#08E04A] font-semibold">{t('forgotPassword')}?</p>
                                     <div>
                                         <div onClick={handleLoginRequest} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                                             {isLoggingIn ? (
@@ -540,7 +540,7 @@ const SignIn = () => {
                     />
                 )}
             </div>
-            <div className="lg:absolute lg:bottom-10 flex items-center justify-center py-10 lg:left-[43.5%]">
+            <div className="absolute bottom-5 flex items-center justify-center lg:left-[43.5%]">
                 <p className="text-white text-[10px] opacity-50">{t('copyright')}</p>
             </div>
         </div>

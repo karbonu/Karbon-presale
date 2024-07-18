@@ -95,6 +95,7 @@ const TopBar = () => {
     setWalletAddress('');
     setHasDisplayedConnectModal(false);
     setAuthenticated(false);
+    setIsDropDownOpen(false);
     setIsGoogleSignIn(false);
     disconnect();
   };

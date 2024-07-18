@@ -422,14 +422,14 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                <div className="flex px-8 max-sm:px-5 flex-row space-x-4 w-full items-center justify-center max-sm:justify-between">
-                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
+                <div className="flex px-8 max-sm:px-5 flex-row space-x-4 w-full items-center justify-between max-sm:justify-between">
+                  <Separator orientation="horizontal" className="max-w-[20%] max-sm:max-w-[20%]" />
                   <p className="text-white text-[14px] max-sm:text-[12px]">{t('signUpEmail')}</p>
-                  <Separator orientation="horizontal" className="max-w-[27%] max-sm:max-w-[20%]" />
+                  <Separator orientation="horizontal" className="max-w-[20%] max-sm:max-w-[20%]" />
                 </div>
 
                 <div className="flex px-8 max-sm:px-5 flex-col space-y-5">
-                  <input onKeyDown={handleemailKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" placeholder="Enter Email" value={email} onChange={handleEmailChange} />
+                  <input onKeyDown={handleemailKeyDown} className="w-full bg-black border-[0.5px] border-[#FFFFFF] text-white text-[16px] rounded-[4px] h-[56px] px-4" type="email" placeholder={t('enterEmail')} value={email} onChange={handleEmailChange} />
                   <div className="  items-center opacity-70 text-white font-normal font-inter text-[12px]">
                     {t('agreeToTerms')} <a href='https://karbon-website.vercel.app/terms-of-use' target='blank' className="underline underline-offset-2">{t('termsOfService')}</a> and <a href='https://karbon-website.vercel.app/privacy-policy' target='blank' className="underline underline-offset-2">{t('privacyPolicy')}</a>
                   </div>
@@ -509,7 +509,6 @@ const SignUp = () => {
 
                 <div className="flex flex-col space-y-5">
                   <div className="flex flex-col space-y-2">
-                    <p className="text-white text-[14px] max-sm:text-[12px]">{t('password')}</p>
                     <div className="flex flex-col space-y-2 relative">
                       <p className="text-white text-[14px] max-sm:text-[12px]">{t('password')}</p>
                       <input
@@ -603,7 +602,7 @@ const SignUp = () => {
         )}
       </div>
 
-      <div className="lg:absolute lg:bottom-5 flex items-center justify-center pt-10 lg:left-[43.5%]">
+      <div className="absolute bottom-5 flex items-center justify-center  lg:left-[43.5%]">
         <p className="text-white text-[10px] opacity-50">{t('copyright')}</p>
       </div>
     </div>
