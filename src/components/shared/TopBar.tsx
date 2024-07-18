@@ -539,6 +539,26 @@ const TopBar = () => {
                     </div>
                   </div>
 
+                  <div className="w-max items-center space-x-2 px-5 py-2  rounded-sm cursor-pointer">
+                    <div className="flex flex-col space-y-4">
+                      <div onClick={() => { changeLanguage(1); setShowMobileMenu(false) }} className={`flex flex-row p-2 rounded-md space-x-2 w-max ${selectedLanguage === 1 ? 'border-[1px] bg-white bg-opacity-5' : 'bg-transparent'}`}>
+                        <EnglishFlag />
+                        <p className="text-[12px] text-white">English</p>
+                      </div>
+
+                      <div onClick={() => { changeLanguage(2); setShowMobileMenu(false) }} className={`flex flex-row p-2 rounded-md space-x-2 w-max ${selectedLanguage === 2 ? 'border-[1px] bg-white bg-opacity-5' : 'bg-transparent'}`}>
+                        <TurkeyLogo />
+                        <p className="text-[12px] text-white">Turkish</p>
+                      </div>
+
+                      <div onClick={() => { changeLanguage(3); setShowMobileMenu(false) }} className={`flex flex-row space-x-2 p-2 rounded-md w-max ${selectedLanguage === 3 ? 'border-[1px] bg-white bg-opacity-5' : 'bg-transparent'}`}>
+                        <GermanyFlag />
+                        <p className="text-[12px] text-white">German</p>
+                      </div>
+                    </div>
+                  </div>
+
+
                   <div onClick={() => setShowMobileMenu(false)} className="flex flex-col space-y-2">
                     <div className="flex flex-col space-y-5 pb-5 pl-5 ">
                       <div className="flex flex-row cursor-pointer items-center space-x-2">
@@ -576,7 +596,7 @@ const TopBar = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
