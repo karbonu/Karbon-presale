@@ -902,7 +902,12 @@ const TokenSale = () => {
             {selectedMethod === 3 && <BuyWithPaypal setSelectedMethod={setSelectedMethod} />}
           </div>
           <div>
-            <p className="text-white px-1 text-[12px]">{t('byContributing')} <span onClick={() => setIsTermsAndCondOpen(true)} className=" cursor-pointer underline underline-offset-2">{t('')}</span>.</p>
+            <p className="text-white px-1 text-[12px]">{t('byContributing')} <span onClick={() => setIsTermsAndCondOpen(true)} className=" cursor-pointer underline underline-offset-2">{t('termsConditions')}</span>.</p>
+          </div>
+
+          <div className="flex absolute bottom-5 items-center flex-row w-full left-1/2 transform -translate-x-1/2 justify-between px-10">
+            <p className="text-[12px] text-white w-[155px] opacity-30">{t('copyright')}</p>
+            <p className="text-[12px] text-white opacity-30">Gaziantep, Türkiye</p>
           </div>
         </div>
       ) : (

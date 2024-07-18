@@ -246,7 +246,7 @@ const BuyWithUSDT = (props: any) => {
     return (
         <div className='w-full space-y-5 flex flex-col'>
             <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
-                <DialogContent className='bg-[#101010] border-[#282828] pb-5 py-10 px-10 flex flex-col w-[412px] max-sm:w-[90%] items-center justify-center rounded-[16px] outline-none'>
+                <DialogContent className='bg-[#101010] border-[#282828] pb-5 py-10 px-10 flex flex-col w-[412px] max-sm:w-[373px] items-center justify-center rounded-[16px] outline-none'>
                     <div className='w-full flex flex-row items-center justify-between'>
                         <p className="text-white font-semibold text-[20px]">{t('disclaimer')}</p>
                         <div onClick={() => props.setIsDialogOpen(false)} className='cursor-pointer '>
