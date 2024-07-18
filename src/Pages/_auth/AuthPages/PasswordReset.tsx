@@ -157,7 +157,7 @@ const PasswordReset = (props: any) => {
     <div className="flex items-center justify-center w-full flex-col">
       {step === 1 && (
         <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[5rem]">
-          <div className="w-[450px] max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
+          <div className="w-[450px] max-sm:w-[100%] max-sm:bg-transparent max-sm:border-transparent bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
             <div className="py-5 md:px-8 max-sm:px-5 flex space-y-5 flex-col justify-between h-full">
               <div className="flex flex-row space-x-2 items-center">
                 <PasswordLogo />
@@ -193,7 +193,7 @@ const PasswordReset = (props: any) => {
 
       {step === 2 && (
         <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[5rem]">
-          <div className="w-[450px] max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+          <div className="w-[450px] max-sm:w-[100%] max-sm:bg-transparent max-sm:border-transparent bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
             <div className=" py-5 md:px-8 max-sm:px-5 flex flex-col justify-between h-full">
               <div className="flex flex-row space-x-2 items-center pb-5">
                 <PasswordLogo />
@@ -294,7 +294,7 @@ const PasswordReset = (props: any) => {
       )}
       {step === 3 && (
         <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[5rem]">
-          <div className="w-[450px] py-5 max-sm:w-[100%] items-center justify-center bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+          <div className="w-[450px] py-5 max-sm:w-[100%] items-center justify-center max-sm:bg-transparent max-sm:border-transparent bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
             <div className=" py-5 md:px-8 max-sm:px-5 flex flex-col space-y-5 justify-between h-full">
               <div className="flex flex-row space-x-2 items-center justify-center">
                 <SucccessIconSmall />

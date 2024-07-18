@@ -323,9 +323,9 @@ const SignIn = () => {
 
                 {step === 1 && (
                     <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[5rem]">
-                        <div className="w-[450px] max-sm:w-[100%] h-[456px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                        <div className="w-[450px] max-sm:w-[100%] h-[456px] max-sm:bg-transparent max-sm:border-transparent bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 md:px-8 max-sm:px-5 flex flex-col justify-between h-full">
-                                <p className="text-white text-[20px] max-sm:text-[90%] font-semibold">{t('signIn')}</p>
+                                <p className="text-white text-[20px] max-sm:text-[20px] font-semibold">{t('signIn')}</p>
 
                                 <div className="flex flex-col space-y-2">
                                     <div onClick={() => { login() }} className="flex cursor-pointer flex-row w-[389px] max-sm:w-[100%] max-sm:h-[48px] h-[56px] bg-[#1C1C1C]">
@@ -382,7 +382,7 @@ const SignIn = () => {
 
                 {step === 2 && (
                     <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[5rem]">
-                        <div className="w-[450px] max-sm:w-[100%] h-[346px] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                        <div className="w-[450px] max-sm:w-[100%] h-[346px] max-sm:bg-transparent max-sm:border-transparent bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 md:px-8 max-sm:px-5 flex flex-col justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center">
                                     <PasswordLogo />
@@ -428,7 +428,7 @@ const SignIn = () => {
 
                 {step === 3 && (
                     <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[5rem]">
-                        <div className="w-[450px] py-5 max-sm:w-[100%] bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                        <div className="w-[450px] py-5 max-sm:w-[100%] max-sm:bg-transparent max-sm:border-transparent bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 md:px-8 max-sm:px-5 flex flex-col space-y-5 justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center">
                                     <PasswordLogo />
@@ -469,7 +469,7 @@ const SignIn = () => {
 
                 {step === 4 && (
                     <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[5rem]">
-                        <div className="w-[450px] py-5 max-sm:w-[100%] items-center justify-center bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
+                        <div className="w-[450px] py-5 max-sm:w-[100%] items-center justify-center max-sm:bg-transparent max-sm:border-transparent bg-[#101010] border-[#2D2D2D] border-[1px] rounded-[8px]">
                             <div className="py-5 md:px-8 max-sm:px-5 flex flex-col space-y-5 justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center justify-center">
                                     <PasswordLogo />
@@ -498,7 +498,7 @@ const SignIn = () => {
 
                 {step === 5 && (
                     <div className="flex flex-col w-full items-center justify-center md:pt-[7rem] max-sm:pt-[5rem]">
-                        <div className="w-[450px] max-sm:w-[100%] h-[366px] bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
+                        <div className="w-[450px] max-sm:w-[100%] h-[366px] max-sm:bg-transparent max-sm:border-transparent bg-[#101010] border-[#2D2D2D] py-5 border-[1px] rounded-[8px]">
                             <div className="md:px-8 max-sm:px-5 flex flex-col justify-between h-full">
                                 <div className="flex flex-row space-x-2 items-center">
                                     <VerifyEmailIcon />
@@ -540,9 +540,10 @@ const SignIn = () => {
                     />
                 )}
             </div>
-            <div className="absolute bottom-5 flex items-center justify-center lg:left-[43.5%]">
+            <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex items-center justify-center">
                 <p className="text-white text-[10px] opacity-50">{t('copyright')}</p>
             </div>
+
         </div>
     );
 }
