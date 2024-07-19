@@ -1,3 +1,5 @@
+// path: /components/BuyWithCreditCard.tsx
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '@/components/shared/Contexts/AuthContext';
 import BackArrow from '@/components/Icons/BackArrow';
@@ -122,6 +124,7 @@ const BuyWithCreditCard = (props: any) => {
 
   const paypalScriptOptions: ReactPayPalScriptOptions = {
     "clientId": import.meta.env.VITE_PAYPAL_CLIENT_ID,
+    "dataClientToken": import.meta.env.VITE_PAYPAL_CLIENT_SECRET,
     currency: "USD",
     components: "buttons,hosted-fields",
   };

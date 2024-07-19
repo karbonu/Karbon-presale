@@ -1,9 +1,10 @@
 import { useAuth } from '@/components/shared/Contexts/AuthContext';
-import Leftbar from '@/components/shared/Leftbar.tsx';
-import TopBar from '@/components/shared/TopBar.tsx';
-import { Outlet, useNavigate } from 'react-router-dom'
+import Leftbar from '@/components/shared/Leftbar';
+import TopBar from '@/components/shared/TopBar';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const PageLayout = () => {
+
   let authenticated = false;
   const navigate = useNavigate();
   const { isDropDownOpen } = useAuth();
@@ -12,12 +13,14 @@ const PageLayout = () => {
     navigate('/sign-in')
   }
 
+  const handleSidebarToggle = (isOpen: any) => {
+    console.log(isOpen)
+  };
+
   return (
     <div className='w-screen h-screen flex flex-row'>
-      <div className='lg:w-[181px] lg:h-screen '>
-        <Leftbar />
-      </div>
-      <main className='flex px-[4rem] max-sm:px-5 pt-[2.5rem] space-y-6 max-sm:space-y-2 h-full flex-1 flex-col'>
+      <Leftbar onToggle={handleSidebarToggle} />
+      <main className={`flex px-[4rem] max-sm:px-5 pt-[2.5rem] space-y-6 max-sm:space-y-2 h-full flex-1 flex-col transition-all duration-300 ease-in-out`}>
         <TopBar />
         <div className='flex py-5 w-full'>
           {isDropDownOpen && (
@@ -31,4 +34,4 @@ const PageLayout = () => {
   )
 }
 
-export default PageLayout
+export default PageLayout;
