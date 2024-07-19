@@ -3,7 +3,7 @@ import CloseIcon from "@/components/Icons/CloseIcon.tsx";
 import GoogleLogo from "@/components/Icons/GoogleLogo.tsx";
 import KarbonLogo from "@/components/Icons/KarbonLogo.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import VerifyEmailIcon from "@/components/Icons/VerifyEmailIcon.tsx";
 import PasswordLogo from "@/components/Icons/PasswordLogo.tsx";
@@ -21,6 +21,11 @@ import EyeIcongreen from "@/components/Icons/EyeIcongreen.tsx";
 import EyeIcon from "@/components/Icons/EyeIcon.tsx";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
+import EnglishFlag from '@/components/Icons/EnglishFlag.tsx';
+import TurkeyLogo from '@/components/Icons/TurkeyLogo.tsx';
+import GermanyFlag from '@/components/Icons/GermanyFlag.tsx';
+import DownIcon from '@/components/Icons/DownIcon.tsx';
+
 
 const SignUp = () => {
   const { t } = useTranslation();
@@ -375,10 +380,88 @@ const SignUp = () => {
     }
   }
 
+  const [selectedLanguage, setSelectedLangyage] = useState(1);
+  const [isLanguageDropActive, setIsLanguageDropActive] = useState(false);
+
+
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    console.log(i18n.language)
+
+    if (i18n.language === 'en') {
+      setSelectedLangyage(1);
+    } else {
+      if (i18n.language === 'de') {
+        setSelectedLangyage(3);
+      } else {
+        setSelectedLangyage(2);
+      }
+    }
+    if (i18n.language !== 'en' && i18n.language !== 'tr' && i18n.language !== 'de') {
+      setSelectedLangyage(1);
+    }
+  }, []);
+
+
+
+  const changeLanguage = (languageIndex: any) => {
+    if (languageIndex === selectedLanguage) {
+      console.log("current Index set");
+    } else {
+      if (languageIndex === 3) {
+
+        i18n.changeLanguage('de');
+        setSelectedLangyage(3);
+        // setIsDropActive(false);
+      } else {
+        if (languageIndex === 2) {
+          i18n.changeLanguage('tr');
+          setSelectedLangyage(2);
+        } else {
+          i18n.changeLanguage('en');
+          setSelectedLangyage(1);
+        }
+        // setIsDropActive(false);
+      }
+    }
+  }
+
+
   return (
     <div className="p-[60px] max-sm:p-2 ">
-      <div className="max-sm:flex max-sm:items-start max-sm:justify-start max-sm:pt-10 max-sm:pl-5">
+      <div className="flex flex-row w-full items-center justify-between max-sm:pt-10 max-sm:px-5">
         <KarbonLogo />
+        <div className="flex flex-col items-center">
+          <div onClick={() => setIsLanguageDropActive(!isLanguageDropActive)} className="bg-[#101010] hover:border-[#08E04A] transition ease-in-out flex flex-row items-center space-x-2 px-2 py-2 border-[#282828] border-[1px]   rounded-sm cursor-pointer">
+            <div>
+              {selectedLanguage === 1 && (
+                <EnglishFlag />
+              )}
+              {selectedLanguage === 2 && (
+                <TurkeyLogo />
+              )}
+              {selectedLanguage === 3 && (
+                <GermanyFlag />
+              )}
+            </div>
+            <div className={isLanguageDropActive ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
+              <DownIcon />
+            </div>
+          </div>
+          {isLanguageDropActive && (
+            <div className={`absolute z-50 bg-[#101010] mt-10 flex flex-col space-y-2 py-2 px-3 border-[#282828] border-[1px]   rounded-sm ${isLanguageDropActive ? 'animate-accordion-down' : 'animate-accordion-up'}`}>
+              <div onClick={() => { changeLanguage(1); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 1 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                <EnglishFlag />
+              </div>
+              <div onClick={() => { changeLanguage(2); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 2 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                <TurkeyLogo />
+              </div>
+              <div onClick={() => { changeLanguage(3); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 3 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                <GermanyFlag />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex items-center justify-center w-full flex-col">
@@ -602,7 +685,7 @@ const SignUp = () => {
         )}
       </div>
 
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex items-center justify-center">
+      <div className="absolute max-sm:w-full bottom-5 left-1/2 transform -translate-x-1/2 flex items-center justify-center">
         <p className="text-white text-[10px] opacity-50">{t('copyright')}</p>
       </div>
     </div>

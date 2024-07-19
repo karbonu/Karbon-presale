@@ -293,7 +293,6 @@ const TopBar = () => {
                 <div onClick={() => { changeLanguage(3); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 3 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
                   <GermanyFlag />
                 </div>
-
               </div>
             )}
           </div>
