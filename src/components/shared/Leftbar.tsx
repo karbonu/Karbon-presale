@@ -34,7 +34,7 @@ const Leftbar = ({ onToggle }: { onToggle: (isOpen: boolean) => void }) => {
     const inactiveClassName = `${navLinkClass} bg-[#101010] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A]`;
 
     return (
-        <div className={`h-screen transition-all duration-300 ease-in-out ${isOpen ? 'w-[181px]' : 'w-16'}`}>
+        <div className={`h-screen transition-all fixed  duration-300 ease-in-out ${isOpen ? 'w-[181px]' : 'w-16'}`}>
             <aside className="h-full sticky top-0 flex flex-col justify-between bg-[#151515] overflow-hidden">
                 <div className="py-10 flex flex-col w-full">
                     <div className="flex items-center justify-center mb-10">
