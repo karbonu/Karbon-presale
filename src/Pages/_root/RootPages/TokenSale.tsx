@@ -254,8 +254,8 @@ const TokenSale = () => {
             setSaleStarted(true);
             setSaleEnded(false);
           }
-          // setSaleStarted(true);
-          // setSaleEnded(false);
+          setSaleStarted(true);
+          setSaleEnded(false);
         }
         // setSaleStarted(true)
         if (distance < 0) {
