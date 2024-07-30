@@ -288,10 +288,14 @@ const BuyWithUSDT = (props: any) => {
 
             <div className="flex flex-row w-full items-center justify-between">
                 <p className="text-white text-[12px]">{t('amount')}</p>
-                <div className="flex flex-row items-center space-x-1">
-                    <p className="text-white text-[12px] opacity-70">{t('walletBalance')}</p>
-                    <p className="text-white text-[12px]">{(Number(balance) / (10 ** 18))?.toFixed(2)}</p>
-                </div>
+                {isNaN(Number(balance)) ? (
+                    <p className="text-white text-[12px] opacity-70">{t('connectWallet')}</p>
+                ) : (
+                    <div className="flex flex-row items-center space-x-1">
+                        <p className="text-white text-[12px] opacity-70">{t('walletBalance')}</p>
+                        <p className="text-white text-[12px]">{(Number(balance) / (10 ** 18))?.toFixed(2)}</p>
+                    </div>
+                )}
             </div>
 
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
