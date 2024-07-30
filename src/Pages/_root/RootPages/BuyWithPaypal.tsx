@@ -338,7 +338,7 @@ const BuyWithPaypal = (props: any) => {
         </div>
 
 
-        <button disabled={contributionLoading} onClick={() => handlePay()} className='py-2 px-5 bg-transparent border-[1px] border-white text-white rounded-md text-[14px] hover:text-[#08E04A] hover:border-[#08E04A] transition ease-in-out'>
+        <button disabled={contributionLoading} onClick={() => handlePay()} className='flex items-center font-bold text-[14px] justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer'>
           {contributionLoading ? (
             <BarLoader color='white' />
           ) : (
