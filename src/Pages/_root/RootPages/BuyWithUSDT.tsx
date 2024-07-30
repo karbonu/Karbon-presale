@@ -46,8 +46,6 @@ type investmentData = {
 export const useContributeMutation = (auth: string): UseMutationResult<AxiosResponse<any>, Error, ContributeData> => {
     return useMutation<AxiosResponse<any>, Error, ContributeData>({
         mutationFn: (data: ContributeData) => {
-            // console.log("Here is the data");
-            // console.log(data);
             return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/contribute`, data, {
                 headers: {
                     'Authorization': `Bearer ${auth}`,
@@ -60,7 +58,6 @@ export const useContributeMutation = (auth: string): UseMutationResult<AxiosResp
 export const useCreateInvestment = (auth: string): UseMutationResult<AxiosResponse<any>, Error, investmentData> => {
     return useMutation<AxiosResponse<any>, Error, investmentData>({
         mutationFn: (data: investmentData) => {
-            // console.log("Investment Data ", data);
             return axios.post(`${import.meta.env.VITE_BACKEND_API_URL}presale/investment`, data, {
                 headers: {
                     'Authorization': `Bearer ${auth}`,
@@ -73,14 +70,14 @@ export const useCreateInvestment = (auth: string): UseMutationResult<AxiosRespon
 const BuyWithUSDT = (props: any) => {
     const { t } = useTranslation();
     const { toast } = useToast();
-    const [tokenAmount, setTokenAmount] = useState(0);
+    const [tokenAmount, setTokenAmount] = useState<number>(0);
     const { open } = useWeb3Modal();
     const { isConnected, address } = useAccount();
     const { UserID, presaleID, accessToken } = useAuth();
     const { data: hash, writeContractAsync } = useWriteContract();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [step, setStep] = useState(1);
-    const [deflector, setDeflector] = useState(0);
+    const [deflector, setDeflector] = useState<number>(0);
 
     const { isSuccess: isConfirmed, isError: isFailed } = useWaitForTransactionReceipt({ hash });
     const { data: balance } = useReadContract({
@@ -89,11 +86,31 @@ const BuyWithUSDT = (props: any) => {
         functionName: 'balanceOf',
         args: [address as `0x${string}`],
     });
+
+    const { data: minimumBuy } = useReadContract({
+        abi: BUYABI,
+        address: BuyAddress,
+        functionName: 'minimumBuy',
+    });
+
+    const { data: maximumBuy } = useReadContract({
+        abi: BUYABI,
+        address: BuyAddress,
+        functionName: 'maximumBuy',
+    });
+
+    const { data: spentUSDT } = useReadContract({
+        abi: BUYABI,
+        address: BuyAddress,
+        functionName: 'spentUSDT',
+        args: [address as `0x${string}`],
+    });
+
     const [isBuySuccessModalOpen, setIsBuySuccessModalOpen] = useState(false);
     const [isBuyFailedModalOpen, setIsBuyFailedModalOpen] = useState(false);
     const contributeMutation = useContributeMutation(accessToken);
     const investmentMutate = useCreateInvestment(accessToken);
-    const [rate, setRate] = useState(0);
+    const [rate, setRate] = useState<number>(0);
     const [isApproving, setIsApproving] = useState(false);
     const [isBuying, setIsBuying] = useState(false);
 
@@ -109,7 +126,6 @@ const BuyWithUSDT = (props: any) => {
                 args: [BuyAddress, amountInWei],
             });
         } catch (error) {
-            // console.error("Approval error:", error);
             setIsApproving(false);
             setIsDialogOpen(false)
             setStep(1)
@@ -132,7 +148,6 @@ const BuyWithUSDT = (props: any) => {
                 args: [amountInWei],
             });
         } catch (error) {
-            // console.error("Buy error:", error);
             setIsBuying(false);
             setIsDialogOpen(false)
             setStep(1)
@@ -147,7 +162,6 @@ const BuyWithUSDT = (props: any) => {
     useEffect(() => {
         if (isConfirmed) {
             if (isApproving) {
-
                 setIsApproving(false);
                 toast({
                     title: t('approvalSuccessful'),
@@ -170,7 +184,6 @@ const BuyWithUSDT = (props: any) => {
                     },
                     {
                         onSuccess: () => {
-                            // console.log(response);
                             investmentMutate.mutate(
                                 {
                                     amount: tokenAmount,
@@ -180,8 +193,6 @@ const BuyWithUSDT = (props: any) => {
                                 },
                                 {
                                     onSuccess: () => {
-                                        // console.log(response);
-
                                         setTokenAmount(0);
                                         setIsDialogOpen(false);
                                         setIsBuySuccessModalOpen(true);
@@ -191,14 +202,11 @@ const BuyWithUSDT = (props: any) => {
                                             description: t('contributionSuccess'),
                                             variant: "success",
                                         });
-                                        console.log("SUCCESS");
                                     },
                                     onError: () => {
-                                        // console.log(error);
                                         setTokenAmount(0);
                                         setIsDialogOpen(false);
                                         setStep(1);
-                                        // console.log("ERROR");
                                     }
                                 }
                             );
@@ -213,7 +221,6 @@ const BuyWithUSDT = (props: any) => {
             setIsBuyFailedModalOpen(true);
             setIsApproving(false);
             setIsBuying(false);
-            // console.log(error);
             toast({
                 title: t('transactionFailedTitle'),
                 description: t('transactionFailed'),
@@ -227,21 +234,43 @@ const BuyWithUSDT = (props: any) => {
         if (storedValue != null) {
             const rate_ = parseInt(storedValue, 10);
             setRate(rate_);
-            // console.log(rate_)
         }
     }, []);
 
     const handleProceed = () => {
-        if (isConnected) {
-            setIsDialogOpen(true)
-        } else {
+        if (!isConnected) {
             open();
+            return;
         }
+
+        const minBuy = minimumBuy ? Number(minimumBuy) / (10 ** 18) : 0;
+        const maxBuy = maximumBuy ? Number(maximumBuy) / (10 ** 18) : 0;
+        const spent = spentUSDT ? Number(spentUSDT) / (10 ** 18) : 0;
+
+        const isFirstPurchase = spentUSDT === undefined || spentUSDT === BigInt(0);
+        const isAmountValid = tokenAmount >= (isFirstPurchase ? minBuy : 0) && (tokenAmount + spent) <= maxBuy;
+
+        if (!isAmountValid) {
+            if (isFirstPurchase && tokenAmount < minBuy) {
+                toast({
+                    title: t('amountTooLow'),
+                    description: t('minimumBuyAmount', { minBuy }),
+                    variant: "failure",
+                });
+            } else {
+                toast({
+                    title: t('amountTooHigh'),
+                    description: t('maximumBuyAmount', { maxBuy }),
+                    variant: "failure",
+                });
+            }
+            return;
+        }
+
+        setIsDialogOpen(true);
     }
 
-    const handleDialogClose = () => {
-
-    }
+    const handleDialogClose = () => { }
 
     return (
         <div className='w-full space-y-5 flex flex-col'>
@@ -296,6 +325,16 @@ const BuyWithUSDT = (props: any) => {
                         <p className="text-white text-[12px]">{(Number(balance) / (10 ** 18))?.toFixed(2)}</p>
                     </div>
                 )}
+            </div>
+
+            <div className="flex flex-row w-full items-center justify-between">
+                <p className="text-white text-[12px]">{t('minimumBuy')}</p>
+                <p className="text-white text-[12px]">{minimumBuy ? (Number(minimumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
+            </div>
+
+            <div className="flex flex-row w-full items-center justify-between">
+                <p className="text-white text-[12px]">{t('maximumBuy')}</p>
+                <p className="text-white text-[12px]">{maximumBuy ? (Number(maximumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
             </div>
 
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
@@ -480,4 +519,3 @@ const BuyWithUSDT = (props: any) => {
 };
 
 export default BuyWithUSDT;
-
