@@ -1,5 +1,5 @@
 "use-client"
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
@@ -113,6 +113,22 @@ const BuyWithUSDT = (props: any) => {
     const [rate, setRate] = useState<number>(0);
     const [isApproving, setIsApproving] = useState(false);
     const [isBuying, setIsBuying] = useState(false);
+
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        const input = inputRef.current;
+        if (input) {
+            const handleWheel = (event: WheelEvent) => {
+                event.preventDefault();
+            };
+            input.addEventListener('wheel', handleWheel);
+
+            return () => {
+                input.removeEventListener('wheel', handleWheel);
+            };
+        }
+    }, []);
 
     const handleApprove = async () => {
         setIsApproving(true);
@@ -254,13 +270,13 @@ const BuyWithUSDT = (props: any) => {
             if (isFirstPurchase && tokenAmount < minBuy) {
                 toast({
                     title: t('amountTooLow'),
-                    description: t('minimumBuyAmount', { minBuy }),
+                    description: t('amountLowerThanMinimum', { minBuy }),
                     variant: "failure",
                 });
             } else {
                 toast({
                     title: t('amountTooHigh'),
-                    description: t('maximumBuyAmount', { maxBuy }),
+                    description: t('amountHigherThanMaximum', { maxBuy }),
                     variant: "failure",
                 });
             }
@@ -314,29 +330,40 @@ const BuyWithUSDT = (props: any) => {
                     </div>
                 </div>
             </div>
+            <div className='flex flex-col space-y-2 items-center justify-center w-full'>
+                <div className="flex flex-row w-full items-center justify-between">
+                    <p className="text-white text-[12px]">{t('amount')}</p>
+                    {isNaN(Number(balance)) ? (
+                        <p className="text-white text-[12px] opacity-70">{t('connectWallet')}</p>
+                    ) : (
+                        <div className="flex flex-row items-center space-x-1">
+                            <p className="text-white text-[12px] opacity-70">{t('walletBalance')}</p>
+                            <p className="text-white text-[12px]">{(Number(balance) / (10 ** 18))?.toFixed(2)}</p>
+                        </div>
+                    )}
+                </div>
 
-            <div className="flex flex-row w-full items-center justify-between">
-                <p className="text-white text-[12px]">{t('amount')}</p>
-                {isNaN(Number(balance)) ? (
-                    <p className="text-white text-[12px] opacity-70">{t('connectWallet')}</p>
-                ) : (
-                    <div className="flex flex-row items-center space-x-1">
-                        <p className="text-white text-[12px] opacity-70">{t('walletBalance')}</p>
-                        <p className="text-white text-[12px]">{(Number(balance) / (10 ** 18))?.toFixed(2)}</p>
-                    </div>
-                )}
+                <div className="flex flex-row w-full items-center justify-between">
+                    <p className="text-white text-[12px]">{t('minimumBuy')}</p>
+                    <p className="text-white text-[12px]">{minimumBuy ? (Number(minimumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
+                </div>
+
+                <div className="flex flex-row w-full items-center justify-between">
+                    <p className="text-white text-[12px]">{t('maximumBuy')}</p>
+                    <p className="text-white text-[12px]">{maximumBuy ? (Number(maximumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
+                </div>
+
+                <div className="flex flex-row w-full items-center justify-between">
+                    <p className="text-white text-[12px]">{t('availablePurchase')}</p>
+                    <p className="text-white text-[12px]">
+                        {spentUSDT
+                            ? ((Number(maximumBuy) / (10 ** 18)) - (Number(spentUSDT) / (10 ** 18))).toFixed(2)
+                            : '0.00'}
+                    </p>
+
+                </div>
+
             </div>
-
-            <div className="flex flex-row w-full items-center justify-between">
-                <p className="text-white text-[12px]">{t('minimumBuy')}</p>
-                <p className="text-white text-[12px]">{minimumBuy ? (Number(minimumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
-            </div>
-
-            <div className="flex flex-row w-full items-center justify-between">
-                <p className="text-white text-[12px]">{t('maximumBuy')}</p>
-                <p className="text-white text-[12px]">{maximumBuy ? (Number(maximumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
-            </div>
-
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
                 <label htmlFor="buyInput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
                     <p className="text-white text-[12px]">{t('youBuy')}</p>
@@ -345,6 +372,7 @@ const BuyWithUSDT = (props: any) => {
                         <input
                             id="buyInput"
                             type="number"
+                            ref={inputRef}
                             value={tokenAmount === 0 ? '' : tokenAmount}
                             onChange={(e) => setTokenAmount(e.target.value === '' ? 0 : Number(e.target.value))}
                             className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none"
