@@ -27,6 +27,7 @@ import ConfirmSwapIcon from '@/components/Icons/ConfirmSwapIcon';
 import RingLoader from '@/components/Icons/RingLoader';
 import { useTranslation } from 'react-i18next';
 
+
 type ContributeData = {
     amount: number;
     walletAddress: string;
@@ -73,11 +74,11 @@ const BuyWithUSDT = (props: any) => {
     const [tokenAmount, setTokenAmount] = useState<number>(0);
     const { open } = useWeb3Modal();
     const { isConnected, address } = useAccount();
-    const { UserID, presaleID, accessToken } = useAuth();
+    const { UserID, presaleID, accessToken, hasDisplayedDisclaimet, setHasDisplayedDisclaimet } = useAuth();
     const { data: hash, writeContractAsync } = useWriteContract();
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [step, setStep] = useState(1);
     const [deflector, setDeflector] = useState<number>(0);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const { isSuccess: isConfirmed, isError: isFailed } = useWaitForTransactionReceipt({ hash });
     const { data: balance } = useReadContract({
@@ -290,11 +291,11 @@ const BuyWithUSDT = (props: any) => {
 
     return (
         <div className='w-full space-y-5 flex flex-col'>
-            <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
+            <Dialog open={hasDisplayedDisclaimet} onOpenChange={setHasDisplayedDisclaimet}>
                 <DialogContent className='bg-[#101010] border-[#282828] pb-5 py-10 max-sm:py-5 px-10 max-sm:px-5 flex flex-col w-[412px] max-sm:w-[95%] items-center justify-center rounded-[16px] outline-none'>
                     <div className='w-full flex flex-row items-center justify-between'>
                         <p className="text-white font-semibold text-[20px]">{t('disclaimer')}</p>
-                        <div onClick={() => props.setIsDialogOpen(false)} className='cursor-pointer '>
+                        <div onClick={() => setHasDisplayedDisclaimet(false)} className='cursor-pointer '>
                             <DialogClose />
                         </div>
                     </div>
@@ -306,7 +307,7 @@ const BuyWithUSDT = (props: any) => {
                             <p className="text-[14px] text-white">{t('noGuaranteeNotice')}</p>
                         </div>
 
-                        <div onClick={() => props.setIsDialogOpen(false)} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] ">
+                        <div onClick={() => setHasDisplayedDisclaimet(false)} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] ">
                             <div className='pr-4'>
                                 <ForwardGreen />
                             </div>

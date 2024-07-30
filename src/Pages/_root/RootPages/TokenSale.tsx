@@ -51,7 +51,6 @@ const TokenSale = () => {
   const [loading, setIsLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState(0);
   const [tempAmount, setTempAmount] = useState(0);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [payoutSuccessOpen, setPayoutSuccessOpen] = useState(false);
   const [payoutFaliure, setPayoutFaliure] = useState(false);
   const [isTermsAndCondOpen, setIsTermsAndCondOpen] = useState(false);
@@ -94,8 +93,6 @@ const TokenSale = () => {
   const [saleStarted, setSaleStarted] = useState(false);
   const [showContributeMobile, setShowContributeMobile] = useState(false);
   const isMobile = useMediaQuery("(max-width: 640px)")
-
-
 
   const SOCKET_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
   const { lastMessage } = useSocketIO(SOCKET_URL);
@@ -708,7 +705,7 @@ const TokenSale = () => {
                               </div>
                             </div>
 
-                            <div onClick={() => { setIsDialogOpen(true); setSelectedMethod(2) }} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
+                            <div onClick={() => { setSelectedMethod(2) }} className="w-full flex items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
                               <div className="flex flex-row w-full items-center justify-between ">
                                 <USDTLogoBig />
                                 <p className={`text-white text-[14px] `}>{t('buyWithUsdt')}</p>
@@ -754,8 +751,6 @@ const TokenSale = () => {
                     {selectedMethod === 2 && (
                       <BuyWithUSDT
                         setSelectedMethod={setSelectedMethod}
-                        isDialogOpen={isDialogOpen}
-                        setIsDialogOpen={setIsDialogOpen}
                         fullTransaction={fullTransaction}
                         handleFullTransaction={handleFullTransaction}
 
@@ -846,7 +841,7 @@ const TokenSale = () => {
                       </div>
                     </div>
 
-                    <div onClick={() => { setIsDialogOpen(true); setSelectedMethod(2) }} className="w-full flex min-h-[64px] items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
+                    <div onClick={() => { setSelectedMethod(2) }} className="w-full flex min-h-[64px] items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
                       <div className="flex flex-row w-full items-center justify-between ">
                         <USDTLogoBig />
                         <p className={`text-white text-[14px] `}>{t('buyWithUsdt')}</p>
@@ -890,8 +885,6 @@ const TokenSale = () => {
             {selectedMethod === 2 && (
               <BuyWithUSDT
                 setSelectedMethod={setSelectedMethod}
-                isDialogOpen={isDialogOpen}
-                setIsDialogOpen={setIsDialogOpen}
               />
             )}
           </div>
@@ -981,7 +974,7 @@ const TokenSale = () => {
                               </div>
                             </div>
 
-                            <div onClick={() => { setIsDialogOpen(true); setSelectedMethod(2) }} className="w-full flex min-h-[64px] items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
+                            <div onClick={() => { setSelectedMethod(2) }} className="w-full flex min-h-[64px] items-center px-3 cursor-pointer hover:border-[#08E04A] border-[1px] border-transparent transition ease-in-out rounded-[4px] bg-[#1C1C1C] h-[56px]">
                               <div className="flex flex-row w-full items-center justify-between ">
                                 <USDTLogoBig />
                                 <p className={`text-white text-[14px] `}>{t('buyWithUsdt')}</p>
@@ -1025,8 +1018,6 @@ const TokenSale = () => {
                     {selectedMethod === 2 && (
                       <BuyWithUSDT
                         setSelectedMethod={setSelectedMethod}
-                        isDialogOpen={isDialogOpen}
-                        setIsDialogOpen={setIsDialogOpen}
                       />
                     )}
                   </div>
