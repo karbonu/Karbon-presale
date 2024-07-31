@@ -445,6 +445,7 @@ const TokenSale = () => {
           <SheetContent side={"bottom"} className='bg-[#101010] border-[1px] border-[#282828] flex flex-col w-full rounded-t-[24px] items-center justify-center outline-none'>
             <div className='w-full'>
               <img
+                alt="Wallet Image"
                 src='/assets/WalletImageMobile.svg'
                 className="rounded-t-[24px]"
               />
