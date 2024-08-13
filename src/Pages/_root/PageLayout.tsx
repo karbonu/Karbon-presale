@@ -9,7 +9,7 @@ const PageLayout = () => {
   let authenticated = false;
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const { isDropDownOpen } = useAuth();
+  const { isDropDownOpen, setIsDropDownOpen } = useAuth();
 
   if (authenticated) {
     navigate('/sign-in')
@@ -28,7 +28,7 @@ const PageLayout = () => {
         <TopBar />
         <div className='flex py-5 w-full'>
           {isDropDownOpen && (
-            <div className={`absolute ${isDropDownOpen ? 'animate-in' : 'animate-out'} w-full h-full bg-black bg-opacity-50 transition ease-in-out fade-in-10 fade-out-10`}>
+            <div onMouseEnter={() => setIsDropDownOpen(false)} onClick={() => setIsDropDownOpen(false)} className={`absolute ${isDropDownOpen ? 'animate-in' : 'animate-out'} w-full h-full bg-black bg-opacity-50 transition ease-in-out fade-in-10 fade-out-10`}>
             </div>
           )}
           <Outlet />

@@ -60,7 +60,6 @@ const TopBar = () => {
   const { t } = useTranslation();
   const [selectedLanguage, setSelectedLangyage] = useState(1);
   const [isLanguageDropActive, setIsLanguageDropActive] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
   const { toast } = useToast();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const location = useLocation();
@@ -126,7 +125,6 @@ const TopBar = () => {
     "flex bg-[#101010] w-[100%] opacity-70 hover:opacity-100 hover:border-l hover:border-l-[4px] hover:border-[#08E04A] transition ease-in-out";
 
   const handleDropdown = () => {
-    setShowDropdown(!showDropdown);
     setIsDropDownOpen(!isDropDownOpen);
   };
 
@@ -312,15 +310,15 @@ const TopBar = () => {
                   className="flex flex-row bg-[#101010] py-2 px-3 rounded-[4px] cursor-pointer items-center space-x-2"
                 >
                   <p className="text-[12px] text-white">{email}</p>
-                  <div className={showDropdown ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
+                  <div className={isDropDownOpen ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
                     <DownIcon />
                   </div>
                 </div>
               </div>
-              {showDropdown && (
+              {isDropDownOpen && (
                 <div
                   onMouseLeave={handleDropdown}
-                  className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"}`}>
+                  className={`bg-[#121212] transition-all duration-300 overflow-hidden w-[291px] fade-transition z-50 absolute my-10 ${isDropDownOpen ? "max-h-screen ease-in" : "max-h-0 ease-out"}`}>
                   <div className="flex flex-col">
                     <div className="p-5 flex flex-col w-full space-y-3">
                       <a
@@ -368,17 +366,17 @@ const TopBar = () => {
                     </div>
                     <div onClick={handleDropdown} className="flex cursor-pointer flex-row items-center space-x-2">
                       <p className="text-[12px] text-white">{email}</p>
-                      <div className={showDropdown ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
+                      <div className={isDropDownOpen ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
                         <DownIcon />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              {showDropdown && (
+              {isDropDownOpen && (
                 <div
                   onMouseLeave={handleDropdown}
-                  className={`bg-[#121212] border-[1px] border-[#282828] transition-all duration-300 overflow-hidden w-[291px] fade-transition ${showDropdown ? 'animate-in' : 'animate-out'} z-50 absolute my-10 ${showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
+                  className={`bg-[#121212] border-[1px] border-[#282828] transition-all duration-300 overflow-hidden w-[291px] fade-transition ${isDropDownOpen ? 'animate-in' : 'animate-out'} z-50 absolute my-10 ${isDropDownOpen ? "max-h-screen ease-in" : "max-h-0 ease-out"
                     }`}
                 >
                   <div className="flex flex-col">
@@ -439,7 +437,7 @@ const TopBar = () => {
                   <div className="flex flex-row space-x-4">
                     <div onClick={handleDropdown} className="flex cursor-pointer flex-row items-center space-x-2">
                       <p className="text-[12px] text-white">{email.slice(0, 5)}... {email.slice(-10)}</p>
-                      <div className={showDropdown ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
+                      <div className={isDropDownOpen ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
                         <DownIcon />
                       </div>
                     </div>
@@ -447,10 +445,10 @@ const TopBar = () => {
                 </div>
               </div>
 
-              {showDropdown && (
+              {isDropDownOpen && (
                 <div
                   onMouseLeave={handleDropdown}
-                  className={`bg-[#121212] border-[1px] border-[#282828] transition-all duration-300 overflow-hidden w-[291px]  fade-transition ${showDropdown ? ' animate-accordion-down' : ' animate-accordion-up'} z-50 absolute top-[5rem] left-1/2  -translate-x-1/2  ${showDropdown ? "max-h-screen ease-in" : "max-h-0 ease-out"
+                  className={`bg-[#121212] border-[1px] border-[#282828] transition-all duration-300 overflow-hidden w-[291px]  fade-transition ${isDropDownOpen ? ' animate-accordion-down' : ' animate-accordion-up'} z-50 absolute top-[5rem] left-1/2  -translate-x-1/2  ${isDropDownOpen ? "max-h-screen ease-in" : "max-h-0 ease-out"
                     }`}
                 >
                   <div className="flex flex-col">
