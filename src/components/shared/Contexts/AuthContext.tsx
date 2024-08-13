@@ -53,7 +53,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   const clearAuthData = () => {
-    navigate('/')
+
+    navigate('/sign-in')
     setEmail('');
     setUserID('');
     setPassword('');
