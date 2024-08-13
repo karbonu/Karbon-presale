@@ -333,29 +333,28 @@ const BuyWithUSDT = (props: any) => {
             </div>
             <div className='flex flex-col space-y-2 items-center justify-center w-full'>
                 <div className="flex flex-row w-full items-center justify-between">
-                    <p className="text-white text-[12px]">{t('amount')}</p>
+                    <p className="text-white font-light text-[12px]">{t('walletBalance')}</p>
                     {isNaN(Number(balance)) ? (
                         <p className="text-white text-[12px] opacity-70">{t('connectWallet')}</p>
                     ) : (
                         <div className="flex flex-row items-center space-x-1">
-                            <p className="text-white text-[12px] opacity-70">{t('walletBalance')}</p>
                             <p className="text-white text-[12px]">{(Number(balance) / (10 ** 18))?.toFixed(2)}</p>
                         </div>
                     )}
                 </div>
 
                 <div className="flex flex-row w-full items-center justify-between">
-                    <p className="text-white text-[12px]">{t('minimumBuy')}</p>
+                    <p className="text-white font-light text-[12px]">{t('minimumBuy')}</p>
                     <p className="text-white text-[12px]">{minimumBuy ? (Number(minimumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
                 </div>
 
                 <div className="flex flex-row w-full items-center justify-between">
-                    <p className="text-white text-[12px]">{t('maximumBuy')}</p>
+                    <p className="text-white font-light text-[12px]">{t('maximumBuy')}</p>
                     <p className="text-white text-[12px]">{maximumBuy ? (Number(maximumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
                 </div>
 
                 <div className="flex flex-row w-full items-center justify-between">
-                    <p className="text-white text-[12px]">{t('availablePurchase')}</p>
+                    <p className="text-white font-light text-[12px]">{t('availablePurchase')}</p>
                     <p className="text-white text-[12px]">
                         {spentUSDT
                             ? ((Number(maximumBuy) / (10 ** 18)) - (Number(spentUSDT) / (10 ** 18))).toFixed(2)
