@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 // import { ArrowLeft, Menu } from "lucide-react";
@@ -15,19 +15,20 @@ import TokenSaleWhite from "../Icons/TokenSaleWhite.tsx";
 import RedirectIcon from "../Icons/RedirectIcon.tsx";
 
 const Leftbar = ({ onToggle }: { onToggle: (isOpen: boolean) => void }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(true);
+    let isOpen = true;
     const { t } = useTranslation();
     const location = useLocation();
 
-    const toggleSidebarTrue = () => {
-        setIsOpen(true);
-    };
-    const toggleSidebarFalse = () => {
-        setIsOpen(false);
-    };
+    // const toggleSidebarTrue = () => {
+    //     setIsOpen(true);
+    // };
+    // const toggleSidebarFalse = () => {
+    //     setIsOpen(false);
+    // };
 
     useEffect(() => {
-        onToggle(isOpen);
+        onToggle(true);
     }, [isOpen, onToggle]);
 
     const firstLink = location.pathname === '/dashboard' ? '/dashboard' : '/dashboard/tokensale';
@@ -37,7 +38,10 @@ const Leftbar = ({ onToggle }: { onToggle: (isOpen: boolean) => void }) => {
     const inactiveClassName = `${navLinkClass} bg-[#101010] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A]`;
 
     return (
-        <div onMouseEnter={toggleSidebarTrue} onMouseLeave={toggleSidebarFalse} className={`h-screen max-lg:hidden transition-all fixed  duration-300 ease-in-out ${isOpen ? 'w-[181px]' : 'w-16'}`}>
+        <div
+            // onMouseEnter={toggleSidebarTrue} 
+            // onMouseLeave={toggleSidebarFalse} 
+            className={`h-screen max-lg:hidden transition-all fixed  duration-300 ease-in-out ${isOpen ? 'w-[181px]' : 'w-16'}`}>
             <aside className="h-full sticky top-0 flex flex-col justify-between bg-[#151515] overflow-hidden">
                 <div className="py-10 flex flex-col w-full">
                     <div className="flex items-center justify-center mb-10">

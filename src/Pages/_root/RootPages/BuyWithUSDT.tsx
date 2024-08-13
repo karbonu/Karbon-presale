@@ -114,6 +114,7 @@ const BuyWithUSDT = (props: any) => {
     const [rate, setRate] = useState<number>(0);
     const [isApproving, setIsApproving] = useState(false);
     const [isBuying, setIsBuying] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -254,33 +255,30 @@ const BuyWithUSDT = (props: any) => {
         }
     }, []);
 
-    const handleProceed = () => {
-        if (!isConnected) {
-            open();
-            return;
-        }
-
+    useEffect(() => {
         const minBuy = minimumBuy ? Number(minimumBuy) / (10 ** 18) : 0;
         const maxBuy = maximumBuy ? Number(maximumBuy) / (10 ** 18) : 0;
         const spent = spentUSDT ? Number(spentUSDT) / (10 ** 18) : 0;
 
-        const isFirstPurchase = spentUSDT === undefined || spentUSDT === BigInt(0);
-        const isAmountValid = tokenAmount >= (isFirstPurchase ? minBuy : 0) && (tokenAmount + spent) <= maxBuy;
+        let error = null;
 
-        if (!isAmountValid) {
-            if (isFirstPurchase && tokenAmount < minBuy) {
-                toast({
-                    title: t('amountTooLow'),
-                    description: t('amountLowerThanMinimum', { minBuy }),
-                    variant: "failure",
-                });
-            } else {
-                toast({
-                    title: t('amountTooHigh'),
-                    description: t('amountHigherThanMaximum', { maxBuy }),
-                    variant: "failure",
-                });
-            }
+        if (tokenAmount > maxBuy) {
+            error = t('amountHigherThanMaximum', { maxBuy });
+        } else if (spent + tokenAmount > maxBuy) {
+            error = t('amountExceedsMaxAvailable');
+        } else if (tokenAmount < minBuy && tokenAmount > 0) {
+            error = t('amountLowerThanMinimum', { minBuy });
+        } else if (maxBuy - spent === 0) {
+            error = t('noAvailableTokens');
+        }
+
+        setErrorMessage(error);
+
+    }, [tokenAmount, minimumBuy, maximumBuy, spentUSDT, t]);
+
+    const handleProceed = () => {
+        if (!isConnected) {
+            open();
             return;
         }
 
@@ -342,27 +340,6 @@ const BuyWithUSDT = (props: any) => {
                         </div>
                     )}
                 </div>
-
-                <div className="flex flex-row w-full items-center justify-between">
-                    <p className="text-white font-light text-[12px]">{t('minimumBuy')}</p>
-                    <p className="text-white text-[12px]">{minimumBuy ? (Number(minimumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
-                </div>
-
-                <div className="flex flex-row w-full items-center justify-between">
-                    <p className="text-white font-light text-[12px]">{t('maximumBuy')}</p>
-                    <p className="text-white text-[12px]">{maximumBuy ? (Number(maximumBuy) / (10 ** 18)).toFixed(2) : '0.00'}</p>
-                </div>
-
-                <div className="flex flex-row w-full items-center justify-between">
-                    <p className="text-white font-light text-[12px]">{t('availablePurchase')}</p>
-                    <p className="text-white text-[12px]">
-                        {spentUSDT
-                            ? ((Number(maximumBuy) / (10 ** 18)) - (Number(spentUSDT) / (10 ** 18))).toFixed(2)
-                            : '0.00'}
-                    </p>
-
-                </div>
-
             </div>
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
                 <label htmlFor="buyInput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
@@ -377,15 +354,13 @@ const BuyWithUSDT = (props: any) => {
                             onChange={(e) => setTokenAmount(e.target.value === '' ? 0 : Number(e.target.value))}
                             className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none"
                         />
+                        <p className="text-[#08E04A] text-[12px] opacity-70 cursor-pointer" onClick={() => setTokenAmount(maximumBuy ? Number(maximumBuy) / (10 ** 18) - Number(spentUSDT) / (10 ** 18) : 0)}>
+                            {t('Max')}
+                        </p>
                         <p className="text-white text-[12px] opacity-70">USDT</p>
                     </div>
                 </label>
             </div>
-
-            <div className="flex rotate-[180deg] w-full items-center justify-center">
-                <UpArrow />
-            </div>
-
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
                 <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
                     <p className="text-white text-[12px]">{t('youGet')}</p>
@@ -397,14 +372,19 @@ const BuyWithUSDT = (props: any) => {
                 </label>
             </div>
 
-            <button onClick={handleProceed} className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
-                <p className="font-bold text-[14px] shadow-sm">
-                    {isConnected ? (
-                        t('proceed')
-                    ) : t('connectWallet')
-                    }
+            <button
+                onClick={handleProceed}
+                className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
+                disabled={errorMessage !== null || tokenAmount === 0}
+            >
+                <p className=" font-semibold text-[14px] shadow-sm">
+                    {isConnected ? t('proceed') : t('connectWallet')}
                 </p>
             </button>
+
+            {errorMessage && (
+                <p className="text-red-500 text-[12px] mt-2">{errorMessage}</p>
+            )}
 
             <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
                 <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[80%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>

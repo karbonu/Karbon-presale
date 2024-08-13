@@ -429,38 +429,41 @@ const SignUp = () => {
 
   return (
     <div className="p-[60px] max-sm:p-2 ">
-      <div className="flex flex-row w-full items-center justify-between max-sm:pt-10 max-sm:px-5">
+      <div className="flex flex-row relative w-full items-center justify-between max-sm:pt-10 max-sm:px-5">
         <KarbonLogo />
-        <div className="flex flex-col items-center">
-          <div onClick={() => setIsLanguageDropActive(!isLanguageDropActive)} className="bg-[#101010] hover:border-[#08E04A] transition ease-in-out flex flex-row items-center space-x-2 px-2 py-2 border-[#282828] border-[1px]   rounded-sm cursor-pointer">
-            <div>
-              {selectedLanguage === 1 && (
-                <EnglishFlag />
-              )}
-              {selectedLanguage === 2 && (
-                <TurkeyLogo />
-              )}
-              {selectedLanguage === 3 && (
-                <GermanyFlag />
-              )}
+        <div className="flex absolute right-[0rem] flex-col items-center">
+          <div onClick={() => setIsLanguageDropActive(!isLanguageDropActive)} className="bg-[#101010] transition ease-in-out flex flex-col items-center space-y-2 px-2 py-2 border-[#282828] border-[1px]   rounded-sm cursor-pointer">
+            <div className="transition ease-in-out flex flex-row items-center space-x-2">
+              <div>
+                {selectedLanguage === 1 && (
+                  <EnglishFlag />
+                )}
+                {selectedLanguage === 2 && (
+                  <TurkeyLogo />
+                )}
+                {selectedLanguage === 3 && (
+                  <GermanyFlag />
+                )}
+              </div>
+              <div className={isLanguageDropActive ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
+                <DownIcon />
+              </div>
             </div>
-            <div className={isLanguageDropActive ? "rotate-[180deg] transition ease-in-out" : "transition ease-in-out"}>
-              <DownIcon />
-            </div>
+
+            {isLanguageDropActive && (
+              <div className={` flex flex-col space-y-2 rounded-sm ${isLanguageDropActive ? 'animate-accordion-down' : 'animate-accordion-up'}`}>
+                <div onClick={() => { changeLanguage(1); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 1 ? 'hidden' : 'cursor-pointer'}`}>
+                  <EnglishFlag />
+                </div>
+                <div onClick={() => { changeLanguage(2); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 2 ? 'hidden' : 'cursor-pointer'}`}>
+                  <TurkeyLogo />
+                </div>
+                <div onClick={() => { changeLanguage(3); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 3 ? 'hidden' : 'cursor-pointer'}`}>
+                  <GermanyFlag />
+                </div>
+              </div>
+            )}
           </div>
-          {isLanguageDropActive && (
-            <div className={`absolute z-50 bg-[#101010] mt-10 flex flex-col space-y-2 py-2 px-3 border-[#282828] border-[1px]   rounded-sm ${isLanguageDropActive ? 'animate-accordion-down' : 'animate-accordion-up'}`}>
-              <div onClick={() => { changeLanguage(1); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 1 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
-                <EnglishFlag />
-              </div>
-              <div onClick={() => { changeLanguage(2); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 2 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
-                <TurkeyLogo />
-              </div>
-              <div onClick={() => { changeLanguage(3); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 3 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
-                <GermanyFlag />
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
