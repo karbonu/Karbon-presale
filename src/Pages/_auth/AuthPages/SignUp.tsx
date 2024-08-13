@@ -491,16 +491,16 @@ const SignUp = () => {
                       <GoogleLogo />
                     </div>
                     <div className="flex-1 flex items-center justify-center">
-                      <p className="text-white text-[14px] max-sm:text-[12px]">{t('signUpGoogle')}</p>
+                      <p className="text-white text-[14px] max-sm:text-[16px]">{t('signUpGoogle')}</p>
                     </div>
                   </div>
 
                   <div className="flex flex-row w-[389px] max-sm:w-[100%] h-[56px] bg-[#1C1C1C]">
-                    <div className="px-7 absolute py-5 flex items-center">
+                    <div className="px-7 absolute py-5 max-sm:py-4 flex items-center">
                       <AppleLogo />
                     </div>
                     <div className="flex-1 flex items-center justify-center">
-                      <p className="text-white text-[14px] max-sm:text-[12px]">{t('signUpApple')}</p>
+                      <p className="text-white text-[14px] max-sm:text-[16px]">{t('signUpApple')}</p>
                     </div>
                   </div>
                 </div>

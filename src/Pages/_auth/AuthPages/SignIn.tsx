@@ -410,21 +410,21 @@ const SignIn = () => {
                                 <p className="text-white text-[20px] max-sm:text-[20px] font-semibold">{t('signIn')}</p>
 
                                 <div className="flex flex-col space-y-2">
-                                    <div onClick={() => { login() }} className="flex cursor-pointer flex-row w-[389px] max-sm:w-[100%] max-sm:h-[48px] h-[56px] bg-[#1C1C1C]">
+                                    <div onClick={() => { login() }} className="flex cursor-pointer flex-row w-[389px] max-sm:w-[100%] max-sm:h-[56px] h-[56px] bg-[#1C1C1C]">
                                         <div className="px-5 absolute max-sm:py-[0.7rem] py-3 flex items-center">
                                             <GoogleLogo />
                                         </div>
                                         <div className="flex-1 flex items-center justify-center">
-                                            <p className="text-white text-[14px] max-sm:text-[12px]">{t('signInGoogle')}</p>
+                                            <p className="text-white text-[14px] max-sm:text-[16px]">{t('signInGoogle')}</p>
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-row w-[389px] max-sm:w-[100%] max-sm:h-[48px] h-[56px] bg-[#1C1C1C]">
-                                        <div className="px-7 absolute max-sm:py-[0.7rem] py-5 flex items-center">
+                                    <div className="flex flex-row w-[389px] max-sm:w-[100%] max-sm:h-[56px] h-[56px] bg-[#1C1C1C]">
+                                        <div className="px-7 absolute max-sm:py-[1.0rem] py-5 flex items-center">
                                             <AppleLogo />
                                         </div>
                                         <div className="flex-1 flex items-center justify-center">
-                                            <p className="text-white text-[14px] max-sm:text-[12px]">{t('signInApple')}</p>
+                                            <p className="text-white text-[14px] max-sm:text-[16px]">{t('signInApple')}</p>
                                         </div>
                                     </div>
                                 </div>
