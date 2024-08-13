@@ -354,12 +354,18 @@ const BuyWithUSDT = (props: any) => {
                             onChange={(e) => setTokenAmount(e.target.value === '' ? 0 : Number(e.target.value))}
                             className="bg-transparent h-full w-[80%] text-[20px] placeholder:text-white text-white focus:outline-none"
                         />
-                        <p className="text-[#08E04A] text-[12px] opacity-70 cursor-pointer" onClick={() => setTokenAmount(maximumBuy ? Number(maximumBuy) / (10 ** 18) - Number(spentUSDT) / (10 ** 18) : 0)}>
+                        <button disabled={!isConnected} className="text-[#08E04A] text-[12px] opacity-70 cursor-pointer" onClick={() => setTokenAmount(maximumBuy ? Number(maximumBuy) / (10 ** 18) - Number(spentUSDT) / (10 ** 18) : 0)}>
                             {t('Max')}
-                        </p>
+                        </button>
+                    </div>
+                    <div className='flex flex-row items-center h-full space-x-3'>
+                        <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                         <p className="text-white text-[12px] opacity-70">USDT</p>
                     </div>
                 </label>
+            </div>
+            <div className="flex rotate-[180deg] w-full items-center justify-center">
+                <UpArrow />
             </div>
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
                 <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
@@ -367,24 +373,29 @@ const BuyWithUSDT = (props: any) => {
                     <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
                         <p className='h-full text-white w-[75%]'>{(tokenAmount * rate) === 0 ? '' : (tokenAmount * rate)}</p>
+                    </div>
+                    <div className='flex flex-row items-center h-full space-x-3'>
+                        <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                         <p className="text-white text-[12px] opacity-70">KARBON</p>
                     </div>
                 </label>
             </div>
 
-            <button
-                onClick={handleProceed}
-                className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
-                disabled={errorMessage !== null || tokenAmount === 0}
-            >
-                <p className=" font-semibold text-[14px] shadow-sm">
-                    {isConnected ? t('proceed') : t('connectWallet')}
-                </p>
-            </button>
+            <div className='flex flex-col items-center justify-center space-y-2'>
+                <button
+                    onClick={handleProceed}
+                    className="flex items-center justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer"
+                    disabled={(errorMessage !== null && isConnected) || (tokenAmount === 0 && isConnected)}
+                >
+                    <p className=" font-semibold text-[14px] shadow-sm">
+                        {isConnected ? t('proceed') : t('connectWallet')}
+                    </p>
+                </button>
 
-            {errorMessage && (
-                <p className="text-red-500 text-[12px] mt-2">{errorMessage}</p>
-            )}
+                {errorMessage && (
+                    <p className="text-red-500 text-[12px] mt-2">{errorMessage}</p>
+                )}
+            </div>
 
             <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
                 <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[80%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>
