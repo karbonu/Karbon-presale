@@ -36,24 +36,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [email, setEmail] = useState(localStorage.getItem('email') || "");
-  const [UserID, setUserID] = useState(localStorage.getItem('UserID') || "");
-  const [password, setPassword] = useState(localStorage.getItem('password') || "");
-  const [accessToken, setAccessTToken] = useState(localStorage.getItem('accesstoken') || "");
-  const [presaleID, setPresaleID] = useState(localStorage.getItem('presaleid') || "");
-  const [walletAddress, setWalletAddress] = useState(localStorage.getItem('walletAddress') || "");
-  const [referralCode, setReferralCOde] = useState(localStorage.getItem('referralCode') || "");
-  const [lastSignInTime, setLastSignInTime] = useState<number>(parseInt(localStorage.getItem('lastSignInTime') || '0'));
-  const [isAuthenticated, setAuthenticated] = useState<boolean>(JSON.parse(localStorage.getItem('isAuthenticated') || 'false'));
-  const [isGoogleSignIn, setIsGoogleSignIn] = useState<boolean>(JSON.parse(localStorage.getItem('isGoogleSignIn') || 'false'));
-  const [hasDisplayedConnectModal, setHasDisplayedConnectModal] = useState<boolean>(JSON.parse(localStorage.getItem('displayedModalConnect') || 'false'));
-  const [hasDisplayedDisclaimet, setHasDisplayedDisclaimet] = useState<boolean>(JSON.parse(localStorage.getItem('displayedDisclaimerModal') || 'true'));
+  const [email, setEmail] = useState(localStorage.getItem('KARBON_email') || "");
+  const [UserID, setUserID] = useState(localStorage.getItem('KARBON_UserID') || "");
+  const [password, setPassword] = useState(localStorage.getItem('KARBON_password') || "");
+  const [accessToken, setAccessTToken] = useState(localStorage.getItem('KARBON_accesstoken') || "");
+  const [presaleID, setPresaleID] = useState(localStorage.getItem('KARBON_presaleid') || "");
+  const [walletAddress, setWalletAddress] = useState(localStorage.getItem('KARBON_walletAddress') || "");
+  const [referralCode, setReferralCOde] = useState(localStorage.getItem('KARBON_referralCode') || "");
+  const [lastSignInTime, setLastSignInTime] = useState<number>(parseInt(localStorage.getItem('KARBON_lastSignInTime') || '0'));
+  const [isAuthenticated, setAuthenticated] = useState<boolean>(JSON.parse(localStorage.getItem('KARBON_isAuthenticated') || 'false'));
+  const [isGoogleSignIn, setIsGoogleSignIn] = useState<boolean>(JSON.parse(localStorage.getItem('KARBON_isGoogleSignIn') || 'false'));
+  const [hasDisplayedConnectModal, setHasDisplayedConnectModal] = useState<boolean>(JSON.parse(localStorage.getItem('KARBON_displayedModalConnect') || 'false'));
+  const [hasDisplayedDisclaimet, setHasDisplayedDisclaimet] = useState<boolean>(JSON.parse(localStorage.getItem('KARBON_displayedDisclaimerModal') || 'true'));
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const clearAuthData = () => {
-    // localStorage.clear();
     navigate('/')
     setEmail('');
     setUserID('');
@@ -84,44 +83,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [lastSignInTime]);
 
   useEffect(() => {
-    localStorage.setItem('lastSignInTime', lastSignInTime.toString());
+    localStorage.setItem('KARBON_lastSignInTime', lastSignInTime.toString());
   }, [lastSignInTime]);
 
   useEffect(() => {
-    localStorage.setItem('email', email);
+    localStorage.setItem('KARBON_email', email);
   }, [email]);
 
   useEffect(() => {
-    localStorage.setItem('UserID', UserID);
+    localStorage.setItem('KARBON_UserID', UserID);
   }, [UserID]);
 
   useEffect(() => {
-    localStorage.setItem('password', password);
+    localStorage.setItem('KARBON_password', password);
   }, [password]);
 
   useEffect(() => {
-    localStorage.setItem('presaleid', presaleID);
+    localStorage.setItem('KARBON_presaleid', presaleID);
   }, [presaleID]);
 
   useEffect(() => {
-    localStorage.setItem('accesstoken', accessToken);
+    localStorage.setItem('KARBON_accesstoken', accessToken);
   }, [accessToken]);
 
 
   useEffect(() => {
-    localStorage.setItem('  walletAddress', walletAddress);
+    localStorage.setItem('KARBON_  walletAddress', walletAddress);
   }, [walletAddress]);
 
   useEffect(() => {
-    localStorage.setItem('referralCode', referralCode);
+    localStorage.setItem('KARBON_referralCode', referralCode);
   }, [referralCode]);
 
   useEffect(() => {
-    localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
+    localStorage.setItem('KARBON_isAuthenticated', JSON.stringify(isAuthenticated));
   }, [isAuthenticated]);
 
   useEffect(() => {
-    localStorage.setItem('isGoogleSignIn', JSON.stringify(isGoogleSignIn));
+    localStorage.setItem('KARBON_isGoogleSignIn', JSON.stringify(isGoogleSignIn));
   }, [isGoogleSignIn]);
 
   useEffect(() => {

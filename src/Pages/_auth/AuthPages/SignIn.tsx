@@ -163,7 +163,7 @@ const SignIn = () => {
                     toast({
                         variant: "failure",
                         title: t('error'),
-                        description: t('invalidRoleRedirect'),
+                        description: t('invalidLogin'),
                     })
                     setIsLoggingIn(false);
                 }
