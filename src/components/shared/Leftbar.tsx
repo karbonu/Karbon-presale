@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Menu } from "lucide-react";
+// import { ArrowLeft, Menu } from "lucide-react";
 import ClaimTokenWhite from "../Icons/ClaimTokenWhite.tsx";
 import DiscordLogo from "../Icons/DiscordLogo.tsx";
 import KarbonLogoBig from "../Icons/KarbonLogoBig.tsx";
@@ -15,12 +15,15 @@ import TokenSaleWhite from "../Icons/TokenSaleWhite.tsx";
 import RedirectIcon from "../Icons/RedirectIcon.tsx";
 
 const Leftbar = ({ onToggle }: { onToggle: (isOpen: boolean) => void }) => {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const { t } = useTranslation();
     const location = useLocation();
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
+    const toggleSidebarTrue = () => {
+        setIsOpen(true);
+    };
+    const toggleSidebarFalse = () => {
+        setIsOpen(false);
     };
 
     useEffect(() => {
@@ -34,18 +37,18 @@ const Leftbar = ({ onToggle }: { onToggle: (isOpen: boolean) => void }) => {
     const inactiveClassName = `${navLinkClass} bg-[#101010] opacity-70 hover:opacity-100 hover:border-l hover:border-[#08E04A]`;
 
     return (
-        <div className={`h-screen max-lg:hidden transition-all fixed  duration-300 ease-in-out ${isOpen ? 'w-[181px]' : 'w-16'}`}>
+        <div onMouseEnter={toggleSidebarTrue} onMouseLeave={toggleSidebarFalse} className={`h-screen max-lg:hidden transition-all fixed  duration-300 ease-in-out ${isOpen ? 'w-[181px]' : 'w-16'}`}>
             <aside className="h-full sticky top-0 flex flex-col justify-between bg-[#151515] overflow-hidden">
                 <div className="py-10 flex flex-col w-full">
                     <div className="flex items-center justify-center mb-10">
                         {isOpen ? (
                             <div className="flex flex-col space-y-5 items-center">
-                                <ArrowLeft className="ml-2 cursor-pointer text-white" onClick={toggleSidebar} />
+                                {/* <ArrowLeft className="ml-2 cursor-pointer text-white" onClick={toggleSidebar} /> */}
                                 <KarbonLogoBig />
                             </div>
                         ) : (
                             <div className="flex flex-col space-y-5 items-center">
-                                <Menu className="cursor-pointer text-white" onClick={toggleSidebar} />
+                                {/* <Menu className="cursor-pointer text-white" onClick={toggleSidebar} /> */}
                                 <img src="/assets/karbonSoloLogo.svg" alt="Karbon Logo" />
                             </div>
                         )}
