@@ -284,7 +284,7 @@ const TopBar = () => {
 
               {isLanguageDropActive && (
                 <div className={` flex flex-col space-y-2 rounded-sm ${isLanguageDropActive ? 'animate-accordion-down' : 'animate-accordion-up'}`}>
-                  <div onClick={() => { changeLanguage(1); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 1 ? 'hidden' : 'cursor-pointer'}`}>
+                  <div onClick={() => { changeLanguage(1); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 1 ? 'hidden' : 'cursor-pointer pt-1'}`}>
                     <EnglishFlag />
                   </div>
                   <div onClick={() => { changeLanguage(2); setIsLanguageDropActive(false) }} className={`${selectedLanguage === 2 ? 'hidden' : 'cursor-pointer'}`}>
