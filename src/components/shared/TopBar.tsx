@@ -256,13 +256,13 @@ const TopBar = () => {
 
         </DialogContent>
       </Dialog>
-      <div className="flex  justify-between">
+      <div className="flex items-center justify-between">
         <p className="text-white font-semibold max-lg:hidden text-[20px] max-sm:text-[14px]">{title}</p>
         <a href="/dashboard" className="lg:hidden">
           <KarbonLogo />
         </a>
 
-        <div className="max-lg:hidden flex flex-row relative space-x-2">
+        <div className="max-lg:hidden items-center flex flex-row relative space-x-2">
           <div className="flex absolute left-[-4rem] flex-col items-center">
             <div onClick={() => setIsLanguageDropActive(!isLanguageDropActive)} className="bg-[#101010] transition ease-in-out flex flex-col items-center space-y-2 px-2 py-2 border-[#282828] border-[1px]   rounded-sm cursor-pointer">
               <div className="transition ease-in-out flex flex-row items-center space-x-2">
