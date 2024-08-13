@@ -415,7 +415,7 @@ const SignIn = () => {
                                             <GoogleLogo />
                                         </div>
                                         <div className="flex-1 flex items-center justify-center">
-                                            <p className="text-white text-[14px] max-sm:text-[10px]">{t('signInGoogle')}</p>
+                                            <p className="text-white text-[14px] max-sm:text-[12px]">{t('signInGoogle')}</p>
                                         </div>
                                     </div>
 
@@ -424,7 +424,7 @@ const SignIn = () => {
                                             <AppleLogo />
                                         </div>
                                         <div className="flex-1 flex items-center justify-center">
-                                            <p className="text-white text-[14px] max-sm:text-[10px]">{t('signInApple')}</p>
+                                            <p className="text-white text-[14px] max-sm:text-[12px]">{t('signInApple')}</p>
                                         </div>
                                     </div>
                                 </div>
