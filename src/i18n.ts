@@ -210,6 +210,8 @@ const resources = {
             enterEmail: "Enter Email",
             enterOtp: "Enter OTP",
             forgotPassword: "Forgot Password",
+            noAvailableTokens: "Your Purchase has reached the maximum",
+            amountExceedsMaxAvailable: "Amount entered exceeds the maximum",
         }
     },
     de: {
@@ -416,6 +418,8 @@ const resources = {
             allRightsReserved: "Alle Rechte vorbehalten",  // Added this line
             buyTokensToGetStarted: "Kaufen Sie Token, um zu beginnen",
             enterOtp: "OTP eingeben",
+            noAvailableTokens: "Ihr Kauf hat das Maximum erreicht",
+            amountExceedsMaxAvailable: "Eingegebener Betrag überschreitet das Maximum",
         }
     },
     tr: {
@@ -622,6 +626,8 @@ const resources = {
             byContributing: "Ön satışa katkıda bulunarak bunları kabul ettiğinizi ve kabul ettiğinizi belirtirsiniz",
             chanceBuy: "Karbon tokenlarını lansman fiyatının yarısına alma şansı",
             enterOtp: "OTP Girin",
+            oAvailableTokens: "Satın alımınız maksimuma ulaştı",
+            amountExceedsMaxAvailable: "Girilen tutar maksimumu aşıyor"
         }
     }
 };
