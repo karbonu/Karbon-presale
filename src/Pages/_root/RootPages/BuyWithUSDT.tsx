@@ -370,12 +370,10 @@ const BuyWithUSDT = (props: any) => {
             <div className="w-full flex bg-black border-[0.5px] border-[#484848] h-[48px]">
                 <label htmlFor="getOutput" className="flex flex-row items-center space-x-5 justify-between px-4 w-full">
                     <p className="text-white text-[12px]">{t('youGet')}</p>
-                    <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                     <div className="flex flex-row items-center justify-center space-x-2 flex-1">
                         <p className='h-full text-white w-[75%]'>{(tokenAmount * rate) === 0 ? '' : (tokenAmount * rate)}</p>
                     </div>
                     <div className='flex flex-row items-center h-full space-x-3'>
-                        <Separator orientation="vertical" className="bg-[#484848] w-[0.5px]" />
                         <p className="text-white text-[12px] opacity-70">KARBON</p>
                     </div>
                 </label>
