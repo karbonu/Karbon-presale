@@ -447,7 +447,7 @@ const TokenSale = () => {
               <img
                 alt="Wallet Image"
                 src='/assets/WalletImageMobile.svg'
-                className="rounded-t-[24px]"
+                className="rounded-t-[24px] w-full"
               />
               <div onClick={handleCloseConnectModal} className='absolute cursor-pointer  top-4 right-4'>
                 <DialogClose />
@@ -916,7 +916,7 @@ const TokenSale = () => {
 
             <div className="bg-[#121212] rounded-[8ox]">
               <div className="p-3 flex flex-col space-y-5">
-                <div className="flex p-3 flex-col rounded-[8px] max-sm:bg-black space-y-7">
+                <div className="flex p-3 flex-col rounded-[8px] space-y-7">
                   <div className="flex flex-row items-center justify-between">
                     <p className="text-white text-[14px] font-semibold">{t('presaleProgress')}</p>
                     <div className="flex flex-row items-center space-x-4">
