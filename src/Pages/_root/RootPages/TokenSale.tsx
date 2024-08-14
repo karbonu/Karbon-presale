@@ -38,7 +38,7 @@ import { useToast } from "@/components/ui/use-toast.ts";
 import axios from "axios";
 import useSocketIO from "@/components/shared/Constants/UseSocket.ts";
 import { useTranslation } from "react-i18next";
-import ForwardIconBlack from "@/components/Icons/ForwardIconBlack.tsx";
+// import ForwardIconBlack from "@/components/Icons/ForwardIconBlack.tsx";
 import BackIconGreen from "@/components/Icons/BackIconGreen.tsx";
 import { useMediaQuery } from "@/components/shared/Hooks/UseMediaQuery.tsx";
 import { Sheet, SheetContent } from "@/components/ui/sheet.tsx";
@@ -489,7 +489,7 @@ const TokenSale = () => {
           <div className="flex flex-col w-[795px] ">
             <div className="flex items-center w-[795px] min-h-[367px] justify-between flex-col ">
 
-              <div className="flex flex-col space-y-7 h-[230px] w-[795px] border-[1px] border-[#282828] bg-[#121212] p-5 rounded-t-[16px]">
+              <div className="flex flex-col space-y-7 h-[230px] w-[795px] border-[1px] border-[#282828] bg-[#101010] p-5 rounded-t-[16px]">
                 <p className="text-white text-[20px] font-bold">{t('referrals')}</p>
 
                 <div className="flex flex-row w-full justify-between pr-10 pb-10">
@@ -552,7 +552,7 @@ const TokenSale = () => {
 
               </div>
 
-              <div className="flex flex-col space-y-3 w-[795px] min-h-[135px] border-[1px] border-t-0 border-[#282828] bg-[#121212] p-5 rounded-b-[16px]">
+              <div className="flex flex-col space-y-3 w-[795px] min-h-[135px] border-[1px] border-t-0 border-[#282828] bg-[#101010] p-5 rounded-b-[16px]">
                 <p className="text-[16px] text-white font-semibold">{t('startEarning')}!</p>
                 <p className="text-white opacity-70 text-[12px]">{t('copyReferral')}</p>
 
@@ -601,7 +601,7 @@ const TokenSale = () => {
               <p className="text-white font-bold text-[20px]">{t('transactions')}</p>
               <div className="flex flex-row items-center justify-between">
 
-                <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
+                <div className="w-[253px] border-[1px] border-[#282828] bg-[#101010] rounded-[8px] flex flex-col p-5 space-y-5">
                   <p className="text-[12px] opacity-70 text-white">{t('amountSpent')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{animatedTotalAmount}</p>
@@ -610,7 +610,7 @@ const TokenSale = () => {
                   </div>
                 </div>
 
-                <div className="min-w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
+                <div className="min-w-[253px] border-[1px] border-[#282828] bg-[#101010] rounded-[8px] flex flex-col p-5 space-y-5">
                   <p className="text-[12px] opacity-70 text-white">{t('tokensBought')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{animatedTokensBought}</p>
@@ -618,7 +618,7 @@ const TokenSale = () => {
                   </div>
                 </div>
 
-                <div className="w-[253px] border-[1px] border-[#282828] bg-[#121212] rounded-[8px] flex flex-col p-5 space-y-5">
+                <div className="w-[253px] border-[1px] border-[#282828] bg-[#101010] rounded-[8px] flex flex-col p-5 space-y-5">
                   <p className="text-[12px] opacity-70 text-white">{t('tokenValue')}</p>
                   <div className="flex flex-row space-x-1">
                     <p className="text-white text-[24px]">{saleRate}</p>
@@ -633,7 +633,7 @@ const TokenSale = () => {
 
               </div>
 
-              <div className=" bg-[#121212] border-[1px] border-[#282828] rounded-b-[8px]">
+              <div className=" bg-[#101010] border-[1px] border-[#282828] rounded-b-[8px]">
                 <div className="flex items-center justify-center flex-col space-y-5 py-5">
                   <p className="text-[12px] text-white opacity-70">{t('estimatedClaimTime')}</p>
                   <div className={`flex flex-row space-x-2 items-center justify-center `}>
@@ -651,7 +651,7 @@ const TokenSale = () => {
 
 
           <div className="flex flex-col space-y-1  mb-10 min-h-[660px] w-[341px] border-[1px] rounded-[8px] border-[#282828] ">
-            <div className="flex flex-col w-[341px] border-[#282828] p-5  rounded-t-[8px] bg-[#121212] ">
+            <div className="flex flex-col w-[341px] border-[#282828] p-5  rounded-t-[8px] bg-[#101010] ">
               <div className="flex flex-col space-y-7">
                 <div className="flex flex-row items-center justify-between">
                   <p className="text-white text-[14px] font-medium">{t('presaleProgress')}</p>
@@ -676,7 +676,7 @@ const TokenSale = () => {
               </div>
             </div>
 
-            <div className="rounded-b-[8px] bg-[#121212]">
+            <div className="rounded-b-[8px] bg-[#101010]">
               <div className="flex flex-col space-y-5">
                 <p className="text-white px-5 pt-5  font-bold text-[20px]">{t('contribute')}</p>
                 <div className="px-5">
@@ -914,7 +914,7 @@ const TokenSale = () => {
           <div className="flex flex-col py-5 space-y-5">
             <p className="text-white text-[20px] font-bold">{t('tokenSaleDApp')}</p>
 
-            <div className="bg-[#121212] rounded-[8ox]">
+            <div className="bg-[#101010] rounded-[8ox]">
               <div className="p-3 flex flex-col space-y-5">
                 <div className="flex p-3 flex-col rounded-[8px] space-y-7">
                   <div className="flex flex-row items-center justify-between">
@@ -942,15 +942,15 @@ const TokenSale = () => {
                   </div>
                 </div>
 
-                <p className="text-white  font-bold text-[20px]">{t('contribute')}</p>
-                <button onClick={() => setShowContributeMobile(true)} className="flex md:hidden items-center flex-row space-x-2 justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
+                <p className="text-white max-md:hidden font-bold text-[20px]">{t('contribute')}</p>
+                {/* <button onClick={() => setShowContributeMobile(true)} className="flex md:hidden items-center flex-row space-x-2 justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer">
                   <p className="font-bold text-[14px] shadow-sm">
                     {t('contribute')}
                   </p>
                   <ForwardIconBlack />
-                </button>
+                </button> */}
 
-                <div className="max-sm:hidden">
+                <div className="">
                   <div
                     className="fade-transition"
                     style={{ opacity: selectedMethod === 0 ? 1 : 0 }}
@@ -1041,7 +1041,7 @@ const TokenSale = () => {
             </div>
 
             <div className="fkex flex-col w-full flex-1 space-y-2">
-              <div className="bg-[#121212] w-full rounded-[8ox]">
+              <div className="bg-[#101010] w-full rounded-[8ox]">
 
                 <div className="p-5 flex-col w-full space-y-6">
                   <p className="text-white text-[20px] font-bold">{t('referrals')}</p>
@@ -1104,7 +1104,7 @@ const TokenSale = () => {
                 </div>
               </div>
 
-              <div className="bg-[#121212] rounded-[8ox]">
+              <div className="bg-[#101010] rounded-[8ox]">
                 <div className="p-5 flex flex-col opacity-70 space-y-5">
                   <p className="text-[16px] text-white">{t('startEarning')}!</p>
                   <p className="text-white text-[12px]">{t('copyReferral')}</p>
@@ -1144,7 +1144,7 @@ const TokenSale = () => {
             </div>
 
 
-            <div className="bg-[#121212] rounded-[8ox]">
+            <div className="bg-[#101010] rounded-[8ox]">
               <div className="p-5">
                 <p className="text-white font-bold text-[20px]">{t('transactions')}</p>
                 <div className="flex flex-col space-y-5 py-5">
