@@ -398,7 +398,7 @@ const BuyWithUSDT = (props: any) => {
             </div>
 
             <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
-                <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[80%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>
+                <DialogContent className='flex items-center justify-center w-[412px] max-h-[517px] bg-[#121212] border-[1px] border-[#282828] max-sm:w-[80%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>
                     {step === 1 && (
                         <>
                             <div className='flex flex-row w-full justify-between items-center'>
@@ -435,7 +435,7 @@ const BuyWithUSDT = (props: any) => {
                             </div>
 
                             <div className='w-full flex items-center justify-center'>
-                                <p className='text-center text-white text-[12px] max-sm:text-[10px] w-[248px]'>{t('outputEstimated')}.</p>
+                                <p className='text-center text-white opacity-50 text-[12px] max-sm:text-[10px] w-[248px]'>{t('outputEstimated')}.</p>
                             </div>
 
                             <div className='bg-black rounded-[8px] border-[#484848] border-[0.5px] flex flex-col w-full'>

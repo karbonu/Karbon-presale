@@ -1040,13 +1040,13 @@ const TokenSale = () => {
               </div>
             </div>
 
-            <div className="fkex flex-col space-y-2">
-              <div className="bg-[#121212] rounded-[8ox]">
+            <div className="fkex flex-col w-full flex-1 space-y-2">
+              <div className="bg-[#121212] w-full rounded-[8ox]">
 
-                <div className="p-5 flex-col space-y-6">
+                <div className="p-5 flex-col w-full space-y-6">
                   <p className="text-white text-[20px] font-bold">{t('referrals')}</p>
 
-                  <div className="flex flex-row  space-x-10">
+                  <div className="flex flex-row w-full max-md:justify-between md:space-x-10">
                     <div className="flex flex-col space-y-2">
                       <p className="text-white text-[12px] opacity-70">{t('unclaimedBonus')}</p>
                       <div className="flex flex-row ">
@@ -1067,7 +1067,7 @@ const TokenSale = () => {
                   </div>
 
 
-                  <div className="flex flex-row justify-between items-center w-full">
+                  <div className="flex flex-row w-full max-md:justify-between max-sm:relative md:space-x-10 items-center">
                     <div className="flex flex-col space-y-2">
                       <p className="text-white text-[12px] opacity-70">{t('totalReferrals')}</p>
                       <div className="flex flex-row ">
@@ -1075,7 +1075,7 @@ const TokenSale = () => {
 
                       </div>
                     </div>
-                    <div onClick={handlePayoutModal} className="bg-transparent py-2 items-center h-max px-4 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
+                    <div onClick={handlePayoutModal} className="bg-transparent py-2 items-center px-4 max-sm:absolute max-sm:right-0 cursor-pointer hover:border-[#08E04A] transition ease-in-out text-white text-[14px] hover:text-[#08E04A] rounded-full border-[1px] border-white">
                       {isConnected ? (
                         <>
                           {isRequesting ? (
