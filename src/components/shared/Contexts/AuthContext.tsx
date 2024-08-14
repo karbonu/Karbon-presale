@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUserID('');
     setPassword('');
     setAccessTToken('');
-    setPresaleID('');
+    // setPresaleID('');
     setWalletAddress('');
     setReferralCOde('');
     setAuthenticated(false);
