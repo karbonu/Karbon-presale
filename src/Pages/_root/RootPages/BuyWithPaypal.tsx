@@ -340,7 +340,7 @@ const BuyWithPaypal = (props: any) => {
 
         <button disabled={contributionLoading} onClick={() => handlePay()} className='flex items-center font-bold text-[14px] justify-center bg-[#08E04A] w-full h-[48px] rounded-[4px] hover:bg-[#3aac5c] transition ease-in-out cursor-pointer'>
           {contributionLoading ? (
-            <BarLoader color='white' />
+            <BarLoader color='black' />
           ) : (
             t('payWithPaypal')
           )}
