@@ -10,7 +10,7 @@ const TermsAndCond = (props: any) => {
     return (
         <div>
             <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
-                <DialogContent className='bg-[#101010]  border-[#282828] pb-5 py-10 px-10 flex flex-col w-[412px] max-sm:w-[95%] items-center justify-center rounded-[16px] outline-none'>
+                <DialogContent className='bg-[#101010]  border-[#282828] pb-5 py-10 px-10 max-sm:py-5 max-sm:px-5 flex flex-col w-[412px] max-sm:w-[95%] items-center justify-center rounded-[16px] outline-none'>
                     <div className='w-full flex flex-row items-center justify-between'>
                         <p className="text-white font-semibold text-[20px] max-sm:text-[16px]">{t('termsConditions')}</p>
                         <div onClick={() => props.setIsDialogOpen(false)} className='cursor-pointer '>
