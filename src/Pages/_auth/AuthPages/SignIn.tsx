@@ -353,9 +353,9 @@ const SignIn = () => {
 
     return (
         <div className="p-[60px] max-sm:p-2">
-            <div className="flex flex-row relative w-full  justify-between max-sm:pt-10 max-sm:px-5">
+            <div className="flex flex-row relative w-full justify-between max-sm:pt-10 max-sm:px-5">
                 <KarbonLogo />
-                <div className="flex absolute right-[0rem] flex-col items-center">
+                <div className="flex absolute right-[0rem] max-sm:right-5 flex-col items-center">
                     <div onClick={() => setIsLanguageDropActive(!isLanguageDropActive)} className="bg-[#101010] transition ease-in-out flex flex-col items-center space-y-2 px-2 py-2 border-[#282828] border-[1px]   rounded-sm cursor-pointer">
                         <div className="transition ease-in-out flex flex-row items-center space-x-2">
                             <div>

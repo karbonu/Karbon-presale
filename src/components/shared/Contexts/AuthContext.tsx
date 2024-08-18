@@ -1,6 +1,6 @@
 // src/components/shared/Contexts/AuthContext.tsx
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 
 interface AuthContextType {
@@ -50,11 +50,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [hasDisplayedDisclaimet, setHasDisplayedDisclaimet] = useState<boolean>(JSON.parse(localStorage.getItem('KARBON_displayedDisclaimerModal') || 'true'));
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const clearAuthData = () => {
-
-    navigate('/sign-in')
+    window.location.reload();
     setEmail('');
     setUserID('');
     setPassword('');
