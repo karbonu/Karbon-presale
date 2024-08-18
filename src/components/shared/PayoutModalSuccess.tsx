@@ -11,7 +11,7 @@ const PayoutModalSuccess = (props: any) => {
     return (
         <div>
             <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
-                <DialogContent className='bg-[#101010] border-[1px] border-[#282828] p-10 flex flex-col w-[380px] max-sm:w-[95%] items-center justify-center rounded-[16px] outline-none'>
+                <DialogContent className='bg-[#101010] border-[1px] border-[#282828] p-10 max-sm:p-5 flex flex-col w-[380px] max-sm:w-[95%] items-center justify-center rounded-[16px] outline-none'>
                     <div className='w-full flex flex-row items-center justify-between'>
                         <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{t('payout')}</p>
                         <div onClick={() => props.setIsDialogOpen(false)} className='cursor-pointer '>

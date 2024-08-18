@@ -47,7 +47,7 @@ const PayoutModalFailure = (props: any) => {
   return (
     <div>
       <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
-        <DialogContent className='bg-[#101010] border-[1px] border-[#282828] py-10 flex flex-col w-[412px] max-sm:w-[95%] items-center justify-center rounded-[16px] outline-none'>
+        <DialogContent className='bg-[#101010] border-[1px] border-[#282828] py-10 max-sm:py-5 flex flex-col w-[412px] max-sm:w-[95%] items-center justify-center rounded-[16px] outline-none'>
           <div className='w-full flex px-8 flex-row items-center justify-between'>
             <p className="text-white font-semibold max-sm:text-[14px] text-[16px]">{t('notThereYet')}</p>
             <div onClick={() => props.setIsDialogOpen(false)} className='cursor-pointer '>
