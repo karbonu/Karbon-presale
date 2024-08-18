@@ -292,7 +292,7 @@ const BuyWithUSDT = (props: any) => {
             <Dialog open={hasDisplayedDisclaimet} onOpenChange={setHasDisplayedDisclaimet}>
                 <DialogContent className='bg-[#101010] border-[#282828] pb-5 py-10 max-sm:py-5 px-10 max-sm:px-5 flex flex-col w-[412px] max-sm:w-[95%] items-center justify-center rounded-[16px] outline-none'>
                     <div className='w-full flex flex-row items-center justify-between'>
-                        <p className="text-white font-semibold text-[20px]">{t('disclaimer')}</p>
+                        <p className="text-white font-semibold text-[20px] max-sm:text-[16px]">{t('disclaimer')}</p>
                         <div onClick={() => setHasDisplayedDisclaimet(false)} className='cursor-pointer '>
                             <DialogClose />
                         </div>
@@ -300,9 +300,9 @@ const BuyWithUSDT = (props: any) => {
 
                     <div className="w-full py-5 flex flex-col space-y-5 items-center justify-center">
                         <div className="opacity-70 flex flex-col space-y-5">
-                            <p className="text-[14px] text-white">{t('participateAcknowledgement')}</p>
-                            <p className="text-[14px] text-white">{t('vestingPeriodNotice')}</p>
-                            <p className="text-[14px] text-white">{t('noGuaranteeNotice')}</p>
+                            <p className="text-[14px] max-sm:text-[12px] text-white">{t('participateAcknowledgement')}</p>
+                            <p className="text-[14px] max-sm:text-[12px] text-white">{t('vestingPeriodNotice')}</p>
+                            <p className="text-[14px] max-sm:text-[12px] text-white">{t('noGuaranteeNotice')}</p>
                         </div>
 
                         <div onClick={() => setHasDisplayedDisclaimet(false)} className="bg-black w-full h-[64px] flex flex-row items-center justify-center cursor-pointer border-[#08E04A] transition ease-in-out text-[#08E04A] text-[14px] font-bold hover:text-[#08E04A] rounded-[4px] border-r-[1px] ">
@@ -393,7 +393,7 @@ const BuyWithUSDT = (props: any) => {
             </div>
 
             <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
-                <DialogContent className='flex items-center justify-center w-[412px] max-h-[517px] bg-[#121212] border-[1px] border-[#282828] max-sm:w-[80%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>
+                <DialogContent className='flex items-center justify-center w-[412px] max-h-[517px] bg-[#121212] border-[1px] border-[#282828] max-sm:w-[95%] p-7 max-sm:py-7 max-sm:px-5 flex-col space-y-5'>
                     {step === 1 && (
                         <>
                             <div className='flex flex-row w-full justify-between items-center'>
