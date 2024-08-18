@@ -224,7 +224,7 @@ const TopBar = () => {
     <div className="w-full">
       <Dialog open={isModalOpen} onOpenChange={handleModalClose}>
 
-        <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[70%] p-10 max-sm:py-7 max-sm:px-5 flex-col outline-none space-y-5'>
+        <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] max-sm:w-[95%] p-10 max-sm:py-7 max-sm:px-5 flex-col outline-none space-y-5'>
           <div className='flex flex-row w-full justify-end items-end'>
             <div onClick={() => handleModalClose()} className=' cursor-pointer'>
               <DialogClose />
