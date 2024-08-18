@@ -371,7 +371,7 @@ const BuyWithCreditCard = (props: any) => {
           )}
         </button>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] border-[1px] border-[#282828] max-sm:w-[70%] p-10 max-sm:py-7 max-sm:px-5 flex-col space-y-10'>
+          <DialogContent className='flex items-center justify-center w-[412px] bg-[#121212] border-[1px] border-[#282828] max-sm:w-[95%] p-10 max-sm:py-7 max-sm:px-5 flex-col space-y-10'>
             <div className='flex flex-row w-full justify-between items-center'>
               <p className="text-white font-semibold text-[16px] max-sm:text-[14px]">{t('confirmContribution')}</p>
               <div onClick={() => setIsModalOpen(false)} className=' cursor-pointer'>
