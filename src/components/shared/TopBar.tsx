@@ -520,7 +520,7 @@ const TopBar = () => {
                         {({ isActive }) => (
                           <div className="flex items-center justify-center px-3 py-5 flex-row space-x-2">
                             {isActive ? <ClaimTokensBig /> : <ClaimTokensWhiteBig />}
-                            <p className="font-semibold text-[20px] text-white">{t('settings')}</p>
+                            <p className="font-semibold text-[20px] text-white">{t('claimToken')}</p>
                           </div>
                         )}
                       </NavLink>
